@@ -14,9 +14,10 @@
   },
   "socket": "true",
   "esmodules": [
+	"scripts/utils/LnKutils.js",
 	"scripts/LockManager.js",
 	"scripts/KeyManager.js",
-	"scripts/helpers/lnkMouseHandler.js"
+	"scripts/helpers/LnKMouseHandler.js"
   ],
   "allowBugReporter": true
 }
