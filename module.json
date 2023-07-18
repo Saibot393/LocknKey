@@ -1,5 +1,5 @@
 {
-  "id": "Lock-and-Key",
+  "id": "LocknKey",
   "title": "Lock and Key",
   "description": "A small module to handle locks and keys",
   "authors": [
@@ -14,7 +14,9 @@
   },
   "socket": "true",
   "esmodules": [
-	"scripts/lkMouseHandler.js"
+	"scripts/LockManager.js",
+	"scripts/KeyManager.js",
+	"scripts/helpers/lnkMouseHandler.js"
   ],
   "allowBugReporter": true
 }
