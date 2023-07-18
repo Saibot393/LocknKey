@@ -1,0 +1,20 @@
+{
+  "id": "Lock-and-Key",
+  "title": "Lock and Key",
+  "description": "A small module to handle locks and keys",
+  "authors": [
+    {
+    "name": "saibot"
+    }
+  ],
+  "version": "0.0.0",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "11"
+  },
+  "socket": "true",
+  "esmodules": [
+	"scripts/lkMouseHandler.js"
+  ],
+  "allowBugReporter": true
+}
