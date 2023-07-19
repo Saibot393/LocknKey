@@ -1,12 +1,16 @@
 import { cModuleName } from "../utils/LnKutils.js";
 
+const cDelimiter = ";";
+
 //Flag names
-cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
+const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
 
 class LnKFlags {
 	//DECLARATIONS
 	//basic
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
+	
+	static IDKeys(pObject) {} //returns an array containing the ID keys of pObject
 	
 	//IMPLEMENTATIONS
 	
@@ -32,14 +36,21 @@ class LnKFlags {
 			}
 		}
 		
-		return []; //default if anything fails
+		return ""; //default if anything fails
 	} 
 	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
-			if (pContent.length) {
-				await pObject.setFlag(cModuleName, cIDKeysF, pContent);
+			if (typeof pContent == "string") {
+				let vBuffer = pContent;
+				
+				//add delimiter to end
+				if (vBuffer.length && (vBuffer[vBuffer.length-1] != cDelimiter)) {
+					vBuffer = vBuffer + cDelimiter;
+				}
+				
+				await pObject.setFlag(cModuleName, cIDKeysF, vBuffer);
 				
 				return true;
 			}
@@ -51,7 +62,14 @@ class LnKFlags {
 	//sets content of IDKeysFlag (must be a IDs)
 		if (pObject) {
 			if (typeof pContent == "string") {
-				await this.#setIDKeysFlag(pObject, this.#IDKeysFlag(pObject).concat([pContent]));
+				let vBuffer = this.#IDKeysFlag(pObject);
+				
+				//add delimiter to end
+				if (vBuffer.length && (vBuffer[vBuffer.length-1] != cDelimiter)) {
+					vBuffer = vBuffer + cDelimiter;
+				}	
+				
+				await this.#setIDKeysFlag(pObject, vBuffer + pContent);
 				
 				return true;
 			}
@@ -66,6 +84,10 @@ class LnKFlags {
 		this.#addIDKeysFlag(pKey, vnewID);
 		
 		this.#addIDKeysFlag(pLock, vnewID);
+	}
+	
+	static IDKeys(pObject) {
+		return this.#IDKeysFlag(pObject).split(cDelimiter);
 	}
 }
 
