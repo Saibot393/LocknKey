@@ -17,6 +17,7 @@
 	"scripts/utils/LnKutils.js",
 	"scripts/LockManager.js",
 	"scripts/KeyManager.js",
+	"scripts/helpers/SocketHandler.js",
 	"scripts/helpers/LnKMouseHandler.js"
   ],
   "allowBugReporter": true

@@ -29,6 +29,8 @@ class LnKutils {
 	//items
 	static async createKeyItem(pName = Translate("Word.Key")) {} // creates new key item and returns the document
 	
+	static TokenInventory(pToken) {} //returns inventoryof pToken
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
 	
@@ -85,7 +87,7 @@ class LnKutils {
 	static LockfromID (pID, pLockType, pScene = null) {
 		switch(pLockType) {
 			case cLockTypeDoor:
-				LnKutils.WallfromID(pID, pScene);
+				return LnKutils.WallfromID(pID, pScene);
 				break;
 		}
 	}
@@ -130,14 +132,15 @@ class LnKutils {
 		return await vDocument.constructor.create(vDocument);
 	}
 	
+	static TokenInventory(pToken) {
+		console.log(pToken);
+		return pToken.actor.items;
+	}
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {
 		return pArray1.filter(vElement => pArray2.includes(vElement));
 	}
 }
-
-Hooks.on("ready", function() {
-	LnKutils.createKeyItem();
-});
 
 export { cModuleName, cLockTypeDoor, Translate, LnKutils }

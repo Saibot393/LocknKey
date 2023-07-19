@@ -19,7 +19,7 @@ class LnKFlags {
 	//returns all Module Flags of pObject (if any)
 		if (pObject) {
 			if (pObject.flags.hasOwnProperty(cModuleName)) {
-				return pObject.flags.Rideable;
+				return pObject.flags.LocknKey;
 			}
 		}
 		

@@ -58,12 +58,10 @@ class LnKMouseHandler {
 	
 	//ons
 	static onDoorRightClick(pDoorEvent, pWall) {
-		console.log(pWall.document);
 		Hooks.callAll(cModuleName + "." + "DoorRClick", pWall.document, {altKey : pDoorEvent.altKey, ctrlKey : pDoorEvent.ctrlKey, shiftKey : pDoorEvent.shiftKey});
 	}
 	
 	static onTokenRightClick(pTokenEvent) {
-		console.log("Token check");
 		Hooks.callAll(cModuleName + "." + "TokenRClick", pTokenEvent.interactionData.object.document, {altKey : pTokenEvent.altKey, ctrlKey : pTokenEvent.ctrlKey, shiftKey : pTokenEvent.shiftKey});
 	}
 	
