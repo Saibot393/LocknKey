@@ -1,7 +1,8 @@
 import { cModuleName, LnKutils } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
-
 import { LnKFlags } from "./helpers/LnKFlags.js";
+
+import { LnKPopups } from "./helpers/LnKPopups.js";
 
 //does everything Lock related (basicly GM side)
 class LockManager {
@@ -19,7 +20,7 @@ class LockManager {
 	
 	static async ToggleDoorLock(pDoor) {} //locks or unlocks pDoor
 	
-	static TokenisUnlocked(pToken) {} //if pToken is currently unlocked
+	static TokenisUnlocked(pToken, pPopup = false) {} //if pToken is currently unlocked
 	
 	//IMPLEMENTATIONS
 	//basics
@@ -96,7 +97,13 @@ class LockManager {
 		}
 	} 
 	
-	static TokenisUnlocked(pToken) {
+	static TokenisUnlocked(pToken, pPopup = false) {
+		let vUnlocked = !(LnKFlags.isLocked(pToken));
+		
+		if (pPopup && !vUnlocked) {
+			LnKPopups.TextPopUpID(pToken, "TokenLocked", {pLockName : pToken.name})
+		}
+		
 		return !(LnKFlags.isLocked(pToken));
 	}
 }
@@ -120,7 +127,7 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 
 Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //for sheet opening
 	if (!game.user.isGM) {//CLIENT: check if token unlocked
-		return LockManager.TokenisUnlocked(pTokenDocument);
+		return LockManager.TokenisUnlocked(pTokenDocument, true);
 	}
 	
 	return true; //if anything fails

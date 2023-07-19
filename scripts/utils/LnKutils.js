@@ -1,6 +1,8 @@
 //CONSTANTS
 const cModuleName = "LocknKey"; //name of Module
 
+const cPopUpID = "Popup";
+
 //System names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
 
@@ -13,7 +15,7 @@ const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 
-export {cModuleName, cLockTypeDoor, cLockTypeLootPf2e}
+export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e}
 
 function Translate(pName){
   return game.i18n.localize(cModuleName+"."+pName);

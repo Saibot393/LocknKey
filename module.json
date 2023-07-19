@@ -15,6 +15,7 @@
   "socket": "true",
   "esmodules": [
 	"scripts/utils/LnKutils.js",
+	"scripts/helpers/LnKPopups.js",
 	"scripts/LockManager.js",
 	"scripts/KeyManager.js",
 	"scripts/helpers/SocketHandler.js",
