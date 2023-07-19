@@ -1,15 +1,29 @@
 //CONSTANTS
 const cModuleName = "LocknKey"; //name of Module
 
+//System names
+const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
+
 //Door Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
+const cLockTypeLootPf2e = "LTLootPf2e"; //type for Token
+
+const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
+
+//Tokentype
+const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
+
+export {cModuleName, cLockTypeDoor, cLockTypeLootPf2e}
 
 function Translate(pName){
   return game.i18n.localize(cModuleName+"."+pName);
 }
 
 class LnKutils {
-	//DELCARATIONS
+	//DELCARATIONS	
+	//Identification
+	static isPf2e() {} //used for special Pf2e functions
+	
 	//ID handling
 	static TokenfromID (pID, pScene = null) {} //returns the Token matching pID
 	
@@ -31,10 +45,22 @@ class LnKutils {
 	
 	static TokenInventory(pToken) {} //returns inventoryof pToken
 	
+	//locks
+	static Locktype(pDocument) {} //returns Locktype of pDocument (if any)
+	
+	static isLockCompatible(pDocument) {} //returns if Token can have a lock
+	
+	static isTokenLock(pLocktype) {} //returns if pLocktype belongs to a Token
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
 	
 	//IMPLEMENTATIONS
+	//Identification	
+	static isPf2e() {
+		return game.system.id === cPf2eName;
+	}
+	
 	//ID handling
 	static TokenfromID (pID, pScene = null) {
 		if (pScene) {
@@ -89,6 +115,9 @@ class LnKutils {
 			case cLockTypeDoor:
 				return LnKutils.WallfromID(pID, pScene);
 				break;
+			case cLockTypeLootPf2e:
+			default:
+				return LnKutils.TokenfromID(pID, pScene);
 		}
 	}
 	
@@ -137,10 +166,33 @@ class LnKutils {
 		return pToken.actor.items;
 	}
 	
+	//locks
+	static Locktype(pDocument) {
+		if (pDocument.collectionName == "walls") {
+			return cLockTypeDoor;
+		}
+		
+		if (LnKutils.isPf2e()) {
+			if (pDocument.actor.type == cPf2eLoottype) {
+				return cLockTypeLootPf2e;
+			}
+		}
+		
+		return "";
+	}	
+	
+	static isLockCompatible(pDocument) {			
+		return (LnKutils.Locktype(pDocument) != "");
+	}
+	
+	static isTokenLock(pLocktype) {
+		return cTokenLockTypes.includes(pLocktype)
+	}
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {
 		return pArray1.filter(vElement => pArray2.includes(vElement));
 	}
 }
 
-export { cModuleName, cLockTypeDoor, Translate, LnKutils }
+export { Translate, LnKutils }
