@@ -19,7 +19,8 @@
 	"scripts/LockManager.js",
 	"scripts/KeyManager.js",
 	"scripts/helpers/SocketHandler.js",
-	"scripts/helpers/LnKMouseHandler.js"
+	"scripts/helpers/LnKMouseHandler.js",
+	"scripts/settings/LnKSettings.js"
   ],
   "allowBugReporter": true
 }
