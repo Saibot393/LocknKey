@@ -19,11 +19,11 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 
 
 ### Settings:
+
+#### World:
 - Use GM controlls: to enable/disable the controls above
 - Allow player locking: to allow players to also lock doors/tokens for which they have a matching key
 - Start as locked: if new lockable objects should start as locked
-#### World:
-
 #### Client:
 
 #### Tokens (separate tab):
