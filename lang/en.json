@@ -7,7 +7,7 @@
 			},
 			
 			"allowLocking" : {
-				"name" 					: "Allow user locking",
+				"name" 					: "Allow player locking",
 				"descrp"				: "Allow players to lock locks if they have a matching key"
 			},
 			
