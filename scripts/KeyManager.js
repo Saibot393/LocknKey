@@ -33,11 +33,12 @@ class KeyManager {
 	static onKeyContext(pHTML, pButtons) {
 		pButtons.push({
 			name: Translate("Context.KeyCopy"),
-			icon: '<i class="fa-solid fa-key-skeleton"></i>',
+			icon: '<i class="fa-regular fa-key"></i>',
 			condition: (pElement) => {
 				console.log(pElement);
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
+				//handle only key items
 				return vItem.flags.hasOwnProperty(cModuleName);
 			},
 			callback: async (pElement) => {
@@ -49,11 +50,12 @@ class KeyManager {
 		
 		pButtons.push({
 			name: Translate("Context.KeyPaste"),
-			icon: '<i class="fa-solid fa-key-skeleton"></i>',
+			icon: '<i class="fa-solid fa-key"></i>',
 			condition: (pElement) => {
 				console.log(pElement);
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
+				//handle only key items
 				return vItem.flags.hasOwnProperty(cModuleName);
 			},
 			callback: async (pElement) => {

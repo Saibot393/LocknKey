@@ -1,7 +1,7 @@
 {
   "id": "LocknKey",
-  "title": "Lock and Key",
-  "description": "A small module to handle locks and keys",
+  "title": "Lock & Key",
+  "description": "A small module to handle locks and keys. Locks can effect both doors and tokens.",
   "authors": [
     {
     "name": "saibot"

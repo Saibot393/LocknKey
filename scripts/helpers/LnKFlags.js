@@ -159,7 +159,7 @@ class LnKFlags {
 	
 	static async invertLockedstate(pObject) {
 		if (this.#LockableFlag(pObject)) {
-			this.#setLockedFlag(pObject, !this.#LockedFlag(pObject));
+			await this.#setLockedFlag(pObject, !this.#LockedFlag(pObject));
 		}
 	}
 	

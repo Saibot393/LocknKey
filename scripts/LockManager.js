@@ -15,12 +15,22 @@ class LockManager {
 	//LockKeys
 	static async newLockKey(pLocktype, pLock) {} //create a new item key for pLock
 	
+	//events
+	static onLock(pLocktype, pLock) {} //calledif a lock is locked
+	
+	static onunLock(pLocktype, pLock) {} //calledif a lock is unlocked
+	
 	//lock type
 	static async ToggleLock(pLockType, pLock) {} //locks or unlocks
 	
 	static async ToggleDoorLock(pDoor) {} //locks or unlocks pDoor
 	
 	static TokenisUnlocked(pToken, pPopup = false) {} //if pToken is currently unlocked
+	
+	//copy paste
+	static copyLock(pLock) {} //copy the Locks Key IDs
+	
+	static pasteLock(pLock) {} //paste the Key IDs to the Lock 
 	
 	//IMPLEMENTATIONS
 	//basics
@@ -70,6 +80,15 @@ class LockManager {
 		}
 	}
 	
+	//events
+	static onLock(pLocktype, pLock) {
+		LnKPopups.TextPopUpID(pLock, "lockedLock", {pLockName : pLock.name}); //MESSAGE POPUP
+	}
+	
+	static onunLock(pLocktype, pLock) {
+		LnKPopups.TextPopUpID(pLock, "unlockedLock", {pLockName : pLock.name}); //MESSAGE POPUP
+	}
+	
 	//lock type
 	static async ToggleLock(pLockType, pLock) {
 		switch(pLockType) {
@@ -78,7 +97,14 @@ class LockManager {
 				break;
 			case cLockTypeLootPf2e:
 			default:
-				LnKFlags.invertLockedstate(pLock)
+				await LnKFlags.invertLockedstate(pLock);
+				
+				if (LnKFlags.isLocked(pLock)) {
+					LockManager.onLock(pLockType, pLock);
+				}
+				else {
+					LockManager.onunLock(pLockType, pLock);
+				}
 				break;
 		}
 	} 
@@ -87,12 +113,16 @@ class LockManager {
 		switch (pDoor.ds) {
 			case 0:
 			case 1:
+				//lock
 				await pDoor.update({ds : 2});
 				
+				LockManager.onLock(cLockTypeDoor, pDoor);
 				break;
 			case 2:
+				//unlock
 				await pDoor.update({ds : 0});
 				
+				LockManager.onunLock(cLockTypeDoor, pDoor);
 				break;
 		}
 	} 
@@ -101,10 +131,19 @@ class LockManager {
 		let vUnlocked = !(LnKFlags.isLocked(pToken));
 		
 		if (pPopup && !vUnlocked) {
-			LnKPopups.TextPopUpID(pToken, "TokenLocked", {pLockName : pToken.name})
+			LnKPopups.TextPopUpID(pToken, "TokenisLocked", {pLockName : pToken.name}); //MESSAGE POPUP
 		}
 		
 		return !(LnKFlags.isLocked(pToken));
+	}
+	
+	//copy paste
+	static copyLock(pLock) {
+		LnKFlags.copyIDKeys(pLock);
+	}
+	
+	static pasteLock(pLock) {
+		LnKFlags.pasteIDKeys(pLock);
 	}
 }
 
@@ -113,6 +152,16 @@ Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
 	if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
 		LockManager.newLockKey(cLockTypeDoor, pDoorDocument);
 	}
+	
+	if (game.user.isGM && pInfos.ctrlKey) {//GM CTRL: copy lock IDs
+		LockManager.copyLock(pDoorDocument);
+	}
+});
+
+Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {	
+	if (game.user.isGM && pInfos.ctrlKey) {//GM CTRL: paste lock IDs
+		LockManager.copyLock(pDoorDocument);
+	}
 });
 
 Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
@@ -120,8 +169,18 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 		LockManager.newLockKey(LnKutils.Locktype(pTokenDocument), pTokenDocument);
 	}
 	
+	if (game.user.isGM && pInfos.ctrlKey) {//GM CTRL: copy lock IDs
+		LockManager.pasteLock(pDoorDocument);
+	}
+	
 	if (game.user.isGM && pInfos.altKey) {//GM ALT: toggle lock state
 		LockManager.ToggleLock(LnKutils.Locktype(pTokenDocument), pTokenDocument);
+	}
+});
+
+Hooks.on(cModuleName + "." + "TokenLClick", (pTokenDocument, pInfos) => {
+	if (game.user.isGM && pInfos.ctrlKey) {//GM CTRL: paste lock IDs
+		LockManager.pasteLock(pDoorDocument);
 	}
 });
 
