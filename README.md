@@ -4,7 +4,7 @@
 
 ### Basic use:
 
-A gm can shift+right-click doors and loot containers (PF2e or Item Piles) to create a new key for them in the item sections. Every play that has a key in their inventory can lock or unlock matching doors and tokens with a right-click. Locked tokens can not be looted.
+A gm can shift+right-click doors and loot containers (PF2e or Item Piles) to create a new key for them in the item sections. Every player that has a key in their inventory can lock or unlock matching doors and tokens with a right-click. Locked tokens can not be looted.
 
 #### GM controls
 
