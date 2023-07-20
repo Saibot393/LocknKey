@@ -11,9 +11,13 @@ A gm can shift+right-click doors and loot containers (PF2e or Item Piles) to cre
 A GM can alt+right-click lockable tokens to lock or unlock them.
 The key IDs of doors, tokens and keys can be copied and pasted into one another to connect them. To copy or paste a keys IDs right click it in the item section and choose one of the options from the context menu. To copy a tokens or doors IDs ctrl+right-click them and to paste them ctrl+left-click them.
 Examples:
+
 I. Copy Door A's key IDs and paste them into Loot Token B (or vice versa). All keys that can unlock/lock Door A can now also unlock/lock Loot Token B (or vice versa).
+
 II. Copy Door A's key IDs and paste them into Key B (or vice versa). Key B can now unlock/lock Door A.
+
 III. Copy Key A's key IDs and paste them into Key B. All doors that can be opened by Key A can now also be opened by Key B (but not the other way around).
+
 
 ### Settings:
 - Use GM controlls: to enable/disable the controls above
