@@ -1,0 +1,35 @@
+{
+	"LocknKey" : {
+		"Settings" : {
+			"useGMquickKeys" : {
+				"name" 					: "Use GM quick controls",
+				"descrp"				: "Allows the GM to use the special lock related controls listed at the bottom (affected marked with *)"
+			},
+			
+			"allowLocking" : {
+				"name" 					: "Allow user locking",
+				"descrp"				: "Allow players to lock locks if they have a matching key"
+			},
+			
+			"startasLocked" : {
+				"name" 					: "Start as locked",
+				"descrp"				: "If newly registered locks start locked"
+			},
+	
+			"MessagePopUps" : {
+				"name" 					: "Message popups",
+				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
+			}
+		},
+		
+		"Text" : {
+			"GMControls" : {
+				"line0"					: "GM controls:",
+				"line1" 				: "-alt+right-click to create a new key for the lock",
+				"line2" 				: "-alt+left-click to toggle token lock (*)",
+				"line3" 				: "-ctrl+right-click to copy the locks key IDs (*)",
+				"line4" 				: "-ctrl+left-click to paste key IDs into the lock (*)"
+			}
+		}
+	}
+}

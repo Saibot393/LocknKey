@@ -35,7 +35,10 @@ class LnKMouseHandler {
 	//IMPLEMENTATIONS
 	//registers
 	static RegisterRightClicks() {
+		LnKMouseHandler.RegisterDoorLeftClick();
 		LnKMouseHandler.RegisterDoorRightClick();
+		
+		LnKMouseHandler.RegisterTokenLeftClick();
 		LnKMouseHandler.RegisterTokenRightClick();
 		LnKMouseHandler.RegisterTokenDblClick();
 	}

@@ -52,7 +52,9 @@ class LnKutils {
 	
 	static isLockCompatible(pDocument) {} //returns if Token can have a lock
 	
-	static isTokenLock(pLocktype) {} //returns if pLocktype belongs to a Token
+	static isTokenLock(pLock) {} //returns if pLock is a Token
+	
+	static isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
@@ -175,6 +177,8 @@ class LnKutils {
 		}
 		
 		if (LnKutils.isPf2e()) {
+			console.log(pDocument);
+			console.log(pDocument.actor);
 			if (pDocument.actor.type == cPf2eLoottype) {
 				return cLockTypeLootPf2e;
 			}
@@ -187,13 +191,17 @@ class LnKutils {
 		return (LnKutils.Locktype(pDocument) != "");
 	}
 	
-	static isTokenLock(pLocktype) {
-		return cTokenLockTypes.includes(pLocktype)
+	static isTokenLock(pLock) {
+		return LnKutils.isTokenLocktype(LnKutils.Locktype(pLock));
+	}
+	
+	static isTokenLocktype(pLocktype) {
+		return cTokenLockTypes.includes(pLocktype);
 	}
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {
-		return pArray1.filter(vElement => pArray2.includes(vElement));
+		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
 	}
 }
 

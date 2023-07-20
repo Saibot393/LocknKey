@@ -17,7 +17,7 @@ class LnKPopups {
 		}
 		
 		//other clients pop up
-		game.socket.emit("module.LocknKey", {pFunction : "PopUpRequest", pData : {pTokenID: pObject.id, pText : vText}});
+		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pText : vText}});
 		
 		//own pop up
 		LnKPopups.PopUpRequest(pObject.id, vText);
@@ -28,7 +28,7 @@ class LnKPopups {
 	} 
 	
 	static PopUpRequest(pObjectID, pText) {
-		if (true)/*(game.settings.get(cModuleName, "MessagePopUps"))*/ {
+		if (game.settings.get(cModuleName, "MessagePopUps")) {
 			//only relevant if token is on current canves, no scene necessary
 			let vObject = LnKutils.LockfromID(pObjectID); 
 			

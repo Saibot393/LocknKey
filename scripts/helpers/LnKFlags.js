@@ -1,4 +1,5 @@
 import { cModuleName } from "../utils/LnKutils.js";
+import { LnKutils } from "../utils/LnKutils.js";
 
 const cDelimiter = ";";
 
@@ -23,7 +24,7 @@ class LnKFlags {
 	
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
-	static IDKeys(pObject) {} //returns an array containing the ID keys of pObject
+	static matchingIDKeys(pObject1, pObject2) {} //returns of pObject1 and pObject2 have at least one matching key (excluding "")
 	
 	//copy paste
 	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
@@ -106,14 +107,12 @@ class LnKFlags {
 	//sets content of IDKeysFlag (must be a IDs)
 		if (pObject) {
 			if (typeof pContent == "string") {
-				let vBuffer = this.#IDKeysFlag(pObject);
+				let vBuffer = this.#IDKeysFlag(pObject).split(cDelimiter);
 				
-				//add delimiter to end
-				if (vBuffer.length && (vBuffer[vBuffer.length-1] != cDelimiter)) {
-					vBuffer = vBuffer + cDelimiter;
-				}	
+				//concat new and old key, prevent clones
+				vBuffer = vBuffer.concat(pContent.split(cDelimiter).filter(vElement => !vBuffer.includes(vElement)));
 				
-				await this.#setIDKeysFlag(pObject, vBuffer + pContent);
+				await this.#setIDKeysFlag(pObject, vBuffer.join(cDelimiter));
 				
 				return true;
 			}
@@ -147,7 +146,7 @@ class LnKFlags {
 			//only change anything if not already lockable
 			this.#setLockableFlag(pObject, true);
 			
-			this.#setLockedFlag(pObject, false);
+			this.#setLockedFlag(pObject, game.settings.get(cModuleName, "startasLocked"));
 		}
 	}
 	
@@ -175,8 +174,8 @@ class LnKFlags {
 		this.#addIDKeysFlag(pLock, vnewID);
 	}
 	
-	static IDKeys(pObject) {
-		return this.#IDKeysFlag(pObject).split(cDelimiter);
+	static matchingIDKeys(pObject1, pObject2) {
+		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length);
 	}
 	
 	//copy paste

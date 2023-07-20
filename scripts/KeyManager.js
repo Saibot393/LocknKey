@@ -12,17 +12,16 @@ class KeyManager {
 	static KeyItems(pInventory) {} //returns all Key items in pInventory
 	
 	//IMPLEMENTATIONS
-	static async onatemptedKeyuse(pLockObject, pLockType) {
-		let vLockIDs = LnKFlags.IDKeys(pLockObject);		
+	static async onatemptedKeyuse(pLockObject, pLockType) {		
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vKeyItems;
 		let vFittingKey;
 		
-		if (vLockIDs.length && vCharacter && LnKutils.TokenInventory(vCharacter)) {
+		if (pLockObject && vCharacter && LnKutils.TokenInventory(vCharacter)) {
 			vKeyItems = KeyManager.KeyItems(LnKutils.TokenInventory(vCharacter));
 			
 			//only key which contains keyid matching at least one key id of pLockObject fits
-			vFittingKey = vKeyItems.find(vKey => LnKutils.Intersection(vLockIDs, LnKFlags.IDKeys(vKey)).length);
+			vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
 		}
 		
 		if (vFittingKey) {		

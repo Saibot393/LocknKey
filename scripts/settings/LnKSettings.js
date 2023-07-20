@@ -2,6 +2,15 @@ import { cModuleName, Translate} from "../utils/LnKutils.js";
 
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Settings
+  game.settings.register(cModuleName, "useGMquickKeys", {
+	name: Translate("Settings.useGMquickKeys.name"),
+	hint: Translate("Settings.useGMquickKeys.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: true
+  }); 
+  
   game.settings.register(cModuleName, "allowLocking", {
 	name: Translate("Settings.allowLocking.name"),
 	hint: Translate("Settings.allowLocking.descrp"),
@@ -68,7 +77,15 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		//first world setting
 		vnewHTML = `<h3 class="border">${Translate("Titles.WorldSettings")}</h3>`;
 		 
-		pHTML.find('input[name="' + cModuleName + '.allowLocking"]').closest(".form-group").before(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);
+		
+		//gm controlls
+		vnewHTML = ``;
+		for (let i = 0; i <= 4; i++) {
+			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
+		}
+		
+		pHTML.find('input[name="' + cModuleName + '.autoKeyuse"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `
