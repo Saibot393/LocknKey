@@ -1,4 +1,5 @@
 import { cModuleName } from "../utils/LnKutils.js";
+import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
 
 //takes care of additional mouse handling
 class LnKMouseHandler {
@@ -46,7 +47,7 @@ class LnKMouseHandler {
 		//doors	
 	static RegisterDoorLeftClick() {
 		//register onDoorLeftClick (if possible with lib-wrapper)
-		if (game.modules.get("lib-wrapper")?.active) {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "DoorControl.prototype._onMouseDown", function(vWrapped, ...args) {LnKMouseHandler.onDoorLeftClick(...args, this.wall); return vWrapped(...args)}, "WRAPPER");
 		}
 		else {
@@ -63,7 +64,7 @@ class LnKMouseHandler {
 	
 	static RegisterDoorRightClick() {
 		//register onDoorRightClick (if possible with lib-wrapper)
-		if (game.modules.get("lib-wrapper")?.active) {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "DoorControl.prototype._onRightDown", function(vWrapped, ...args) {LnKMouseHandler.onDoorRightClick(...args, this.wall); return vWrapped(...args)}, "WRAPPER");
 		}
 		else {
@@ -81,7 +82,7 @@ class LnKMouseHandler {
 		//tokens	
 	static RegisterTokenLeftClick() {
 		//register onTokenLeftClick (if possible with lib-wrapper)
-		if (game.modules.get("lib-wrapper")?.active) {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "Token.prototype._onClickLeft", function(vWrapped, ...args) {LnKMouseHandler.onTokenLeftClick(...args); if (LnKMouseHandler.canHUD(...args)) {return vWrapped(...args)} else {return}}, "MIXED");
 		}
 		else {
@@ -100,7 +101,7 @@ class LnKMouseHandler {
 	
 	static RegisterTokenRightClick() {
 		//register onTokenRightClick (if possible with lib-wrapper)
-		if (game.modules.get("lib-wrapper")?.active) {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "Token.prototype._canHUD", function(vWrapped, ...args) {return true}, "MIXED"); //make sure everybody can rightclick, limit hud later
 			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {LnKMouseHandler.onTokenRightClick(...args); if (LnKMouseHandler.canHUD(...args)) {return vWrapped(...args)} else {return}}, "MIXED");
 		}
@@ -122,14 +123,14 @@ class LnKMouseHandler {
 	
 	static RegisterTokenDblClick() {
 		//register onTokenDoubleClick (if possible with lib-wrapper)
-		if (game.modules.get("lib-wrapper")?.active) {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "Token.prototype._onClickLeft2", function(vWrapped, ...args) {return LnKMouseHandler.onTokenDblClick(...args, vWrapped)}, "MIXED");
 		}
 		else {
 			const vOldTokenCall = Token.prototype._onClickLeft2;
 			
 			Token.prototype._onClickLeft2 = function (pEvent) {
-				let vTokenCallBuffer = LnKMouseHandler.onTokenDblClick(pEvent, pOldTokenCall);
+				let vTokenCallBuffer = LnKMouseHandler.onTokenDblClick(pEvent, vOldTokenCall);
 				
 				if (vTokenCallBuffer) {
 					vTokenCallBuffer = vOldTokenCall.bind(pEvent.currentTarget);

@@ -1,3 +1,5 @@
+import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
+
 //CONSTANTS
 const cModuleName = "LocknKey"; //name of Module
 
@@ -5,8 +7,16 @@ const cPopUpID = "Popup";
 
 //System names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
+const cPf1eName = "pf1"; //name of Pathfinder 1. edition system
+const cDnD5e = "dnd5e"; //name of D&D 5e system
+const cAdvanced5e = "a5e"; //name of the advanced D&D 5e system
+const cStarFinderName = "sfrpg"; //name of Starfinder system
+const c13thage = "archmage"; //name of the 13th age system
+const cCoC7 = "CoC7"; //name of call of cthulhu 7 system
+const cWarhammer4e = "wfrp4e"; //name of the warhammer 4e system
+const cDarkEye5e = "dsa5"; //name of the black eye 5e system
 
-//Door Types
+//Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
 const cLockTypeLootPf2e = "LTLootPf2e"; //type for Token
 
@@ -44,6 +54,8 @@ class LnKutils {
 	
 	//items
 	static async createKeyItem(pName = Translate("Word.Key")) {} // creates new key item and returns the document
+	
+	static Systemitemtype() {} //returns the type of item for keys in the current system
 	
 	static TokenInventory(pToken) {} //returns inventoryof pToken
 	
@@ -110,9 +122,6 @@ class LnKutils {
 		else {
 			//default scene
 			let vWall = canvas.walls.get(pID);
-			console.log(canvas.walls);
-			console.log(vWall);
-			console.log(pID);
 			if (vWall) {
 				return vWall.document;
 			}
@@ -167,10 +176,57 @@ class LnKutils {
 	}
 	
 	//items
-	static async createKeyItem(pName = Translate("Word.Key")) {
-		let vDocument =  game.items.createDocument({name : pName, type : "equipment", img:"icons/sundries/misc/key-steel.webp"});	
+	static async createKeyItem(pName = Translate("Words.Key")) {
+		let vDocument =  game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
 		
 		return await vDocument.constructor.create(vDocument);
+	}
+	
+	static Systemitemtype() {
+		switch (game.system.id) {
+			case cPf2eName:
+				return "equipment";
+				break;
+			case cDnD5e:
+				return "tool";
+			case cStarFinderName:
+				return "technological";
+				break;
+			case cAdvanced5e:
+				return "object";
+				break;
+			case c13thage:
+				return "tool";
+				break;
+			case cCoC7:
+				return "item";
+				break;
+			case cWarhammer4e:
+				return "cargo";
+				break;
+			case cDarkEye5e:
+				return "equipment";
+				break;
+			case cPf1eName:
+				return "equipment";
+				break;
+			default:
+				//default fall backs
+				if (game.items.documentClass.TYPES.includes("object")) {
+					return "object"
+				}
+				if (game.items.documentClass.TYPES.includes("item")) {
+					return "item"
+				}
+				if (game.items.documentClass.TYPES.includes("tool")) {
+					return "tool"
+				}
+				if (game.items.documentClass.TYPES.includes("equipment")) {
+					return "equipment"
+				}
+				return game.items.documentClass.TYPES[0];
+				break;
+		}
 	}
 	
 	static TokenInventory(pToken) {
@@ -184,14 +240,16 @@ class LnKutils {
 				return cLockTypeDoor;
 			}
 			
-			if (LnKutils.isPf2e()) {
-				if (pDocument.actor.type == cPf2eLoottype) {
-					return cLockTypeLootPf2e;
+			if (LnKutils.isToken(pDocument)) {
+				if (LnKutils.isPf2e()) {
+					if (pDocument.actor.type == cPf2eLoottype) {
+						return cLockTypeLootPf2e;
+					}
 				}
 			}
 		}
 		
-		return "";
+		return LnKCompUtils.Locktype(pDocument);
 	}	
 	
 	static isLockCompatible(pDocument) {			
@@ -203,7 +261,7 @@ class LnKutils {
 	}
 	
 	static isTokenLocktype(pLocktype) {
-		return cTokenLockTypes.includes(pLocktype);
+		return cTokenLockTypes.includes(pLocktype) || LnKCompUtils.isTokenLocktype(pLocktype);
 	}
 	
 	static isWall(pObject) {
@@ -214,7 +272,11 @@ class LnKutils {
 		return Boolean(pObject.collectionName == "tokens");
 	}
 	
-	static LockuseDistance() {
+	static LockuseDistance() {	
+		if ((LnKCompUtils.isactiveModule(cArmReach) || LnKCompUtils.isactiveModule(cArmReachold)) && game.settings.get(cModuleName, "UseArmReachDistance")) {
+			return LnKCompUtils.ARReachDistance();
+		}
+		
 		if (game.settings.get(cModuleName, "LockDistance") >= 0) {
 			return game.settings.get(cModuleName, "LockDistance");
 		}

@@ -60,7 +60,6 @@ class LockManager {
 			if (vScene) {
 				vLock = LnKutils.LockfromID(pLockID, pLocktype, vScene);
 				vCharacter = LnKutils.TokenfromID(pCharacterID, vScene);
-				console.log(vLock);	
 				LockManager.useLock(pLocktype, vLock, vCharacter, pKeyItemID);
 			}
 		}
@@ -92,6 +91,8 @@ class LockManager {
 			default:
 				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
+		
+		Hooks.call(cModuleName+".onLock", LnKutils.Locktype(pLock), pLock);
 	}
 	
 	static onunLock(pLock) {
@@ -103,6 +104,8 @@ class LockManager {
 			default:
 				LnKPopups.TextPopUpID(pLock, "unlockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
+		
+		Hooks.call(cModuleName+".onunLock", LnKutils.Locktype(pLock), pLock);
 	}
 	
 	//lock type
@@ -179,14 +182,11 @@ class LockManager {
 	
 	//copy paste
 	static copyLock(pLock) {
-		console.log(pLock);
 		LnKFlags.copyIDKeys(pLock);
 	}
 	
 	static async pasteLock(pLock) {
-		console.log(pLock);
 		if (pLock && LnKutils.isLockCompatible(pLock)) {
-			console.log("check");
 			//make sure pLock is actually a Lock
 			
 			if (LnKutils.isTokenLock(pLock)) {
@@ -195,8 +195,6 @@ class LockManager {
 			}
 			
 			LnKFlags.pasteIDKeys(pLock);
-			
-			console.log(pLock);
 		}
 	}
 }
@@ -249,4 +247,6 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 //wrap and export functions
 function LockuseRequest({ pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID } = {}) {return LockManager.LockuseRequest(pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID); }
 
-export { LockuseRequest }
+function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObject, pPopup)} //if pObject is currently unlocked
+
+export { LockuseRequest, isUnlocked }

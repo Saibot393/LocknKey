@@ -32,9 +32,10 @@ class LnKPopups {
 		if (game.settings.get(cModuleName, "MessagePopUps")) {
 			//only relevant if token is on current canves, no scene necessary
 			let vObject = LnKutils.LockfromID(pObjectID, pLockType); 
-			let vPosition = Geometricutils.ObjectPosition(vObject);
+			let vPosition;
 			
 			if (vObject) {
+				vPosition = Geometricutils.ObjectPosition(vObject);
 				canvas.interface.createScrollingText({x: vPosition[0], y: vPosition[1]}, pText, {anchor: CONST.TEXT_ANCHOR_POINTS.TOP, fill: "#FFFFFF", stroke: "#000000"});
 			}
 		}

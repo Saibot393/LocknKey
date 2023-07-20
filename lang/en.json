@@ -38,6 +38,11 @@
 				"descrp"				: "Distance over which a lock can be used (in in-game units)"		
 			},
 			
+			"UseArmReachDistance": {
+				"name" 					: "Use \"Arms Reach\" distance",
+				"descrp"				: "Uses the distance set in the \"Arms Reach\" for the mounting distance"	
+			},
+			
 			"alwaysopenOwned" : {
 				"name" 					: "Always open owned",
 				"descrp"				: "Players can always open owned tokens, even if they are locked"		
@@ -47,6 +52,10 @@
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
 			}
+		},
+		
+		"Words" : {
+			"Key"						: "Key"
 		},
 		
 		"Text" : {

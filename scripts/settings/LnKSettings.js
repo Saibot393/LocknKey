@@ -1,4 +1,5 @@
 import { cModuleName, Translate} from "../utils/LnKutils.js";
+import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Settings
@@ -36,6 +37,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Number,
 	default: 15
+  }); 
+  
+  game.settings.register(cModuleName, "UseArmReachDistance", {
+	name: Translate("Settings.UseArmReachDistance.name"),
+	hint: Translate("Settings.UseArmReachDistance.descrp"),
+	scope: "world",
+	config: (LnKCompUtils.isactiveModule(cArmReach) || LnKCompUtils.isactiveModule(cArmReachold)),
+	type: Boolean,
+	default: false
   }); 
   
   game.settings.register(cModuleName, "alwaysopenOwned", {
