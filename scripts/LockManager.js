@@ -50,6 +50,7 @@ class LockManager {
 	}
 	
 	static LockuseRequest(pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID) {
+		console.log("check4");
 		if (game.user.isGM) {
 			//only relevant for GMs
 			

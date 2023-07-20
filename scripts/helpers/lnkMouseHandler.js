@@ -1,3 +1,5 @@
+import * as FCore from "../CoreVersionComp.js";
+
 import { cModuleName } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
 
@@ -24,14 +26,14 @@ class LnKMouseHandler {
 	
 	static onDoorRightClick(pDoorEvent, pWall) {} //called if Door is right clicked
 	
-	static onTokenLeftClick(pTokenEvent) {} //called if Token is left clicked
+	static onTokenLeftClick(pTokenEvent, pToken) {} //called if Token is left clicked
 	
-	static onTokenRightClick(pTokenEvent) {} //called if Token is right clicked
+	static onTokenRightClick(pTokenEvent, pToken) {} //called if Token is right clicked
 	
-	static async onTokenDblClick(pTokenEvent, pOldTokenCall) {} //called if Token is double clicked, returns pOldTokenCall if necessary
+	static async onTokenDblClick(pTokenEvent, pToken, pOldTokenCall) {} //called if Token is double clicked, returns pOldTokenCall if necessary
 	
 	//additional
-	static canHUD(pEvent) {} //to replace the rightclick canHud which was disabled
+	static canHUD(pEvent, pToken) {} //to replace the rightclick canHud which was disabled
 	
 	//IMPLEMENTATIONS
 	//registers
@@ -83,7 +85,7 @@ class LnKMouseHandler {
 	static RegisterTokenLeftClick() {
 		//register onTokenLeftClick (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "Token.prototype._onClickLeft", function(vWrapped, ...args) {LnKMouseHandler.onTokenLeftClick(...args); if (LnKMouseHandler.canHUD(...args)) {return vWrapped(...args)} else {return}}, "MIXED");
+			libWrapper.register(cModuleName, "Token.prototype._onClickLeft", function(vWrapped, ...args) {LnKMouseHandler.onTokenLeftClick(...args, this.document); return vWrapped(...args)}, "MIXED");
 		}
 		else {
 			Token.prototype._canHUD = function (user, event) {return true}; //make sure everybody can rightclick, limit hud later
@@ -91,7 +93,7 @@ class LnKMouseHandler {
 			const vOldTokenCall = Token.prototype._onClickLeft;
 			
 			Token.prototype._onClickLeft = function (pEvent) {
-				LnKMouseHandler.onTokenLeftClick(pEvent);
+				LnKMouseHandler.onTokenLeftClick(pEvent, this.document);
 				
 				let vTokenCallBuffer = vOldTokenCall.bind(pEvent.currentTarget);
 				vTokenCallBuffer(pEvent);
@@ -103,7 +105,7 @@ class LnKMouseHandler {
 		//register onTokenRightClick (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "Token.prototype._canHUD", function(vWrapped, ...args) {return true}, "MIXED"); //make sure everybody can rightclick, limit hud later
-			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {LnKMouseHandler.onTokenRightClick(...args); if (LnKMouseHandler.canHUD(...args)) {return vWrapped(...args)} else {return}}, "MIXED");
+			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {LnKMouseHandler.onTokenRightClick(...args, this.document); if (LnKMouseHandler.canHUD(...args, this.document)) {return vWrapped(...args)} else {return}}, "MIXED");
 		}
 		else {
 			Token.prototype._canHUD = function (user, event) {return true}; //make sure everybody can rightclick, limit hud later
@@ -111,9 +113,9 @@ class LnKMouseHandler {
 			const vOldTokenCall = Token.prototype._onClickRight;
 			
 			Token.prototype._onClickRight = function (pEvent) {
-				LnKMouseHandler.onTokenRightClick(pEvent);
+				LnKMouseHandler.onTokenRightClick(pEvent, this.document);
 				
-				if (LnKMouseHandler.canHUD(pEvent)) {
+				if (LnKMouseHandler.canHUD(pEvent, this.document)) {
 					let vTokenCallBuffer = vOldTokenCall.bind(pEvent.currentTarget);
 					vTokenCallBuffer(pEvent);
 				}
@@ -124,13 +126,13 @@ class LnKMouseHandler {
 	static RegisterTokenDblClick() {
 		//register onTokenDoubleClick (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "Token.prototype._onClickLeft2", function(vWrapped, ...args) {return LnKMouseHandler.onTokenDblClick(...args, vWrapped)}, "MIXED");
+			libWrapper.register(cModuleName, "Token.prototype._onClickLeft2", function(vWrapped, ...args) {return LnKMouseHandler.onTokenDblClick(...args, this.document, vWrapped)}, "MIXED");
 		}
 		else {
 			const vOldTokenCall = Token.prototype._onClickLeft2;
 			
 			Token.prototype._onClickLeft2 = function (pEvent) {
-				let vTokenCallBuffer = LnKMouseHandler.onTokenDblClick(pEvent, vOldTokenCall);
+				let vTokenCallBuffer = LnKMouseHandler.onTokenDblClick(pEvent, this.document, vOldTokenCall);
 				
 				if (vTokenCallBuffer) {
 					vTokenCallBuffer = vOldTokenCall.bind(pEvent.currentTarget);
@@ -142,23 +144,23 @@ class LnKMouseHandler {
 	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {
-		Hooks.callAll(cModuleName + "." + "DoorLClick", pWall.document, {altKey : pDoorEvent.altKey, ctrlKey : pDoorEvent.ctrlKey, shiftKey : pDoorEvent.shiftKey});
+		Hooks.callAll(cModuleName + "." + "DoorLClick", pWall.document, FCore.keysofevent(pDoorEvent));
 	} 
 	
 	static onDoorRightClick(pDoorEvent, pWall) {
-		Hooks.callAll(cModuleName + "." + "DoorRClick", pWall.document, {altKey : pDoorEvent.altKey, ctrlKey : pDoorEvent.ctrlKey, shiftKey : pDoorEvent.shiftKey});
+		Hooks.callAll(cModuleName + "." + "DoorRClick", pWall.document, FCore.keysofevent(pDoorEvent));
 	}
 	
-	static onTokenLeftClick(pTokenEvent) {
-		Hooks.callAll(cModuleName + "." + "TokenLClick", pTokenEvent.interactionData.object.document, {altKey : pTokenEvent.altKey, ctrlKey : pTokenEvent.ctrlKey, shiftKey : pTokenEvent.shiftKey});
+	static onTokenLeftClick(pTokenEvent, pToken) {
+		Hooks.callAll(cModuleName + "." + "TokenLClick", pToken, FCore.keysofevent(pTokenEvent));
 	} 
 	
-	static onTokenRightClick(pTokenEvent) {
-		Hooks.callAll(cModuleName + "." + "TokenRClick", pTokenEvent.interactionData.object.document, {altKey : pTokenEvent.altKey, ctrlKey : pTokenEvent.ctrlKey, shiftKey : pTokenEvent.shiftKey});
+	static onTokenRightClick(pTokenEvent, pToken) {
+		Hooks.callAll(cModuleName + "." + "TokenRClick", pToken, FCore.keysofevent(pTokenEvent));
 	}
 	
-	static async onTokenDblClick(pTokenEvent, pOldTokenCall) {
-		let vOldCall = await Hooks.call(cModuleName + "." + "TokendblClick", pTokenEvent.interactionData.object.document, {altKey : pTokenEvent.altKey, ctrlKey : pTokenEvent.ctrlKey, shiftKey : pTokenEvent.shiftKey}); //return false on token call to prevent sheet opening
+	static async onTokenDblClick(pTokenEvent, pToken, pOldTokenCall) {
+		let vOldCall = await Hooks.call(cModuleName + "." + "TokendblClick", pToken, FCore.keysofevent(pTokenEvent)); //return false on token call to prevent sheet opening
 		
 		if(vOldCall || game.user.isGM) {
 			//only if not locked/opened or isGM should the character sheet be shown
@@ -170,9 +172,9 @@ class LnKMouseHandler {
 	}
 	
 	//additional
-	static canHUD(pEvent) { //adapted from core
+	static canHUD(pEvent, pToken) { //adapted from core
 		if ( canvas.controls.ruler.active ) return false;
-		return game.user.isGM || (pEvent.interactionData.object.document.actor?.testUserPermission(game.user, "OWNER") ?? false);
+		return game.user.isGM || (pToken.actor?.testUserPermission(game.user, "OWNER") ?? false);
 	}
 	
 }

@@ -15,6 +15,7 @@ const c13thage = "archmage"; //name of the 13th age system
 const cCoC7 = "CoC7"; //name of call of cthulhu 7 system
 const cWarhammer4e = "wfrp4e"; //name of the warhammer 4e system
 const cDarkEye5e = "dsa5"; //name of the black eye 5e system
+const cBitD = "blades-in-the-dark"; //name of the blades in the dark system
 
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
@@ -177,9 +178,9 @@ class LnKutils {
 	
 	//items
 	static async createKeyItem(pName = Translate("Words.Key")) {
-		let vDocument =  game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
+		let vDocument = Item.create({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
 		
-		return await vDocument.constructor.create(vDocument);
+		return vDocument;//await vDocument.constructor.create(vDocument);
 	}
 	
 	static Systemitemtype() {
@@ -209,6 +210,9 @@ class LnKutils {
 				break;
 			case cPf1eName:
 				return "equipment";
+				break;
+			case cBitD:
+				return "item";
 				break;
 			default:
 				//default fall backs

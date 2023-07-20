@@ -175,6 +175,8 @@ class LnKFlags {
 	}
 	
 	static matchingIDKeys(pObject1, pObject2) {
+		console.log(this.#IDKeysFlag(pObject1).split(cDelimiter));
+		console.log(this.#IDKeysFlag(pObject2).split(cDelimiter));
 		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length);
 	}
 	

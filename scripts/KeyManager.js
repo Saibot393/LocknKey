@@ -13,21 +13,26 @@ class KeyManager {
 	static KeyItems(pInventory) {} //returns all Key items in pInventory
 	
 	//IMPLEMENTATIONS
-	static async onatemptedKeyuse(pLockObject, pLockType) {		
+	static async onatemptedKeyuse(pLockObject, pLockType) {	
+		console.log(pLockObject);	
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vKeyItems;
 		let vFittingKey;
 		
 		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
+			console.log("check1");
 			//check if lock is in reach
 			
 			if (pLockObject && vCharacter && LnKutils.TokenInventory(vCharacter)) {
+				console.log("check2");
 				vKeyItems = KeyManager.KeyItems(LnKutils.TokenInventory(vCharacter));
 				
 				//only key which contains keyid matching at least one key id of pLockObject fits
 				vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
+				console.log(vFittingKey);
 				
-				if (vFittingKey) {		
+				if (vFittingKey) {	
+					console.log("check3");
 					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {pSceneID : pLockObject.object.scene.id, pLocktype : pLockType, pLockID : pLockObject.id, pCharacterID : vCharacter.id, pKeyItemID : vFittingKey.id}});
 				}
 			}
