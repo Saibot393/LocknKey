@@ -9,6 +9,7 @@ A GM can shift+right-click doors and loot containers (PF2e or Item Piles) to cre
 #### GM controls
 
 A GM can alt+right-click lockable tokens to lock or unlock them.
+
 The key IDs of doors, tokens and keys can be copied and pasted into one another to connect them. To copy or paste a keys IDs right click it in the item section and choose one of the options from the context menu. To copy a tokens or doors IDs ctrl+right-click them and to paste them ctrl+left-click them.
 
 ##### Examples:
