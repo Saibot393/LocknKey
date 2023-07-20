@@ -29,6 +29,8 @@ class LockManager {
 	
 	static TokenisUnlocked(pToken, pPopup = false) {} //if pToken is currently unlocked
 	
+	static UserCanopenToken(pToken, pPopup = false) {} //if the current user can open pToken
+	
 	//copy paste
 	static copyLock(pLock) {} //copy the Locks Key IDs
 	
@@ -82,11 +84,25 @@ class LockManager {
 	
 	//events
 	static onLock(pLock) {
-		LnKPopups.TextPopUpID(pLock, "lockedLock", {pLockName : pLock.name}); //MESSAGE POPUP
+		switch(LnKutils.Locktype(pLock)) {
+			case cLockTypeDoor:
+				LnKPopups.TextPopUpID(pLock, "lockedDoor"); //MESSAGE POPUP
+				break;
+			case cLockTypeLootPf2e:
+			default:
+				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
+		}
 	}
 	
 	static onunLock(pLock) {
-		LnKPopups.TextPopUpID(pLock, "unlockedLock", {pLockName : pLock.name}); //MESSAGE POPUP
+		switch(LnKutils.Locktype(pLock)) {
+			case cLockTypeDoor:
+				LnKPopups.TextPopUpID(pLock, "unlockedDoor"); //MESSAGE POPUP
+				break;
+			case cLockTypeLootPf2e:
+			default:
+				LnKPopups.TextPopUpID(pLock, "unlockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
+		}
 	}
 	
 	//lock type
@@ -157,6 +173,10 @@ class LockManager {
 		return !(LnKFlags.isLocked(pToken));
 	}
 	
+	static UserCanopenToken(pToken, pPopup = false) {
+		return LockManager.TokenisUnlocked(pToken, pPopup) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"))
+	}
+	
 	//copy paste
 	static copyLock(pLock) {
 		console.log(pLock);
@@ -220,7 +240,7 @@ Hooks.on(cModuleName + "." + "TokenLClick", (pTokenDocument, pInfos) => {
 
 Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //for sheet opening
 	if (!game.user.isGM) {//CLIENT: check if token unlocked
-		return LockManager.TokenisUnlocked(pTokenDocument, true);
+		return LockManager.UserCanopenToken(pTokenDocument, true);
 	}
 	
 	return true; //if anything fails

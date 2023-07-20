@@ -158,7 +158,8 @@ class LnKMouseHandler {
 	
 	static async onTokenDblClick(pTokenEvent, pOldTokenCall) {
 		let vOldCall = await Hooks.call(cModuleName + "." + "TokendblClick", pTokenEvent.interactionData.object.document, {altKey : pTokenEvent.altKey, ctrlKey : pTokenEvent.ctrlKey, shiftKey : pTokenEvent.shiftKey}); //return false on token call to prevent sheet opening
-		console.log(vOldCall);
+		console.log(pTokenEvent);
+		
 		if(vOldCall || game.user.isGM) {
 			//only if not locked/opened or isGM should the character sheet be shown
 			return pOldTokenCall(pTokenEvent);

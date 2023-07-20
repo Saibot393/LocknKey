@@ -1,4 +1,5 @@
 import { cModuleName, Translate, LnKutils } from "./utils/LnKutils.js";
+import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 
@@ -17,15 +18,22 @@ class KeyManager {
 		let vKeyItems;
 		let vFittingKey;
 		
-		if (pLockObject && vCharacter && LnKutils.TokenInventory(vCharacter)) {
-			vKeyItems = KeyManager.KeyItems(LnKutils.TokenInventory(vCharacter));
+		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
+			//check if lock is in reach
 			
-			//only key which contains keyid matching at least one key id of pLockObject fits
-			vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
+			if (pLockObject && vCharacter && LnKutils.TokenInventory(vCharacter)) {
+				vKeyItems = KeyManager.KeyItems(LnKutils.TokenInventory(vCharacter));
+				
+				//only key which contains keyid matching at least one key id of pLockObject fits
+				vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
+				
+				if (vFittingKey) {		
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {pSceneID : pLockObject.object.scene.id, pLocktype : pLockType, pLockID : pLockObject.id, pCharacterID : vCharacter.id, pKeyItemID : vFittingKey.id}});
+				}
+			}
 		}
-		
-		if (vFittingKey) {		
-			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {pSceneID : pLockObject.object.scene.id, pLocktype : pLockType, pLockID : pLockObject.id, pCharacterID : vCharacter.id, pKeyItemID : vFittingKey.id}});
+		else {
+			LnKPopups.TextPopUpID(pLock, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 		}
 	}
 	
@@ -72,6 +80,7 @@ class KeyManager {
 
 //Hooks
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
+	console.log(pDoorDocument);
 	if (!game.user.isGM) {//CLIENT: use key
 		KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
 	}

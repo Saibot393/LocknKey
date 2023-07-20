@@ -18,7 +18,7 @@ const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e}
 
 function Translate(pName){
-  return game.i18n.localize(cModuleName+"."+pName);
+	return game.i18n.localize(cModuleName+"."+pName);
 }
 
 class LnKutils {
@@ -55,6 +55,12 @@ class LnKutils {
 	static isTokenLock(pLock) {} //returns if pLock is a Token
 	
 	static isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
+	
+	static isWall(pObject) {} //returns if pObject is a Wall
+	
+	static isToken(pObject) {} //returns if pObject is a Token
+	
+	static LockuseDistance() {} //returns the distance over which a lock can be used
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
@@ -166,19 +172,16 @@ class LnKutils {
 	}
 	
 	static TokenInventory(pToken) {
-		console.log(pToken);
 		return pToken.actor.items;
 	}
 	
 	//locks
 	static Locktype(pDocument) {
-		if (pDocument.collectionName == "walls") {
+		if (LnKutils.isWall(pDocument)) {
 			return cLockTypeDoor;
 		}
 		
 		if (LnKutils.isPf2e()) {
-			console.log(pDocument);
-			console.log(pDocument.actor);
 			if (pDocument.actor.type == cPf2eLoottype) {
 				return cLockTypeLootPf2e;
 			}
@@ -197,6 +200,23 @@ class LnKutils {
 	
 	static isTokenLocktype(pLocktype) {
 		return cTokenLockTypes.includes(pLocktype);
+	}
+	
+	static isWall(pObject) {
+		return Boolean(pObject.collectionName == "walls");
+	}
+	
+	static isToken(pObject) {
+		return Boolean(pObject.collectionName == "tokens");
+	}
+	
+	static LockuseDistance() {
+		if (game.settings.get(cModuleName, "LockDistance") >= 0) {
+			return game.settings.get(cModuleName, "LockDistance");
+		}
+		else {
+			return Infinity;
+		}		
 	}
 	
 	//arrays

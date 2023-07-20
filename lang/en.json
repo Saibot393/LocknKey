@@ -1,5 +1,22 @@
 {
 	"LocknKey" : {
+		"Titles" : {
+			"LocknKey"					: "Lock & Key",
+			"WorldSettings"				: "World settings (GM only)",
+			"ClientSettings"			: "Client settings",
+			"GMonly"					: "GM only"
+		},
+		
+		"Popup" : {
+			"TokenisLocked"					: "{pLockName} is locked",
+			"DoorisLocked"					: "This door is locked",
+			"Lockoutofreach"				: "This lock is out of reach",
+			"lockedDoor"					: "Door is now locked",
+			"lockedToken"					: "{pLockName} is now locked",
+			"unlockedDoor"					: "Door is now unlocked",
+			"unlockedToken"					: "{pLockName} is now unlocked"
+		},	
+		
 		"Settings" : {
 			"useGMquickKeys" : {
 				"name" 					: "Use GM quick controls",
@@ -14,6 +31,16 @@
 			"startasLocked" : {
 				"name" 					: "Start as locked",
 				"descrp"				: "If newly registered locks start locked"
+			},
+	
+			"LockDistance" : {
+				"name" 					: "Lock distance",
+				"descrp"				: "Distance over which a lock can be used (in in-game units)"		
+			},
+			
+			"alwaysopenOwned" : {
+				"name" 					: "Always open owned",
+				"descrp"				: "Players can always open owned tokens, even if they are locked"		
 			},
 	
 			"MessagePopUps" : {

@@ -47,6 +47,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  /*
   game.settings.register(cModuleName, "autoKeyuse", {
 	name: Translate("Settings.autoKeyuse.name"),
 	hint: Translate("Settings.autoKeyuse.descrp"),
@@ -55,6 +56,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Boolean,
 	default: true
   }); 
+  */
   
   //client
   game.settings.register(cModuleName, "MessagePopUps", {
@@ -85,7 +87,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.autoKeyuse"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.alwaysopenOwned"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `
