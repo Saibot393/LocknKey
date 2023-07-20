@@ -40,7 +40,7 @@
 			
 			"UseArmReachDistance": {
 				"name" 					: "Use \"Arms Reach\" distance",
-				"descrp"				: "Uses the distance set in the \"Arms Reach\" for the mounting distance"	
+				"descrp"				: "Uses the distance set in the \"Arms Reach\" for the lock distance"	
 			},
 			
 			"alwaysopenOwned" : {

@@ -1,0 +1,71 @@
+{
+	"LocknKey" : {
+		"Titles" : {
+			"LocknKey"					: "Lock & Key",
+			"WorldSettings"				: "Welt Einstellungen (nur SL)",
+			"ClientSettings"			: "Spieler Einstellungen",
+			"GMonly"					: "nur SL"
+		},
+		
+		"Popup" : {
+			"TokenisLocked"					: "{pLockName} ist verschlossen",
+			"DoorisLocked"					: "Diese Tür ist verschlossen",
+			"Lockoutofreach"				: "Dieses Schloss ist außer Reichweite",
+			"lockedDoor"					: "Die Tür ist nun verschlossen",
+			"lockedToken"					: "{pLockName} ist nun verschlossen",
+			"unlockedDoor"					: "Die Tür ist nun unverschlossen",
+			"unlockedToken"					: "{pLockName} ist nun unverschlossen"
+		},	
+		
+		"Settings" : {
+			"useGMquickKeys" : {
+				"name" 					: "Nutze SL schnell Befehle",
+				"descrp"				: "Erlaubt es SLs spezielle Schloss Befehle zu nutzen welche unten aufgeführt sind (Beeinträchtigte mit * markiert)"
+			},
+			
+			"allowLocking" : {
+				"name" 					: "Erlaube Spielern zu schließen",
+				"descrp"				: "Erlaubt es Spielern Schlösser zu verschließen für welche sie einen passenden Schlüssel haben"
+			},
+			
+			"startasLocked" : {
+				"name" 					: "Starte verschlossen",
+				"descrp"				: "Ob neu registrierte Schlösser als verschlossen starten"
+			},
+	
+			"LockDistance" : {
+				"name" 					: "Schloss Distanz",
+				"descrp"				: "Distanz in welcher Schlösser genutzt werden können (in Spiel Einheiten)"		
+			},
+			
+			"UseArmReachDistance": {
+				"name" 					: "Nutze \"Arms Reach\" Distanz",
+				"descrp"				: "Nutzt die Distanz welche in \"Arms Reach\" festgelegt ist für die Schloss Distanz"	
+			},
+			
+			"alwaysopenOwned" : {
+				"name" 					: "Eigene immer öffnen",
+				"descrp"				: "Erlaubt es spielern eigene Marken immer zu öffnen, auch wenn sie verschlossen sind"		
+			},
+	
+			"MessagePopUps" : {
+				"name" 					: "Text popups",
+				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
+			}
+		},
+		
+		"Words" : {
+			"Key"						: "Schlüssel"
+		},
+		
+		"Text" : {
+			"GMControls" : {
+				"line0"					: "SL Befehle:",
+				"line1" 				: "-alt+right-click um einen neuen Schlüssel für ein Schloss zu erschaffen",
+				"line2" 				: "-alt+left-click um ein Lock auf-/ab-zuschließen (*)",
+				"line3" 				: "-ctrl+right-click um die Schlüssel IDs des Schlosses zu kopieren (*)",
+				"line4" 				: "-ctrl+left-click um die Schlüssel IDs in das Schloss einzufügen (*)"
+			}
+		}
+	}
+}
