@@ -37,5 +37,11 @@
 	"scripts/settings/LnKSettings.js",
 	"scripts/compatibility/LnKCompatibility.js"
   ],
+  "url": "https://github.com/Saibot393/LocknKey",
+  "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v.zip",
+  "manifest": "https://github.com/Saibot393/LocknKey/releases/latest/download/module.json",
+  "readme": "https://github.com/Saibot393/LocknKey/blob/main/README.md",
+  "changelog": "https://github.com/Saibot393/LocknKey/blob/main/CHANGELOG.md",
+  "bugs": "https://github.com/Saibot393/LocknKey/issues",
   "allowBugReporter": true
 }
