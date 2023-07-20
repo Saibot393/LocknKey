@@ -135,13 +135,13 @@ class LockManager {
 				//lock
 				await pDoor.update({ds : 2});
 				
-				LockManager.onLock(cLockTypeDoor, pDoor);
+				LockManager.onLock(pDoor);
 				break;
 			case 2:
 				//unlock
 				await pDoor.update({ds : 0});
 				
-				LockManager.onunLock(cLockTypeDoor, pDoor);
+				LockManager.onunLock(pDoor);
 				break;
 		}
 	} 

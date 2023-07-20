@@ -1,4 +1,5 @@
 import { LnKutils, cModuleName, cPopUpID, Translate } from "../utils/LnKutils.js";
+import { Geometricutils } from "../utils/Geometricutils.js";
 
 class LnKPopups {
 	//DECLARATIONS
@@ -6,7 +7,7 @@ class LnKPopups {
 	
 	static TextPopUpID(pObject, pID, pWords = {}) {} //show pText over pObject and replaces {pWord} with matching vWord in pWords
 	
-	static PopUpRequest(pObjectID, pText) {} //handels socket calls for pop up texts
+	static PopUpRequest(pObjectID, pLockType, pText) {} //handels socket calls for pop up texts
 	
 	//IMPLEMENTATIONS
 	static TextPopUp(pObject, pText, pWords = {}) {
@@ -17,29 +18,30 @@ class LnKPopups {
 		}
 		
 		//other clients pop up
-		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pText : vText}});
+		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pLockType : LnKutils.Locktype(pObject), pText : vText}});
 		
 		//own pop up
-		LnKPopups.PopUpRequest(pObject.id, vText);
+		LnKPopups.PopUpRequest(pObject.id, LnKutils.Locktype(pObject), vText);
 	}
 	
 	static TextPopUpID(pObject, pID, pWords = {}) {
 		LnKPopups.TextPopUp(pObject, Translate(cPopUpID+"."+pID), pWords)
 	} 
 	
-	static PopUpRequest(pObjectID, pText) {
+	static PopUpRequest(pObjectID, pLockType, pText) {
 		if (game.settings.get(cModuleName, "MessagePopUps")) {
 			//only relevant if token is on current canves, no scene necessary
-			let vObject = LnKutils.LockfromID(pObjectID); 
+			let vObject = LnKutils.LockfromID(pObjectID, pLockType); 
+			let vPosition = Geometricutils.ObjectPosition(vObject);
 			
 			if (vObject) {
-				canvas.interface.createScrollingText(vObject.object, pText, {x: vObject.x, y: vObject.y, text: pText, anchor: CONST.TEXT_ANCHOR_POINTS.TOP, fill: "#FFFFFF", stroke: "#000000"});
+				canvas.interface.createScrollingText({x: vPosition[0], y: vPosition[1]}, pText, {anchor: CONST.TEXT_ANCHOR_POINTS.TOP, fill: "#FFFFFF", stroke: "#000000"});
 			}
 		}
 	}
 }
 
 //export Popups
-function PopUpRequest({ pObjectID, pText } = {}) { return LnKPopups.PopUpRequest(pObjectID, pText); }
+function PopUpRequest({ pObjectID, pLockType, pText } = {}) { return LnKPopups.PopUpRequest(pObjectID, pLockType, pText); }
 
 export { LnKPopups, PopUpRequest }

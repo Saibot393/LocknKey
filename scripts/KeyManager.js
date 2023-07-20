@@ -42,7 +42,6 @@ class KeyManager {
 			name: Translate("Context.KeyCopy"),
 			icon: '<i class="fa-regular fa-key"></i>',
 			condition: (pElement) => {
-				console.log(pElement);
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
 				//handle only key items
@@ -59,7 +58,6 @@ class KeyManager {
 			name: Translate("Context.KeyPaste"),
 			icon: '<i class="fa-solid fa-key"></i>',
 			condition: (pElement) => {
-				console.log(pElement);
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
 				//handle only key items
@@ -80,7 +78,6 @@ class KeyManager {
 
 //Hooks
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
-	console.log(pDoorDocument);
 	if (!game.user.isGM) {//CLIENT: use key
 		KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
 	}

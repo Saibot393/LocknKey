@@ -98,7 +98,7 @@ class LnKutils {
 	
 	static WallfromID(pID, pScene = null) {
 		if (pScene) {
-			let vDocument = pScene.walls.find(vDocument => vDocument.id === pID);
+			let vDocument = pScene.walls.get(pID);
 			
 			if (vDocument) {
 				return vDocument;
@@ -109,9 +109,11 @@ class LnKutils {
 		}
 		else {
 			//default scene
-			let vWall = canvas.walls.placeables.find(vWall => vWall.id === pID);
-			
-			if (vToken) {
+			let vWall = canvas.walls.get(pID);
+			console.log(canvas.walls);
+			console.log(vWall);
+			console.log(pID);
+			if (vWall) {
 				return vWall.document;
 			}
 			else {
@@ -177,13 +179,15 @@ class LnKutils {
 	
 	//locks
 	static Locktype(pDocument) {
-		if (LnKutils.isWall(pDocument)) {
-			return cLockTypeDoor;
-		}
-		
-		if (LnKutils.isPf2e()) {
-			if (pDocument.actor.type == cPf2eLoottype) {
-				return cLockTypeLootPf2e;
+		if (pDocument) {
+			if (LnKutils.isWall(pDocument)) {
+				return cLockTypeDoor;
+			}
+			
+			if (LnKutils.isPf2e()) {
+				if (pDocument.actor.type == cPf2eLoottype) {
+					return cLockTypeLootPf2e;
+				}
 			}
 		}
 		
