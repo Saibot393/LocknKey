@@ -4,7 +4,7 @@ import { LnKFlags } from "./helpers/LnKFlags.js";
 
 import { LnKPopups } from "./helpers/LnKPopups.js";
 
-//does everything Lock related (basicly GM side)
+//does everything Lock related
 class LockManager {
 	//DECLARATIONS
 	//basics

@@ -1,11 +1,15 @@
-import { cModuleName, LnKutils } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 
-//does everything Key related (basicly player side)
+//does everything Key related
 class KeyManager {
 	//DECLARATIONS
 	static async onatemptedKeyuse(pLockObject, pLockType) {} //called if a player tries to usa a key on pLockObject 
+	
+	static onKeyContext(pHTML, pButtons) {} //adds buttons to item context
+	
+	static KeyItems(pInventory) {} //returns all Key items in pInventory
 	
 	//IMPLEMENTATIONS
 	static async onatemptedKeyuse(pLockObject, pLockType) {
@@ -15,7 +19,7 @@ class KeyManager {
 		let vFittingKey;
 		
 		if (vLockIDs.length && vCharacter && LnKutils.TokenInventory(vCharacter)) {
-			vKeyItems = LnKutils.TokenInventory(vCharacter).filter(vItem => vItem.flags.hasOwnProperty(cModuleName));
+			vKeyItems = KeyManager.KeyItems(LnKutils.TokenInventory(vCharacter));
 			
 			//only key which contains keyid matching at least one key id of pLockObject fits
 			vFittingKey = vKeyItems.find(vKey => LnKutils.Intersection(vLockIDs, LnKFlags.IDKeys(vKey)).length);
@@ -24,6 +28,44 @@ class KeyManager {
 		if (vFittingKey) {		
 			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {pSceneID : pLockObject.object.scene.id, pLocktype : pLockType, pLockID : pLockObject.id, pCharacterID : vCharacter.id, pKeyItemID : vFittingKey.id}});
 		}
+	}
+	
+	static onKeyContext(pHTML, pButtons) {
+		pButtons.push({
+			name: Translate("Context.KeyCopy"),
+			icon: '<i class="fa-solid fa-key-skeleton"></i>',
+			condition: (pElement) => {
+				console.log(pElement);
+				let vID = pElement.data('document-id');
+				let vItem = game.items.get(vID);
+				return vItem.flags.hasOwnProperty(cModuleName);
+			},
+			callback: async (pElement) => {
+				let vID = pElement.data('document-id');
+				let vItem = game.items.get(vID);
+				LnKFlags.copyIDKeys(vItem);
+			}
+		});
+		
+		pButtons.push({
+			name: Translate("Context.KeyPaste"),
+			icon: '<i class="fa-solid fa-key-skeleton"></i>',
+			condition: (pElement) => {
+				console.log(pElement);
+				let vID = pElement.data('document-id');
+				let vItem = game.items.get(vID);
+				return vItem.flags.hasOwnProperty(cModuleName);
+			},
+			callback: async (pElement) => {
+				let vID = pElement.data('document-id');
+				let vItem = game.items.get(vID);
+				LnKFlags.pasteIDKeys(vItem);
+			}
+		});
+	} 
+	
+	static KeyItems(pInventory) {
+		return pInventory.filter(vItem => vItem.flags.hasOwnProperty(cModuleName));
 	}
 }
 
@@ -38,4 +80,6 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 	if (!game.user.isGM) {//CLIENT: use key
 		KeyManager.onatemptedKeyuse(pTokenDocument, LnKutils.Locktype(pTokenDocument));
 	}
-});
+}); 
+
+Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext);

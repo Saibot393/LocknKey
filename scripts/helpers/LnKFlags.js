@@ -7,6 +7,9 @@ const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
 const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 
+//buffers
+var cIDKeyBuffer; //saves the coppied IDkeys
+
 class LnKFlags {
 	//DECLARATIONS
 	//basic
@@ -21,6 +24,11 @@ class LnKFlags {
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
 	static IDKeys(pObject) {} //returns an array containing the ID keys of pObject
+	
+	//copy paste
+	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
+	
+	static pasteIDKeys(pObject) {} //pastes the saved ID keys (if any) into the pObject
 	
 	//IMPLEMENTATIONS
 	
@@ -169,6 +177,17 @@ class LnKFlags {
 	
 	static IDKeys(pObject) {
 		return this.#IDKeysFlag(pObject).split(cDelimiter);
+	}
+	
+	//copy paste
+	static copyIDKeys(pObject) {
+		cIDKeyBuffer = this.#IDKeysFlag(pObject);
+	}
+	
+	static pasteIDKeys(pObject) {
+		if (cIDKeyBuffer.length) {
+			this.#addIDKeysFlag(pObject, cIDKeyBuffer);
+		}
 	}
 }
 

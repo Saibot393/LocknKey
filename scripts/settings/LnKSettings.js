@@ -11,6 +11,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "startasLocked", {
+	name: Translate("Settings.startasLocked.name"),
+	hint: Translate("Settings.startasLocked.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  }); 
+  
   game.settings.register(cModuleName, "LockDistance", {
 	name: Translate("Settings.LockDistance.name"),
 	hint: Translate("Settings.LockDistance.descrp"),
