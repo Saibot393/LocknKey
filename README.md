@@ -32,10 +32,16 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 #### Client:
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
+### Keys(separate tab):
+- ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
+### Walls/Tokens(separate tab):
+- [Token only] Lockable: if this token can be locked
+- [Token only] Locked: if this token is locked
+- ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 
 ### Compatibility:
 
-The module should be compatible with most game systems on Foundry v10 and v11, though a few features are only available for the Pf2e system or in combination with other modules. If you encounter any bugs please [let me know](https://github.com/Saibot393/LocknKey/issues). I am also happy to add further game systems, just let me know. ([Issues](https://github.com/Saibot393/LocknKey/blob/main/ISSUES.md) can give you additional informations)
+The module should be compatible with most game systems on Foundry v10 and v11, though a few features are only available for the Pf2e system or in combination with other modules. If you encounter any bugs please [let me know](https://github.com/Saibot393/LocknKey/issues). I am also happy to add further game systems. ([Issues](https://github.com/Saibot393/LocknKey/blob/main/ISSUES.md) can give you additional informations)
 
 #### Explicit compatability:
 - [Item Piles](https://foundryvtt.com/packages/item-piles):
@@ -47,7 +53,7 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
 
 ### Languages:
 
-The module contains an English and a German translation
+The module contains an English and a German translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/Rideable/issues).
 
 ---
 
