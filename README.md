@@ -32,9 +32,9 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 #### Client:
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
-### Keys(separate tab):
+#### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
-### Walls/Tokens(separate tab):
+#### Walls/Tokens(separate tab):
 - [Token only] Lockable: if this token can be locked
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
