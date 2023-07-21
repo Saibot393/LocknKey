@@ -1,7 +1,8 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
-import { LnKFlags } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
+const cLnKKeyIcon = "fa-key";
 
 class LnKSheetSettings {
 	//DECLARATIONS
@@ -11,87 +12,112 @@ class LnKSheetSettings {
 	
 	static WallSheetSettings(pApp, pHTML, pData) {} //add settinsg to wall sheet
 	
+	static TokenSheetSettings(pApp, pHTML, pData) {} //add settinsg to token sheet
+	
+	//support
 	static AddHTMLOption(pHTML, pInfos, pto) {} //adds a new HTML option to pto in pHTML
 	
 	//IMPLEMENTATIONS
 	
-	static TestSetting(pApp, pHTML, pData) {
-		//create title (under which all settings are placed)
-		//let vTittleHTML = `<h3 class="border" name="RideableTitle">${Translate("Titles.Rideable")}</h3>`;
-		//pHTML.find('input[name="lockRotation"]').closest(".form-group").after(vTittleHTML);
-		
-		//create new tab
-		let vTabsheet = pHTML.find(`.sheet-tabs`);
-		let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "resources"
-		
-		let vTabButtonHTML = 	`
-						<a class="item" data-tab="${cModuleName}">
-							<i class="fas ${cRideableIcon}"></i>
-							${Translate("Titles."+cModuleName)}
-						</a>
-						`; //tab button HTML
-		let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML	
-		
-		vTabsheet.append(vTabButtonHTML);
-		vprevTab.after(vTabContentHTML);
-		
-		//create settings in reversed order	
-													
-		//Token is Rideable Setting
-		RideableTokenSettings.AddHTMLOption(pHTML, {vlabel : Translate("TokenSettings."+ cissetRideableF +".name"), 
-													vhint : Translate("TokenSettings."+ cissetRideableF +".descrp"), 
-													vtype : "checkbox", 
-													vvalue : RideableFlags.TokenissetRideable(pApp.token),
-													vflagname : cissetRideableF
-													});
-													
-		if (game.user.isGM) {//GM settings
-			let vGMTittleHTML = `
-									<hr>
-									<h3 class="border" name="RideableTitle">${Translate("Titles.GMonly")}</h3>
-								`;
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vGMTittleHTML);
-		
-			//Tokens spawned on creation
-			RideableTokenSettings.AddHTMLOption(pHTML, {vlabel : Translate("TokenSettings."+ cSpawnRidersF +".name"), 
-														vhint : Translate("TokenSettings."+ cSpawnRidersF +".descrp"), 
-														vtype : "text",
-														vwide : true,
-														vvalue : RideableFlags.SpawnRidersstring(pApp.token), 
-														vflagname : cSpawnRidersF
-														});
-		}
-													
-		
-		pApp.setPosition({ height: "auto" });
-		
-	} 
-	
 	static ItemSheetSettings(pApp, pHTML, pData) {
+		//setup
 		let vTabsheet = pHTML.find(`.sheet-tabs`);
 		let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
 		
 		let vTabButtonHTML = 	`
 						<a class="list-row" data-tab="${cModuleName}">
+							<i class="fas ${cLnKKeyIcon}"></i>
 							${Translate("Titles."+cModuleName)}
 						</a>
 						`; //tab button HTML
-		let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+		let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
 		
 		vTabsheet.append(vTabButtonHTML);
-		vprevTab.after(vTabContentHTML);		
+		vprevTab.after(vTabContentHTML);	
+
+		//settings	
+		//setting item ids	
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.KeyIDs(pApp.object),
+												vflagname : cIDKeysF
+												}, `div[data-tab="${cModuleName}"]`);		
 	}
 	
 	static WallSheetSettings(pApp, pHTML, pData) {
+		//setup
 		let vprevElement = pHTML.find(`fieldset.door-options`);
 		
 		let vNewSection = `	<fieldset class="${cModuleName}-options">
-								<legend>${Translate("Titles."+cModuleName)}</legend>
+								<legend><i class="fas ${cLnKLockIcon}"></i> ${Translate("Titles."+cModuleName)}</legend>
 							</fieldset>`;
 							
 		vprevElement.after(vNewSection);
+		
+		console.log(pApp);
+		//settings
+												
+		//setting wall ids									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.KeyIDs(pApp.object),
+												vflagname : cIDKeysF
+												}, `fieldset.${cModuleName}-options`);
 	}
 	
+	static TokenSheetSettings(pApp, pHTML, pData) {
+		//setup
+		console.log(pApp);
+		if (LnKutils.isLockCompatible(pApp.token)) {
+			//only certain tokens are lock compatible
+			let vTabsheet = pHTML.find(`.sheet-tabs`);
+			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
+			
+			let vTabButtonHTML = 	`
+							<a class="item" data-tab="${cModuleName}">
+								<i class="fas ${cLnKLockIcon}"></i>
+								${Translate("Titles."+cModuleName)}
+							</a>
+							`; //tab button HTML
+			let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+			
+			vTabsheet.append(vTabButtonHTML);
+			vprevTab.after(vTabContentHTML);	
+				
+			//settings	
+			
+			//setting token is lockable
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
+													vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
+													vtype : "checkbox", 
+													vvalue : LnKFlags.isLockable(pApp.token),
+													vflagname : cLockableF
+													}, `div[data-tab="${cModuleName}"]`);
+													
+			//setting token is locked								
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
+													vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
+													vtype : "checkbox", 
+													vvalue : LnKFlags.isLocked(pApp.token),
+													vflagname : cLockedF
+													}, `div[data-tab="${cModuleName}"]`);
+													
+			//setting token ids								
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+													vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
+													vtype : "text", 
+													vwide : true,
+													vvalue : LnKFlags.KeyIDs(pApp.token),
+													vflagname : cIDKeysF
+													}, `div[data-tab="${cModuleName}"]`);												
+		}
+	} 
+	
+	//support
 	static AddHTMLOption(pHTML, pInfos, pto) {
 		let vlabel = "Name";	
 		if (pInfos.hasOwnProperty("vlabel")) {
@@ -188,6 +214,15 @@ class LnKSheetSettings {
 	}
 }
 
-Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML, vData));
 
-Hooks.on("renderWallConfig", (vApp, vHTML, vData) => {console.log("check"); LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)});
+Hooks.once("ready", () => {
+	if (game.user.isGM) {
+		//register settings only for GM
+		
+		Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML, vData)); //for items
+
+		Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
+
+		Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
+	}
+});

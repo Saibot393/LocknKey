@@ -70,6 +70,26 @@
 			}
 		},
 		
+		"SheetSettings" : {
+			"LockableFlag" : {
+				"name" 					: "Abschließbar",
+				"descrp"				: "Ob dieses Objekt abgeschlossen werden kann"					
+			},
+			
+			"LockedFlag" : {
+				"name" 					: "Abgeschlossen",
+				"descrp"				: "Ob dieses Objekt abgeschlossen ist"					
+			},
+			
+			"IDKeysFlag" : {
+				"name" 					: "ID Schlüssel",
+				"descrp" : {
+					"lock" 				: "IDs welche dieses Schloss auf-/abschließen können (mit \";\" getrennt)",
+					"key" 				: "IDs welche dieser Schlüssel auf-/abschließen kann (mit \";\" getrennt)"
+				}
+			}
+		},
+		
 		"Words" : {
 			"Key"						: "Schlüssel"
 		},

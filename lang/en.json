@@ -70,6 +70,26 @@
 			}
 		},
 		
+		"SheetSettings" : {
+			"LockableFlag" : {
+				"name" 					: "Lockable",
+				"descrp"				: "If this object is lockable"					
+			},
+			
+			"LockedFlag" : {
+				"name" 					: "Locked",
+				"descrp"				: "If this object is locked"					
+			},
+			
+			"IDKeysFlag" : {
+				"name" 					: "ID keys",
+				"descrp" : {
+					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\")",
+					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
+				}
+			}
+		},
+		
 		"Words" : {
 			"Key"						: "Key"
 		},

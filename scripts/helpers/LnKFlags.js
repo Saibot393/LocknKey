@@ -8,6 +8,8 @@ const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
 const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 
+export { cIDKeysF, cLockableF, cLockedF }
+
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
 
@@ -20,11 +22,15 @@ class LnKFlags {
 	
 	static async invertLockedstate(pObject) {} //inverts pObject Locked state (if pObject is Lockable)
 	
+	static isLockable(pObject) {} //returns if the object is already made Lockable
+	
 	static isLocked(pObject) {} //returns if pObject is locked (false if not Lockable)
 	
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
 	static matchingIDKeys(pObject1, pObject2) {} //returns of pObject1 and pObject2 have at least one matching key (excluding "")
+	
+	static KeyIDs(pObject) {} //returns string of key IDs of pObject
 	
 	//copy paste
 	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
@@ -162,6 +168,10 @@ class LnKFlags {
 		}
 	}
 	
+	static isLockable(pObject) {
+		return this.#LockableFlag(pObject);
+	}
+	
 	static isLocked(pObject) {
 		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject))
 	}
@@ -176,6 +186,10 @@ class LnKFlags {
 	
 	static matchingIDKeys(pObject1, pObject2) {
 		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length);
+	}
+	
+	static KeyIDs(pObject) {
+		return this.#IDKeysFlag(pObject);
 	}
 	
 	//copy paste

@@ -62,6 +62,8 @@ class LnKutils {
 	
 	static TokenInventory(pToken) {} //returns inventoryof pToken
 	
+	static isKeyItem(pItem) {} //returns if pItem is a key item
+	
 	//locks
 	static Locktype(pDocument) {} //returns Locktype of pDocument (if any)
 	
