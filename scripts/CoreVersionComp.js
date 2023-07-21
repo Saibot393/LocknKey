@@ -22,3 +22,15 @@ export function keysofevent(pEvent) {
 		return {altKey : pEvent.altKey, ctrlKey : pEvent.ctrlKey, shiftKey : pEvent.shiftKey};
 	}
 }
+
+export function Fversion() {
+	return Number(game.version.split(".")[0]);
+}
+
+export function isv10() {
+	return game.version.split(".")[0] == "10";
+}
+
+export function isv11() {
+	return game.version.split(".")[0] == "11";
+}

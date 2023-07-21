@@ -22,9 +22,27 @@ class LnKSheetSettings {
 	static ItemSheetSettings(pApp, pHTML, pData) {
 		//setup
 		console.log(pApp);
-		let vTabsheet = pHTML.find(`.sheet-tabs`);
-		let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
+		let vTabbar = pHTML.find(`.sheet-tabs`);
+		if (!vTabbar.length) {
+			//if tab bar was not found, try other search
+			vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
+		}	
 		
+		let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
+		if (!vprevTab.length) {
+			//if tab bar was not found, try other search
+			vprevTab = pHTML.find(`div[tab="details"]`);
+			if (!vprevTab.length) {
+				//if tab bar was not found, try other search
+				vprevTab = pHTML.find(`div[data-tab="description"]`);
+				if (!vprevTab.length) {
+					//if tab bar was not found, try other search
+					vprevTab = pHTML.find(`div[tab="description"]`);
+				}
+			}
+		}
+
+	
 		let vTabButtonHTML = 	`
 						<a class="list-row" data-tab="${cModuleName}">
 							<i class="fas ${cLnKKeyIcon}"></i>
@@ -33,7 +51,7 @@ class LnKSheetSettings {
 						`; //tab button HTML
 		let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
 		
-		vTabsheet.append(vTabButtonHTML);
+		vTabbar.append(vTabButtonHTML);
 		vprevTab.after(vTabContentHTML);	
 
 		//settings	
@@ -50,6 +68,11 @@ class LnKSheetSettings {
 	static WallSheetSettings(pApp, pHTML, pData) {
 		//setup
 		let vprevElement = pHTML.find(`fieldset.door-options`);
+		if (!vprevElement.length) {
+			//if door options was not found, try other search
+			vprevElement = pHTML.find(`select[name="ds"]`).closest(".form-group");
+		}
+		
 		
 		let vNewSection = `	<fieldset class="${cModuleName}-options">
 								<legend><i class="fas ${cLnKLockIcon}"></i> ${Translate("Titles."+cModuleName)}</legend>
@@ -72,7 +95,7 @@ class LnKSheetSettings {
 		//setup
 		if (LnKutils.isLockCompatible(pApp.token)) {
 			//only certain tokens are lock compatible
-			let vTabsheet = pHTML.find(`.sheet-tabs`);
+			let vTabbar = pHTML.find(`.sheet-tabs`);
 			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
 			
 			let vTabButtonHTML = 	`
@@ -83,7 +106,7 @@ class LnKSheetSettings {
 							`; //tab button HTML
 			let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
 			
-			vTabsheet.append(vTabButtonHTML);
+			vTabbar.append(vTabButtonHTML);
 			vprevTab.after(vTabContentHTML);	
 				
 			//settings	
