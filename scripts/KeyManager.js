@@ -80,13 +80,23 @@ class KeyManager {
 //Hooks
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
 	if (!game.user.isGM) {//CLIENT: use key
-		KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
+		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
+			KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
+		}
+		else {
+			LnKPopups.TextPopUpID(pDoorDocument, "GamePaused"); //MESSAGE POPUP
+		}
 	}
 });
 
 Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 	if (!game.user.isGM) {//CLIENT: use key
-		KeyManager.onatemptedKeyuse(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
+			KeyManager.onatemptedKeyuse(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+		}
+		else {
+			LnKPopups.TextPopUpID(pTokenDocument, "GamePaused"); //MESSAGE POPUP
+		}
 	}
 }); 
 

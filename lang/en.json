@@ -14,7 +14,8 @@
 			"lockedDoor"					: "Door is now locked",
 			"lockedToken"					: "{pLockName} is now locked",
 			"unlockedDoor"					: "Door is now unlocked",
-			"unlockedToken"					: "{pLockName} is now unlocked"
+			"unlockedToken"					: "{pLockName} is now unlocked",
+			"GamePaused"					: "The game is paused"
 		},	
 		
 		"Settings" : {
@@ -47,7 +48,22 @@
 				"name" 					: "Always open owned",
 				"descrp"				: "Players can always open owned tokens, even if they are locked"		
 			},
+			
+			"preventUseinPause" : {
+				"name" 					: "Prevent key use while paused",
+				"descrp"				: "Prevent players from using keys while the game is paused"		
+			},
 	
+			"autoKeyuse" : {
+				"name" 					: "Automatic key use",
+				"descrp"				: "Players will automatically try to use a matching key if they interact with a locked object"		
+			},
+			
+			"KeyItemtype" : {
+				"name" 					: "Type of key items",
+				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
@@ -61,10 +77,10 @@
 		"Text" : {
 			"GMControls" : {
 				"line0"					: "GM controls:",
-				"line1" 				: "-alt+right-click to create a new key for the lock",
-				"line2" 				: "-alt+left-click to toggle token lock (*)",
-				"line3" 				: "-ctrl+right-click to copy the locks key IDs (*)",
-				"line4" 				: "-ctrl+left-click to paste key IDs into the lock (*)"
+				"line1" 				: "•alt+right-click to create a new key for the lock",
+				"line2" 				: "•alt+left-click to toggle token lock (*)",
+				"line3" 				: "•ctrl+right-click to copy the locks key IDs (*)",
+				"line4" 				: "•ctrl+left-click to paste key IDs into the lock (*)"
 			}
 		}
 	}

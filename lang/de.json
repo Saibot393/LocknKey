@@ -14,7 +14,8 @@
 			"lockedDoor"					: "Die Tür ist nun verschlossen",
 			"lockedToken"					: "{pLockName} ist nun verschlossen",
 			"unlockedDoor"					: "Die Tür ist nun unverschlossen",
-			"unlockedToken"					: "{pLockName} ist nun unverschlossen"
+			"unlockedToken"					: "{pLockName} ist nun unverschlossen",
+			"GamePaused"					: "Das Spiel ist pausiert"
 		},	
 		
 		"Settings" : {
@@ -47,7 +48,22 @@
 				"name" 					: "Eigene immer öffnen",
 				"descrp"				: "Erlaubt es spielern eigene Marken immer zu öffnen, auch wenn sie verschlossen sind"		
 			},
+			
+			"preventUseinPause" : {
+				"name" 					: "Verhindere Schlüssel-Nutzung in Pause",
+				"descrp"				: "Verhindert, dass Spieler Schlüssel benutzen können während das Spiel pausiert ist"		
+			},
 	
+			"autoKeyuse" : {
+				"name" 					: "Automatische Schlüssel-Nutzung",
+				"descrp"				: "Spieler werden automatisch versuchen passende Schlüssel zu nutzen, wenn sie mit verschlossenen Gegenständen interagieren"		
+			},
+
+			"KeyItemtype" : {
+				"name" 					: "Gegenstandstyp für Schlüssel",
+				"descrp"				: "Der Gegenstandstyp den das Modul für neue Schlüssel benutzt, leer lassen um den standard Typen zu benutzen (Erhalt einer Liste valider Typen durch Eingeben von \"game.items.documentClass.TYPES\" in die F12 Konsole)"		
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Text popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
@@ -61,10 +77,10 @@
 		"Text" : {
 			"GMControls" : {
 				"line0"					: "SL Befehle:",
-				"line1" 				: "-alt+right-click um einen neuen Schlüssel für ein Schloss zu erschaffen",
-				"line2" 				: "-alt+left-click um ein Lock auf-/ab-zuschließen (*)",
-				"line3" 				: "-ctrl+right-click um die Schlüssel IDs des Schlosses zu kopieren (*)",
-				"line4" 				: "-ctrl+left-click um die Schlüssel IDs in das Schloss einzufügen (*)"
+				"line1" 				: "•alt+right-click um einen neuen Schlüssel für ein Schloss zu erschaffen",
+				"line2" 				: "•alt+left-click um ein Lock auf-/ab-zuschließen (*)",
+				"line3" 				: "•ctrl+right-click um die Schlüssel IDs des Schlosses zu kopieren (*)",
+				"line4" 				: "•ctrl+left-click um die Schlüssel IDs in das Schloss einzufügen (*)"
 			}
 		}
 	}

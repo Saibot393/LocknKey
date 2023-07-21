@@ -1,4 +1,4 @@
-import { cModuleName, Translate} from "../utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils} from "../utils/LnKutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
@@ -57,6 +57,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "preventUseinPause", {
+	name: Translate("Settings.preventUseinPause.name"),
+	hint: Translate("Settings.preventUseinPause.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: true
+  }); 
+  
   /*
   game.settings.register(cModuleName, "autoKeyuse", {
 	name: Translate("Settings.autoKeyuse.name"),
@@ -67,6 +76,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   */
+  
+  game.settings.register(cModuleName, "KeyItemtype", {
+	name: Translate("Settings.KeyItemtype.name"),
+	hint: Translate("Settings.KeyItemtype.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKutils.Systemdefaultitemtype()
+  }); 
   
   //client
   game.settings.register(cModuleName, "MessagePopUps", {
@@ -97,7 +115,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.alwaysopenOwned"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.KeyItemtype"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `

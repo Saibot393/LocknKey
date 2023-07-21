@@ -56,7 +56,9 @@ class LnKutils {
 	//items
 	static async createKeyItem(pName = Translate("Word.Key")) {} // creates new key item and returns the document
 	
-	static Systemitemtype() {} //returns the type of item for keys in the current system
+	static Systemdefaultitemtype() {} //returns the default type of item for keys in the current system
+	
+	static Systemitemtype() {} //returns the used type of item for keys in the current system
 	
 	static TokenInventory(pToken) {} //returns inventoryof pToken
 	
@@ -183,7 +185,7 @@ class LnKutils {
 		return vDocument;//await vDocument.constructor.create(vDocument);
 	}
 	
-	static Systemitemtype() {
+	static Systemdefaultitemtype() {
 		switch (game.system.id) {
 			case cPf2eName:
 				return "equipment";
@@ -230,6 +232,15 @@ class LnKutils {
 				}
 				return game.items.documentClass.TYPES[0];
 				break;
+		}
+	}
+	
+	static Systemitemtype() {
+		if (game.items.documentClass.TYPES.includes(game.settings.get(cModuleName, "KeyItemtype"))) {
+			return game.settings.get(cModuleName, "KeyItemtype")
+		}
+		else {
+			return LnKutils.Systemdefaultitemtype();
 		}
 	}
 	
