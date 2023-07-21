@@ -94,14 +94,9 @@ class LnKFlags {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
 			if (typeof pContent == "string") {
-				let vBuffer = pContent;
+				let vBuffer = pContent.split(cDelimiter).filter(vElement => vElement.length); //remove empty elements
 				
-				//add delimiter to end
-				if (vBuffer.length && (vBuffer[vBuffer.length-1] != cDelimiter)) {
-					vBuffer = vBuffer + cDelimiter;
-				}
-				
-				await pObject.setFlag(cModuleName, cIDKeysF, vBuffer);
+				await pObject.setFlag(cModuleName, cIDKeysF, vBuffer.join(cDelimiter)); 
 				
 				return true;
 			}

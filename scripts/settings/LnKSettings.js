@@ -95,6 +95,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Boolean,
 	default: true
   }); 
+  
+  game.settings.register(cModuleName, "PlayLockSounds", {
+	name: Translate("Settings.PlayLockSounds.name"),
+	hint: Translate("Settings.PlayLockSounds.descrp"),
+	scope: "client",
+	config: true,
+	type: Boolean,
+	default: true
+  }); 
 });
 
 //Hooks

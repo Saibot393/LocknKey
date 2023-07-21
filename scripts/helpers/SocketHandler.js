@@ -1,6 +1,7 @@
 import { cModuleName } from "../utils/LnKutils.js";
 import { LockuseRequest } from "../LockManager.js";
 import { PopUpRequest } from "./LnKPopups.js";
+import { PlaySoundRequest } from "./LnKSound.js";
 
 //execute functions with pData depending on pFunction
 function organiseSocketEvents({pFunction, pData} = {}) {
@@ -11,6 +12,8 @@ function organiseSocketEvents({pFunction, pData} = {}) {
 		case "PopUpRequest":
 			PopUpRequest(pData);
 			break;
+		case "PlaySoundRequest":
+			PlaySoundRequest(pData);
 	}
 }
 

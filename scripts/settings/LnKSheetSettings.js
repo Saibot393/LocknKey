@@ -21,6 +21,7 @@ class LnKSheetSettings {
 	
 	static ItemSheetSettings(pApp, pHTML, pData) {
 		//setup
+		console.log(pApp);
 		let vTabsheet = pHTML.find(`.sheet-tabs`);
 		let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
 		
@@ -55,8 +56,6 @@ class LnKSheetSettings {
 							</fieldset>`;
 							
 		vprevElement.after(vNewSection);
-		
-		console.log(pApp);
 		//settings
 												
 		//setting wall ids									
@@ -71,7 +70,6 @@ class LnKSheetSettings {
 	
 	static TokenSheetSettings(pApp, pHTML, pData) {
 		//setup
-		console.log(pApp);
 		if (LnKutils.isLockCompatible(pApp.token)) {
 			//only certain tokens are lock compatible
 			let vTabsheet = pHTML.find(`.sheet-tabs`);

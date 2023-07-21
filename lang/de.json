@@ -67,6 +67,11 @@
 			"MessagePopUps" : {
 				"name" 					: "Text popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
+			},
+			
+			"PlayLockSounds" : {
+				"name" 					: "Schloss Geräusche",
+				"descrp"				: "Spiele geräusche ab wenn ein Schloss auf-/abgeschlossen wird"		
 			}
 		},
 		
@@ -88,6 +93,11 @@
 					"key" 				: "IDs welche dieser Schlüssel auf-/abschließen kann (mit \";\" getrennt)"
 				}
 			}
+		},
+		
+		"Context" : {
+			"KeyCopy"					: "Kopiere Schlüssel IDs",
+			"KeyPaste"					: "Füge Schlüssel IDs ein"
 		},
 		
 		"Words" : {

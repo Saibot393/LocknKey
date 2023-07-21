@@ -67,6 +67,11 @@
 			"MessagePopUps" : {
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
+			},
+			
+			"PlayLockSounds" : {
+				"name" 					: "Play lock sounds",
+				"descrp"				: "Play a sound when a lock is locked/unlocked"		
 			}
 		},
 		
@@ -88,6 +93,11 @@
 					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
 				}
 			}
+		},
+		
+		"Context" : {
+			"KeyCopy"					: "Copy key IDs",
+			"KeyPaste"					: "Paste IDs into key"
 		},
 		
 		"Words" : {

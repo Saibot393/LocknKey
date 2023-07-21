@@ -30,6 +30,7 @@
   "esmodules": [
 	"scripts/utils/LnKutils.js",
 	"scripts/helpers/LnKPopups.js",
+	"scripts/helpers/LnKSound.js",
 	"scripts/LockManager.js",
 	"scripts/KeyManager.js",
 	"scripts/helpers/SocketHandler.js",
