@@ -173,8 +173,9 @@ class LnKutils {
 	static PrimaryCharacter() {
 		let vCharacter = LnKutils.selectedTokens()[0];
 		
-		if (!vCharacter) {
-			vCharacter = game.user.character;
+		if (!vCharacter || !vCharacter.isOwner) {
+			//select a token representing the standard character of the player
+			vCharacter = canvas.scene.tokens.find(vToken => vToken.actor.id == game.user.character.id);
 		}
 		
 		return vCharacter;

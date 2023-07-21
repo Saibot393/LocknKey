@@ -31,6 +31,9 @@ class Geometricutils {
 			return [(pObject.c[0] + pObject.c[2])/2, (pObject.c[1] + pObject.c[3])/2];
 		}
 		
+		console.log(pObject);
+		console.log(LnKutils.isToken(pObject));
+		console.log(pObject.collectionName);
 		if (LnKutils.isToken(pObject)) {
 			return [pObject.x + Geometricutils.insceneWidth(pObject)/2, pObject.y + Geometricutils.insceneHeight(pObject)/2];
 		}		
