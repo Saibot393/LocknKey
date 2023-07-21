@@ -7,10 +7,14 @@ Some game system structure their item UI somehwat strange and therefore require 
 
 #### Key does not generate or has strange item type
 All game system use different item types. While the module tries to find an appropriate type for for keys some systems may slip through. If you cannot generate valid keys or you think keys should be another item type please [open an issue](https://github.com/Saibot393/LocknKey/issues) and let me know which game system you are using and, if possible, let me know which item type you would say would be the best fit for keys. 
+
 In the mean time you may also remedy the problem by changing the item type in the settings (Type of key item).
 
 #### Keys do not work
 Please check if the key has stacked with another key in the characters inventory. If keys are stacked they may loose some or all key IDs rendering them useless. This behaviour is strongly system dependent and i have so far not found any solutions. Should any system behave extraordinarily strange in this regard or should the key not work even though it is not stacked please [open an issue](https://github.com/Saibot393/LocknKey/issues).
+
+#### Languages
+Should you want additional translations to be added please [open an issue](https://github.com/Saibot393/LocknKey/issues) and tell me which language you would like to be added. I can then tell you how to go about translating the module so that i can add the translation (of course credited to you) to the module.
 
 ### Other
 Should you encounter any other issues please [let me know](https://github.com/Saibot393/LocknKey/issues)
