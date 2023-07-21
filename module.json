@@ -34,6 +34,7 @@
 	"scripts/KeyManager.js",
 	"scripts/helpers/SocketHandler.js",
 	"scripts/helpers/LnKMouseHandler.js",
+	"scripts/settings/LnKSheetSettings.js",
 	"scripts/settings/LnKSettings.js",
 	"scripts/compatibility/LnKCompatibility.js"
   ],
