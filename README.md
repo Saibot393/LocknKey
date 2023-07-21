@@ -42,7 +42,7 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
   - The module allow item piles to be locked, strongly recommended for additional features
 - [FoundryVTT Arms Reach](https://foundryvtt.com/packages/foundryvtt-arms-reach)/[Arms Reach](https://foundryvtt.com/packages/arms-reach):
   - Additional setting "Use Arms Reach distance": to use the "Arms Reach" distance instead of the set Mounting distance
-- [libWrapper)(https://foundryvtt.com/packages/lib-wrapper/):
+- [libWrapper](https://foundryvtt.com/packages/lib-wrapper/):
   - Improves compatibility with other modules, strongly recommended
 
 ### Languages:
