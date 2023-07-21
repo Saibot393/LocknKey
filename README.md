@@ -38,11 +38,12 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 The module should be compatible with most game systems on Foundry v10 and v11, though a few features are only available for the Pf2e system or in combination with other modules. If you encounter any bugs please [let me know](https://github.com/Saibot393/LocknKey/issues). I am also happy to add further game systems, just let me know. ([Issues](https://github.com/Saibot393/LocknKey/blob/main/ISSUES.md) can give you additional informations)
 
 #### Explicit compatability:
-- [Item Piles](https://foundryvtt.com/packages/item-piles) (strongly recommended for additional features):
-  - The module allow item piles to be locked
--
+- [Item Piles](https://foundryvtt.com/packages/item-piles):
+  - The module allow item piles to be locked, strongly recommended for additional features
 - [FoundryVTT Arms Reach](https://foundryvtt.com/packages/foundryvtt-arms-reach)/[Arms Reach](https://foundryvtt.com/packages/arms-reach):
   - Additional setting "Use Arms Reach distance": to use the "Arms Reach" distance instead of the set Mounting distance
+- [libWrapper)(https://foundryvtt.com/packages/lib-wrapper/):
+  - Improves compatibility with other modules, strongly recommended
 
 ### Languages:
 
