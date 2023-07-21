@@ -27,16 +27,20 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Start as locked: if new lockable objects should start as locked
 - Lock distance: the maximum distance from which a lock can be used
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
+- Prevent key use while pause: to prevent players from using locks while the game is paused
+- Type of key items: to change the item type of newly created keys
 #### Client:
 - Message popups: to activate some popups on certain actions
+- Play lock sounds: to activate sounds when tokens are locked/unlocked
 
 ### Compatibility:
 
-The module should be compatible with most game systems on Foundry v10 and v11, though a few features are only available for the Pf2e system or in combination with other modules. If you encounter any bugs please [let me know](https://github.com/Saibot393/LocknKey/issues). I am also happy to add further game systems, just let me know. 
+The module should be compatible with most game systems on Foundry v10 and v11, though a few features are only available for the Pf2e system or in combination with other modules. If you encounter any bugs please [let me know](https://github.com/Saibot393/LocknKey/issues). I am also happy to add further game systems, just let me know. ([Issues](https://github.com/Saibot393/LocknKey/blob/main/ISSUES.md) can give you additional informations)
 
 #### Explicit compatability:
-- [Item Piles](https://foundryvtt.com/packages/item-piles):
+- [Item Piles](https://foundryvtt.com/packages/item-piles) (strongly recommended for additional features):
   - The module allow item piles to be locked
+-
 - [FoundryVTT Arms Reach](https://foundryvtt.com/packages/foundryvtt-arms-reach)/[Arms Reach](https://foundryvtt.com/packages/arms-reach):
   - Additional setting "Use Arms Reach distance": to use the "Arms Reach" distance instead of the set Mounting distance
 
