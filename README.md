@@ -28,6 +28,8 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
+- Lockpick item: name or compendium id of the item used to pick locks
+- Lockpick roll formula: the dice formula used for lockpick rolls
 #### Client:
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
@@ -37,6 +39,7 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - [Token only] Lockable: if this token can be locked
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
+- Lock DC: the difficulty class of a lock, used for lockpicking
 
 ### Compatibility:
 
