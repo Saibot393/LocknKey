@@ -268,7 +268,6 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 
 //wrap and export functions
 function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }
-
 function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObject, pPopup)} //if pObject is currently unlocked
 
 export { LockuseRequest, isUnlocked }
