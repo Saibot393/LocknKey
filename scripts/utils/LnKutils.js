@@ -23,10 +23,15 @@ const cLockTypeLootPf2e = "LTLootPf2e"; //type for Token
 
 const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 
+//Lock use TYPES
+const cLUisGM = "LockuseGM"; //if a Lock is used by a GM
+const cLUuseKey = "LockuseKey"; //if a Key is used on a lock
+const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
+
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 
-export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e}
+export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUpickLock}
 
 function Translate(pName){
 	return game.i18n.localize(cModuleName+"."+pName);
@@ -36,6 +41,9 @@ class LnKutils {
 	//DELCARATIONS	
 	//Identification
 	static isPf2e() {} //used for special Pf2e functions
+	
+	//system defaults
+	static Systemdefaultitemtype() {} //returns the default type of item for keys in the current system
 	
 	//ID handling
 	static TokenfromID (pID, pScene = null) {} //returns the Token matching pID
@@ -56,9 +64,7 @@ class LnKutils {
 	//items
 	static async createKeyItem(pName = Translate("Word.Key")) {} // creates new key item and returns the document
 	
-	static Systemdefaultitemtype() {} //returns the default type of item for keys in the current system
-	
-	static Systemitemtype() {} //returns the used type of item for keys in the current system
+	static Keyitemtype() {} //returns the used type of item for keys
 	
 	static TokenInventory(pToken) {} //returns inventoryof pToken
 	
@@ -86,6 +92,57 @@ class LnKutils {
 	//Identification	
 	static isPf2e() {
 		return game.system.id === cPf2eName;
+	}
+	
+	//system defaults
+	static Systemdefaultitemtype() {
+		switch (game.system.id) {
+			case cPf2eName:
+				return "equipment";
+				break;
+			case cDnD5e:
+				return "tool";
+			case cStarFinderName:
+				return "technological";
+				break;
+			case cAdvanced5e:
+				return "object";
+				break;
+			case c13thage:
+				return "tool";
+				break;
+			case cCoC7:
+				return "item";
+				break;
+			case cWarhammer4e:
+				return "cargo";
+				break;
+			case cDarkEye5e:
+				return "equipment";
+				break;
+			case cPf1eName:
+				return "equipment";
+				break;
+			case cBitD:
+				return "item";
+				break;
+			default:
+				//default fall backs
+				if (game.items.documentClass.TYPES.includes("object")) {
+					return "object"
+				}
+				if (game.items.documentClass.TYPES.includes("item")) {
+					return "item"
+				}
+				if (game.items.documentClass.TYPES.includes("tool")) {
+					return "tool"
+				}
+				if (game.items.documentClass.TYPES.includes("equipment")) {
+					return "equipment"
+				}
+				return game.items.documentClass.TYPES[0];
+				break;
+		}
 	}
 	
 	//ID handling
@@ -183,62 +240,12 @@ class LnKutils {
 	
 	//items
 	static async createKeyItem(pName = Translate("Words.Key")) {
-		let vDocument = Item.create({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
+		let vDocument = Item.create({name : pName, type : LnKutils.Keyitemtype(), img:"icons/sundries/misc/key-steel.webp"});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
 		
 		return vDocument;//await vDocument.constructor.create(vDocument);
 	}
 	
-	static Systemdefaultitemtype() {
-		switch (game.system.id) {
-			case cPf2eName:
-				return "equipment";
-				break;
-			case cDnD5e:
-				return "tool";
-			case cStarFinderName:
-				return "technological";
-				break;
-			case cAdvanced5e:
-				return "object";
-				break;
-			case c13thage:
-				return "tool";
-				break;
-			case cCoC7:
-				return "item";
-				break;
-			case cWarhammer4e:
-				return "cargo";
-				break;
-			case cDarkEye5e:
-				return "equipment";
-				break;
-			case cPf1eName:
-				return "equipment";
-				break;
-			case cBitD:
-				return "item";
-				break;
-			default:
-				//default fall backs
-				if (game.items.documentClass.TYPES.includes("object")) {
-					return "object"
-				}
-				if (game.items.documentClass.TYPES.includes("item")) {
-					return "item"
-				}
-				if (game.items.documentClass.TYPES.includes("tool")) {
-					return "tool"
-				}
-				if (game.items.documentClass.TYPES.includes("equipment")) {
-					return "equipment"
-				}
-				return game.items.documentClass.TYPES[0];
-				break;
-		}
-	}
-	
-	static Systemitemtype() {
+	static Keyitemtype() {
 		if (game.items.documentClass.TYPES.includes(game.settings.get(cModuleName, "KeyItemtype"))) {
 			return game.settings.get(cModuleName, "KeyItemtype")
 		}

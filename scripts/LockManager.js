@@ -1,29 +1,30 @@
-import { cModuleName, LnKutils } from "./utils/LnKutils.js";
+import { cModuleName, LnKutils, cLUisGM, cLUuseKey, cLUpickLock } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
-
 import { LnKPopups } from "./helpers/LnKPopups.js";
 
 //does everything Lock related
 class LockManager {
 	//DECLARATIONS
 	//basics
-	static useLock(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
+	static useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
 	
-	static LockuseRequest(pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID) {} //called when a player request to use a lock, handeld by gm
+	static useLockPick(pLock, pCharacter, pRollresult) {} //handels pLock use of pCharacter with a lock pick and result pRollresults
+	
+	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
 	//LockKeys
 	static async newLockKey(pLock) {} //create a new item key for pLock
 	
 	//events
-	static onLock(pLock) {} //calledif a lock is locked
+	static onLock(pLock, pLockusetype) {} //calledif a lock is locked
 	
-	static onunLock(pLock) {} //calledif a lock is unlocked
+	static onunLock(pLock, pLockusetype) {} //calledif a lock is unlocked
 	
 	//lock type
-	static async ToggleLock(pLock, pfromGM = false) {} //locks or unlocks
+	static async ToggleLock(pLock, pLockusetype) {} //locks or unlocks
 	
-	static async ToggleDoorLock(pDoor) {} //locks or unlocks pDoor
+	static async ToggleDoorLock(pDoor, pLockusetype) {} //locks or unlocks pDoor
 	
 	static isUnlocked(pObject, pPopup = false) {} //if pObject is currently unlocked
 	
@@ -38,30 +39,50 @@ class LockManager {
 	
 	//IMPLEMENTATIONS
 	//basics
-	static useLock(pLockType, pLock, pCharacter, pKeyItemID) {
+	static useLockKey(pLock, pCharacter, pKeyItemID) {
 		let vKey = LnKutils.TokenInventory(pCharacter).get(pKeyItemID);
 		
 		if (vKey) {
 			if (LnKFlags.matchingIDKeys(pLock, vKey)) {
 				//key fits
-				LockManager.ToggleLock(pLock);
+				LockManager.ToggleLock(pLock, cLUuseKey);
 			}
 		};
 	}
 	
-	static LockuseRequest(pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID) {
-		console.log("check4");
+	static useLockPick(pLock, pCharacter, pRollresult) {
+		console.log(pRollresult);
+		if (pRollresult > 15) {
+			LockManager.ToggleLock(pLock, cLUpickLock);
+			//ChatMessage.create({content : "someone succeeded"}); //CHAT MESSAGE
+		}
+		else {
+			LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
+			//ChatMessage.create({content : "someone failed"}); //CHAT MESSAGE
+		}
+	}
+	
+	static LockuseRequest(puseData) {
 		if (game.user.isGM) {
 			//only relevant for GMs
 			
-			let vScene = game.scenes.get(pSceneID);
+			let vScene = game.scenes.get(puseData.SceneID);
 			let vLock;
 			let vCharacter;
 			
 			if (vScene) {
-				vLock = LnKutils.LockfromID(pLockID, pLocktype, vScene);
-				vCharacter = LnKutils.TokenfromID(pCharacterID, vScene);
-				LockManager.useLock(pLocktype, vLock, vCharacter, pKeyItemID);
+				vLock = LnKutils.LockfromID(puseData.LockID, puseData.Locktype, vScene);
+				vCharacter = LnKutils.TokenfromID(puseData.CharacterID, vScene);
+				
+				switch (puseData.useType) {
+					case cLUuseKey:
+						//a key was used on the lock
+						LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID);
+						break;
+					case cLUpickLock:
+						LockManager.useLockPick(vLock, vCharacter, puseData.Rollresult);
+						break;
+				}
 			}
 		}
 	}
@@ -83,7 +104,7 @@ class LockManager {
 	}
 	
 	//events
-	static onLock(pLock) {
+	static onLock(pLock, pLockusetype) {
 		switch(LnKutils.Locktype(pLock)) {
 			case cLockTypeDoor:
 				LnKPopups.TextPopUpID(pLock, "lockedDoor"); //MESSAGE POPUP
@@ -96,7 +117,7 @@ class LockManager {
 		Hooks.call(cModuleName+".onLock", LnKutils.Locktype(pLock), pLock);
 	}
 	
-	static onunLock(pLock) {
+	static onunLock(pLock, pLockusetype) {
 		switch(LnKutils.Locktype(pLock)) {
 			case cLockTypeDoor:
 				LnKPopups.TextPopUpID(pLock, "unlockedDoor"); //MESSAGE POPUP
@@ -110,42 +131,42 @@ class LockManager {
 	}
 	
 	//lock type
-	static async ToggleLock(pLock, pfromGM = false) {
-		if (pfromGM || game.settings.get(cModuleName, "allowLocking") || !LockManager.isUnlocked(pLock)) {
+	static async ToggleLock(pLock, pLockusetype) {
+		if ((pLockusetype == cLUisGM) || game.settings.get(cModuleName, "allowLocking") || !LockManager.isUnlocked(pLock)) {
 			//if setting is set to false, only GM can lock locks
 			switch(LnKutils.Locktype(pLock)) {
 				case cLockTypeDoor:
-					LockManager.ToggleDoorLock(pLock);
+					LockManager.ToggleDoorLock(pLock, pLockusetype);
 					break;
 				case cLockTypeLootPf2e:
 				default:
 					await LnKFlags.invertLockedstate(pLock);
 					
 					if (LnKFlags.isLocked(pLock)) {
-						LockManager.onLock(pLock);
+						LockManager.onLock(pLock, pLockusetype);
 					}
 					else {
-						LockManager.onunLock(pLock);
+						LockManager.onunLock(pLock, pLockusetype);
 					}
 					break;
 			}
 		}
 	} 
 	
-	static async ToggleDoorLock(pDoor) {
+	static async ToggleDoorLock(pDoor, pLockusetype) {
 		switch (pDoor.ds) {
 			case 0:
 			case 1:
 				//lock
 				await pDoor.update({ds : 2});
 				
-				LockManager.onLock(pDoor);
+				LockManager.onLock(pDoor, pLockusetype);
 				break;
 			case 2:
 				//unlock
 				await pDoor.update({ds : 0});
 				
-				LockManager.onunLock(pDoor);
+				LockManager.onunLock(pDoor, pLockusetype);
 				break;
 		}
 	} 
@@ -227,7 +248,7 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 	}
 	
 	if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
-		LockManager.ToggleLock(pTokenDocument, true);
+		LockManager.ToggleLock(pTokenDocument, cLUisGM);
 	}
 });
 
@@ -246,7 +267,7 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 });
 
 //wrap and export functions
-function LockuseRequest({ pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID } = {}) {return LockManager.LockuseRequest(pSceneID, pLocktype, pLockID, pCharacterID, pKeyItemID); }
+function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }
 
 function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObject, pPopup)} //if pObject is currently unlocked
 

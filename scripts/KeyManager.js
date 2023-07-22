@@ -1,13 +1,15 @@
-import { cModuleName, Translate, LnKutils } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUuseKey, cLUpickLock } from "./utils/LnKutils.js";
 import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 
-//does everything Key related
+//does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
 	//DECLARATIONS
 	static async onatemptedKeyuse(pLockObject, pLockType) {} //called if a player tries to usa a key on pLockObject 
+	
+	static async onatemptedLockPick(pLockObject, pLockType) {} //called if a player tries to pick pLockObject 
 	
 	static onKeyContext(pHTML, pButtons) {} //adds buttons to item context
 	
@@ -29,12 +31,27 @@ class KeyManager {
 				vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
 				
 				if (vFittingKey) {	
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {pSceneID : pLockObject.object.scene.id, pLocktype : pLockType, pLockID : pLockObject.id, pCharacterID : vCharacter.id, pKeyItemID : vFittingKey.id}});
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, KeyItemID : vFittingKey.id}});
 				}
 			}
 		}
 		else {
 			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+		}
+	}
+	
+	static async onatemptedLockPick(pLockObject, pLockType) {
+		let vCharacter = LnKutils.PrimaryCharacter();
+		let vRoll;
+		let vRollID;
+		
+		if (vCharacter) {
+			vRoll =  new Roll("1d20 + @skills.prc.total", {skills : vCharacter.actor.system.skills});
+			await vRoll.evaluate();
+			
+			await ChatMessage.create({rolls : [vRoll], type : 5}); //CHAT MESSAGE
+			
+			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total}});
 		}
 	}
 	
@@ -78,10 +95,15 @@ class KeyManager {
 }
 
 //Hooks
-Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
+Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {//Door Lock use
 	if (!game.user.isGM) {//CLIENT: use key
 		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
-			KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
+			if (pInfos.shiftKey) {
+				KeyManager.onatemptedLockPick(pDoorDocument, cLockTypeDoor);
+			}
+			else {
+				KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
+			}
 		}
 		else {
 			LnKPopups.TextPopUpID(pDoorDocument, "GamePaused"); //MESSAGE POPUP
@@ -89,10 +111,15 @@ Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
 	}
 });
 
-Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
+Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token Lock use
 	if (!game.user.isGM) {//CLIENT: use key
 		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
-			KeyManager.onatemptedKeyuse(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+			if (pInfos.shiftKey) {
+				KeyManager.onatemptedLockPick(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+			}
+			else {
+				KeyManager.onatemptedKeyuse(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+			}
 		}
 		else {
 			LnKPopups.TextPopUpID(pTokenDocument, "GamePaused"); //MESSAGE POPUP
@@ -100,4 +127,6 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 	}
 }); 
 
-Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext);
+Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Key context
+
+//Hooks.on("renderChatMessage", async (...args) => {console.log(...args);}); //FOR TESTS
