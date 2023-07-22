@@ -48,6 +48,10 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
 #### Explicit compatability:
 - [Item Piles](https://foundryvtt.com/packages/item-piles):
   - The module allow item piles to be locked, strongly recommended for additional features if you do not use Pf2e
+- [Rideable](https://foundryvtt.com/packages/rideable):
+  - Has to be activated in the Rideable settings
+  - Rideable tokens are lockeable
+  - Locked tokens can not be mounted or unmounted
 - [FoundryVTT Arms Reach](https://foundryvtt.com/packages/foundryvtt-arms-reach)/[Arms Reach](https://foundryvtt.com/packages/arms-reach):
   - Additional setting "Use Arms Reach distance": to use the "Arms Reach" distance instead of the set Mounting distance
 - [libWrapper](https://foundryvtt.com/packages/lib-wrapper/):
