@@ -2,6 +2,7 @@ import { LnKCompUtils, cItemPiles } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
 import { LnKutils, cModuleName } from "../utils/LnKutils.js";
 import { isUnlocked } from "../LockManager.js";
+import { LnKFlags, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
 
 //LnKCompatibility will take care of compatibility with other modules in regards to calls, currently supported:
 
@@ -12,6 +13,8 @@ class LnKCompatibility {
 	static onLock(pLockType, pLock) {} //called if a object is locked
 	
 	static onunLock(pLockType, pLock) {} //called if a object is locked
+	
+	static synchIPLock(pLock, vUpdate) {} //called if an item pile is updated manually
 	
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
@@ -29,6 +32,12 @@ class LnKCompatibility {
 				break;
 		}	
 	}
+	
+	static synchIPLock(pLock) {
+		if (LnKutils.Locktype(pLock) == cLockTypeLootIP) {
+			LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
+		}
+	}
 }
 
 //Hook into other modules
@@ -37,5 +46,7 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName+".onLock", (...args) => {LnKCompatibility.onLock(...args)});
 		
 		Hooks.on(cModuleName+".onunLock", (...args) => {LnKCompatibility.onunLock(...args)});
+		
+		Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)});
 	}
 });
