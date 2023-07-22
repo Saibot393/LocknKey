@@ -1,3 +1,7 @@
+## v1.2.0
+- Compatibility with Rideable
+- Generell improvements
+
 ## v1.1.0
 - Added lockpicking
   - Locks now have a lockpick dc setting
