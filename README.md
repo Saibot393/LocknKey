@@ -18,7 +18,6 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - II. Copy Door A's key IDs and paste them into Key B (or vice versa). Key B can now unlock/lock Door A.
 - III. Copy Key A's key IDs and paste them into Key B. All doors that can be opened by Key A can now also be opened by Key B (but not the other way around).
 
-
 ### Settings:
 
 #### World:
