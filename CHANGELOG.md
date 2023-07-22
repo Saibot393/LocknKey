@@ -1,4 +1,4 @@
-## v1.1.0 (unreleased)
+## v1.1.0
 - Added lockpicking
   - Locks now have a lockpick dc setting
   - New World setting: Lockpick item
