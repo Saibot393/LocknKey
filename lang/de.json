@@ -112,7 +112,7 @@
 			
 			"LockDCFlag" : {
 				"name" 					: "Schloss SG",
-				"descrp"				: "Der Schwierigkeitsgrad dieses Schlosses"					
+				"descrp"				: "Der Schwierigkeitsgrad dieses Schlosses (-1 um das Knacken zu verhindern)"					
 			}
 		},
 		
