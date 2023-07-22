@@ -112,7 +112,7 @@
 			
 			"LockDCFlag" : {
 				"name" 					: "Lock DC",
-				"descrp"				: "The difficulty level of this Lock"					
+				"descrp"				: "The difficulty class of this Lock, used for lockpicking"					
 			}
 		},
 		
