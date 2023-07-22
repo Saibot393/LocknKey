@@ -7,8 +7,9 @@ const cDelimiter = ";";
 const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
 const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
+const cLockDCF = "LockDCFlag"; //the dc of the lock (for lock picking)
 
-export { cIDKeysF, cLockableF, cLockedF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF }
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -36,6 +37,9 @@ class LnKFlags {
 	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
 	
 	static pasteIDKeys(pObject) {} //pastes the saved ID keys (if any) into the pObject
+	
+	//Lock dc
+	static LockDC(pLock, praw = false) {} //returns the LockDC of pLock (return Infinity should DC<0 if not praw)
 	
 	//IMPLEMENTATIONS
 	
@@ -90,6 +94,19 @@ class LnKFlags {
 		return false; //default if anything fails
 	} 
 	
+	static #LockDCFlag (pObject) { 
+	//returns content of Locked of pObject (if any) (array of IDs)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLockDCF)) {
+				return vFlag.LockDCFlag;
+			}
+		}
+		
+		return -1; //default if anything fails
+	} 
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -135,6 +152,16 @@ class LnKFlags {
 	//sets content of LockedFlag (must be boolean)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cLockedF, Boolean(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #setLockDCFlag(pObject, pContent) {
+	//sets content of LockedFlag (must be boolean)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cLockedF, Number(pContent));
 			
 			return true;
 		}
@@ -196,6 +223,17 @@ class LnKFlags {
 		if (cIDKeyBuffer.length) {
 			this.#addIDKeysFlag(pObject, cIDKeyBuffer);
 		}
+	}
+	
+	//Lock dc
+	static LockDC(pLock, praw = false) {
+		let vDC = this.#LockDCFlag(pLock);
+		
+		if (vDC < 0 && !praw) {
+			vDC = Infinity;
+		}
+		
+		return vDC;
 	}
 }
 

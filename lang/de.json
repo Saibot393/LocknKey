@@ -16,7 +16,13 @@
 			"unlockedDoor"					: "Die Tür ist nun unverschlossen",
 			"unlockedToken"					: "{pLockName} ist nun unverschlossen",
 			"GamePaused"					: "Das Spiel ist pausiert"
+			"noLockPickItem"				: "Keinen Dietrich im Inventar",
+			"pickLockfailed"				: "Schloss knacken fehlgeschlagen"
 		},	
+		
+		"ChatMessage" : {
+			"LockPick"						: "{pName} hat versucht ein Schloss zu knacken:"
+		},
 		
 		"Settings" : {
 			"useGMquickKeys" : {
@@ -64,6 +70,16 @@
 				"descrp"				: "Der Gegenstandstyp den das Modul für neue Schlüssel benutzt, leer lassen um den standard Typen zu benutzen (Erhalt einer Liste valider Typen durch Eingeben von \"game.items.documentClass.TYPES\" in die F12 Konsole)"		
 			},
 			
+			"LockPickItem" : {
+				"name" 					: "Dietrich Gegenstand",
+				"descrp"				: "Der Name or die Kompendiums ID (empfohlen) eines Gegenstandes welcher zum Schlösserknacken benutzt werden kann, \"-\" sollte kein Gegenstand gebraucht werden"		
+			},
+			
+			"LockPickFormula" : {
+				"name" 					: "Schlossknack Wurfformel",
+				"descrp"				: "Die Würfelformel welche für Schlossknack-Würfe verwendet wird (z.B. \"1d20 + @actor.skills.thievery.mod\", hilfe auf der Github-Seite des Moduls zu finden)"				
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Text popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
@@ -92,6 +108,11 @@
 					"lock" 				: "IDs welche dieses Schloss auf-/abschließen können (mit \";\" getrennt)",
 					"key" 				: "IDs welche dieser Schlüssel auf-/abschließen kann (mit \";\" getrennt)"
 				}
+			},
+			
+			"LockDCFlag" : {
+				"name" 					: "Schloss SG",
+				"descrp"				: "Der Schwierigkeitsgrad dieses Schlosses"					
 			}
 		},
 		

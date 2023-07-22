@@ -5,6 +5,8 @@ const cModuleName = "LocknKey"; //name of Module
 
 const cPopUpID = "Popup";
 
+const cEmptySymbol = "-";
+
 //System names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
 const cPf1eName = "pf1"; //name of Pathfinder 1. edition system
@@ -33,8 +35,14 @@ const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 
 export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUpickLock}
 
-function Translate(pName){
-	return game.i18n.localize(cModuleName+"."+pName);
+function Translate(pName, pWords = {}){
+	let vText = game.i18n.localize(cModuleName+"."+pName);
+	
+	for (let vWord of Object.keys(pWords)) {
+		vText = vText.replace("{" + vWord + "}", pWords[vWord]);
+	}
+		
+	return vText;
 }
 
 class LnKutils {
@@ -44,6 +52,10 @@ class LnKutils {
 	
 	//system defaults
 	static Systemdefaultitemtype() {} //returns the default type of item for keys in the current system
+	
+	static SystemdefaultLockPickItem() {} //returns the default Lock Pick item in the current system
+	
+	static SystemdefaultLPformula() {} //returns the default formula for Lock Picking in the current system
 	
 	//ID handling
 	static TokenfromID (pID, pScene = null) {} //returns the Token matching pID
@@ -66,9 +78,11 @@ class LnKutils {
 	
 	static Keyitemtype() {} //returns the used type of item for keys
 	
-	static TokenInventory(pToken) {} //returns inventoryof pToken
+	static TokenInventory(pToken) {} //returns inventory of pToken
 	
-	static isKeyItem(pItem) {} //returns if pItem is a key item
+	static LockPickItem() {} //returns the name/id of the Lock Pick item
+	
+	static hasLockPickItem(pInventory) {} //returns if pInventory includes LockPick item
 	
 	//locks
 	static Locktype(pDocument) {} //returns Locktype of pDocument (if any)
@@ -84,6 +98,10 @@ class LnKutils {
 	static isToken(pObject) {} //returns if pObject is a Token
 	
 	static LockuseDistance() {} //returns the distance over which a lock can be used
+	
+	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
+	
+	static LPformula() {} //returns the formale used for Lock picking rolls
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
@@ -142,6 +160,35 @@ class LnKutils {
 				}
 				return game.items.documentClass.TYPES[0];
 				break;
+		}
+	}
+	
+	static SystemdefaultLockPickItem() {
+		switch (game.system.id) {
+			case cPf2eName:
+				return "zvLyCVD8g2PdHJAc";
+				break;
+			case cDnD5e:
+				return "woWZ1sO5IUVGzo58";
+				break;
+			case cPf1eName:
+				return "Tools, Thieves'";
+				break;
+			default:
+				return "";
+		}		
+	}
+	
+	static SystemdefaultLPformula() {
+		switch (game.system.id) {
+			case cPf2eName:
+				return "1d20 + @actor.skills.thievery.mod";
+				break;
+			case cDnD5e:
+				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.total";
+				break;
+			default:
+				return "";
 		}
 	}
 	
@@ -258,6 +305,36 @@ class LnKutils {
 		return pToken.actor.items;
 	}
 	
+	static LockPickItem() {
+		if (game.settings.get(cModuleName, "LockPickItem").length) {
+			return game.settings.get(cModuleName, "LockPickItem")
+		}
+		else {
+			return LnKutils.SystemdefaultLockPickItem();
+		}
+	}
+	
+	static hasLockPickItem(pInventory) {
+		console.log(LnKutils.LockPickItem());
+		console.log(cEmptySymbol);
+		if (LnKutils.LockPickItem() == "" || LnKutils.LockPickItem() == cEmptySymbol) {
+			//Lock pick item is disabled
+			return true;
+		}
+		
+		if (pInventory.find(vItem => vItem.name.includes(LnKutils.LockPickItem()))) {
+			//filter by name
+			return true;
+		}
+		
+		if (pInventory.filter(vItem => vItem.flags.core).filter(vItem => vItem.flags.core.sourceId).find(vItem => vItem.flags.core.sourceId.includes(LnKutils.LockPickItem()))) {
+			//filter by compendium id
+			return true;
+		}
+		
+		return false;
+	}
+	
 	//locks
 	static Locktype(pDocument) {
 		if (pDocument) {
@@ -308,6 +385,19 @@ class LnKutils {
 		else {
 			return Infinity;
 		}		
+	}
+	
+	static beatsDC(pRollresult, pDC) {
+		return pRollresult >= pDC;
+	}
+	
+	static LPformula() {
+		if (game.settings.get(cModuleName, "LockPickFormula").length) {
+			return game.settings.get(cModuleName, "LockPickFormula");
+		}
+		else {
+			return LnKutils.SystemdefaultLPformula();
+		}
 	}
 	
 	//arrays

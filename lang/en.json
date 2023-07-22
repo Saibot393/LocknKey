@@ -15,8 +15,14 @@
 			"lockedToken"					: "{pLockName} is now locked",
 			"unlockedDoor"					: "Door is now unlocked",
 			"unlockedToken"					: "{pLockName} is now unlocked",
-			"GamePaused"					: "The game is paused"
+			"GamePaused"					: "The game is paused",
+			"noLockPickItem"				: "No lock pick in inventory",
+			"pickLockfailed"				: "Failed to pick lock"
 		},	
+		
+		"ChatMessage" : {
+			"LockPick"						: "{pName} tried to pick a lock:"
+		},
 		
 		"Settings" : {
 			"useGMquickKeys" : {
@@ -64,6 +70,16 @@
 				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
 			},
 			
+			"LockPickItem" : {
+				"name" 					: "Lockpick item",
+				"descrp"				: "Name or compendium ID (empfohlen) of a lockpick item, \"-\" if no item is necessary"		
+			},
+			
+			"LockPickFormula" : {
+				"name" 					: "Lockpick roll formula",
+				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
@@ -92,6 +108,11 @@
 					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\")",
 					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
 				}
+			},
+			
+			"LockDCFlag" : {
+				"name" 					: "Lock DC",
+				"descrp"				: "The difficulty level of this Lock"					
 			}
 		},
 		

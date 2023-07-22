@@ -45,13 +45,27 @@ class KeyManager {
 		let vRoll;
 		let vRollID;
 		
-		if (vCharacter) {
-			vRoll =  new Roll("1d20 + @skills.prc.total", {skills : vCharacter.actor.system.skills});
-			await vRoll.evaluate();
-			
-			await ChatMessage.create({rolls : [vRoll], type : 5}); //CHAT MESSAGE
-			
-			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total}});
+		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
+			if (vCharacter) {
+				if (LnKutils.hasLockPickItem(LnKutils.TokenInventory(vCharacter))) {
+					//roll dice according to formula
+					vRoll =  new Roll(LnKutils.LPformula(), {actor : vCharacter.actor});
+					Hooks.call(cModuleName+".DiceRoll", cLUpickLock, vCharacter);//SOUND
+					await vRoll.evaluate();
+					
+					//ouput dice result in chat
+					await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : vCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+					
+					//try lock with dice result
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total}});
+				}
+				else {
+					LnKPopups.TextPopUpID(pLockObject, "noLockPickItem"); //MESSAGE POPUP
+				}
+			}
+		}
+		else {
+			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 		}
 	}
 	

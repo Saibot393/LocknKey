@@ -1,5 +1,5 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -89,6 +89,14 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.KeyIDs(pApp.object),
 												vflagname : cIDKeysF
 												}, `fieldset.${cModuleName}-options`);
+												
+		//setting lock dc									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
+												vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
+												vtype : "number", 
+												vvalue : LnKFlags.LockDC(pApp.object, true),
+												vflagname : cLockDCF
+												}, `fieldset.${cModuleName}-options`);
 	}
 	
 	static TokenSheetSettings(pApp, pHTML, pData) {
@@ -134,7 +142,16 @@ class LnKSheetSettings {
 													vwide : true,
 													vvalue : LnKFlags.KeyIDs(pApp.token),
 													vflagname : cIDKeysF
-													}, `div[data-tab="${cModuleName}"]`);												
+													}, `div[data-tab="${cModuleName}"]`);
+
+			//setting lock dc		
+			console.log(LnKFlags.LockDC(pApp.object, true));
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
+													vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
+													vtype : "number", 
+													vvalue : LnKFlags.LockDC(pApp.object, true),
+													vflagname : cLockDCF
+													}, `div[data-tab="${cModuleName}"]`);													
 		}
 	} 
 	

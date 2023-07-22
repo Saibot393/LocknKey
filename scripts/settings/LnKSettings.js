@@ -86,6 +86,24 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKutils.Systemdefaultitemtype()
   }); 
   
+  game.settings.register(cModuleName, "LockPickItem", {
+	name: Translate("Settings.LockPickItem.name"),
+	hint: Translate("Settings.LockPickItem.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKutils.SystemdefaultLockPickItem()
+  }); 
+  
+  game.settings.register(cModuleName, "LockPickFormula", {
+	name: Translate("Settings.LockPickFormula.name"),
+	hint: Translate("Settings.LockPickFormula.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKutils.SystemdefaultLPformula()
+  }); 
+  
   //client
   game.settings.register(cModuleName, "MessagePopUps", {
 	name: Translate("Settings.MessagePopUps.name"),
@@ -124,7 +142,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.KeyItemtype"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.LockPickFormula"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `

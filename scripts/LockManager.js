@@ -51,14 +51,12 @@ class LockManager {
 	}
 	
 	static useLockPick(pLock, pCharacter, pRollresult) {
-		console.log(pRollresult);
-		if (pRollresult > 15) {
+		console.log("usecheck");
+		if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDC(pLock))) {
 			LockManager.ToggleLock(pLock, cLUpickLock);
-			//ChatMessage.create({content : "someone succeeded"}); //CHAT MESSAGE
 		}
 		else {
 			LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
-			//ChatMessage.create({content : "someone failed"}); //CHAT MESSAGE
 		}
 	}
 	

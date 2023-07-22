@@ -5,6 +5,8 @@ const cLockSound = "sounds/doors/wood/lock.ogg";
 const cunLockSound = "sounds/doors/wood/unlock.ogg";
 const cFallbackSound = "sounds/lock.wav";
 
+const cDiceSound = "sounds/dice.wav";
+
 class LnKSound {
 	//DECLARATIONS
 	//basics
@@ -16,6 +18,8 @@ class LnKSound {
 	static PlayLockSound(pLockType, pLock) {} //start PlaySound requests for Lock sound
 	
 	static PlayunLockSound(pLockType, pLock) {} //start PlaySound requests for unLock sound
+	
+	static PlayDiceSound(pCharacter) {} //start PlaySound requests for Dice sound
 	
 	//IMPLEMENTATIONS
 	static PlaySound(pSound, pSceneID) {
@@ -52,11 +56,17 @@ class LnKSound {
 			LnKSound.PlaySound(cunLockSound, FCore.sceneof(pLock).id);
 		}
 	}
+	
+	static PlayDiceSound(pCharacter) {
+		LnKSound.PlaySound(cDiceSound, FCore.sceneof(pCharacter).id);
+	}
 }
 
 Hooks.on(cModuleName+".onLock", (pLockType, pLock) => LnKSound.PlayLockSound(pLockType, pLock));
 		
 Hooks.on(cModuleName+".onunLock", (pLockType, pLock) => LnKSound.PlayunLockSound(pLockType, pLock));
+
+Hooks.on(cModuleName+".DiceRoll", (pRollType, pCharacter) => LnKSound.PlayDiceSound(pCharacter));
 
 export function PlaySoundRequest(pData) {
 	LnKSound.PlaySoundRequest(pData.pSound, pData.pSceneID);
