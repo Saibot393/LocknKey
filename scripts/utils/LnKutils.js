@@ -315,8 +315,6 @@ class LnKutils {
 	}
 	
 	static hasLockPickItem(pInventory) {
-		console.log(LnKutils.LockPickItem());
-		console.log(cEmptySymbol);
 		if (LnKutils.LockPickItem() == "" || LnKutils.LockPickItem() == cEmptySymbol) {
 			//Lock pick item is disabled
 			return true;
@@ -337,6 +335,12 @@ class LnKutils {
 	
 	//locks
 	static Locktype(pDocument) {
+		var vLocktype = LnKCompUtils.Locktype(pDocument);
+		
+		if (vLocktype.length) {
+			return vLocktype;
+		}
+		 
 		if (pDocument) {
 			if (LnKutils.isWall(pDocument)) {
 				return cLockTypeDoor;
@@ -351,11 +355,11 @@ class LnKutils {
 			}
 		}
 		
-		return LnKCompUtils.Locktype(pDocument);
+		return "";
 	}	
 	
-	static isLockCompatible(pDocument) {			
-		return (LnKutils.Locktype(pDocument) != "");
+	static isLockCompatible(pDocument) {	
+		return (LnKutils.Locktype(pDocument).length);
 	}
 	
 	static isTokenLock(pLock) {

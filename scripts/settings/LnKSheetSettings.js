@@ -145,7 +145,6 @@ class LnKSheetSettings {
 													}, `div[data-tab="${cModuleName}"]`);
 
 			//setting lock dc		
-			console.log(LnKFlags.LockDC(pApp.object, true));
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
 													vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
 													vtype : "number", 

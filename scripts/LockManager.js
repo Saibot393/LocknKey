@@ -51,7 +51,6 @@ class LockManager {
 	}
 	
 	static useLockPick(pLock, pCharacter, pRollresult) {
-		console.log("usecheck");
 		if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDC(pLock))) {
 			LockManager.ToggleLock(pLock, cLUpickLock);
 		}
@@ -70,16 +69,19 @@ class LockManager {
 			
 			if (vScene) {
 				vLock = LnKutils.LockfromID(puseData.LockID, puseData.Locktype, vScene);
-				vCharacter = LnKutils.TokenfromID(puseData.CharacterID, vScene);
 				
-				switch (puseData.useType) {
-					case cLUuseKey:
-						//a key was used on the lock
-						LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID);
-						break;
-					case cLUpickLock:
-						LockManager.useLockPick(vLock, vCharacter, puseData.Rollresult);
-						break;
+				if ((LnKutils.isLockCompatible(vLock) || puseData.useType == cLUisGM)) {
+					vCharacter = LnKutils.TokenfromID(puseData.CharacterID, vScene);
+					
+					switch (puseData.useType) {
+						case cLUuseKey:
+							//a key was used on the lock
+							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID);
+							break;
+						case cLUpickLock:
+							LockManager.useLockPick(vLock, vCharacter, puseData.Rollresult);
+							break;
+					}
 				}
 			}
 		}
@@ -130,7 +132,7 @@ class LockManager {
 	
 	//lock type
 	static async ToggleLock(pLock, pLockusetype) {
-		if ((pLockusetype == cLUisGM) || game.settings.get(cModuleName, "allowLocking") || !LockManager.isUnlocked(pLock)) {
+		if ((pLockusetype == cLUisGM) || (game.settings.get(cModuleName, "allowLocking") || !LockManager.isUnlocked(pLock))) {
 			//if setting is set to false, only GM can lock locks
 			switch(LnKutils.Locktype(pLock)) {
 				case cLockTypeDoor:

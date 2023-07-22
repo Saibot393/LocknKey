@@ -7,17 +7,19 @@ const cArmReach = "foundryvtt-arms-reach";
 const cArmReachold = "arms-reach";
 const cItemPiles = "item-piles";
 const cLibWrapper = "lib-wrapper";
+const cRideable = "Rideable";
 
-//specific: Item Piles
-const cLockTypeLootIP = "LTLootPf2e"; //type for Token
+//specific: Item Piles, Rideable
+const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
+const cLockTypeRideable = "LTRideable"; //type for Rideable
 
 const cIPLoottype = "pile"; //type of loot tokens in Item Piles
 
 //general
-const ccompTokenLockTypes = [cLockTypeLootIP];
+const ccompTokenLockTypes = [cLockTypeLootIP, cLockTypeRideable];
 
 export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper}
-export { cLockTypeLootIP };
+export { cLockTypeLootIP, cLockTypeRideable };
 
 class LnKCompUtils {
 	//DECLARATIONS
@@ -48,8 +50,13 @@ class LnKCompUtils {
 	static Locktype(pDocument) {
 		if (pDocument && pDocument.actor) {
 			if (LnKCompUtils.isactiveModule(cItemPiles)) {
-				if (pDocument.getFlag("item-piles", "data.type") == cIPLoottype) {
+				if (pDocument.getFlag(cItemPiles, "data.type") == cIPLoottype) {
 					return cLockTypeLootIP;
+				}
+			}
+			if (LnKCompUtils.isactiveModule(cRideable)) {
+				if (pDocument.getFlag(cRideable, "issetRideableFlag")) {
+					return cLockTypeRideable;
 				}
 			}
 		}
@@ -58,6 +65,11 @@ class LnKCompUtils {
 	} 
 	
 	static isTokenLocktype(pLocktype) {
+		if (pLocktype == cLockTypeRideable && LnKCompUtils.isactiveModule(cRideable)) {
+			//for rideable Option
+			return game.settings.get(cRideable, "LocknKeyintegration")
+		}
+		
 		return ccompTokenLockTypes.includes(pLocktype);
 	}
 	
