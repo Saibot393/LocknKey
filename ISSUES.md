@@ -21,6 +21,7 @@ The formulas are extremely system specific and rules based. I have therefore onl
   - You can put a "kh" after a dice roll to only keep the highest result (e.g. 2d20kh) ("kl" to keep the lowest)
   - Add a "dh" to drop the highest result ("dl" to drop the lowest)
   - You can add a number after these to modify the number of dice kept/droped (e.g. 3d20dl2)
+  - Add a "r" combined with a number to reroll if that number is rolled (or "r<="/"r>=" for rolls lower/higher or equal to this number)
 - enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls  
 - You can use +,-,*,/ to connect several values
 
