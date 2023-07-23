@@ -1,7 +1,9 @@
-## v1.3.0 (unreleased)
+## v1.2.1
 - Improved compatibility (other developers should now be able to easily interface with the module)
 - Added chatmessage for lock pick success/fail
-- small bug fixes
+- fixed bug where item setting did not show up correctly in some cases
+- fixed buug where under some cases locked tokens did not behave correctly
+- several small bug fixes
 
 ## v1.2.0
 - Compatibility with Rideable
