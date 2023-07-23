@@ -1,7 +1,7 @@
 ## Compatibility issues
 
 ### UI
-Some game system structure their item UI somehwat strange and therefore require extra care when adding the Lock & Key tab. Should you encounter a bug where the tab is not visible or does not have any content, please [open an issue](https://github.com/Saibot393/LocknKey/issues) and let me know which game system causes the issue.
+Some game system structure their item UI somewhat strange and therefore require extra care when adding the Lock & Key tab. Should you encounter a bug where the tab is not visible or does not have any content, please [open an issue](https://github.com/Saibot393/LocknKey/issues) and let me know which game system causes the issue.
 
 ### Key items
 
@@ -18,9 +18,14 @@ Please check if the key has stacked with another key in the characters inventory
 #### Lock picking formula does not work
 The formulas are extremely system specific and rules based. I have therefore only included a few formulas. If your system of choice is not included/does not work [open an issue](https://github.com/Saibot393/LocknKey/issues) and include the system, the relevant lockpicking rules (e.g. a link to a wiki) and your foundry version. You can also create your own formula (please share it with me, so i can include it in the module):
 - You can use any die size and number in roles (e.g. 5d3)
-  - You can put a "k" after a dice roll to only use the highest result (e.g. 2d20k)
-  - Add a "d" to drop the lowest result
-- enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls  
+  - You can put a "kh" after a dice roll to only keep the highest result (e.g. 2d20kh) ("kl" to keep the lowest)
+  - Add a "dh" to drop the highest result ("dl" to drop the lowest)
+  - You can add a number after these to modify the number of dice kept/droped (e.g. 3d20dl2)
+  - Add a "r" combined with a number to reroll if that number is rolled (or "r<="/"r>=" for rolls lower/higher or equal to this number)
+  - use "min" or "max" to specify the lowest/highest result
+  - Use "{}" to create a custom item pool (e.g. {1d20, 10}kh will roll a d20 but only output the result if it is higher then 10, otherwise it will ouput 10)
+  - **Dicepools:** use cs to specify results (e.g. 4d6cd>3 to roll 4 d6 counting results over 3 as success)
+- enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls 
 - You can use +,-,*,/ to connect several values
 
 ### Languages
