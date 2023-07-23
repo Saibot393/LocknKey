@@ -1,6 +1,7 @@
 ## v1.3.0 (unreleased)
 - Improved compatibility (other developers should now be able to easily interface with the module)
 - Added chatmessage for lock pick success/fail
+- small bug fixes
 
 ## v1.2.0
 - Compatibility with Rideable
