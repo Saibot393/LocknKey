@@ -22,7 +22,8 @@ The formulas are extremely system specific and rules based. I have therefore onl
   - Add a "dh" to drop the highest result ("dl" to drop the lowest)
   - You can add a number after these to modify the number of dice kept/droped (e.g. 3d20dl2)
   - Add a "r" combined with a number to reroll if that number is rolled (or "r<="/"r>=" for rolls lower/higher or equal to this number)
-- enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls  
+  - Use "{}" to create a custom item pool (e.g. {1d20, 10}kh will roll a d20 but only output the result if it is higher then 10, otherwise it will ouput 10)
+- enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls 
 - You can use +,-,*,/ to connect several values
 
 ### Languages
