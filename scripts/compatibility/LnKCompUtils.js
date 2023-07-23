@@ -11,24 +11,24 @@ const cRideable = "Rideable";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
-const cLockTypeRideable = "LTRideable"; //type for Rideable
+//const cLockTypeRideable = "LTRideable"; //type for Rideable
 
 const cIPLoottype = "pile"; //type of loot tokens in Item Piles
 
 //general
-const ccompTokenLockTypes = [cLockTypeLootIP, cLockTypeRideable];
+const ccompTokenLockTypes = [cLockTypeLootIP];
 
 export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper}
-export { cLockTypeLootIP, cLockTypeRideable };
+export { cLockTypeLootIP };
 
 class LnKCompUtils {
 	//DECLARATIONS
 	//basic
 	static isactiveModule(pModule) {} //determines if module with id pModule is active
 	
-	static Locktype(pDocument) {} //returns Locktype of pDocument (if any)
+	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
 	
-	static isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
+	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
 	//specific: Foundry ArmsReach, ArmsReach
 	static ARReachDistance() {} //gives the current arms reach distance
@@ -47,27 +47,45 @@ class LnKCompUtils {
 		return false;
 	};
 	
-	static Locktype(pDocument) {
+	static async Locktype(pDocument) {	
 		if (pDocument && pDocument.actor) {
 			if (LnKCompUtils.isactiveModule(cItemPiles)) {
 				if (pDocument.getFlag(cItemPiles, "data.type") == cIPLoottype) {
 					return cLockTypeLootIP;
 				}
 			}
+			/*
 			if (LnKCompUtils.isactiveModule(cRideable)) {
 				if (pDocument.getFlag(cRideable, "issetRideableFlag")) {
 					return cLockTypeRideable;
 				}
 			}
+			*/
+		}
+		
+		let vLocktype = {type : ""};
+
+		await Hooks.call(cModuleName + ".Locktype", pDocument, vLocktype);
+		
+		if (typeof vLocktype.type == "string") { //make sure return value if correct
+			return vLocktype.type;
 		}
 		
 		return "";		
 	} 
 	
-	static isTokenLocktype(pLocktype) {
+	static async isTokenLocktype(pLocktype) {
+		let vLockInfo = {isTokenLocktype : false}
+		/*
 		if (pLocktype == cLockTypeRideable && LnKCompUtils.isactiveModule(cRideable)) {
 			//for rideable Option
 			return game.settings.get(cRideable, "LocknKeyintegration")
+		}
+		*/
+		await Hooks.call(cModuleName + ".isTokenLocktype", pLocktype, vLockInfo);
+		
+		if (vLockInfo.isTokenLocktype == true) { //make sure return value if correct
+			return true;
 		}
 		
 		return ccompTokenLockTypes.includes(pLocktype);

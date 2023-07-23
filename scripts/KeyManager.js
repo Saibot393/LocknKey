@@ -7,7 +7,7 @@ import { LnKPopups } from "./helpers/LnKPopups.js";
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
 	//DECLARATIONS
-	static async onatemptedKeyuse(pLockObject, pLockType) {} //called if a player tries to usa a key on pLockObject 
+	static async onatemptedKeyuse(pLockObject) {} //called if a player tries to usa a key on pLockObject 
 	
 	static async onatemptedLockPick(pLockObject, pLockType) {} //called if a player tries to pick pLockObject 
 	
@@ -16,10 +16,11 @@ class KeyManager {
 	static KeyItems(pInventory) {} //returns all Key items in pInventory
 	
 	//IMPLEMENTATIONS
-	static async onatemptedKeyuse(pLockObject, pLockType) {	
+	static async onatemptedKeyuse(pLockObject) {	
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vKeyItems;
 		let vFittingKey;
+		let vLockType = await LnKutils.Locktype(pLockObject);
 		
 		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
 			//check if lock is in reach
@@ -31,7 +32,7 @@ class KeyManager {
 				vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
 				
 				if (vFittingKey) {	
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, KeyItemID : vFittingKey.id}});
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, KeyItemID : vFittingKey.id}});
 				}
 			}
 		}
@@ -40,10 +41,11 @@ class KeyManager {
 		}
 	}
 	
-	static async onatemptedLockPick(pLockObject, pLockType) {
+	static async onatemptedLockPick(pLockObject) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vRoll;
 		let vRollID;
+		let vLockType = await LnKutils.Locktype(pLockObject);
 		
 		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
 			if (vCharacter) {
@@ -57,7 +59,7 @@ class KeyManager {
 					await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : vCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
 					
 					//try lock with dice result
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total}});
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total}});
 				}
 				else {
 					LnKPopups.TextPopUpID(pLockObject, "noLockPickItem"); //MESSAGE POPUP
@@ -113,10 +115,10 @@ Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {//Door Lo
 	if (!game.user.isGM) {//CLIENT: use key
 		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
 			if (pInfos.shiftKey) {
-				KeyManager.onatemptedLockPick(pDoorDocument, cLockTypeDoor);
+				KeyManager.onatemptedLockPick(pDoorDocument);
 			}
 			else {
-				KeyManager.onatemptedKeyuse(pDoorDocument, cLockTypeDoor);
+				KeyManager.onatemptedKeyuse(pDoorDocument);
 			}
 		}
 		else {
@@ -129,10 +131,10 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token
 	if (!game.user.isGM) {//CLIENT: use key
 		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
 			if (pInfos.shiftKey) {
-				KeyManager.onatemptedLockPick(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+				KeyManager.onatemptedLockPick(pTokenDocument);
 			}
 			else {
-				KeyManager.onatemptedKeyuse(pTokenDocument, LnKutils.Locktype(pTokenDocument));
+				KeyManager.onatemptedKeyuse(pTokenDocument);
 			}
 		}
 		else {

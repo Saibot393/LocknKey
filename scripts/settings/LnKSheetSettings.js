@@ -101,6 +101,7 @@ class LnKSheetSettings {
 	
 	static TokenSheetSettings(pApp, pHTML, pData) {
 		//setup
+		console.log(LnKutils.isLockCompatible(pApp.token));
 		if (LnKutils.isLockCompatible(pApp.token)) {
 			//only certain tokens are lock compatible
 			let vTabbar = pHTML.find(`.sheet-tabs`);

@@ -17,16 +17,16 @@ class LockManager {
 	static async newLockKey(pLock) {} //create a new item key for pLock
 	
 	//events
-	static onLock(pLock, pLockusetype) {} //calledif a lock is locked
+	static async onLock(pLock, pLockusetype) {} //calledif a lock is locked
 	
-	static onunLock(pLock, pLockusetype) {} //calledif a lock is unlocked
+	static async onunLock(pLock, pLockusetype) {} //calledif a lock is unlocked
 	
 	//lock type
 	static async ToggleLock(pLock, pLockusetype) {} //locks or unlocks
 	
 	static async ToggleDoorLock(pDoor, pLockusetype) {} //locks or unlocks pDoor
 	
-	static isUnlocked(pObject, pPopup = false) {} //if pObject is currently unlocked
+	static async isUnlocked(pObject, pPopup = false) {} //if pObject is currently unlocked
 	
 	static TokenisUnlocked(pToken, pPopup = false) {} //if pToken is currently unlocked
 	
@@ -104,8 +104,9 @@ class LockManager {
 	}
 	
 	//events
-	static onLock(pLock, pLockusetype) {
-		switch(LnKutils.Locktype(pLock)) {
+	static async onLock(pLock, pLockusetype) {
+		let vLocktype = await LnKutils.Locktype(pLock);
+		switch(vLocktype) {
 			case cLockTypeDoor:
 				LnKPopups.TextPopUpID(pLock, "lockedDoor"); //MESSAGE POPUP
 				break;
@@ -114,11 +115,12 @@ class LockManager {
 				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
 		
-		Hooks.call(cModuleName+".onLock", LnKutils.Locktype(pLock), pLock);
+		Hooks.call(cModuleName+".onLock", vLocktype, pLock);
 	}
 	
-	static onunLock(pLock, pLockusetype) {
-		switch(LnKutils.Locktype(pLock)) {
+	static async onunLock(pLock, pLockusetype) {
+		let vLocktype = await LnKutils.Locktype(pLock);
+		switch(vLocktype) {
 			case cLockTypeDoor:
 				LnKPopups.TextPopUpID(pLock, "unlockedDoor"); //MESSAGE POPUP
 				break;
@@ -127,14 +129,16 @@ class LockManager {
 				LnKPopups.TextPopUpID(pLock, "unlockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
 		
-		Hooks.call(cModuleName+".onunLock", LnKutils.Locktype(pLock), pLock);
+		Hooks.call(cModuleName+".onunLock", vLocktype, pLock);
 	}
 	
 	//lock type
 	static async ToggleLock(pLock, pLockusetype) {
 		if ((pLockusetype == cLUisGM) || (game.settings.get(cModuleName, "allowLocking") || !LockManager.isUnlocked(pLock))) {
 			//if setting is set to false, only GM can lock locks
-			switch(LnKutils.Locktype(pLock)) {
+			let vLocktype = await LnKutils.Locktype(pLock);
+			
+			switch(vLocktype) {
 				case cLockTypeDoor:
 					LockManager.ToggleDoorLock(pLock, pLockusetype);
 					break;
@@ -171,8 +175,10 @@ class LockManager {
 		}
 	} 
 	
-	static isUnlocked(pObject, pPopup = false) {
-		switch (LnKutils.Locktype(pObject)) {
+	static async isUnlocked(pObject, pPopup = false) {
+		let vLocktype = await LnKutils.Locktype(pObject);
+		
+		switch (vLocktype) {
 			case cLockTypeDoor:
 				if (pObject.ds == 2) {
 						if (pPopup) {

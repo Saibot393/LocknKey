@@ -15,9 +15,9 @@ class LnKSound {
 	static PlaySoundRequest(pSound, pSceneID) {} //plays sound pSound if enabled
 	
 	//specifics
-	static PlayLockSound(pLockType, pLock) {} //start PlaySound requests for Lock sound
+	static async PlayLockSound(pLockType, pLock) {} //start PlaySound requests for Lock sound
 	
-	static PlayunLockSound(pLockType, pLock) {} //start PlaySound requests for unLock sound
+	static async PlayunLockSound(pLockType, pLock) {} //start PlaySound requests for unLock sound
 	
 	static PlayDiceSound(pCharacter) {} //start PlaySound requests for Dice sound
 	
@@ -45,14 +45,15 @@ class LnKSound {
 	}
 	
 	//specifics
-	static PlayLockSound(pLockType, pLock) {
-		if (LnKutils.isTokenLocktype(pLockType)) {
+	static async PlayLockSound(pLockType, pLock) {
+		if (await LnKutils.isTokenLocktype(pLockType)) {
 			LnKSound.PlaySound(cLockSound, FCore.sceneof(pLock).id);
 		}
 	}
 	
-	static PlayunLockSound(pLockType, pLock) {
-		if (LnKutils.isTokenLocktype(pLockType)) {
+	static async PlayunLockSound(pLockType, pLock) {
+		console.log(await LnKutils.isTokenLocktype(pLockType));
+		if (await LnKutils.isTokenLocktype(pLockType)) {
 			LnKSound.PlaySound(cunLockSound, FCore.sceneof(pLock).id);
 		}
 	}

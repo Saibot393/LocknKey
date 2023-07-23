@@ -85,13 +85,13 @@ class LnKutils {
 	static hasLockPickItem(pInventory) {} //returns if pInventory includes LockPick item
 	
 	//locks
-	static Locktype(pDocument) {} //returns Locktype of pDocument (if any)
+	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
 	
-	static isLockCompatible(pDocument) {} //returns if Token can have a lock
+	static async isLockCompatible(pDocument) {} //returns if Token can have a lock
 	
 	static isTokenLock(pLock) {} //returns if pLock is a Token
 	
-	static isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
+	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
 	static isWall(pObject) {} //returns if pObject is a Wall
 	
@@ -334,8 +334,8 @@ class LnKutils {
 	}
 	
 	//locks
-	static Locktype(pDocument) {
-		var vLocktype = LnKCompUtils.Locktype(pDocument);
+	static async Locktype(pDocument) {
+		var vLocktype = await LnKCompUtils.Locktype(pDocument);
 		
 		if (vLocktype.length) {
 			return vLocktype;
@@ -358,16 +358,16 @@ class LnKutils {
 		return "";
 	}	
 	
-	static isLockCompatible(pDocument) {	
-		return (LnKutils.Locktype(pDocument).length);
+	static async isLockCompatible(pDocument) {	
+		return ((await LnKutils.Locktype(pDocument)).length);
 	}
 	
 	static isTokenLock(pLock) {
 		return LnKutils.isTokenLocktype(LnKutils.Locktype(pLock));
 	}
 	
-	static isTokenLocktype(pLocktype) {
-		return cTokenLockTypes.includes(pLocktype) || LnKCompUtils.isTokenLocktype(pLocktype);
+	static async isTokenLocktype(pLocktype) {
+		return cTokenLockTypes.includes(pLocktype) || (await LnKCompUtils.isTokenLocktype(pLocktype));
 	}
 	
 	static isWall(pObject) {
