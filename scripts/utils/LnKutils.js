@@ -18,6 +18,7 @@ const cCoC7 = "CoC7"; //name of call of cthulhu 7 system
 const cWarhammer4e = "wfrp4e"; //name of the warhammer 4e system
 const cDarkEye5e = "dsa5"; //name of the black eye 5e system
 const cBitD = "blades-in-the-dark"; //name of the blades in the dark system
+const cCyberpunkRED = "cyberpunk-red-core"; //name of the cyberpunk red core system
 
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
@@ -143,6 +144,9 @@ class LnKutils {
 				break;
 			case cBitD:
 				return "item";
+				break;
+			case cCyberpunkRED:
+				return "gear";
 				break;
 			default:
 				//default fall backs
