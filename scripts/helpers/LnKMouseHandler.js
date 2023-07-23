@@ -135,9 +135,7 @@ class LnKMouseHandler {
 				
 				if (vOldCall) {
 					let vTokenCallBuffer = vOldTokenCall.bind(this);
-					console.log(pEvent.currentTarget);
 					
-					//console.log("test");
 					vTokenCallBuffer(pEvent);
 				}
 			}
