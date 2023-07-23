@@ -21,7 +21,9 @@
 		},	
 		
 		"ChatMessage" : {
-			"LockPick"						: "{pName} hat versucht ein Schloss zu knacken:"
+			"LockPick"						: "{pName} hat versucht ein Schloss zu knacken:",
+			"LockPicksuccess"				: "{pName} hat das Schloss erfolgreich geknackt",
+			"LockPickfail"					: "{pName} hat des Schloss nicht knacken können"
 		},
 		
 		"Settings" : {

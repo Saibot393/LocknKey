@@ -1,4 +1,4 @@
-import { cModuleName, LnKutils, cLUisGM, cLUuseKey, cLUpickLock } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUpickLock } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -9,7 +9,7 @@ class LockManager {
 	//basics
 	static useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
 	
-	static useLockPick(pLock, pCharacter, pRollresult) {} //handels pLock use of pCharacter with a lock pick and result pRollresults
+	static async useLockPick(pLock, pCharacter, pRollresult) {} //handels pLock use of pCharacter with a lock pick and result pRollresults
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
@@ -50,12 +50,14 @@ class LockManager {
 		};
 	}
 	
-	static useLockPick(pLock, pCharacter, pRollresult) {
+	static async useLockPick(pLock, pCharacter, pRollresult) {
 		if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDC(pLock))) {
 			LockManager.ToggleLock(pLock, cLUpickLock);
+			await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess", {pName : pCharacter.name})}); //CHAT MESSAGE
 		}
 		else {
 			LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
+			await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail", {pName : pCharacter.name})}); //CHAT MESSAGE
 		}
 	}
 	

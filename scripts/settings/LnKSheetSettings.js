@@ -12,7 +12,7 @@ class LnKSheetSettings {
 	
 	static WallSheetSettings(pApp, pHTML, pData) {} //add settinsg to wall sheet
 	
-	static TokenSheetSettings(pApp, pHTML, pData) {} //add settinsg to token sheet
+	static async TokenSheetSettings(pApp, pHTML, pData) {} //add settinsg to token sheet
 	
 	//support
 	static AddHTMLOption(pHTML, pInfos, pto) {} //adds a new HTML option to pto in pHTML
@@ -99,10 +99,9 @@ class LnKSheetSettings {
 												}, `fieldset.${cModuleName}-options`);
 	}
 	
-	static TokenSheetSettings(pApp, pHTML, pData) {
+	static async TokenSheetSettings(pApp, pHTML, pData) {
 		//setup
-		console.log(LnKutils.isLockCompatible(pApp.token));
-		if (LnKutils.isLockCompatible(pApp.token)) {
+		if (await LnKutils.isLockCompatible(pApp.token)) {
 			//only certain tokens are lock compatible
 			let vTabbar = pHTML.find(`.sheet-tabs`);
 			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"

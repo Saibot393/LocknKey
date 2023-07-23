@@ -21,7 +21,9 @@
 		},	
 		
 		"ChatMessage" : {
-			"LockPick"						: "{pName} tried to pick a lock:"
+			"LockPick"						: "{pName} tried to pick a lock:",
+			"LockPicksuccess"				: "{pName} succeeded at picking the lock",
+			"LockPickfail"					: "{pName} failed at picking the lock"
 		},
 		
 		"Settings" : {

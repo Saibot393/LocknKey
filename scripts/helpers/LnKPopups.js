@@ -3,22 +3,23 @@ import { Geometricutils } from "../utils/Geometricutils.js";
 
 class LnKPopups {
 	//DECLARATIONS
-	static TextPopUp(pObject, pText, pWords = {}) {} //show pText over pObject and replaces {pWord} with matching vWord in pWords
+	static async TextPopUp(pObject, pText, pWords = {}) {} //show pText over pObject and replaces {pWord} with matching vWord in pWords
 	
 	static TextPopUpID(pObject, pID, pWords = {}) {} //show pText over pObject and replaces {pWord} with matching vWord in pWords
 	
 	static PopUpRequest(pObjectID, pLockType, pText) {} //handels socket calls for pop up texts
 	
 	//IMPLEMENTATIONS
-	static TextPopUp(pObject, pText, pWords = {}) {
+	static async TextPopUp(pObject, pText, pWords = {}) {
 		let vText = pText;
+		let vLockType = await LnKutils.Locktype(pObject);
 		
 		for (let vWord of Object.keys(pWords)) {
 			vText = vText.replace("{" + vWord + "}", pWords[vWord]);
 		}
 		
 		//other clients pop up
-		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pLockType : LnKutils.Locktype(pObject), pText : vText}});
+		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pLockType : vLockType, pText : vText}});
 		
 		//own pop up
 		LnKPopups.PopUpRequest(pObject.id, LnKutils.Locktype(pObject), vText);

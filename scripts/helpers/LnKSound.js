@@ -52,7 +52,6 @@ class LnKSound {
 	}
 	
 	static async PlayunLockSound(pLockType, pLock) {
-		console.log(await LnKutils.isTokenLocktype(pLockType));
 		if (await LnKutils.isTokenLocktype(pLockType)) {
 			LnKSound.PlaySound(cunLockSound, FCore.sceneof(pLock).id);
 		}
