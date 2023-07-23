@@ -18,8 +18,9 @@ Please check if the key has stacked with another key in the characters inventory
 #### Lock picking formula does not work
 The formulas are extremely system specific and rules based. I have therefore only included a few formulas. If your system of choice is not included/does not work [open an issue](https://github.com/Saibot393/LocknKey/issues) and include the system, the relevant lockpicking rules (e.g. a link to a wiki) and your foundry version. You can also create your own formula (please share it with me, so i can include it in the module):
 - You can use any die size and number in roles (e.g. 5d3)
-  - You can put a "k" after a dice roll to only use the highest result (e.g. 2d20k)
-  - Add a "d" to drop the lowest result
+  - You can put a "kh" after a dice roll to only keep the highest result (e.g. 2d20kh) ("kl" to keep the lowest)
+  - Add a "dh" to drop the highest result ("dl" to drop the lowest)
+  - You can add a number after these to modify the number of dice kept/droped (e.g. 3d20dl2)
 - enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls  
 - You can use +,-,*,/ to connect several values
 
