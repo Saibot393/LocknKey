@@ -29,7 +29,7 @@ class LnKMouseHandler {
 	
 	static onTokenRightClick(pTokenEvent, pToken) {} //called if Token is right clicked
 	
-	static async onTokenDblClick(pTokenEvent, pToken, pOldTokenCall) {} //called if Token is double clicked, returns pOldTokenCall if necessary
+	static async onTokenDblClick(pTokenEvent, pToken) {} //called if Token is double clicked, returns pOldTokenCall if necessary
 	
 	//additional
 	static canHUD(pEvent, pToken) {} //to replace the rightclick canHud which was disabled
@@ -125,16 +125,19 @@ class LnKMouseHandler {
 	static RegisterTokenDblClick() {
 		//register onTokenDoubleClick (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "Token.prototype._onClickLeft2", function(vWrapped, ...args) {return LnKMouseHandler.onTokenDblClick(...args, this.document, vWrapped)}, "MIXED");
+			libWrapper.register(cModuleName, "Token.prototype._onClickLeft2", async function(vWrapped, ...args) {if (await LnKMouseHandler.onTokenDblClick(...args, this.document)) {return vWrapped(...args)}}, "MIXED");
 		}
 		else {
 			const vOldTokenCall = Token.prototype._onClickLeft2;
 			
-			Token.prototype._onClickLeft2 = function (pEvent) {
-				let vTokenCallBuffer = LnKMouseHandler.onTokenDblClick(pEvent, this.document, vOldTokenCall);
+			Token.prototype._onClickLeft2 = async function (pEvent) {
+				let vOldCall = await LnKMouseHandler.onTokenDblClick(pEvent, this.document);
 				
-				if (vTokenCallBuffer) {
-					vTokenCallBuffer = vOldTokenCall.bind(pEvent.currentTarget);
+				if (vOldCall) {
+					let vTokenCallBuffer = vOldTokenCall.bind(this);
+					console.log(pEvent.currentTarget);
+					
+					//console.log("test");
 					vTokenCallBuffer(pEvent);
 				}
 			}
@@ -158,16 +161,10 @@ class LnKMouseHandler {
 		Hooks.callAll(cModuleName + "." + "TokenRClick", pToken, FCore.keysofevent(pTokenEvent));
 	}
 	
-	static async onTokenDblClick(pTokenEvent, pToken, pOldTokenCall) {
+	static async onTokenDblClick(pTokenEvent, pToken) {
 		let vOldCall = await Hooks.call(cModuleName + "." + "TokendblClick", pToken, FCore.keysofevent(pTokenEvent)); //return false on token call to prevent sheet opening
 		
-		if(vOldCall || game.user.isGM) {
-			//only if not locked/opened or isGM should the character sheet be shown
-			return pOldTokenCall(pTokenEvent);
-		}
-		else {
-			return;
-		}
+		return vOldCall || game.user.isGM;
 	}
 	
 	//additional

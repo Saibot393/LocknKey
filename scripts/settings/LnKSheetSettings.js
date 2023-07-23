@@ -21,7 +21,6 @@ class LnKSheetSettings {
 	
 	static ItemSheetSettings(pApp, pHTML, pData) {
 		//setup
-		console.log(pApp);
 		let vTabbar = pHTML.find(`.sheet-tabs`);
 		if (!vTabbar.length) {
 			//if tab bar was not found, try other search
@@ -38,6 +37,14 @@ class LnKSheetSettings {
 				if (!vprevTab.length) {
 					//if tab bar was not found, try other search
 					vprevTab = pHTML.find(`div[tab="description"]`);
+					if (!vprevTab.length) {
+						//if tab bar was not found, try other search
+						vprevTab = pHTML.find(`section[data-tab="description"]`);
+						if (!vprevTab.length) {
+							//if tab bar was not found, try other search
+							vprevTab = pHTML.find(`section[tab="description"]`);
+						}
+					}
 				}
 			}
 		}
