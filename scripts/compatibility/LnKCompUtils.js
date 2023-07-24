@@ -102,6 +102,18 @@ class LnKCompUtils {
 		}
 	}
 	
+	static ARWithinLockingDistance(pUser, pLock) {
+		if (RideableCompUtils.isactiveModule(cArmReach)) {
+			return game.modules.get(cArmReach).api.isReachable(pUser, pLock);
+		}		
+		
+		if (RideableCompUtils.isactiveModule(cArmReachold)) {
+			return game.modules.get(cArmReachold).api.isReachable(pUser, pLock);
+		}	
+		
+		return true;//if anything failse
+	}
+	
 	//specific: ItemPiles
 	static setIPLock(pItemPile, pLocked) {
 		pItemPile.setFlag(cItemPiles,"data.enabled", !pLocked)

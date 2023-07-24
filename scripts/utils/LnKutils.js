@@ -1,4 +1,5 @@
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
+import { Geometricutils } from "./Geometricutils.js";
 
 //CONSTANTS
 const cModuleName = "LocknKey"; //name of Module
@@ -99,6 +100,8 @@ class LnKutils {
 	static isToken(pObject) {} //returns if pObject is a Token
 	
 	static LockuseDistance() {} //returns the distance over which a lock can be used
+	
+	static WithinLockingDistance(pUser, pLock) {} //returns if pLock is within the use Distanc of pUser
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
@@ -393,6 +396,14 @@ class LnKutils {
 		else {
 			return Infinity;
 		}		
+	}
+	
+	static WithinLockingDistance(pUser, pLock) {
+		if ((LnKCompUtils.isactiveModule(cArmReach) || LnKCompUtils.isactiveModule(cArmReachold)) && game.settings.get(cModuleName, "UseArmReachDistance")) {
+			return LnKCompUtils.ARWithinLockingDistance(pRider, pRidden);
+		}
+						
+		return Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance();
 	}
 	
 	static beatsDC(pRollresult, pDC) {
