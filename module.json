@@ -7,7 +7,7 @@
     "name": "saibot"
     }
   ],
-  "version": "1.2.1",
+  "version": "1.2.2",
   "compatibility": {
     "minimum": "10",
     "verified": "11"
@@ -40,7 +40,7 @@
 	"scripts/compatibility/LnKCompatibility.js"
   ],
   "url": "https://github.com/Saibot393/LocknKey",
-  "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v1.2.1.zip",
+  "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v1.2.2.zip",
   "manifest": "https://github.com/Saibot393/LocknKey/releases/latest/download/module.json",
   "readme": "https://github.com/Saibot393/LocknKey/blob/main/README.md",
   "changelog": "https://github.com/Saibot393/LocknKey/blob/main/CHANGELOG.md",
