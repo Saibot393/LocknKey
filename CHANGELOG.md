@@ -1,3 +1,7 @@
+## v1.2.2
+- Improved Arms reach integration
+- Included item support for Cyberpunk Red (thanks to [diwako](https://github.com/diwako))
+
 ## v1.2.1
 - Improved compatibility (other developers should now be able to easily interface with the module)
 - Added chatmessage for lock pick success/fail
