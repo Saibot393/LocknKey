@@ -101,7 +101,7 @@ class LnKutils {
 	
 	static LockuseDistance() {} //returns the distance over which a lock can be used
 	
-	static WithinLockingDistance(pUser, pLock) {} //returns if pLock is within the use Distanc of pUser
+	static WithinLockingDistance(pCharacter, pLock) {} //returns if pLock is within the use Distanc of pUser
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
@@ -398,12 +398,12 @@ class LnKutils {
 		}		
 	}
 	
-	static WithinLockingDistance(pUser, pLock) {
+	static WithinLockingDistance(pCharacter, pLock) {
 		if ((LnKCompUtils.isactiveModule(cArmReach) || LnKCompUtils.isactiveModule(cArmReachold)) && game.settings.get(cModuleName, "UseArmReachDistance")) {
-			return LnKCompUtils.ARWithinLockingDistance(pRider, pRidden);
+			return LnKCompUtils.ARWithinLockingDistance(pCharacter, pLock);
 		}
 						
-		return Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance();
+		return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKutils.LockuseDistance();
 	}
 	
 	static beatsDC(pRollresult, pDC) {

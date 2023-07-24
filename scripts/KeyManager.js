@@ -22,7 +22,7 @@ class KeyManager {
 		let vFittingKey;
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		
-		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
+		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
 			//check if lock is in reach
 			
 			if (pLockObject && vCharacter && LnKutils.TokenInventory(vCharacter)) {
@@ -47,7 +47,7 @@ class KeyManager {
 		let vRollID;
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		
-		if (Geometricutils.ObjectDistance(vCharacter, pLockObject) <= LnKutils.LockuseDistance()) {
+		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
 			if (vCharacter) {
 				if (LnKutils.hasLockPickItem(LnKutils.TokenInventory(vCharacter))) {
 					//roll dice according to formula

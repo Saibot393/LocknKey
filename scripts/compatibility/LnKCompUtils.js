@@ -31,7 +31,9 @@ class LnKCompUtils {
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
 	//specific: Foundry ArmsReach, ArmsReach
-	static ARReachDistance() {} //gives the current arms reach distance
+	static ARReachDistance() {} //[ArmReach]gives the current arms reach distance
+	
+	static ARWithinLockingDistance(pCharacter, pLock) {} //[ArmReach] returns if pCharacter is close enought to pLock to interact
 	
 	//specific: ItemPiles
 	static setIPLock(pItemPile, pLocked) {} //enables/disables pItemPile´based on pLocked
@@ -93,22 +95,22 @@ class LnKCompUtils {
 	
 	//specific: Foundry ArmsReach
 	static ARReachDistance() {
-		if (RideableCompUtils.isactiveModule(cArmReach)) {
+		if (LnKCompUtils.isactiveModule(cArmReach)) {
 			return game.settings.get(cArmReach, "globalInteractionMeasurement");
 		}
 		
-		if (RideableCompUtils.isactiveModule(cArmReachold)) {
+		if (LnKCompUtils.isactiveModule(cArmReachold)) {
 			return game.settings.get(cArmReachold, "globalInteractionDistance");
 		}
 	}
 	
-	static ARWithinLockingDistance(pUser, pLock) {
-		if (RideableCompUtils.isactiveModule(cArmReach)) {
-			return game.modules.get(cArmReach).api.isReachable(pUser, pLock);
+	static ARWithinLockingDistance(pCharacter, pLock) {
+		if (LnKCompUtils.isactiveModule(cArmReach)) {
+			return game.modules.get(cArmReach).api.isReachable(pCharacter, pLock);
 		}		
 		
-		if (RideableCompUtils.isactiveModule(cArmReachold)) {
-			return game.modules.get(cArmReachold).api.isReachable(pUser, pLock);
+		if (LnKCompUtils.isactiveModule(cArmReachold)) {
+			return game.modules.get(cArmReachold).api.isReachable(pCharacter, pLock);
 		}	
 		
 		return true;//if anything failse
