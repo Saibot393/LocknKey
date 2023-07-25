@@ -9,6 +9,7 @@ const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 const cLockDCF = "LockDCFlag"; //the dc of the lock (for lock picking)
 const cLPFormulaF = "LPFormulaFlag"; //the Formula the token/item adds to LockPick rolls
+const cLPFormulaOverrideF "LPFormulaOverrideFlag"; //if this objects LPFormulaFlag overrides the global formula (instead of being added)
 
 export { cIDKeysF, cLockableF, cLockedF, cLockDCF }
 
@@ -46,6 +47,8 @@ class LnKFlags {
 	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
 	
 	static HasLPFormula(pObject) {} //returns if the Token/Item has a Lock Pick Formula
+	
+	static LPFormulaOverride(pObject) {} //if this objects LP formula overrides the global formula
 	
 	//IMPLEMENTATIONS
 	
@@ -124,6 +127,19 @@ class LnKFlags {
 		}
 		
 		return ""; //default if anything fails
+	} 
+	
+	static #LPFormulaOverrideFlag (pObject) { 
+	//returns content of LPFormulaOverrideFlag of pObject (if any) (Boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLPFormulaOverrideF)) {
+				return vFlag.LPFormulaOverrideFlag;
+			}
+		}
+		
+		return false; //default if anything fails
 	} 
 	
 	static async #setIDKeysFlag (pObject, pContent) {
@@ -262,6 +278,10 @@ class LnKFlags {
 	
 	static HasLPFormula(pObject) {
 		return Boolean(this.#LPFormulaFlag(pObject).length)
+	}
+	
+	static LPFormulaOverride(pObject) {
+		return this.#LPFormulaOverrideFlag(pObject);
 	}
 }
 

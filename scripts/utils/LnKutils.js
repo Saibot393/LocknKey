@@ -6,6 +6,8 @@ const cModuleName = "LocknKey"; //name of Module
 
 const cPopUpID = "Popup";
 
+const cDelimiter = ";"; //used to speretae id strings
+
 const cEmptySymbol = "-";
 
 const cFormulaOperators = "+-*/%";
@@ -86,9 +88,13 @@ class LnKutils {
 	
 	static TokenInventory(pToken) {} //returns inventory of pToken
 	
-	static LockPickItem() {} //returns the name/id of the Lock Pick item
+	static LockPickItems() {} //returns an array of names/ids of Lock Pick items
+	
+	static isLockPickItem(pItem) {} //if item qualifies as LockPick item
 	
 	static hasLockPickItem(pInventory) {} //returns if pInventory includes LockPick item
+	
+	static includesone(pString, pIncludes) {} //returns if string contains a string included in pIncludes array
 	
 	//locks
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
@@ -323,32 +329,36 @@ class LnKutils {
 		return pToken.actor.items;
 	}
 	
-	static LockPickItem() {
+	static LockPickItems() {
 		if (game.settings.get(cModuleName, "LockPickItem").length) {
-			return game.settings.get(cModuleName, "LockPickItem")
+			return game.settings.get(cModuleName, "LockPickItem").split(cDelimiter)
 		}
 		else {
-			return LnKutils.SystemdefaultLockPickItem();
+			return LnKutils.SystemdefaultLockPickItem().split(cDelimiter);
 		}
 	}
 	
+	static isLockPickItem(pItem) {
+		//if either name or id matches
+		return (LnKutils.includesone(pItem.name,LnKutils.LockPickItems()) || (vItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(vItem.flags.core.sourceId,LnKutils.LockPickItems())));
+	}
+	
 	static hasLockPickItem(pInventory) {
-		if (LnKutils.LockPickItem() == "" || LnKutils.LockPickItem() == cEmptySymbol) {
+		if (LnKutils.LockPickItems().find(vElement => vElement == cEmptySymbol)) {
 			//Lock pick item is disabled
 			return true;
 		}
 		
-		if (pInventory.find(vItem => vItem.name.includes(LnKutils.LockPickItem()))) {
-			//filter by name
-			return true;
+		if (LnKutils.LockPickItems().length == 0) {
+			//No pick item defined
+			return false;
 		}
 		
-		if (pInventory.filter(vItem => vItem.flags.core).filter(vItem => vItem.flags.core.sourceId).find(vItem => vItem.flags.core.sourceId.includes(LnKutils.LockPickItem()))) {
-			//filter by compendium id
-			return true;
-		}
-		
-		return false;
+		return pInventory.find(vItem => LnKutils.isLockPickItem(vItem));
+	}
+	
+	static includesone(pString, pIncludes) {
+		return pIncludes.find(vInclude => pString.includes(vInclude));
 	}
 	
 	//locks
