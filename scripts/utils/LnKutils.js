@@ -8,6 +8,10 @@ const cPopUpID = "Popup";
 
 const cEmptySymbol = "-";
 
+const cFormulaOperators = "+-*/%";
+
+const cSimCount = 500; //how many times rolls should be simulated to calculate the average (keep as low as possible)
+
 //System names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
 const cPf1eName = "pf1"; //name of Pathfinder 1. edition system
@@ -109,6 +113,13 @@ class LnKutils {
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
+	
+	//rolls
+	static StitchFormula(pFormulaA, pFormulaB) {} //stitches two roll formulsa together and returns the stitchedresult
+	
+	static StitchFormulas(pFormulas) {} //stitches an array of roll formulas together and returns the stitchedresult
+	
+	static async AverageResult(pFormula, pData = {}) {} //returns the average result of Roll formula pFormula
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -422,6 +433,47 @@ class LnKutils {
 	//arrays
 	static Intersection(pArray1, pArray2) {
 		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
+	}
+	
+	//rolls
+	static StitchFormula(pFormulaA, pFormulaB) {
+		let vFormula = pFormulaA.trimEnd();
+		let cStitch = " ";
+		
+		if (pFormulaB.length) {
+			//only relevant if pFormulaB has content
+			if (!cFormulaOperators.includes(vFormula[vFormula.length-1])  && !cFormulaOperators.includes(pFormulaB.trimStart()[0])) {
+				//standard stitcher for formulas if no other operator is defined
+				cStitch = " + ";
+			}
+			
+			vFormula = vFormula + cStitch + pFormulaB;
+		}
+		
+		return vFormula;
+	}
+	
+	static StitchFormulas(pFormulas) {
+		let vFormula = pFormulas[0];
+		
+		for (let i = 1; i < pFormulas.length; i++) {
+			vFormula = LnKutils.StitchFormula(vFormula, pFormulas[i]);
+		}
+		
+		return vFormula;
+	} 
+	
+	static async AverageResult(pFormula, pData = {}) {
+		let vFormula = Roll.replaceFormulaData(pFormula, pData);
+		
+		if (vFormula.includes("d") || vFormula.includes("D")) {
+			//Dice are used, simulate multiple times
+			return (await Roll.simulate(vFormula, cSimCount)).reduce((va, vb) => {return va + vb})/cSimCount;
+		}
+		else {
+			//no Dice used => deterministic
+			return (await Roll.simulate(vFormula, cSimCount))[0];
+		}
 	}
 }
 

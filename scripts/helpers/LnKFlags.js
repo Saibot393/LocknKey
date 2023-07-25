@@ -8,6 +8,7 @@ const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
 const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 const cLockDCF = "LockDCFlag"; //the dc of the lock (for lock picking)
+const cLPFormulaF = "LPFormulaFlag"; //the Formula the token/item adds to LockPick rolls
 
 export { cIDKeysF, cLockableF, cLockedF, cLockDCF }
 
@@ -41,6 +42,11 @@ class LnKFlags {
 	//Lock dc
 	static LockDC(pLock, praw = false) {} //returns the LockDC of pLock (return Infinity should DC<0 if not praw)
 	
+	//Formulas
+	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
+	
+	static HasLPFormula(pObject) {} //returns if the Token/Item has a Lock Pick Formula
+	
 	//IMPLEMENTATIONS
 	
 	//flags handling support	
@@ -69,7 +75,7 @@ class LnKFlags {
 	} 
 	
 	static #LockableFlag (pObject) { 
-	//returns content of LockableFlag of pObject (if any) (array of IDs)
+	//returns content of LockableFlag of pObject (if any) (Boolean)
 		let vFlag = this.#LnKFlags(pObject);
 		
 		if (vFlag) {
@@ -82,7 +88,7 @@ class LnKFlags {
 	} 
 	
 	static #LockedFlag (pObject) { 
-	//returns content of Locked of pObject (if any) (array of IDs)
+	//returns content of Locked of pObject (if any) (Boolean)
 		let vFlag = this.#LnKFlags(pObject);
 		
 		if (vFlag) {
@@ -95,7 +101,7 @@ class LnKFlags {
 	} 
 	
 	static #LockDCFlag (pObject) { 
-	//returns content of Locked of pObject (if any) (array of IDs)
+	//returns content of LockDC of pObject (if any) (Number)
 		let vFlag = this.#LnKFlags(pObject);
 		
 		if (vFlag) {
@@ -105,6 +111,19 @@ class LnKFlags {
 		}
 		
 		return -1; //default if anything fails
+	} 
+	
+	static #LPFormulaFlag (pObject) { 
+	//returns content of LPFormula of pObject (if any) (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLPFormulaF)) {
+				return vFlag.LPFormulaFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
 	} 
 	
 	static async #setIDKeysFlag (pObject, pContent) {
@@ -159,7 +178,7 @@ class LnKFlags {
 	}
 	
 	static async #setLockDCFlag(pObject, pContent) {
-	//sets content of LockedFlag (must be boolean)
+	//sets content of LockDCFlag (must be number)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cLockedF, Number(pContent));
 			
@@ -234,6 +253,15 @@ class LnKFlags {
 		}
 		
 		return vDC;
+	}
+	
+	//Formulas
+	static LPFormula(pObject) {
+		return this.#LPFormulaFlag(pObject);
+	}
+	
+	static HasLPFormula(pObject) {
+		return Boolean(this.#LPFormulaFlag(pObject).length)
 	}
 }
 
