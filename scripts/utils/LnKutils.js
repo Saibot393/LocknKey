@@ -94,7 +94,7 @@ class LnKutils {
 	
 	static hasLockPickItem(pInventory) {} //returns if pInventory includes LockPick item
 	
-	static includesone(pString, pIncludes) {} //returns if string contains a string included in pIncludes array
+	static LockPickItemsin(pInventory) {} //returns all valid Lock pick items in pInventory
 	
 	//locks
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
@@ -115,10 +115,14 @@ class LnKutils {
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
-	static LPformula() {} //returns the formale used for Lock picking rolls
+	static successDegree(pRollresult, pDC) {} //returns the degree of success of pRollresult based on the pDC and the world crit settings
+	
+	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
+	
+	static includesone(pString, pIncludes) {} //returns if string contains a string included in pIncludes array
 	
 	//rolls
 	static StitchFormula(pFormulaA, pFormulaB) {} //stitches two roll formulsa together and returns the stitchedresult
@@ -126,6 +130,8 @@ class LnKutils {
 	static StitchFormulas(pFormulas) {} //stitches an array of roll formulas together and returns the stitchedresult
 	
 	static async AverageResult(pFormula, pData = {}) {} //returns the average result of Roll formula pFormula
+	
+	static async HighestExpectedRollID(pRolls, pData = {}) {} //takes an array of rolls and returs the id of the highest expected roll result
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -340,7 +346,7 @@ class LnKutils {
 	
 	static isLockPickItem(pItem) {
 		//if either name or id matches
-		return (LnKutils.includesone(pItem.name,LnKutils.LockPickItems()) || (vItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(vItem.flags.core.sourceId,LnKutils.LockPickItems())));
+		return (LnKutils.includesone(pItem.name, LnKutils.LockPickItems()) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, LnKutils.LockPickItems())));
 	}
 	
 	static hasLockPickItem(pInventory) {
@@ -357,8 +363,8 @@ class LnKutils {
 		return pInventory.find(vItem => LnKutils.isLockPickItem(vItem));
 	}
 	
-	static includesone(pString, pIncludes) {
-		return pIncludes.find(vInclude => pString.includes(vInclude));
+	static LockPickItemsin(pInventory) {
+		return pInventory.filter(vItem => LnKutils.isLockPickItem(vItem));
 	}
 	
 	//locks
@@ -431,7 +437,14 @@ class LnKutils {
 		return pRollresult >= pDC;
 	}
 	
-	static LPformula() {
+	static successDegree(pRollresult, pDC) {
+		return -1; //critical fail
+		return 0; //fail
+		return 1; //success
+		return 2; //critical success
+	}
+	
+	static LPformulaWorld() {
 		if (game.settings.get(cModuleName, "LockPickFormula").length) {
 			return game.settings.get(cModuleName, "LockPickFormula");
 		}
@@ -445,20 +458,31 @@ class LnKutils {
 		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
 	}
 	
+	static includesone(pString, pIncludes) {
+		return pIncludes.find(vInclude => pString.includes(vInclude));
+	}
+	
 	//rolls
 	static StitchFormula(pFormulaA, pFormulaB) {
 		let vFormula = pFormulaA.trimEnd();
 		let cStitch = " ";
 		
-		if (pFormulaB.length) {
-			//only relevant if pFormulaB has content
-			if (!cFormulaOperators.includes(vFormula[vFormula.length-1])  && !cFormulaOperators.includes(pFormulaB.trimStart()[0])) {
-				//standard stitcher for formulas if no other operator is defined
-				cStitch = " + ";
-			}
-			
-			vFormula = vFormula + cStitch + pFormulaB;
+		if (!pFormulaB.length) {
+			//b has no content
+			return pFormulaA;
 		}
+		
+		if (!pFormulaA.length) {
+			//a has no content
+			return pFormulaB;
+		}
+		
+		if (!cFormulaOperators.includes(vFormula[vFormula.length-1])  && !cFormulaOperators.includes(pFormulaB.trimStart()[0])) {
+			//standard stitcher for formulas if no other operator is defined
+			cStitch = " + ";
+		}
+		
+		vFormula = vFormula + cStitch + pFormulaB;
 		
 		return vFormula;
 	}
@@ -474,6 +498,11 @@ class LnKutils {
 	} 
 	
 	static async AverageResult(pFormula, pData = {}) {
+		if (pFormula == "") {
+			//catch empty formulas
+			return 0;
+		}
+		
 		let vFormula = Roll.replaceFormulaData(pFormula, pData);
 		
 		if (vFormula.includes("d") || vFormula.includes("D")) {
@@ -484,6 +513,30 @@ class LnKutils {
 			//no Dice used => deterministic
 			return (await Roll.simulate(vFormula, cSimCount))[0];
 		}
+	}
+	
+	static async HighestExpectedRollID(pRolls, pData = {}) {
+		if (pRolls.length = 1) {
+			//no comparison necessary
+			return pRolls[0];
+		}
+		
+		let vID = 0;
+		let vHighest = 0;
+		let vCurrent;
+		
+		for (let i = 0; i < pRolls.length; i++) {
+			//simulate all rolls and save if highest yet
+			vCurrent = await LnKutils.AverageResult(pRolls[i], pData);
+			
+			if (vCurrent > vHighest) {
+				vHighest = vCurrent;
+				
+				vID = i;
+			}
+		}
+		
+		return vID;
 	}
 }
 

@@ -44,30 +44,64 @@ class KeyManager {
 	static async onatemptedLockPick(pLockObject) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vRoll;
-		let vRollID;
+		let vRollData;
+		let vRollFormula = "";
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		
-		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-			if (vCharacter) {
+		let vValidItems;
+		let vBestItem = null;
+			
+		if (vCharacter) {
+			if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
+				//set roll data
+				vRollData = {actor : vCharacter.actor};
+				
 				if (LnKutils.hasLockPickItem(LnKutils.TokenInventory(vCharacter))) {
+					
+					//filter valid items for operation
+					vValidItems = LnKutils.LockPickItemsin(LnKutils.TokenInventory(vCharacter));
+					if (vValidItems.length) {
+						//find best item
+						vBestItem = vValidItems[LnKutils.HighestExpectedRollID(vValidItems.map(vItem => LnKFlags.LPFormula(vItem)), vRollData)];
+						
+						//create roll formula
+						vRollFormula = LnKFlags.LPFormula(vBestItem);
+					}
+					
+					if (!vBestItem || !LnKFlags.LPFormulaOverride(vBestItem)) {
+						//no lock pick used or lock pick does not override
+						vRollFormula = LnKutils.StitchFormula(LnKFlags.LPFormula(vCharacter), vRollFormula);
+							
+						if (!LnKFlags.LPFormulaOverride(vCharacter)) {
+							vRollFormula = LnKutils.StitchFormula(LnKutils.LPformulaWorld(), vRollFormula);
+						}
+					}
+					
+					if (!vRollFormula.length) {
+						//if nothing has been set
+						vRollFormula = 0;
+					}
+					
 					//roll dice according to formula
-					vRoll =  new Roll(LnKutils.LPformula(), {actor : vCharacter.actor});
+					vRoll =  new Roll(vRollFormula, vRollData);
+					
 					Hooks.call(cModuleName+".DiceRoll", cLUpickLock, vCharacter);//SOUND
+					
 					await vRoll.evaluate();
 					
 					//ouput dice result in chat
 					await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : vCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
 					
 					//try lock with dice result
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total}});
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUpickLock, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total, Diceresults : vRoll.dice.map(vdice => vdice.total)}});
 				}
 				else {
 					LnKPopups.TextPopUpID(pLockObject, "noLockPickItem"); //MESSAGE POPUP
 				}
 			}
-		}
-		else {
-			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			else {
+				LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			}
 		}
 	}
 	
@@ -144,5 +178,3 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token
 }); 
 
 Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Key context
-
-//Hooks.on("renderChatMessage", async (...args) => {console.log(...args);}); //FOR TESTS

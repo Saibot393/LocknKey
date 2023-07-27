@@ -9,9 +9,9 @@ const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 const cLockDCF = "LockDCFlag"; //the dc of the lock (for lock picking)
 const cLPFormulaF = "LPFormulaFlag"; //the Formula the token/item adds to LockPick rolls
-const cLPFormulaOverrideF "LPFormulaOverrideFlag"; //if this objects LPFormulaFlag overrides the global formula (instead of being added)
+const cLPFormulaOverrideF = "LPFormulaOverrideFlag"; //if this objects LPFormulaFlag overrides the global formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF }
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
