@@ -1,6 +1,6 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -9,16 +9,21 @@ class LnKSheetSettings {
 	//DECLARATIONS
 	static TestSetting(vApp, vHTML, vData) {} //just for test purposes
 	
-	static ItemSheetSettings(pApp, pHTML, pData) {} //add settings to key item sheet
-	
 	static RegisterItemSheetTabChange() {} //support for Item sheets to make sure LnK tab stays active during updates
 	
 	static WallSheetSettings(pApp, pHTML, pData) {} //add settinsg to wall sheet
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {} //add settinsg to token sheet
 	
+	//standard setting groups
+	static AddLockstandardsettings(pApp, pHTML, pData, pto) {} //adds the Lock standard settings (IDs, LPDC, LBDC)
+	
+	static AddFormulastandardsettings(pApp, pHTML, pData, pType, pto) {} //adds the character and item standard settings (LP formula, LP override, LB formula, LB override) (pType is either token or item)
+	
 	//support
 	static AddHTMLOption(pHTML, pInfos, pto) {} //adds a new HTML option to pto in pHTML
+	
+	static ItemSheetSettings(pApp, pHTML, pData) {} //add settings to key item sheet
 	
 	//IMPLEMENTATIONS
 	
@@ -72,47 +77,14 @@ class LnKSheetSettings {
 												vwide : true,
 												vvalue : LnKFlags.KeyIDs(pApp.object),
 												vflagname : cIDKeysF
-												}, `div[data-tab="${cModuleName}"]`);		
-				
-		//Additional LP roll formula
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaF +".name"), 
-												vhint : Translate("SheetSettings."+ cLPFormulaF +".descrp.key"), 
-												vtype : "text", 
-												vwide : true,
-												vvalue : LnKFlags.LPFormula(pApp.object),
-												vflagname : cLPFormulaF
 												}, `div[data-tab="${cModuleName}"]`);	
-												
-		//If this items roll formula overrides other formulas
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaOverrideF +".name"), 
-												vhint : Translate("SheetSettings."+ cLPFormulaOverrideF +".descrp.key"), 
-												vtype : "checkbox", 
-												vwide : true,
-												vvalue : LnKFlags.LPFormulaOverride(pApp.object),
-												vflagname : cLPFormulaOverrideF
-												}, `div[data-tab="${cModuleName}"]`);	
+
+		//formulas
+		LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
 												
 		if (pApp.LnKTabactive) {
 			pApp.activateTab(cModuleName);
 		}
-	}
-	
-	static RegisterItemSheetTabChange() {
-		//register onChangeTab (if possible with lib-wrapper)
-		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
-		}
-		else {
-			const vOldSheetCall = ItemSheet.prototype._onChangeTab;
-			
-			ItemSheet.prototype._onChangeTab = async function (...args) {
-				this.LnKTabactive = (args[2] == cModuleName); //args[2] is tab name
-				
-				let vSheetCallBuffer = vOldSheetCall.bind(this);
-				
-				vSheetCallBuffer(args);
-			}
-		}		
 	}
 	
 	static WallSheetSettings(pApp, pHTML, pData) {
@@ -129,24 +101,9 @@ class LnKSheetSettings {
 							</fieldset>`;
 							
 		vprevElement.after(vNewSection);
-		//settings
-												
-		//setting wall ids									
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
-												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
-												vtype : "text", 
-												vwide : true,
-												vvalue : LnKFlags.KeyIDs(pApp.object),
-												vflagname : cIDKeysF
-												}, `fieldset.${cModuleName}-options`);
-												
-		//setting lock dc									
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
-												vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
-												vtype : "number", 
-												vvalue : LnKFlags.LockDC(pApp.object, true),
-												vflagname : cLockDCF
-												}, `fieldset.${cModuleName}-options`);
+						
+		//Lock standard settings
+		LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `fieldset.${cModuleName}-options`);
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {
@@ -187,49 +144,86 @@ class LnKSheetSettings {
 													vtype : "checkbox", 
 													vvalue : LnKFlags.isLocked(pApp.token),
 													vflagname : cLockedF
-													}, `div[data-tab="${cModuleName}"]`);
-													
-			//setting token ids								
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
-													vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
-													vtype : "text", 
-													vwide : true,
-													vvalue : LnKFlags.KeyIDs(pApp.token),
-													vflagname : cIDKeysF
-													}, `div[data-tab="${cModuleName}"]`);
+													}, `div[data-tab="${cModuleName}"]`);	
 
-			//setting lock dc		
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
-													vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
-													vtype : "number", 
-													vvalue : LnKFlags.LockDC(pApp.object, true),
-													vflagname : cLockDCF
-													}, `div[data-tab="${cModuleName}"]`);		
+			//Lock standard settings
+			LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);
 
 			//create title for Character tokens
 			vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
 			
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);	
 			
-			//Additional LP roll formula
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaF +".name"), 
-													vhint : Translate("SheetSettings."+ cLPFormulaF +".descrp.lock"), 
-													vtype : "text", 
-													vwide : true,
-													vvalue : LnKFlags.LPFormula(pApp.object),
-													vflagname : cLPFormulaF
-													}, `div[data-tab="${cModuleName}"]`);	
-													
-			//If this tokens roll formula overrides other formulas
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaOverrideF +".name"), 
-													vhint : Translate("SheetSettings."+ cLPFormulaOverrideF +".descrp.lock"), 
-													vtype : "checkbox", 
-													vwide : true,
-													vvalue : LnKFlags.LPFormula(pApp.object),
-													vflagname : cLPFormulaOverrideF
-													}, `div[data-tab="${cModuleName}"]`);													
+			//formulas
+			LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
 		}
 	} 
+	
+	//standard setting groups
+	static AddLockstandardsettings(pApp, pHTML, pData, pto) {
+		//setting wall ids									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.KeyIDs(pApp.object),
+												vflagname : cIDKeysF
+												}, pto);
+												
+		//setting lock dc									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
+												vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
+												vtype : "number", 
+												vvalue : LnKFlags.LockDC(pApp.object, true),
+												vflagname : cLockDCF
+												}, pto);
+												
+		//setting lock break dc									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockBreakDCF +".name"), 
+												vhint : Translate("SheetSettings."+ cLockBreakDCF +".descrp"), 
+												vtype : "number", 
+												vvalue : LnKFlags.LockBreakDC(pApp.object, true),
+												vflagname : cLockDCF
+												}, pto);
+	} 
+	
+	static AddFormulastandardsettings(pApp, pHTML, pData, pType, pto) {
+		//Additional LP roll formula
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaF +".name"), 
+												vhint : Translate("SheetSettings."+ cLPFormulaF +".descrp."+pType), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.LPFormula(pApp.object),
+												vflagname : cLPFormulaF
+												}, pto);	
+												
+		//If this items LP roll formula overrides other formulas
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaOverrideF +".name"), 
+												vhint : Translate("SheetSettings."+ cLPFormulaOverrideF +".descrp."+pType), 
+												vtype : "checkbox", 
+												vwide : true,
+												vvalue : LnKFlags.LPFormulaOverride(pApp.object),
+												vflagname : cLPFormulaOverrideF
+												}, pto);	
+												
+		//Additional LB roll formula
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLBFormulaF +".name"), 
+												vhint : Translate("SheetSettings."+ cLBFormulaF +".descrp."+pType), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.LBFormula(pApp.object),
+												vflagname : cLPFormulaF
+												}, pto);	
+												
+		//If this items LB roll formula overrides other formulas
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLBFormulaOverrideF +".name"), 
+												vhint : Translate("SheetSettings."+ cLBFormulaOverrideF +".descrp."+pType), 
+												vtype : "checkbox", 
+												vwide : true,
+												vvalue : LnKFlags.LBFormulaOverride(pApp.object),
+												vflagname : cLPFormulaOverrideF
+												}, pto);
+	}
 	
 	//support
 	static AddHTMLOption(pHTML, pInfos, pto) {
@@ -325,6 +319,24 @@ class LnKSheetSettings {
 		
 		//pHTML.find('[name="RideableTitle"]').after(vnewHTML);
 		pHTML.find(pto/*`div[data-tab="${cModuleName}"]`*/).append(vnewHTML);
+	}
+	
+	static RegisterItemSheetTabChange() {
+		//register onChangeTab (if possible with lib-wrapper)
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+			libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
+		}
+		else {
+			const vOldSheetCall = ItemSheet.prototype._onChangeTab;
+			
+			ItemSheet.prototype._onChangeTab = async function (...args) {
+				this.LnKTabactive = (args[2] == cModuleName); //args[2] is tab name
+				
+				let vSheetCallBuffer = vOldSheetCall.bind(this);
+				
+				vSheetCallBuffer(args);
+			}
+		}		
 	}
 }
 

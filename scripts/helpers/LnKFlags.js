@@ -10,8 +10,13 @@ const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 const cLockDCF = "LockDCFlag"; //the dc of the lock (for lock picking)
 const cLPFormulaF = "LPFormulaFlag"; //the Formula the token/item adds to LockPick rolls
 const cLPFormulaOverrideF = "LPFormulaOverrideFlag"; //if this objects LPFormulaFlag overrides the global formula (instead of being added)
+const crequiredLPsuccessF = "requiredLPsuccessFlag"; //successes required to pick this lock
+const ccurrentLPsuccessF = "currentLPsuccessFlag"; //successes alraedy put into picking this lock
+const cLockBreakDCF = "LockBreakDCFlag"; //the dc of the lock (for lock picking)
+const cLBFormulaF = "LBFormulaFlag"; //the Formula the token/item adds to LockBreak rolls
+const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormulaFlag overrides the global formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF }
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -29,6 +34,8 @@ class LnKFlags {
 	
 	static isLocked(pObject) {} //returns if pObject is locked (false if not Lockable)
 	
+	static changeLockPicksuccesses(pObject, pdelta) {} //changes the locks current successes by pdelta and returns true if this was enough to change locked state
+	
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
 	static matchingIDKeys(pObject1, pObject2) {} //returns of pObject1 and pObject2 have at least one matching key (excluding "")
@@ -43,12 +50,20 @@ class LnKFlags {
 	//Lock dc
 	static LockDC(pLock, praw = false) {} //returns the LockDC of pLock (return Infinity should DC<0 if not praw)
 	
+	static LockBreakDC(pLock, praw = false) {} //returns the LockBreakDC of pLock (return Infinity should DC<0 if not praw)
+	
 	//Formulas
 	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
 	
 	static HasLPFormula(pObject) {} //returns if the Token/Item has a Lock Pick Formula
 	
 	static LPFormulaOverride(pObject) {} //if this objects LP formula overrides the global formula
+	
+	static LBFormula(pObject) {} //returns the Tokens/Items Lock Break Formula
+	
+	static HasLBFormula(pObject) {} //returns if the Token/Item has a Lock Break Formula
+	
+	static LBFormulaOverride(pObject) {} //if this objects LB formula overrides the global formula
 	
 	//IMPLEMENTATIONS
 	
@@ -142,6 +157,71 @@ class LnKFlags {
 		return false; //default if anything fails
 	} 
 	
+	static #requiredLPsuccessFlag (pObject) { 
+	//returns content of requiredLPsuccessFlag of pObject (if any) (number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(crequiredLPsuccessF)) {
+				return vFlag.requiredLPsuccessFlag;
+			}
+		}
+		
+		return 1; //default if anything fails
+	} 
+	
+	static #currentLPsuccessFlag (pObject) { 
+	//returns content of currentLPsuccessFlag of pObject (if any) (number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(ccurrentLPsuccessF)) {
+				return vFlag.currentLPsuccessFlag;
+			}
+		}
+		
+		return 1; //default if anything fails
+	} 
+	
+	static #LockBreakDCFlag (pObject) { 
+	//returns content of LockBreakDC of pObject (if any) (Number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLockBreakDCF)) {
+				return vFlag.LockBreakDCFlag;
+			}
+		}
+		
+		return -1; //default if anything fails
+	}
+	
+	static #LBFormulaFlag (pObject) { 
+	//returns content of LBFormula of pObject (if any) (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLBFormulaF)) {
+				return vFlag.LBFormulaFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
+	} 
+	
+	static #LBFormulaOverrideFlag (pObject) { 
+	//returns content of LBFormulaOverrideFlag of pObject (if any) (Boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLBFormulaOverrideF)) {
+				return vFlag.LBFormulaOverrideFlag;
+			}
+		}
+		
+		return false; //default if anything fails
+	} 
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -171,7 +251,7 @@ class LnKFlags {
 			}
 		}
 		return false;
-	} 
+	}  
 	
 	static async #setLockableFlag(pObject, pContent) {
 	//sets content of LockableFlag (must be boolean)
@@ -195,6 +275,16 @@ class LnKFlags {
 	
 	static async #setLockDCFlag(pObject, pContent) {
 	//sets content of LockDCFlag (must be number)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cLockedF, Number(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #setcurrentLPsuccessFlag(pObject, pContent) {
+	//sets content of currentLPsuccessFlag (must be number)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cLockedF, Number(pContent));
 			
@@ -231,6 +321,21 @@ class LnKFlags {
 	
 	static isLocked(pObject) {
 		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject))
+	}
+	
+	static changeLockPicksuccesses(pObject, pdelta) {
+		vToggle = false; //
+		
+		this.#setcurrentLPsuccessFlag(pObject, this.#currentLPsuccessFlag + pdelta);
+		
+		if (this.#currentLPsuccessFlag(pObject) >= this.#requiredLPsuccessFlag(pObject)) {
+			//success limit reched, reset successes and toggle lock
+			this.#setcurrentLPsuccessFlag(pObject, 0);
+			
+			vToggle = true;
+		}
+			
+		return vToggle;
 	}
 	
 	static linkKeyLock(pKey, pLock) {
@@ -271,6 +376,16 @@ class LnKFlags {
 		return vDC;
 	}
 	
+	static LockBreakDC(pLock, praw = false) {
+		let vDC = this.#LockBreakDCFlag(pLock);
+		
+		if (vDC < 0 && !praw) {
+			vDC = Infinity;
+		}
+		
+		return vDC;
+	}
+	
 	//Formulas
 	static LPFormula(pObject) {
 		return this.#LPFormulaFlag(pObject);
@@ -282,6 +397,18 @@ class LnKFlags {
 	
 	static LPFormulaOverride(pObject) {
 		return this.#LPFormulaOverrideFlag(pObject);
+	}
+	
+	static LBFormula(pObject) {
+		return this.#LBFormulaFlag(pObject);
+	}
+	
+	static HasLBFormula(pObject) {
+		return Boolean(this.#LBFormulaFlag(pObject).length)
+	}
+	
+	static LBFormulaOverride(pObject) {
+		return this.#LBFormulaOverrideFlag(pObject);
 	}
 }
 
