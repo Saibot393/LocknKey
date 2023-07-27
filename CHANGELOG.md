@@ -1,3 +1,10 @@
+## v1.3.0 (unreleased)
+- Fixed bug in Item sheets, that caused tab to reset upon data update
+- World setting Lockpick item now allows for multiple item names/IDs
+- Added on token/item Lockpick formula which will be added to Lockpick rolls
+- Added Lockpick formula override to tokens, which will override the worlds Lockpick formula instead of appending it
+- Added Lockpick formula override to items, which will override the worlds and the tokens Lockpick formula instead of appending it
+
 ## v1.2.2
 - Improved Arms reach integration
 - Included item support for Cyberpunk Red (thanks to [diwako](https://github.com/diwako))
