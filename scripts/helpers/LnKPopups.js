@@ -30,7 +30,6 @@ class LnKPopups {
 	} 
 	
 	static PopUpRequest(pObjectID, pLockType, pText) {
-		console.log(pObjectID, pLockType, pText);
 		if (game.settings.get(cModuleName, "MessagePopUps")) {
 			//only relevant if token is on current canves, no scene necessary
 			let vObject = LnKutils.LockfromID(pObjectID, pLockType); 
