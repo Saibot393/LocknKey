@@ -108,21 +108,30 @@ class LnKSheetSettings {
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {
 		//setup
+		let vTabbar = pHTML.find(`.sheet-tabs`);
+		let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
+		
+		let vTabIcon;
+		
 		if (await LnKutils.isLockCompatible(pApp.token)) {
-			let vTabbar = pHTML.find(`.sheet-tabs`);
-			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
-			
-			let vTabButtonHTML = 	`
-							<a class="item" data-tab="${cModuleName}">
-								<i class="fas ${cLnKLockIcon}"></i>
-								${Translate("Titles."+cModuleName)}
-							</a>
-							`; //tab button HTML
-			let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
-			
-			vTabbar.append(vTabButtonHTML);
-			vprevTab.after(vTabContentHTML);	
+			vTabIcon = cLnKLockIcon;
+		}
+		else {
+			vTabIcon = cLnKKeyIcon;
+		}
+		
+		let vTabButtonHTML = 	`
+						<a class="item" data-tab="${cModuleName}">
+							<i class="fas ${vTabIcon}"></i>
+							${Translate("Titles."+cModuleName)}
+						</a>
+						`; //tab button HTML
+		let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+		
+		vTabbar.append(vTabButtonHTML);
+		vprevTab.after(vTabContentHTML);	
 				
+		if (await LnKutils.isLockCompatible(pApp.token)) {
 			//settings	
 			
 			//create title for lock compatible tokens
@@ -153,10 +162,10 @@ class LnKSheetSettings {
 			vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
 			
 			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);	
-			
-			//formulas
-			LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
 		}
+		
+		//formulas
+		LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
 	} 
 	
 	//standard setting groups
@@ -183,7 +192,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cLockBreakDCF +".descrp"), 
 												vtype : "number", 
 												vvalue : LnKFlags.LockBreakDC(pApp.object, true),
-												vflagname : cLockDCF
+												vflagname : cLockBreakDCF
 												}, pto);
 	} 
 	
@@ -212,7 +221,7 @@ class LnKSheetSettings {
 												vtype : "text", 
 												vwide : true,
 												vvalue : LnKFlags.LBFormula(pApp.object),
-												vflagname : cLPFormulaF
+												vflagname : cLBFormulaF
 												}, pto);	
 												
 		//If this items LB roll formula overrides other formulas
@@ -221,7 +230,7 @@ class LnKSheetSettings {
 												vtype : "checkbox", 
 												vwide : true,
 												vvalue : LnKFlags.LBFormulaOverride(pApp.object),
-												vflagname : cLPFormulaOverrideF
+												vflagname : cLBFormulaOverrideF
 												}, pto);
 	}
 	
