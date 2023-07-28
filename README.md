@@ -4,7 +4,7 @@
 
 ### Basic use:
 
-A GM can shift+right-click doors and loot containers (PF2e or Item Piles) to create a new key for them in the item sections. Every player that has a key in their inventory can lock or unlock matching doors and tokens with a right-click. Locked tokens can not be looted. Players can attempt to pick a lock by shift+right-clicking a lock.
+A GM can shift+right-click doors and loot containers (PF2e or Item Piles) to create a new key for them in the item sections. Every player that has a key in their inventory can lock or unlock matching doors and tokens with a right-click. Locked tokens can not be looted. Players can attempt to pick a lock by shift+right-clicking a lock and try to break a lock by alt+right-clicking it.
 
 #### GM controls
 
@@ -30,16 +30,24 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Type of key items: to change the item type of newly created keys
 - Lockpick item: name or compendium id of the item used to pick locks
 - Lockpick roll formula: the dice formula used for lockpick rolls
+- Break lock roll formula: the dice formula used for break lock rolls
+- Make broken locks unlockable: to prevent locks from being locked once they are broken
 #### Client:
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
 #### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
-#### Walls/Tokens(separate tab):
-- [Token only] Lockable: if this token can be locked
+#### Walls/Lockable Tokens(separate tab):
+- Lockable: if this token can be locked
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Lock DC: the difficulty class of a lock, used for lockpicking
+- Lock break DC: the difficulty class to break a lock
+#### Tokens/Items:
+- Lockpick formula: an additional formula added to lockpicking rolls
+- Override Lockpick formula: to override the standard formula for this token/the owner (for items only the best formula in the inventory is used)
+- Break lock formula: an additional formula added to break lock rolls
+- Override Break lock formula: to override the standard formula for this token/the owner (for items only the best formula in the inventory is used)
 
 ### Compatibility:
 
