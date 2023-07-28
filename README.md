@@ -44,10 +44,10 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Lock break DC: the difficulty class to break a lock
 #### Tokens/Items:
-- Lockpick formula: an additional formula added to lockpicking rolls
-- Override Lockpick formula: to override the standard formula for this token/the owner (for items only the best formula in the inventory is used)
-- Break lock formula: an additional formula added to break lock rolls
-- Override Break lock formula: to override the standard formula for this token/the owner (for items only the best formula in the inventory is used)
+- Lockpick formula: an additional formula added to lockpicking rolls (for items only the best formula in the inventory is used)
+- Override Lockpick formula: to override the standard formula for this token/the owner
+- Break lock formula: an additional formula added to break lock rolls (for items only the best formula in the inventory is used)
+- Override Break lock formula: to override the standard formula for this token/the owner
 
 ### Compatibility:
 
