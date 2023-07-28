@@ -17,13 +17,22 @@
 			"unlockedToken"					: "{pLockName} is now unlocked",
 			"GamePaused"					: "The game is paused",
 			"noLockPickItem"				: "No lock pick in inventory",
-			"pickLockfailed"				: "Failed to pick lock"
+			"pickLockfailed"				: "Failed to pick lock",
+			"cantLock" : {
+				"deafult"					: "This lock cant be locked",
+				"break"						: "This lock is alread open"
+			},
+			"breakLockfailed"				: "Failed to break lock",
+			"NotaLock"						: "Not a lock"
 		},	
 		
 		"ChatMessage" : {
 			"LockPick"						: "{pName} tried to pick a lock:",
 			"LockPicksuccess"				: "{pName} succeeded at picking the lock",
-			"LockPickfail"					: "{pName} failed at picking the lock"
+			"LockPickfail"					: "{pName} failed at picking the lock",
+			"LockBreak"						: "{pName} tried to break a lock:",
+			"LockBreaksuccess"				: "{pName} succeeded at breaking the lock",
+			"LockBreakfail"					: "{pName} failed to break the lock"
 		},
 		
 		"Settings" : {
@@ -82,6 +91,16 @@
 				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
 			},
 			
+			"LockBreakFormula" : {
+				"name" 					: "Break lock roll formula",
+				"descrp"				: "The formula which is used for dice rolls when breaking a lock (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", help can be found on the Github page of this module)"				
+			},
+			
+			"LockBreakunlockable" : {
+				"name" 					: "Make broken locks unlockable",
+				"descrp"				: "Makes lock that have been broken unlockable"				
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
@@ -115,7 +134,44 @@
 			"LockDCFlag" : {
 				"name" 					: "Lock DC",
 				"descrp"				: "The difficulty class of this Lock, used for lockpicking (-1 to prevent lockpicking)"					
-			}
+			},
+			
+			"LockBreakDCFlag" : {
+				"name" 					: "Lock break DC",
+				"descrp"				: "The difficulty class to break this lock (-1 to prevent breaking)"					
+			},
+			
+			"LPFormulaFlag" : {
+				"name" 					: "Lockpick formula",
+				"descrp" : {
+					"token" 			: "The formula added to Lockpick rolls this token makes",
+					"item"				: "The formula added to Lockpick rolls the owner of this item makes (only best in inventory used)"
+				}			
+			},
+			
+			"LPFormulaOverrideFlag" : {
+				"name" 					: "Override Lockpick formula",
+				"descrp" : {
+					"token" 			: "If this tokens Lockpick formula overrides the world formula",
+					"item"				: "If this items Lockpick formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"LBFormulaFlag" : {
+				"name" 					: "Break lock formula",
+				"descrp" : {
+					"token" 			: "The formula added to Breack lock rolls this token makes",
+					"item"				: "The formula added to Breack lock rolls the owner of this item makes (only best in inventory used)"
+				}					
+			},
+			
+			"LBFormulaOverrideFlag" : {
+				"name" 					: "Override Break lock formula",
+				"descrp" : {
+					"token" 			: "If this tokens Break lock formula overrides the world formula",
+					"item"				: "If this items Break lock formula overrides the tokens/worlds formula"
+				}				
+			}		
 		},
 		
 		"Context" : {
@@ -130,10 +186,17 @@
 		"Text" : {
 			"GMControls" : {
 				"line0"					: "GM controls:",
-				"line1" 				: "•alt+right-click to create a new key for the lock",
-				"line2" 				: "•alt+left-click to toggle token lock (*)",
+				"line1" 				: "•shift+right-click to create a new key for the lock",
+				"line2" 				: "•alt+right-click to toggle token lock (*)",
 				"line3" 				: "•ctrl+right-click to copy the locks key IDs (*)",
 				"line4" 				: "•ctrl+left-click to paste key IDs into the lock (*)"
+			},
+			
+			"PlayerControls" : {
+				"line0"					: "Player controls:",
+				"line1" 				: "•right-click to try to use a key on a lock",
+				"line2" 				: "•shift+right-click to try to pick a lock",
+				"line3" 				: "•alt+right-click to try to break a lock"
 			}
 		}
 	}

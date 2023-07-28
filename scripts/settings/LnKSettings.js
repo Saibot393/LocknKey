@@ -173,7 +173,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		
 		//player controlls
 		vnewHTML = ``;
-		for (let i = 0; i <= 4; i++) {
+		for (let i = 0; i <= 3; i++) {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
 		}
 		

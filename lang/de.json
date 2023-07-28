@@ -17,13 +17,22 @@
 			"unlockedToken"					: "{pLockName} ist nun unverschlossen",
 			"GamePaused"					: "Das Spiel ist pausiert"
 			"noLockPickItem"				: "Keinen Dietrich im Inventar",
-			"pickLockfailed"				: "Schloss knacken fehlgeschlagen"
+			"pickLockfailed"				: "Schloss knacken fehlgeschlagen",
+			"cantLock" : {
+				"deafult"					: "Schloss kann nicht verschlossen werden",
+				"break"						: "Schloss ist bereits offen"
+			},
+			"breakLockfailed"				: "Schloss aufbrechen fehlgeschlagen",
+			"NotaLock"						: "Kein Schloss"
 		},	
 		
 		"ChatMessage" : {
 			"LockPick"						: "{pName} hat versucht ein Schloss zu knacken:",
 			"LockPicksuccess"				: "{pName} hat das Schloss erfolgreich geknackt",
-			"LockPickfail"					: "{pName} hat des Schloss nicht knacken können"
+			"LockPickfail"					: "{pName} hat das Schloss nicht knacken können",
+			"LockBreak"						: "{pName} hat versucht ein Schloss aufzubrechen:",
+			"LockBreaksuccess"				: "{pName} hat das Schloss erfolgreich aufgebrochen",
+			"LockBreakfail"					: "{pName} hat das Schloss nicht aufbrechen können"
 		},
 		
 		"Settings" : {
@@ -82,6 +91,16 @@
 				"descrp"				: "Die Würfelformel welche für Schlossknack-Würfe verwendet wird (z.B. \"1d20 + @actor.skills.thievery.mod\", hilfe auf der Github-Seite des Moduls zu finden)"				
 			},
 			
+			"LockBreakFormula" : {
+				"name" 					: "Schloss aufbrechen Wurfformel",
+				"descrp"				: "Die Würfelformel welche für Schloss-aufbrechen-Würfe verwendet wird (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", hilfe auf der Github-Seite des Moduls zu finden)"				
+			},
+			
+			"LockBreakunlockable" : {
+				"name" 					: "Aufgebrochene Schlösser sind unabschließbar",
+				"descrp"				: "Mache Schlösser welche aufgebrochen wurden unabschließbar"				
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Text popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
@@ -115,6 +134,43 @@
 			"LockDCFlag" : {
 				"name" 					: "Schloss SG",
 				"descrp"				: "Der Schwierigkeitsgrad dieses Schlosses (-1 um das Knacken zu verhindern)"					
+			},
+			
+			"LockBreakDCFlag" : {
+				"name" 					: "Schloss aufbruch SG",
+				"descrp"				: "Der Schwierigkeitsgrad um dieses Schloss aufzubrechen (-1 um aufbrechen zu verhindern)"					
+			},
+			
+			"LPFormulaFlag" : {
+				"name" 					: "Schlossknack Wurfformel",
+				"descrp" : {
+					"token" 			: "Die Formel welche Schlossknack Würfen dieser Figur hinzugefügt wird",
+					"item"				: "Die Formel welche Schlossknack Würfen des Besitzers dieses Gegenstandes hinzugefügt wird (nur das beste im Inventar wird genutzt)"
+				}			
+			},
+			
+			"LPFormulaOverrideFlag" : {
+				"name" 					: "Überschreibe Schlossknack Wurfformel",
+				"descrp" : {
+					"token" 			: "Ob die Schlossknack Wurfformel dieser Figur die Weltformel überschreibt",
+					"item"				: "Ob die Schlossknack Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
+				}				
+			},
+			
+			"LBFormulaFlag" : {
+				"name" 					: "Schloss aufbrechen Wurfformel",
+				"descrp" : {
+					"token" 			: "Die Formel welche Schloss aufbrech Würfen dieser Figur hinzugefügt wird",
+					"item"				: "Die Formel welche Schloss aufbrech Würfen des Besitzers dieses Gegenstandes hinzugefügt wird (nur das beste im Inventar wird genutzt)"
+				}					
+			},
+			
+			"LBFormulaOverrideFlag" : {
+				"name" 					: "Überschreibe Schloss aufbrechen Wurfformel",
+				"descrp" : {
+					"token" 			: "Ob die Schloss aufbrechen Wurfformel dieser Figur die Weltformel überschreibt",
+					"item"				: "Ob die Schloss aufbrechen Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
+				}				
 			}
 		},
 		
@@ -129,11 +185,18 @@
 		
 		"Text" : {
 			"GMControls" : {
-				"line0"					: "SL Befehle:",
-				"line1" 				: "•alt+right-click um einen neuen Schlüssel für ein Schloss zu erschaffen",
-				"line2" 				: "•alt+left-click um ein Lock auf-/ab-zuschließen (*)",
+				"line0"					: "SL Steuerung:",
+				"line1" 				: "•shift+right-click um einen neuen Schlüssel für ein Schloss zu erschaffen",
+				"line2" 				: "•alt+right-click um ein Lock auf-/ab-zuschließen (*)",
 				"line3" 				: "•ctrl+right-click um die Schlüssel IDs des Schlosses zu kopieren (*)",
 				"line4" 				: "•ctrl+left-click um die Schlüssel IDs in das Schloss einzufügen (*)"
+			},
+			
+			"PlayerControls" : {
+				"line0"					: "GM controls:",
+				"line1" 				: "•right-click um zu versuchen einen Schlüssel mit einem Schloss zu benutzen",
+				"line2" 				: "•shift+right-click um zu versuchen ein Schloss zu knacken",
+				"line3" 				: "•alt+right-click um zu versuchen ein Schloss aufzubrechen"
 			}
 		}
 	}
