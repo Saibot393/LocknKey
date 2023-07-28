@@ -1,4 +1,5 @@
 import { cModuleName, Translate, LnKutils} from "../utils/LnKutils.js";
+import { LnKSystemutils} from "../utils/LnKSystemutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
@@ -83,7 +84,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: String,
-	default: LnKutils.Systemdefaultitemtype()
+	default: LnKSystemutils.Systemdefaultitemtype()
   }); 
   
   game.settings.register(cModuleName, "LockPickItem", {
@@ -92,7 +93,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: String,
-	default: LnKutils.SystemdefaultLockPickItem()
+	default: LnKSystemutils.SystemdefaultLockPickItem()
   }); 
   
   game.settings.register(cModuleName, "LockPickFormula", {
@@ -101,7 +102,25 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: String,
-	default: LnKutils.SystemdefaultLPformula()
+	default: LnKSystemutils.SystemdefaultLPformula()
+  }); 
+  
+  game.settings.register(cModuleName, "LockBreakFormula", {
+	name: Translate("Settings.LockBreakFormula.name"),
+	hint: Translate("Settings.LockBreakFormula.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKSystemutils.SystemdefaultLBformula()
+  }); 
+  
+  game.settings.register(cModuleName, "LockBreakunlockable", {
+	name: Translate("Settings.LockBreakunlockable.name"),
+	hint: Translate("Settings.LockBreakunlockable.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: true
   }); 
   
   //client
@@ -142,7 +161,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.LockPickFormula"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.LockBreakunlockable"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `
@@ -151,5 +170,13 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 					`;
 		 
 		pHTML.find('input[name="' + cModuleName + '.MessagePopUps"]').closest(".form-group").before(vnewHTML);
+		
+		//player controlls
+		vnewHTML = ``;
+		for (let i = 0; i <= 4; i++) {
+			vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
+		}
+		
+		pHTML.find('input[name="' + cModuleName + '.PlayLockSounds"]').closest(".form-group").after(vnewHTML);
 	}
 });

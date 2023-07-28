@@ -101,6 +101,14 @@ class LnKSheetSettings {
 							</fieldset>`;
 							
 		vprevElement.after(vNewSection);
+		
+		//setting wall is lockable
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
+												vhint : Translate("SheetSettings."+ cLockableF +".descrp.wall"), 
+												vtype : "checkbox", 
+												vvalue : LnKFlags.isLockable(pApp.object),
+												vflagname : cLockableF
+												}, `fieldset.${cModuleName}-options`);
 						
 		//Lock standard settings
 		LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `fieldset.${cModuleName}-options`);
@@ -141,7 +149,7 @@ class LnKSheetSettings {
 			
 			//setting token is lockable
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
-													vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
+													vhint : Translate("SheetSettings."+ cLockableF +".descrp.token"), 
 													vtype : "checkbox", 
 													vvalue : LnKFlags.isLockable(pApp.token),
 													vflagname : cLockableF

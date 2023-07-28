@@ -1,4 +1,5 @@
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
+import { LnKSystemutils, cPf2eLoottype, cLockTypeLootPf2e } from "./LnKSystemutils.js";
 import { Geometricutils } from "./Geometricutils.js";
 
 //CONSTANTS
@@ -14,22 +15,8 @@ const cFormulaOperators = "+-*/%";
 
 const cSimCount = 500; //how many times rolls should be simulated to calculate the average (keep as low as possible)
 
-//System names
-const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
-const cPf1eName = "pf1"; //name of Pathfinder 1. edition system
-const cDnD5e = "dnd5e"; //name of D&D 5e system
-const cAdvanced5e = "a5e"; //name of the advanced D&D 5e system
-const cStarFinderName = "sfrpg"; //name of Starfinder system
-const c13thage = "archmage"; //name of the 13th age system
-const cCoC7 = "CoC7"; //name of call of cthulhu 7 system
-const cWarhammer4e = "wfrp4e"; //name of the warhammer 4e system
-const cDarkEye5e = "dsa5"; //name of the black eye 5e system
-const cBitD = "blades-in-the-dark"; //name of the blades in the dark system
-const cCyberpunkRED = "cyberpunk-red-core"; //name of the cyberpunk red core system
-
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
-const cLockTypeLootPf2e = "LTLootPf2e"; //type for Token
 
 const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 
@@ -37,11 +24,9 @@ const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 const cLUisGM = "LockuseGM"; //if a Lock is used by a GM
 const cLUuseKey = "LockuseKey"; //if a Key is used on a lock
 const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
+const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
 
-//Tokentype
-const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
-
-export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUpickLock}
+export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUpickLock, cLUbreakLock}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
@@ -54,17 +39,7 @@ function Translate(pName, pWords = {}){
 }
 
 class LnKutils {
-	//DELCARATIONS	
-	//Identification
-	static isPf2e() {} //used for special Pf2e functions
-	
-	//system defaults
-	static Systemdefaultitemtype() {} //returns the default type of item for keys in the current system
-	
-	static SystemdefaultLockPickItem() {} //returns the default Lock Pick item in the current system
-	
-	static SystemdefaultLPformula() {} //returns the default formula for Lock Picking in the current system
-	
+	//DELCARATIONS		
 	//ID handling
 	static TokenfromID (pID, pScene = null) {} //returns the Token matching pID
 	
@@ -96,6 +71,8 @@ class LnKutils {
 	
 	static LockPickItemsin(pInventory) {} //returns all valid Lock pick items in pInventory
 	
+	static LockBreakItemsin(pInventory) {} //returns all valid Lock break items in pInventory
+	
 	//locks
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
 	
@@ -106,6 +83,8 @@ class LnKutils {
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
 	static isWall(pObject) {} //returns if pObject is a Wall
+	
+	static DoorisLocked(pDoor) {} //returns of pDoor is locked
 	
 	static isToken(pObject) {} //returns if pObject is a Token
 	
@@ -118,6 +97,10 @@ class LnKutils {
 	static successDegree(pRollresult, pDC) {} //returns the degree of success of pRollresult based on the pDC and the world crit settings
 	
 	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
+	
+	static LBformulaWorld() {} //returns the worlds formula used for Lock breaking rolls
+	
+	static formulaWorld(pType) {} //returns the worlds formula used for pType [cLUpickLock, cLUbreakLock]
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
@@ -134,93 +117,6 @@ class LnKutils {
 	static async HighestExpectedRollID(pRolls, pData = {}) {} //takes an array of rolls and returs the id of the highest expected roll result
 	
 	//IMPLEMENTATIONS
-	//Identification	
-	static isPf2e() {
-		return game.system.id === cPf2eName;
-	}
-	
-	//system defaults
-	static Systemdefaultitemtype() {
-		switch (game.system.id) {
-			case cPf2eName:
-				return "equipment";
-				break;
-			case cDnD5e:
-				return "tool";
-			case cStarFinderName:
-				return "technological";
-				break;
-			case cAdvanced5e:
-				return "object";
-				break;
-			case c13thage:
-				return "tool";
-				break;
-			case cCoC7:
-				return "item";
-				break;
-			case cWarhammer4e:
-				return "cargo";
-				break;
-			case cDarkEye5e:
-				return "equipment";
-				break;
-			case cPf1eName:
-				return "equipment";
-				break;
-			case cBitD:
-				return "item";
-				break;
-			case cCyberpunkRED:
-				return "gear";
-				break;
-			default:
-				//default fall backs
-				if (game.items.documentClass.TYPES.includes("object")) {
-					return "object"
-				}
-				if (game.items.documentClass.TYPES.includes("item")) {
-					return "item"
-				}
-				if (game.items.documentClass.TYPES.includes("tool")) {
-					return "tool"
-				}
-				if (game.items.documentClass.TYPES.includes("equipment")) {
-					return "equipment"
-				}
-				return game.items.documentClass.TYPES[0];
-				break;
-		}
-	}
-	
-	static SystemdefaultLockPickItem() {
-		switch (game.system.id) {
-			case cPf2eName:
-				return "zvLyCVD8g2PdHJAc";
-				break;
-			case cDnD5e:
-				return "woWZ1sO5IUVGzo58";
-				break;
-			case cPf1eName:
-				return "Tools, Thieves'";
-				break;
-			default:
-				return "";
-		}		
-	}
-	
-	static SystemdefaultLPformula() {
-		switch (game.system.id) {
-			case cPf2eName:
-				return "1d20 + @actor.skills.thievery.mod";
-				break;
-			case cDnD5e:
-				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.total";
-				break;
-			default:
-				return "";
-		}
-	}
 	
 	//ID handling
 	static TokenfromID (pID, pScene = null) {
@@ -327,7 +223,7 @@ class LnKutils {
 			return game.settings.get(cModuleName, "KeyItemtype")
 		}
 		else {
-			return LnKutils.Systemdefaultitemtype();
+			return LnKSystemutils.Systemdefaultitemtype();
 		}
 	}
 	
@@ -340,7 +236,7 @@ class LnKutils {
 			return game.settings.get(cModuleName, "LockPickItem").split(cDelimiter)
 		}
 		else {
-			return LnKutils.SystemdefaultLockPickItem().split(cDelimiter);
+			return LnKSystemutils.SystemdefaultLockPickItem().split(cDelimiter);
 		}
 	}
 	
@@ -350,16 +246,17 @@ class LnKutils {
 	}
 	
 	static hasLockPickItem(pInventory) {
+		console.log(LnKutils.LockPickItems());
 		if (LnKutils.LockPickItems().find(vElement => vElement == cEmptySymbol)) {
 			//Lock pick item is disabled
 			return true;
 		}
-		
+
 		if (LnKutils.LockPickItems().length == 0) {
 			//No pick item defined
 			return false;
 		}
-		
+
 		return pInventory.find(vItem => LnKutils.isLockPickItem(vItem));
 	}
 	
@@ -381,7 +278,7 @@ class LnKutils {
 			}
 			
 			if (LnKutils.isToken(pDocument)) {
-				if (LnKutils.isPf2e()) {
+				if (LnKSystemutils.isPf2e()) {
 					if (pDocument.actor.type == cPf2eLoottype) {
 						return cLockTypeLootPf2e;
 					}
@@ -406,6 +303,10 @@ class LnKutils {
 	
 	static isWall(pObject) {
 		return Boolean(pObject.collectionName == "walls");
+	}
+	
+	static DoorisLocked(pDoor) {
+		return (pDoor.ds == 2);
 	}
 	
 	static isToken(pObject) {
@@ -449,7 +350,30 @@ class LnKutils {
 			return game.settings.get(cModuleName, "LockPickFormula");
 		}
 		else {
-			return LnKutils.SystemdefaultLPformula();
+			return LnKSystemutils.SystemdefaultLPformula();
+		}
+	}
+	
+	static LBformulaWorld() {
+		if (game.settings.get(cModuleName, "LockBreakFormula").length) {
+			return game.settings.get(cModuleName, "LockBreakFormula");
+		}
+		else {
+			return LnKSystemutils.SystemdefaultLBformula();
+		}		
+	}
+	
+	static formulaWorld(pType) {
+		switch (pType) {
+			case cLUpickLock:
+				return LnKutils.LPformulaWorld();
+				break;
+			case cLUbreakLock:
+				return LnKutils.LBformulaWorld();
+				break;
+			default:
+				return "";
+				break;
 		}
 	}
 	
@@ -518,7 +442,7 @@ class LnKutils {
 	static async HighestExpectedRollID(pRolls, pData = {}) {
 		if (pRolls.length = 1) {
 			//no comparison necessary
-			return pRolls[0];
+			return 0;
 		}
 		
 		let vID = 0;

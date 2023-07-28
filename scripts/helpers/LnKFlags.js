@@ -1,5 +1,5 @@
 import { cModuleName } from "../utils/LnKutils.js";
-import { LnKutils } from "../utils/LnKutils.js";
+import { LnKutils, cLUpickLock, cLUbreakLock } from "../utils/LnKutils.js";
 
 const cDelimiter = ";";
 
@@ -24,14 +24,16 @@ var cIDKeyBuffer; //saves the coppied IDkeys
 class LnKFlags {
 	//DECLARATIONS
 	//basic
-	static async MackeLockable(pObject) {} //makes pObject Lockable (starts in unlocked state)
+	static async MackeLockable(pObject) {} //makes pObject Lockable (starts in unlocked state except for doors)
+	
+	static async disableLock(pObject) {} //makes pObject not Lockable
 	
 	static async setLockedstate(pObject, pState) {} //sets pObject Locked state to pState (if pObject is Lockable)
 	
 	static async invertLockedstate(pObject) {} //inverts pObject Locked state (if pObject is Lockable)
 	
 	static isLockable(pObject) {} //returns if the object is already made Lockable
-	
+		
 	static isLocked(pObject) {} //returns if pObject is locked (false if not Lockable)
 	
 	static changeLockPicksuccesses(pObject, pdelta) {} //changes the locks current successes by pdelta and returns true if this was enough to change locked state
@@ -52,6 +54,8 @@ class LnKFlags {
 	
 	static LockBreakDC(pLock, praw = false) {} //returns the LockBreakDC of pLock (return Infinity should DC<0 if not praw)
 	
+	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock] (return Infinity should DC<0 if not praw)
+	
 	//Formulas
 	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
 	
@@ -64,6 +68,12 @@ class LnKFlags {
 	static HasLBFormula(pObject) {} //returns if the Token/Item has a Lock Break Formula
 	
 	static LBFormulaOverride(pObject) {} //if this objects LB formula overrides the global formula
+	
+	static Formula(pObject, pType) {} //returns the Tokens/Items Formula for pTpye [cLUpickLock, cLUbreakLock]
+	
+	static HasFormula(pObject, pType) {} //returns if the Token/Item has a Formula for pTpye [cLUpickLock, cLUbreakLock]
+	
+	static FormulaOverride(pObject, pType) {} //if this objects Formula for pTpye [cLUpickLock, cLUbreakLock] overrides the global formula
 	
 	//IMPLEMENTATIONS
 	
@@ -102,7 +112,7 @@ class LnKFlags {
 			}
 		}
 		
-		return false; //default if anything fails
+		return (false || LnKutils.isWall(pObject)); //default if anything fails (walls are Lockable by default)
 	} 
 	
 	static #LockedFlag (pObject) { 
@@ -297,15 +307,24 @@ class LnKFlags {
 	static async MackeLockable(pObject) {
 		if (!this.#LockableFlag(pObject)) {
 			//only change anything if not already lockable
-			this.#setLockableFlag(pObject, true);
+			await this.#setLockableFlag(pObject, true);
 			
-			this.#setLockedFlag(pObject, game.settings.get(cModuleName, "startasLocked"));
+			await this.#setLockedFlag(pObject, game.settings.get(cModuleName, "startasLocked"));
 		}
 	}
 	
+	static async disableLock(pObject) {
+		if (this.#LockableFlag(pObject)) {
+			//only change anything if not already lockable
+			await this.#setLockableFlag(pObject, false);
+			
+			await this.#setLockedFlag(pObject, false);
+		}		
+	}
+		
 	static async setLockedstate(pObject, pState) {
 		if (this.#LockableFlag(pObject)) {
-			this.#setLockedFlag(pObject, pState);
+			await this.#setLockedFlag(pObject, pState);
 		}
 	}
 	
@@ -315,11 +334,11 @@ class LnKFlags {
 		}
 	}
 	
-	static isLockable(pObject) {
+	static isLockable(pObject) {	
 		return this.#LockableFlag(pObject) && LnKutils.isLockCompatible(pObject);
 	}
 	
-	static isLocked(pObject) {
+	static isLocked(pObject) {		
 		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject))
 	}
 	
@@ -386,6 +405,20 @@ class LnKFlags {
 		return vDC;
 	}
 	
+	static LockDCtype(pLock, pType, praw = false) {
+		switch (pType) {
+			case cLUpickLock:		
+				return LnKFlags.LockDC(pLock, praw);
+				break;
+			case cLUbreakLock:
+				return LnKFlags.LockBreakDC(pLock, praw);
+				break;
+			default:
+				return false;
+				break;
+		}
+	}
+	
 	//Formulas
 	static LPFormula(pObject) {
 		return this.#LPFormulaFlag(pObject);
@@ -409,6 +442,48 @@ class LnKFlags {
 	
 	static LBFormulaOverride(pObject) {
 		return this.#LBFormulaOverrideFlag(pObject);
+	}
+	
+	static Formula(pObject, pType) {
+		switch (pType) {
+			case cLUpickLock:		
+				return LnKFlags.LPFormula(pObject);
+				break;
+			case cLUbreakLock:
+				return LnKFlags.LBFormula(pObject);
+				break;
+			default:
+				return "";
+				break;
+		}
+	}
+	
+	static HasFormula(pObject, pType) {
+		switch (pType) {
+			case cLUpickLock:		
+				return LnKFlags.HasLPFormula(pObject);
+				break;
+			case cLUbreakLock:
+				return LnKFlags.HasLBFormula(pObject);
+				break;
+			default:
+				return false;
+				break;
+		}		
+	}
+	
+	static FormulaOverride(pObject, pType) {
+		switch (pType) {
+			case cLUpickLock:		
+				return LnKFlags.LPFormulaOverride(pObject);
+				break;
+			case cLUbreakLock:
+				return LnKFlags.LBFormulaOverride(pObject);
+				break;
+			default:
+				return false;
+				break;
+		}			
 	}
 }
 

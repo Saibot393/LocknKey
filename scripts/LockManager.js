@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUpickLock } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -9,7 +9,7 @@ class LockManager {
 	//basics
 	static useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
 	
-	static async useLockPick(pLock, pCharacter, pRollresult) {} //handels pLock use of pCharacter with a lock pick and result pRollresults
+	static async circumventLock(pLock, pCharacter, pRollresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
@@ -25,6 +25,8 @@ class LockManager {
 	static async ToggleLock(pLock, pLockusetype) {} //locks or unlocks
 	
 	static async ToggleDoorLock(pDoor, pLockusetype) {} //locks or unlocks pDoor
+	
+	static async onBreakLock(pLock) {} //makes it, so that the Lock is no longer Lockable (if setting is active)
 	
 	static async isUnlocked(pObject, pPopup = false) {} //if pObject is currently unlocked
 	
@@ -50,14 +52,41 @@ class LockManager {
 		};
 	}
 	
-	static async useLockPick(pLock, pCharacter, pRollresult) {
-		if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDC(pLock))) {
-			LockManager.ToggleLock(pLock, cLUpickLock);
-			await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess", {pName : pCharacter.name})}); //CHAT MESSAGE
+	static async circumventLock(pLock, pCharacter, pRollresult, pMethodtype) {
+		if (LnKFlags.isLockable(pLock)) {
+			if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDCtype(pLock, pMethodtype))) {	
+				switch (pMethodtype) {
+							case cLUpickLock:
+								if (LockManager.ToggleLock(pLock, pMethodtype)) {
+									//something could fail during Lock toggle
+									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess", {pName : pCharacter.name})}); //CHAT MESSAGE
+								}
+								break;
+							case cLUbreakLock:
+								if (await LockManager.ToggleLock(pLock, pMethodtype)) {	
+									//something could fail during Lock toggle								
+									await LockManager.onBreakLock(pLock);
+									
+									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreaksuccess", {pName : pCharacter.name})}); //CHAT MESSAGE
+								}
+								break;
+				}
+			}
+			else {
+				switch (pMethodtype) {
+							case cLUpickLock:
+								LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
+								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail", {pName : pCharacter.name})}); //CHAT MESSAGE
+								break;
+							case cLUbreakLock:
+								LnKPopups.TextPopUpID(pLock, "breakLockfailed"); //MESSAGE POPUP
+								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreakfail", {pName : pCharacter.name})}); //CHAT MESSAGE
+								break;
+				}
+			}
 		}
 		else {
-			LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
-			await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail", {pName : pCharacter.name})}); //CHAT MESSAGE
+			LnKPopups.TextPopUpID(pLock, "NotaLock"); //MESSAGE POPUP
 		}
 	}
 	
@@ -81,7 +110,8 @@ class LockManager {
 							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID);
 							break;
 						case cLUpickLock:
-							LockManager.useLockPick(vLock, vCharacter, puseData.Rollresult);
+						case cLUbreakLock:
+							LockManager.circumventLock(vLock, vCharacter, puseData.Rollresult, puseData.useType);
 							break;
 					}
 				}
@@ -136,13 +166,35 @@ class LockManager {
 	
 	//lock type
 	static async ToggleLock(pLock, pLockusetype) {
-		if ((pLockusetype == cLUisGM) || (game.settings.get(cModuleName, "allowLocking") || !LockManager.isUnlocked(pLock))) {
+		let vValidToggle;
+		
+		switch (pLockusetype) {
+			case cLUisGM:
+				vValidToggle = true; //GMs can allways toggle
+				break
+			case cLUbreakLock:
+				vValidToggle = !(await LockManager.isUnlocked(pLock)); //only locked doors can be toggled through break
+				break;
+			case cLUpickLock:
+			case cLUuseKey:
+			default:
+				vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
+				break;
+		}
+		
+		if (vValidToggle) {
 			//if setting is set to false, only GM can lock locks
 			let vLocktype = await LnKutils.Locktype(pLock);
 			
+			if (pLockusetype == cLUisGM) {
+				await LnKFlags.MackeLockable(pLock);
+			}
+			
 			switch(vLocktype) {
 				case cLockTypeDoor:
-					LockManager.ToggleDoorLock(pLock, pLockusetype);
+					await LockManager.ToggleDoorLock(pLock, pLockusetype);
+					
+					return true;
 					break;
 				case cLockTypeLootPf2e:
 				default:
@@ -154,9 +206,27 @@ class LockManager {
 					else {
 						LockManager.onunLock(pLock, pLockusetype);
 					}
+					
+					return true;
 					break;
 			}
 		}
+		else {
+			//give reasons for Invalid
+			if (await LockManager.isUnlocked(pLock)) {
+				switch (pLockusetype) {
+					case cLUbreakLock:
+						LnKPopups.TextPopUpID(pLock, "cantLock.break"); //MESSAGE POPUP
+						break;
+					case cLUpickLock:
+					case cLUuseKey:
+						LnKPopups.TextPopUpID(pLock, "cantLock"); //MESSAGE POPUP
+						break;
+				}
+			}
+		}
+		
+		return false;
 	} 
 	
 	static async ToggleDoorLock(pDoor, pLockusetype) {
@@ -176,6 +246,14 @@ class LockManager {
 				break;
 		}
 	} 
+	
+	static async onBreakLock(pLock) {
+		if (game.settings.get(cModuleName, "LockBreakunlockable")) {
+			await LnKFlags.disableLock(pLock);
+		}
+		
+		//LnKPopups.TextPopUpID(pLock, "brokeLock"); //MESSAGE POPUP
+	}
 	
 	static async isUnlocked(pObject, pPopup = false) {
 		let vLocktype = await LnKutils.Locktype(pObject);
