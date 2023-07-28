@@ -1,3 +1,6 @@
+## v1.4.0 (unreleased)
+- Fixed some Token sheet UI bugs
+
 ## v1.3.0
 - Added Lockable setting to doors (doors are still lockable by GM, independent of this setting)
 - Improved Lockpicking
