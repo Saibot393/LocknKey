@@ -1,6 +1,7 @@
 ## v1.3.0 (unreleased)
 - Fixed bug in Item sheets, that caused tab to reset upon data update
 - Fixed bug that caused popups not to show up for doors
+- Added Lockable setting to doors (doors are still lockable by GM, independent of this setting)
 - Improved Lockpicking
   - World setting Lockpick item now allows for multiple item names/IDs
   - Added on token/item Lockpick formula which will be added to Lockpick rolls
