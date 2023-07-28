@@ -1,6 +1,6 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -116,7 +116,7 @@ class LnKSheetSettings {
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {
 		//setup
-		let vTabbar = pHTML.find(`.sheet-tabs`);
+		let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
 		let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
 		
 		let vTabIcon;
@@ -202,6 +202,14 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.LockBreakDC(pApp.object, true),
 												vflagname : cLockBreakDCF
 												}, pto);
+										
+		//setting for current of required successes
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
+												vhint : Translate("SheetSettings."+ crequiredLPsuccessF +".descrp"), 
+												vtype : "numberpart", 
+												vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
+												vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
+												}, pto);	
 	} 
 	
 	static AddFormulastandardsettings(pApp, pHTML, pData, pType, pto) {
@@ -323,6 +331,9 @@ class LnKSheetSettings {
 				}
 				
 				vnewHTML = vnewHTML + `</select>`;
+				break;
+			case "numberpart":
+				vnewHTML = vnewHTML + `<input type=number name="flags.${cModuleName}.${vflagname[0]}" value="${vvalue[0]}"><label>/</label><input type=number name="flags.${cModuleName}.${vflagname[1]}" value="${vvalue[1]}">`;
 				break;
 		}
 			

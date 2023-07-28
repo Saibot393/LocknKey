@@ -4,7 +4,9 @@
 			"LocknKey"					: "Lock & Key",
 			"WorldSettings"				: "Welt Einstellungen (nur SL)",
 			"ClientSettings"			: "Spieler Einstellungen",
-			"GMonly"					: "nur SL"
+			"GMonly"					: "nur SL",
+			"LockTokens"				: "Schloss Einstellungen",
+			"CharacterTokens"			: "Charakter Einstellungen"
 		},
 		
 		"Popup" : {

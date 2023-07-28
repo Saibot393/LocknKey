@@ -4,7 +4,9 @@
 			"LocknKey"					: "Lock & Key",
 			"WorldSettings"				: "World settings (GM only)",
 			"ClientSettings"			: "Client settings",
-			"GMonly"					: "GM only"
+			"GMonly"					: "GM only",
+			"LockTokens"				: "Lock settings",
+			"CharacterTokens"			: "Character settings"
 		},
 		
 		"Popup" : {

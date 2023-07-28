@@ -16,7 +16,7 @@ const cLockBreakDCF = "LockBreakDCFlag"; //the dc of the lock (for lock picking)
 const cLBFormulaF = "LBFormulaFlag"; //the Formula the token/item adds to LockBreak rolls
 const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormulaFlag overrides the global formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF }
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -55,6 +55,11 @@ class LnKFlags {
 	static LockBreakDC(pLock, praw = false) {} //returns the LockBreakDC of pLock (return Infinity should DC<0 if not praw)
 	
 	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock] (return Infinity should DC<0 if not praw)
+	
+	//Lock progress
+	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
+	
+	static currentLPsuccess(pLock) {} //returns the current LP successes of this lock
 	
 	//Formulas
 	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
@@ -417,6 +422,15 @@ class LnKFlags {
 				return false;
 				break;
 		}
+	}
+	
+	//Lock progress
+	static requiredLPsuccess(pLock) {
+		return this.#requiredLPsuccessFlag(pLock);
+	}
+	
+	static currentLPsuccess(pLock) {
+		return this.#currentLPsuccessFlag(pLock);
 	}
 	
 	//Formulas
