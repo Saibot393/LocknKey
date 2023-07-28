@@ -1,4 +1,4 @@
-## v1.3.0 (unreleased)
+## v1.3.0
 - Added Lockable setting to doors (doors are still lockable by GM, independent of this setting)
 - Improved Lockpicking
   - World setting Lockpick item now allows for multiple item names/IDs
