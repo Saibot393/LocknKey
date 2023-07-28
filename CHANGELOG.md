@@ -1,6 +1,4 @@
 ## v1.3.0 (unreleased)
-- Fixed bug in Item sheets, that caused tab to reset upon data update
-- Fixed bug that caused popups not to show up for doors
 - Added Lockable setting to doors (doors are still lockable by GM, independent of this setting)
 - Improved Lockpicking
   - World setting Lockpick item now allows for multiple item names/IDs
@@ -14,6 +12,9 @@
   - Added on token/item Lockbreak formula setting which will be added to Lockpick rolls
   - Added Lockbreak formula override setting to tokens, which will override the worlds Lockpick formula instead of appending it
   - Added Lockbreak formula override setting to items, which will override the worlds and the tokens Lockpick formula instead of appending it
+- Lock settings will only show up in lockable tokens
+- Fixed bug in Item sheets, that caused tab to reset upon data update
+- Fixed bug that caused popups not to show up for doors
 
 ## v1.2.2
 - Improved Arms reach integration
