@@ -82,8 +82,8 @@
 			},
 			
 			"LockPickItem" : {
-				"name" 					: "Lockpick item",
-				"descrp"				: "Name or compendium ID (empfohlen) of a lockpick item, \"-\" if no item is necessary"		
+				"name" 					: "Lockpick items",
+				"descrp"				: "Names or compendium IDs (recommended) of a lockpicking items, \"-\" if no item is necessary (seperated with \";\")"		
 			},
 			
 			"LockPickFormula" : {

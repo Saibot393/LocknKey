@@ -82,8 +82,8 @@
 			},
 			
 			"LockPickItem" : {
-				"name" 					: "Dietrich Gegenstand",
-				"descrp"				: "Der Name or die Kompendiums ID (empfohlen) eines Gegenstandes welcher zum Schlösserknacken benutzt werden kann, \"-\" sollte kein Gegenstand gebraucht werden"		
+				"name" 					: "Dietrich Gegenstände",
+				"descrp"				: "Die Namen oder die Kompendium IDs (empfohlen) der Gegenstände welche zum Schlösserknacken benutzt werden können, \"-\" sollte kein Gegenstand gebraucht werden (seperated with \";\")"		
 			},
 			
 			"LockPickFormula" : {
