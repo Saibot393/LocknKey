@@ -8,6 +8,8 @@
   - Before a lock can be locked/unlocked this many successes have to be accumulated
   - Crits will count as two successes
   - Also shows the GM how many successes have already been accumulated and allows GMs to change this number
+- Added World setting Remove Lockpick on critical fail
+- Added Key setting Remove on use to remove the key on use (or reduce the stack by one)
 - Fixed some Token sheet UI bugs
 
 ## v1.3.0
