@@ -87,6 +87,20 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.Systemdefaultitemtype()
   }); 
   
+  game.settings.register(cModuleName, "CritMethod", {
+	name: Translate("Settings.CritMethod.name"),
+	hint: Translate("Settings.CritMethod.descrp"),
+	scope: "client",
+	config: true,
+	type: String,
+	choices: {
+		"CritMethod-noCrit": Translate("Settings.CritMethod.options.noCrit"),
+		"CritMethod-natCrit": Translate("Settings.CritMethod.options.natCrit"),
+		"CritMethod-natCritpm10": Translate("Settings.CritMethod.options.natCritpm10")
+	},
+	default: "CritMethod-natCrit"
+  });
+  
   game.settings.register(cModuleName, "LockPickItem", {
 	name: Translate("Settings.LockPickItem.name"),
 	hint: Translate("Settings.LockPickItem.descrp"),
@@ -95,20 +109,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: String,
 	default: LnKSystemutils.SystemdefaultLockPickItem()
   });  
-  
-  game.settings.register(cModuleName, "CritMethod", {
-	name: Translate("Settings.CritMethod.name"),
-	hint: Translate("Settings.CritMethod.descrp"),
-	scope: "client",
-	config: true,
-	type: String,
-	choices: {
-		"CritMethod-noCrit": Translate("Settings.RiderMovement.options.noCrit"),
-		"CritMethod-natCrit": Translate("Settings.RiderMovement.options.natCrit"),
-		"CritMethod-natCritpm10": Translate("Settings.RiderMovement.options.natCritpm10")
-	},
-	default: "CritMethod-natCrit"
-  });
   
   game.settings.register(cModuleName, "RemoveLPoncritFail", {
 	name: Translate("Settings.RemoveLPoncritFail.name"),

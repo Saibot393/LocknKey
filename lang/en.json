@@ -6,7 +6,9 @@
 			"ClientSettings"			: "Client settings",
 			"GMonly"					: "GM only",
 			"LockTokens"				: "Lock settings",
-			"CharacterTokens"			: "Character settings"
+			"CharacterTokens"			: "Character settings",
+			"KeyItems"					: "Key settings",
+			"LPItems"					: "Lock manipulations settings"
 		},
 		
 		"Popup" : {
@@ -95,10 +97,25 @@
 				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
 			},
 			
+			"CritMethod" : {
+				"name" 					: "Crit system",
+				"descrp"				: "The way critical rolls are determined",
+				"options" : {
+					"noCrit"			: "No crits",
+					"natCrit"			: "Nat 1/20",
+					"natCritpm10"		: "Nat 1/20 & +-10 of DC [e.g. Pf2e]"
+				}
+			},
+			
 			"LockPickItem" : {
 				"name" 					: "Lockpick items",
 				"descrp"				: "Names or compendium IDs (recommended) of a lockpicking items, \"-\" if no item is necessary (seperated with \";\")"		
 			},
+			
+			"RemoveLPoncritFail" : {
+				"name" 					: "Remove Lockpick on critical fail",
+				"descrp"				: "If the used Lockpick is removed on a critical fail (or if the stack is reduced by 1)"		
+			},	
 			
 			"LockPickFormula" : {
 				"name" 					: "Lockpick roll formula",
@@ -145,6 +162,11 @@
 				}
 			},
 			
+			"RemoveKeyonUseFlag" : {
+				"name" 					: "Remove key on use",
+				"descrp"				: "If this key is removed on use (or the stack is reduced by one)"					
+			},			
+			
 			"LockDCFlag" : {
 				"name" 					: "Lock DC",
 				"descrp"				: "The difficulty class of this Lock, used for lockpicking (-1 to prevent lockpicking)"					
@@ -153,6 +175,11 @@
 			"LockBreakDCFlag" : {
 				"name" 					: "Lock break DC",
 				"descrp"				: "The difficulty class to break this lock (-1 to prevent breaking)"					
+			},
+			
+			"requiredLPsuccessFlag" : {
+				"name" 					: "Required Lockpicking successes",
+				"descrp"				: "How many Lockpicking successes are required for this lock (and how many have already been added) (crits count as 2)"				
 			},
 			
 			"LPFormulaFlag" : {

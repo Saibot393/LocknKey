@@ -87,7 +87,7 @@ class LnKSheetSettings {
 								
 		//setting remove key on use
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
-												vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp.key"), 
+												vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
 												vtype : "checkbox", 
 												vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
 												vflagname : cRemoveKeyonUseF

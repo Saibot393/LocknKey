@@ -6,7 +6,9 @@
 			"ClientSettings"			: "Spieler Einstellungen",
 			"GMonly"					: "nur SL",
 			"LockTokens"				: "Schloss Einstellungen",
-			"CharacterTokens"			: "Charakter Einstellungen"
+			"CharacterTokens"			: "Charakter Einstellungen",
+			"KeyItems"					: "Schlüssel Einstellungen",
+			"LPItems"					: "Schlossmanipulations Einstellungen"
 		},
 		
 		"Popup" : {
@@ -17,7 +19,7 @@
 			"lockedToken"				: "{pLockName} ist nun verschlossen",
 			"unlockedDoor"				: "Die Tür ist nun unverschlossen",
 			"unlockedToken"				: "{pLockName} ist nun unverschlossen",
-			"GamePaused"				: "Das Spiel ist pausiert"
+			"GamePaused"				: "Das Spiel ist pausiert",
 			"noLockPickItem"			: "Keinen Dietrich im Inventar",
 			"pickLockfailed"			: "Schloss knacken fehlgeschlagen",
 			"cantLock" : {
@@ -95,10 +97,25 @@
 				"descrp"				: "Der Gegenstandstyp den das Modul für neue Schlüssel benutzt, leer lassen um den standard Typen zu benutzen (Erhalt einer Liste valider Typen durch Eingeben von \"game.items.documentClass.TYPES\" in die F12 Konsole)"		
 			},
 			
+			"CritMethod" : {
+				"name" 					: "Krit System",
+				"descrp"				: "Die Art und Weise auf welche kritische Würfe bestimmt werden",
+				"options" : {
+					"noCrit"			: "Keine Krits",
+					"natCrit"			: "Nat 1/20",
+					"natCritpm10"		: "Nat 1/20 & +-10 von SG [z.b. Pf2e]"
+				}
+			},
+			
 			"LockPickItem" : {
 				"name" 					: "Dietrich Gegenstände",
 				"descrp"				: "Die Namen oder die Kompendium IDs (empfohlen) der Gegenstände welche zum Schlösserknacken benutzt werden können, \"-\" sollte kein Gegenstand gebraucht werden (seperated with \";\")"		
 			},
+			
+			"RemoveLPoncritFail" : {
+				"name" 					: "Verbrauche Dietrich bei kritischem Misserfolg",
+				"descrp"				: "Ob bei einem kritischen Misserfolg der benutze Dietrich entfernt werden soll (bzw. der Stapel um 1 verringert wird)"		
+			},			
 			
 			"LockPickFormula" : {
 				"name" 					: "Schlossknack Wurfformel",
@@ -145,6 +162,11 @@
 				}
 			},
 			
+			"RemoveKeyonUseFlag" : {
+				"name" 					: "Entferne Schlüssel bei benutzung",
+				"descrp"				: "Ob dieser Schlüssel entfernt wird wenn er benutzt wird (order der Stapel um 1 reduziert wird)"					
+			},		
+			
 			"LockDCFlag" : {
 				"name" 					: "Schloss SG",
 				"descrp"				: "Der Schwierigkeitsgrad dieses Schlosses (-1 um das Knacken zu verhindern)"					
@@ -153,6 +175,11 @@
 			"LockBreakDCFlag" : {
 				"name" 					: "Schloss aufbruch SG",
 				"descrp"				: "Der Schwierigkeitsgrad um dieses Schloss aufzubrechen (-1 um aufbrechen zu verhindern)"					
+			},
+			
+			"requiredLPsuccessFlag" : {
+				"name" 					: "Benötigte Schlossknack Erfolge",
+				"descrp"				: "Wie viele Erfolge notwendig sind um dieses Schloss zu knacken (und wie viele bereits erzielt wurden) (Krits zählen als 2)"				
 			},
 			
 			"LPFormulaFlag" : {
