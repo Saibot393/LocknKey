@@ -1,5 +1,5 @@
 ## v1.4.0 (unreleased)
-- Fixed some Token sheet UI bugs
+- Improved behaviour when a player tries to interact with a object that is not a lock or a lock that is out of reach
 - Added Critical rolls world setting
   - No crits to disable crits
   - Nat crits to crit on a nat 1 or nat 20
@@ -8,6 +8,7 @@
   - Before a lock can be locked/unlocked this many successes have to be accumulated
   - Crits will count as two successes
   - Also shows the GM how many successes have already been accumulated and allows GMs to change this number
+- Fixed some Token sheet UI bugs
 
 ## v1.3.0
 - Added Lockable setting to doors (doors are still lockable by GM, independent of this setting)
