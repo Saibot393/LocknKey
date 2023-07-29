@@ -7,9 +7,9 @@ import { LnKPopups } from "./helpers/LnKPopups.js";
 class LockManager {
 	//DECLARATIONS
 	//basics
-	static useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
+	static async useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
 	
-	static async circumventLock(pLock, pCharacter, pRollresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
+	static async circumventLock(pLock, pCharacter, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
@@ -41,34 +41,56 @@ class LockManager {
 	
 	//IMPLEMENTATIONS
 	//basics
-	static useLockKey(pLock, pCharacter, pKeyItemID) {
-		let vKey = LnKutils.TokenInventory(pCharacter).get(pKeyItemID);
+	static async useLockKey(pLock, pCharacter, pKeyItemID) {
+		let vKey = (await LnKutils.TokenInventory(pCharacter)).get(pKeyItemID);
 		
 		if (vKey) {
 			if (LnKFlags.matchingIDKeys(pLock, vKey)) {
 				//key fits
 				LockManager.ToggleLock(pLock, cLUuseKey);
+				
+				if (LnKFlags.RemoveKeyonUse(vKey)) {
+					//remove one from stack, which will also delte if no key left
+					LnKutils.removeoneItem(vKey, pCharacter);
+				}
 			}
 		};
 	}
 	
-	static async circumventLock(pLock, pCharacter, pRollresult, pMethodtype) {
+	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {
+		let vCritMessagesuffix = ".default";
+		let vSuccessDegree;
+		let vusedItem;
+		
+		if (pUsedItemID.length > 0) {
+			vusedItem = (await LnKutils.TokenInventory(pCharacter)).get(pUsedItemID);
+		}
+		
 		if (LnKFlags.isLockable(pLock)) {
+			vSuccessDegree = LnKutils.successDegree(pRollresult, pDiceresult, LnKFlags.LockDCtype(pLock, pMethodtype));
+			
+			if ((vSuccessDegree > 1) || (vSuccessDegree < 0)) {
+				vCritMessagesuffix = ".crit";
+			}
+			
 			if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDCtype(pLock, pMethodtype))) {	
 				switch (pMethodtype) {
 							case cLUpickLock:
-								if (LockManager.ToggleLock(pLock, pMethodtype)) {
-									//something could fail during Lock toggle
-									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess", {pName : pCharacter.name})}); //CHAT MESSAGE
+								if (await LnKFlags.changeLockPicksuccesses(pLock, vSuccessDegree)) {
+									//only toggle lock if enough seccesses have been achieved
+									LockManager.ToggleLock(pLock, pMethodtype);
 								}
+								
+								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								
 								break;
 							case cLUbreakLock:
 								if (await LockManager.ToggleLock(pLock, pMethodtype)) {	
 									//something could fail during Lock toggle								
 									await LockManager.onBreakLock(pLock);
-									
-									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreaksuccess", {pName : pCharacter.name})}); //CHAT MESSAGE
 								}
+								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreaksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								
 								break;
 				}
 			}
@@ -76,11 +98,17 @@ class LockManager {
 				switch (pMethodtype) {
 							case cLUpickLock:
 								LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
-								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail", {pName : pCharacter.name})}); //CHAT MESSAGE
+								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								
+								if (vSuccessDegree < 0 && game.settings.get(cModuleName, "RemoveLPoncritFail") && vusedItem) {
+									//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
+									LnKutils.removeoneItem(vusedItem, pCharacter);
+								}
+								
 								break;
 							case cLUbreakLock:
 								LnKPopups.TextPopUpID(pLock, "breakLockfailed"); //MESSAGE POPUP
-								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreakfail", {pName : pCharacter.name})}); //CHAT MESSAGE
+								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								break;
 				}
 			}
@@ -111,7 +139,7 @@ class LockManager {
 							break;
 						case cLUpickLock:
 						case cLUbreakLock:
-							LockManager.circumventLock(vLock, vCharacter, puseData.Rollresult, puseData.useType);
+							LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType);
 							break;
 					}
 				}
@@ -126,7 +154,7 @@ class LockManager {
 			
 			if (LnKutils.isTokenLock(pLock)) {
 				//tokens are not lockable by default
-				await LnKFlags.MackeLockable(pLock)
+				await LnKFlags.makeLockable(pLock)
 			}		
 			
 			let vItem = await LnKutils.createKeyItem();
@@ -187,7 +215,7 @@ class LockManager {
 			let vLocktype = await LnKutils.Locktype(pLock);
 			
 			if (pLockusetype == cLUisGM) {
-				await LnKFlags.MackeLockable(pLock);
+				await LnKFlags.makeLockable(pLock);
 			}
 			
 			switch(vLocktype) {
@@ -299,7 +327,7 @@ class LockManager {
 			
 			if (LnKutils.isTokenLock(pLock)) {
 				//tokens are not lockable by default
-				await LnKFlags.MackeLockable(pLock)
+				await LnKFlags.makeLockable(pLock)
 			}
 			
 			LnKFlags.pasteIDKeys(pLock);

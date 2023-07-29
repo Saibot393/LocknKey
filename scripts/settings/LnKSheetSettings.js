@@ -1,6 +1,6 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -70,6 +70,12 @@ class LnKSheetSettings {
 		vprevTab.after(vTabContentHTML);	
 
 		//settings	
+		
+		//create title for key items
+		let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
+		
+		pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+		
 		//setting item ids	
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
 												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
@@ -78,6 +84,19 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.KeyIDs(pApp.object),
 												vflagname : cIDKeysF
 												}, `div[data-tab="${cModuleName}"]`);	
+								
+		//setting remove key on use
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
+												vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp.key"), 
+												vtype : "checkbox", 
+												vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
+												vflagname : cRemoveKeyonUseF
+												}, `div[data-tab="${cModuleName}"]`);
+												
+		//create title for Lockpick/Break items
+		vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
+		
+		pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
 
 		//formulas
 		LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
@@ -226,7 +245,6 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaOverrideF +".name"), 
 												vhint : Translate("SheetSettings."+ cLPFormulaOverrideF +".descrp."+pType), 
 												vtype : "checkbox", 
-												vwide : true,
 												vvalue : LnKFlags.LPFormulaOverride(pApp.object),
 												vflagname : cLPFormulaOverrideF
 												}, pto);	
@@ -244,7 +262,6 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLBFormulaOverrideF +".name"), 
 												vhint : Translate("SheetSettings."+ cLBFormulaOverrideF +".descrp."+pType), 
 												vtype : "checkbox", 
-												vwide : true,
 												vvalue : LnKFlags.LBFormulaOverride(pApp.object),
 												vflagname : cLBFormulaOverrideF
 												}, pto);

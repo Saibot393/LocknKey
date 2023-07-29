@@ -7,9 +7,11 @@ import { LnKPopups } from "./helpers/LnKPopups.js";
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
 	//DECLARATIONS
-	static async onatemptedKeyuse(pLockObject) {} //called if a player tries to usa a key on pLockObject 
+	static async onatemptedLockuse(pLockObject, pUseType) {} //called if a player tries to use a lock
 	
-	static async onatemptedcircumventLock(pLockObject, pUseType) {} //called if a player tries to circumvent pLockObject using pUsetype [cLUpickLock, cLUbreakLock]
+	static async onatemptedKeyuse(pLockObject, pCharacter) {} //called if a player tries to usa a key on pLockObject 
+	
+	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {} //called if a player tries to circumvent pLockObject using pUsetype [cLUpickLock, cLUbreakLock]
 	
 	static onKeyContext(pHTML, pButtons) {} //adds buttons to item context
 	
@@ -21,76 +23,97 @@ class KeyManager {
 	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {} //the (best) roll used to circumvent pLock using puseMethod
 	
 	//IMPLEMENTATIONS
-	static async onatemptedKeyuse(pLockObject) {	
+	static async onatemptedLockuse(pLockObject, pUseType) {
 		let vCharacter = LnKutils.PrimaryCharacter();
-		let vKeyItems;
-		let vFittingKey;
-		let vLockType = await LnKutils.Locktype(pLockObject);
 		
-		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-			//check if lock is in reach
+		if (LnKFlags.isLockable(pLockObject)) {
+			//check if pLockObject is even Lockable
 			
-			if (pLockObject && vCharacter && LnKutils.TokenInventory(vCharacter)) {
-				vKeyItems = KeyManager.KeyItems(LnKutils.TokenInventory(vCharacter));
-				
-				//only key which contains keyid matching at least one key id of pLockObject fits
-				vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
-				
-				if (vFittingKey) {	
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, KeyItemID : vFittingKey.id}});
-				}
-			}
-		}
-		else {
-			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
-		}
-	}
-	
-	static async onatemptedcircumventLock(pLockObject, pUseType) {
-		let vCharacter = LnKutils.PrimaryCharacter();
-		let vRoll;
-		let vRollData;
-		let vRollFormula = "";
-		let vLockType = await LnKutils.Locktype(pLockObject);
-			
-		if (vCharacter) {
 			if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-				//set roll data
-				vRollData = {actor : vCharacter.actor};
-				
-				if (await KeyManager.cancircumventLock(vCharacter, pLockObject, pUseType)) {
-					
-					vRollFormula = await KeyManager.circumventLockroll(vCharacter, pLockObject, pUseType, vRollData);
-					
-					//roll dice according to formula
-					vRoll =  new Roll(vRollFormula, vRollData);
-					
-					Hooks.call(cModuleName+".DiceRoll", cLUpickLock, vCharacter);//SOUND
-					
-					await vRoll.evaluate();
-					
-					//ouput dice result in chat
-					switch (pUseType) {
-						case cLUpickLock:
-							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : vCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
-							break;
-						case cLUbreakLock:
-							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : vCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
-							break;
-					}
-					
-					
-					//try lock with dice result
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : vCharacter.id, Rollresult : vRoll.total, Diceresults : vRoll.dice.map(vdice => vdice.total)}});
-				}
-				else {
-					if (pUseType == cLUpickLock) {
-						LnKPopups.TextPopUpID(pLockObject, "noLockPickItem"); //MESSAGE POPUP
-					}
+				//check if lock is in reach
+				switch (pUseType) {
+					case cLUuseKey:
+						KeyManager.onatemptedKeyuse(pLockObject, vCharacter);
+						break;
+					case cLUpickLock:
+					case cLUbreakLock:
+						KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
+						break;
 				}
 			}
 			else {
 				LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			}
+		}
+		else {
+			LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
+		}
+	}
+	
+	static async onatemptedKeyuse(pLockObject, pCharacter) {	
+		let vKeyItems;
+		let vFittingKey;
+		let vLockType = await LnKutils.Locktype(pLockObject);
+
+		if (pLockObject && pCharacter) {
+			vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
+			
+			//only key which contains keyid matching at least one key id of pLockObject fits
+			vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
+			
+			if (vFittingKey) {	
+				game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id}});
+			}
+		}
+	}
+	
+	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {
+		let vRoll;
+		let vRollData;
+		let vRollFormula = "";
+		let vLockType = await LnKutils.Locktype(pLockObject);
+		let vUsedItemID;
+		let vCircumvent;
+			
+		if (pCharacter) {
+			//set roll data
+			vRollData = {actor : pCharacter.actor};
+			
+			vCircumvent = await KeyManager.cancircumventLock(pCharacter, pLockObject, pUseType); //will save if circumvention possible and the item
+			if (vCircumvent) {
+				
+				[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType, vRollData);
+				
+				if (vUsedItemID.length <= 0 && vCircumvent.id) {
+					//no special item was found but vCircumvent is item with id, so fall back to vCircumvent
+					vUsedItemID = vCircumvent.id;
+				}
+				
+				//roll dice according to formula
+				vRoll =  new Roll(vRollFormula, vRollData);
+				
+				Hooks.call(cModuleName+".DiceRoll", cLUpickLock, pCharacter);//SOUND
+				
+				await vRoll.evaluate();
+				
+				//ouput dice result in chat
+				switch (pUseType) {
+					case cLUpickLock:
+						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+						break;
+					case cLUbreakLock:
+						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+						break;
+				}
+				
+				
+				//try lock with dice result
+				game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)}});
+			}
+			else {
+				if (pUseType == cLUpickLock) {
+					LnKPopups.TextPopUpID(pLockObject, "noLockPickItem"); //MESSAGE POPUP
+				}
 			}
 		}
 	}
@@ -98,7 +121,7 @@ class KeyManager {
 	static onKeyContext(pHTML, pButtons) {
 		pButtons.push({
 			name: Translate("Context.KeyCopy"),
-			icon: '<i class="fa-regular fa-key"></i>',
+			icon: '<i class="fa-solid fa-key"></i>',
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
@@ -137,7 +160,7 @@ class KeyManager {
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {
 		switch (puseMethod) {
 			case cLUpickLock:
-				return LnKutils.hasLockPickItem(LnKutils.TokenInventory(pCharacter));
+				return await LnKutils.hasLockPickItem(await LnKutils.TokenInventory(pCharacter, true));
 				break;
 			case cLUbreakLock:
 				return true; //no item required
@@ -151,16 +174,15 @@ class KeyManager {
 	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {
 		let vValidItems;
 		let vBestItem;
+		let vBestItemID = "";
 		let vRollFormula = "";
 		
 		//filter valid items for operation
-		vValidItems = LnKutils.TokenInventory(pCharacter).filter(vItem => LnKFlags.HasFormula(vItem, puseMethod));
+		vValidItems = (await LnKutils.TokenInventory(pCharacter, true)).filter(vItem => LnKFlags.HasFormula(vItem, puseMethod));
 		
 		if (vValidItems.length) {
 			//find best item		
 			vBestItem = vValidItems[await LnKutils.HighestExpectedRollID(vValidItems.map(vItem => LnKFlags.Formula(vItem, puseMethod)), pRollData)];
-			
-			console.log(vBestItem);
 			
 			//create roll formula
 			vRollFormula = LnKFlags.Formula(vBestItem, puseMethod);
@@ -180,7 +202,11 @@ class KeyManager {
 			vRollFormula = "0";
 		}
 		
-		return vRollFormula;
+		if (vBestItem) {
+			vBestItemID = vBestItem.id;
+		}
+		
+		return [vRollFormula, vBestItemID];
 	}
 }
 
@@ -188,14 +214,14 @@ function onLockRightClick(pDocument, pInfos) {
 	if (!game.user.isGM) {//CLIENT: use key
 		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
 			if (pInfos.shiftKey) {
-				KeyManager.onatemptedcircumventLock(pDocument, cLUpickLock);
+				KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
 			}
 			else {
 				if (pInfos.altKey) {
-					KeyManager.onatemptedcircumventLock(pDocument, cLUbreakLock);
+					KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
 				}
 				else {
-					KeyManager.onatemptedKeyuse(pDocument);
+					KeyManager.onatemptedLockuse(pDocument, cLUuseKey);
 				}
 			}
 		}

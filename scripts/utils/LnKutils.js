@@ -15,6 +15,8 @@ const cFormulaOperators = "+-*/%";
 
 const cSimCount = 500; //how many times rolls should be simulated to calculate the average (keep as low as possible)
 
+const cQuantity = "quantity"; //name of the quantity attribut of items in most systems
+
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
 
@@ -37,6 +39,9 @@ function Translate(pName, pWords = {}){
 		
 	return vText;
 }
+
+var lastSearchedItemtype; //Saves the last item type for which a path was searched
+var lastItempath; //Saves the last path that was found for lastSearchedItemtype
 
 class LnKutils {
 	//DELCARATIONS		
@@ -61,7 +66,7 @@ class LnKutils {
 	
 	static Keyitemtype() {} //returns the used type of item for keys
 	
-	static TokenInventory(pToken) {} //returns inventory of pToken
+	static async TokenInventory(pToken, pfiltered = false) {} //returns inventory of pToken
 	
 	static LockPickItems() {} //returns an array of names/ids of Lock Pick items
 	
@@ -71,7 +76,15 @@ class LnKutils {
 	
 	static LockPickItemsin(pInventory) {} //returns all valid Lock pick items in pInventory
 	
-	static LockBreakItemsin(pInventory) {} //returns all valid Lock break items in pInventory
+	static async ItemQuantityPath(pItem, pItemtype = "") {} //returns the path to the items quantity in form of an array ([] if no path found)
+	
+	static setItemquantity(pItem, pset, pCharacter = undefined) {} //trys to set quantity of pItem to pset
+	
+	static async getItemquantity(pItem, pPath = []) {} //trys to get quantity of pItem, returns Infinity otherwise
+	
+	static async changeItemquantity(pItem, pdelta, pCharacter = undefined) {} //trys to change the quantity of pItem
+	
+	static async removeoneItem(pItem, pCharacter) {} //trys to reduce quantity by one, if not possible, deletes item
 	
 	//locks
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
@@ -94,7 +107,7 @@ class LnKutils {
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
-	static successDegree(pRollresult, pDC) {} //returns the degree of success of pRollresult based on the pDC and the world crit settings
+	static successDegree(pRollresult, pDiceDetails, pDC) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
 	
 	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
 	
@@ -227,7 +240,19 @@ class LnKutils {
 		}
 	}
 	
-	static TokenInventory(pToken) {
+	static async TokenInventory(pToken, pfiltered = false) {
+		if (pfiltered) {
+			let vOldItems = pToken.actor.items.map(vItem => vItem);
+			let vItems = [];
+			
+			for (let i = 0; i <= vOldItems.length - 1; i++) {
+				if (await LnKutils.getItemquantity(vOldItems[i]) > 0) {
+					vItems[vItems.length] = vOldItems[i];
+				}
+			}
+			return vItems;
+		}
+		
 		return pToken.actor.items;
 	}
 	
@@ -246,7 +271,6 @@ class LnKutils {
 	}
 	
 	static hasLockPickItem(pInventory) {
-		console.log(LnKutils.LockPickItems());
 		if (LnKutils.LockPickItems().find(vElement => vElement == cEmptySymbol)) {
 			//Lock pick item is disabled
 			return true;
@@ -262,6 +286,129 @@ class LnKutils {
 	
 	static LockPickItemsin(pInventory) {
 		return pInventory.filter(vItem => LnKutils.isLockPickItem(vItem));
+	}
+	
+	static async ItemQuantityPath(pItem, pItemtype = "") {
+		let vPath = [];
+		
+		if (pItem) {
+			let vsubPath;
+			let vPrimeKeys = Object.keys(pItem);
+			
+			if (pItemtype.length > 0 && (pItemtype == lastSearchedItemtype)) {
+				//if item path already known just return it
+				return lastItempath;
+			}
+			
+			if (vPrimeKeys.length) {
+				if (vPrimeKeys.includes(cQuantity)) {
+					//if found return quantity path directly
+					vPath.push(cQuantity)
+				}
+				else {
+					//if not found search sub paths
+					for (let i = 0; i < vPrimeKeys.length; i++) {
+						if (vPath.length == 0) {
+							//only (recursive)search if not already found
+							vsubPath = LnKutils.ItemQuantityPath(pItem[vPrimeKeys[i]]);
+							
+							if (vsubPath.length > 0) {
+								//subpath includes quantity, unshift path name into start of array and be done
+								vPath = vsubPath;
+								
+								vPath.unshift(vPrimeKeys[i]);
+							}				
+						}
+					}
+				}
+			}
+			
+			if (vPath.length > 0) {
+				//to potentially increase the next searches speed
+				lastSearchedItemtype = pItemtype;
+				lastItempath = vPath;
+			}
+		}
+		
+		return vPath;
+	}
+	
+	static async setItemquantity(pItem, pset, pCharacter = undefined) {		
+		if (pItem) {
+			if (pset <= 0 && pCharacter) {
+				//special easy case
+				pCharacter.actor.deleteEmbeddedDocuments("Item", [pItem.id]);
+				
+				return true;
+			}
+			 
+			let vPath = (await LnKutils.ItemQuantityPath(pItem.system, pItem.type)); 
+			let vUpdate = {};
+			
+			vUpdate[vPath.join(".")] = pset;
+			
+			pItem.update({system : vUpdate});
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	static async getItemquantity(pItem, pPath = []) {
+		if (pItem) {
+			let vBuffer = pItem.system;
+			let vPath = pPath; 
+			
+			if (vPath.length <= 0) {
+				vPath = await LnKutils.ItemQuantityPath(pItem.system, [pItem.type]); 
+			}
+			
+			if (vPath.length > 0) {
+				for(let i = 0; i < vPath.length; i++) {	
+					//last one will be quantity
+					if (vBuffer) {
+						vBuffer = vBuffer[vPath[i]]
+					}
+				}
+				
+				return vBuffer;
+			}	
+
+			return Infinity;
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	static async changeItemquantity(pItem, pdelta, pCharacter = undefined) {
+		if (pItem) {
+			let vPath = await LnKutils.ItemQuantityPath(pItem.system, [pItem.type]); 
+			let vcurrentValue = await LnKutils.getItemquantity(pItem, vPath);
+			let vUpdate = {};
+			
+			if (vcurrentValue + pdelta <= 0 && pCharacter) {
+				//special easy case
+				pCharacter.actor.deleteEmbeddedDocuments("Item", [pItem.id]);
+				
+				return true;
+			}		
+			
+			vUpdate[vPath.join(".")] = vcurrentValue + pdelta;
+			
+			pItem.update({system : vUpdate});
+
+			return true;
+		}
+		
+		return false;		
+	}
+	
+	static async removeoneItem(pItem, pCharacter) {
+		if (!(await LnKutils.changeItemquantity(pItem, -1, pCharacter))) {
+			await pCharacter.actor.deleteEmbeddedDocuments("Item", [pItem.id]);
+		}
 	}
 	
 	//locks
@@ -338,11 +485,43 @@ class LnKutils {
 		return pRollresult >= pDC;
 	}
 	
-	static successDegree(pRollresult, pDC) {
-		return -1; //critical fail
-		return 0; //fail
-		return 1; //success
-		return 2; //critical success
+	static successDegree(pRollresult, pDiceDetails, pDC) {
+		let vsuccessDegree;
+		
+		if (pRollresult >= pDC) {
+			vsuccessDegree = 1; //S
+		}
+		else {
+			vsuccessDegree = 0; //F
+		}
+		
+		if (["CritMethod-natCrit", "CritMethod-natCritpm10"].includes(game.settings.get(cModuleName, "CritMethod"))) {
+			//normal crit
+			if (pDiceDetails[0] == 20) {
+				vsuccessDegree = 2; //crit S
+			}
+			
+			if (pDiceDetails[0] == 1) {
+				vsuccessDegree = -1;//crit F
+			}
+			
+			if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCritpm10") {
+				//+-10 crit
+				if (vsuccessDegree == 1) {
+					if (pRollresult => pDC + 10) {
+						vsuccessDegree = 2;//crit S
+					}
+				}
+				
+				if (vsuccessDegree == 0) {
+					if (pRollresult <= pDC - 10) {
+						vsuccessDegree = -1;//crit F
+					}
+				}	
+			}
+		}
+		
+		return vsuccessDegree;
 	}
 	
 	static LPformulaWorld() {

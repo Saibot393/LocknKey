@@ -10,31 +10,43 @@
 		},
 		
 		"Popup" : {
-			"TokenisLocked"					: "{pLockName} ist verschlossen",
-			"DoorisLocked"					: "Diese Tür ist verschlossen",
-			"Lockoutofreach"				: "Dieses Schloss ist außer Reichweite",
-			"lockedDoor"					: "Die Tür ist nun verschlossen",
-			"lockedToken"					: "{pLockName} ist nun verschlossen",
-			"unlockedDoor"					: "Die Tür ist nun unverschlossen",
-			"unlockedToken"					: "{pLockName} ist nun unverschlossen",
-			"GamePaused"					: "Das Spiel ist pausiert"
-			"noLockPickItem"				: "Keinen Dietrich im Inventar",
-			"pickLockfailed"				: "Schloss knacken fehlgeschlagen",
+			"TokenisLocked"				: "{pLockName} ist verschlossen",
+			"DoorisLocked"				: "Diese Tür ist verschlossen",
+			"Lockoutofreach"			: "Dieses Schloss ist außer Reichweite",
+			"lockedDoor"				: "Die Tür ist nun verschlossen",
+			"lockedToken"				: "{pLockName} ist nun verschlossen",
+			"unlockedDoor"				: "Die Tür ist nun unverschlossen",
+			"unlockedToken"				: "{pLockName} ist nun unverschlossen",
+			"GamePaused"				: "Das Spiel ist pausiert"
+			"noLockPickItem"			: "Keinen Dietrich im Inventar",
+			"pickLockfailed"			: "Schloss knacken fehlgeschlagen",
 			"cantLock" : {
-				"deafult"					: "Schloss kann nicht verschlossen werden",
-				"break"						: "Schloss ist bereits offen"
+				"deafult"				: "Schloss kann nicht verschlossen werden",
+				"break"					: "Schloss ist bereits offen"
 			},
-			"breakLockfailed"				: "Schloss aufbrechen fehlgeschlagen",
-			"NotaLock"						: "Kein Schloss"
+			"breakLockfailed"			: "Schloss aufbrechen fehlgeschlagen",
+			"NotaLock"					: "Kein Schloss"
 		},	
 		
 		"ChatMessage" : {
-			"LockPick"						: "{pName} hat versucht ein Schloss zu knacken:",
-			"LockPicksuccess"				: "{pName} hat das Schloss erfolgreich geknackt",
-			"LockPickfail"					: "{pName} hat das Schloss nicht knacken können",
-			"LockBreak"						: "{pName} hat versucht ein Schloss aufzubrechen:",
-			"LockBreaksuccess"				: "{pName} hat das Schloss erfolgreich aufgebrochen",
-			"LockBreakfail"					: "{pName} hat das Schloss nicht aufbrechen können"
+			"LockPick"					: "{pName} hat versucht ein Schloss zu knacken:",
+			"LockPicksuccess" : {
+				"crit"					: "{pName} hatte beim Schloss knacken kritischen Erfolg",
+				"default" 				: "{pName} hat das Schloss erfolgreich geknackt"
+			},
+			"LockPickfail" : {
+				"crit"					: "{pName} ist beim Schloss knacken kritisch gescheitert",
+				"default" 				: "{pName} hat das Schloss nicht knacken können"
+			},
+			"LockBreak"					: "{pName} hat versucht ein Schloss aufzubrechen:",
+			"LockBreaksuccess" : {
+				"crit"					: "{pName} hatte beim Schloss aufbrechen kritischen Erfolg",
+				"default" 				: "{pName} hat das Schloss erfolgreich aufgebrochen"
+			},
+			"LockBreakfail" : {
+				"crit"					: "{pName} ist beim Schloss aufbrechen kritisch gescheitert",
+				"default" 				: "{pName} hat das Schloss nicht aufbrechen können"
+			}
 		},
 		
 		"Settings" : {

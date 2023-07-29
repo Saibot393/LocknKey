@@ -10,31 +10,43 @@
 		},
 		
 		"Popup" : {
-			"TokenisLocked"					: "{pLockName} is locked",
-			"DoorisLocked"					: "This door is locked",
-			"Lockoutofreach"				: "This lock is out of reach",
-			"lockedDoor"					: "Door is now locked",
-			"lockedToken"					: "{pLockName} is now locked",
-			"unlockedDoor"					: "Door is now unlocked",
-			"unlockedToken"					: "{pLockName} is now unlocked",
-			"GamePaused"					: "The game is paused",
-			"noLockPickItem"				: "No lock pick in inventory",
-			"pickLockfailed"				: "Failed to pick lock",
+			"TokenisLocked"				: "{pLockName} is locked",
+			"DoorisLocked"				: "This door is locked",
+			"Lockoutofreach"			: "This lock is out of reach",
+			"lockedDoor"				: "Door is now locked",
+			"lockedToken"				: "{pLockName} is now locked",
+			"unlockedDoor"				: "Door is now unlocked",
+			"unlockedToken"				: "{pLockName} is now unlocked",
+			"GamePaused"				: "The game is paused",
+			"noLockPickItem"			: "No lock pick in inventory",
+			"pickLockfailed"			: "Failed to pick lock",
 			"cantLock" : {
-				"deafult"					: "This lock cant be locked",
-				"break"						: "This lock is alread open"
+				"deafult"				: "This lock cant be locked",
+				"break"					: "This lock is alread open"
 			},
-			"breakLockfailed"				: "Failed to break lock",
-			"NotaLock"						: "Not a lock"
+			"breakLockfailed"			: "Failed to break lock",
+			"NotaLock"					: "Not a lock"
 		},	
 		
 		"ChatMessage" : {
-			"LockPick"						: "{pName} tried to pick a lock:",
-			"LockPicksuccess"				: "{pName} succeeded at picking the lock",
-			"LockPickfail"					: "{pName} failed at picking the lock",
-			"LockBreak"						: "{pName} tried to break a lock:",
-			"LockBreaksuccess"				: "{pName} succeeded at breaking the lock",
-			"LockBreakfail"					: "{pName} failed to break the lock"
+			"LockPick"					: "{pName} tried to pick a lock:",
+			"LockPicksuccess" : {
+				"crit"					: "{pName} critically succeeded at picking the lock",
+				"default" 				: "{pName} succeeded at picking the lock"
+			},
+			"LockPickfail" : {
+				"crit"					: "{pName} critically failed at picking the lock",
+				"default" 				: "{pName} failed at picking the lock"
+			},
+			"LockBreak"					: "{pName} tried to break a lock:",
+			"LockBreaksuccess" : {
+				"crit"					: "{pName} critically succeeded at breaking the lock",
+				"default" 				: "{pName} succeeded at breaking the lock"
+			},
+			"LockBreakfail" : {
+				"crit"					: "{pName} critically failed to break the lock",
+				"default" 				: "{pName} failed to break the lock"
+			}
 		},
 		
 		"Settings" : {

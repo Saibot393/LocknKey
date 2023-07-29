@@ -15,8 +15,9 @@ const ccurrentLPsuccessF = "currentLPsuccessFlag"; //successes alraedy put into 
 const cLockBreakDCF = "LockBreakDCFlag"; //the dc of the lock (for lock picking)
 const cLBFormulaF = "LBFormulaFlag"; //the Formula the token/item adds to LockBreak rolls
 const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormulaFlag overrides the global formula (instead of being added)
+const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF }
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -24,7 +25,7 @@ var cIDKeyBuffer; //saves the coppied IDkeys
 class LnKFlags {
 	//DECLARATIONS
 	//basic
-	static async MackeLockable(pObject) {} //makes pObject Lockable (starts in unlocked state except for doors)
+	static async makeLockable(pObject) {} //makes pObject Lockable (starts in unlocked state except for doors)
 	
 	static async disableLock(pObject) {} //makes pObject not Lockable
 	
@@ -36,13 +37,13 @@ class LnKFlags {
 		
 	static isLocked(pObject) {} //returns if pObject is locked (false if not Lockable)
 	
-	static changeLockPicksuccesses(pObject, pdelta) {} //changes the locks current successes by pdelta and returns true if this was enough to change locked state
-	
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
 	static matchingIDKeys(pObject1, pObject2) {} //returns of pObject1 and pObject2 have at least one matching key (excluding "")
 	
 	static KeyIDs(pObject) {} //returns string of key IDs of pObject
+	
+	static RemoveKeyonUse(pKey) {} //returns of this key is removed on use
 	
 	//copy paste
 	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
@@ -60,6 +61,8 @@ class LnKFlags {
 	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
 	
 	static currentLPsuccess(pLock) {} //returns the current LP successes of this lock
+	
+	static async changeLockPicksuccesses(pObject, pdelta) {} //changes the locks current successes by pdelta and returns true if this was enough to change locked state
 	
 	//Formulas
 	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
@@ -237,6 +240,19 @@ class LnKFlags {
 		return false; //default if anything fails
 	} 
 	
+	static #RemoveKeyonUseFlag (pObject) { 
+	//returns content of RemoveKeyonUseFlag (Boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cRemoveKeyonUseF)) {
+				return vFlag.RemoveKeyonUseFlag;
+			}
+		}
+		
+		return false; //default if anything fails
+	} 
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -291,7 +307,7 @@ class LnKFlags {
 	static async #setLockDCFlag(pObject, pContent) {
 	//sets content of LockDCFlag (must be number)
 		if (pObject) {
-			await pObject.setFlag(cModuleName, cLockedF, Number(pContent));
+			await pObject.setFlag(cModuleName, cLockDCF, Number(pContent));
 			
 			return true;
 		}
@@ -301,7 +317,7 @@ class LnKFlags {
 	static async #setcurrentLPsuccessFlag(pObject, pContent) {
 	//sets content of currentLPsuccessFlag (must be number)
 		if (pObject) {
-			await pObject.setFlag(cModuleName, cLockedF, Number(pContent));
+			await pObject.setFlag(cModuleName, ccurrentLPsuccessF, Number(pContent));
 			
 			return true;
 		}
@@ -309,7 +325,7 @@ class LnKFlags {
 	}
 	
 	//basic
-	static async MackeLockable(pObject) {
+	static async makeLockable(pObject) {
 		if (!this.#LockableFlag(pObject)) {
 			//only change anything if not already lockable
 			await this.#setLockableFlag(pObject, true);
@@ -347,21 +363,6 @@ class LnKFlags {
 		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject))
 	}
 	
-	static changeLockPicksuccesses(pObject, pdelta) {
-		vToggle = false; //
-		
-		this.#setcurrentLPsuccessFlag(pObject, this.#currentLPsuccessFlag + pdelta);
-		
-		if (this.#currentLPsuccessFlag(pObject) >= this.#requiredLPsuccessFlag(pObject)) {
-			//success limit reched, reset successes and toggle lock
-			this.#setcurrentLPsuccessFlag(pObject, 0);
-			
-			vToggle = true;
-		}
-			
-		return vToggle;
-	}
-	
 	static linkKeyLock(pKey, pLock) {
 		let vnewID = randomID();
 		
@@ -378,6 +379,10 @@ class LnKFlags {
 		return this.#IDKeysFlag(pObject);
 	}
 	
+	static RemoveKeyonUse(pKey) {
+		return this.#RemoveKeyonUseFlag(pKey);
+	} 
+	
 	//copy paste
 	static copyIDKeys(pObject) {
 		cIDKeyBuffer = this.#IDKeysFlag(pObject);
@@ -386,6 +391,8 @@ class LnKFlags {
 	static pasteIDKeys(pObject) {
 		if (cIDKeyBuffer.length) {
 			this.#addIDKeysFlag(pObject, cIDKeyBuffer);
+			
+			LnKFlags.makeLockable(pObject);
 		}
 	}
 	
@@ -431,6 +438,33 @@ class LnKFlags {
 	
 	static currentLPsuccess(pLock) {
 		return this.#currentLPsuccessFlag(pLock);
+	}
+	
+	static async changeLockPicksuccesses(pObject, pdelta) {
+		let vToggle = false;
+		
+		await this.#setcurrentLPsuccessFlag(pObject, await this.#currentLPsuccessFlag(pObject) + pdelta);
+		
+		console.log(await this.#currentLPsuccessFlag(pObject));
+		console.log(await this.#requiredLPsuccessFlag(pObject));
+		
+		if (await this.#currentLPsuccessFlag(pObject) >= await this.#requiredLPsuccessFlag(pObject)) {
+			console.log("here");
+			//success limit reached, reset successes and toggle lock
+			await this.#setcurrentLPsuccessFlag(pObject, 0);
+			
+			if (pdelta > 0) {
+				//requires change of at least 1 to toggle (even if required <= 0)
+				vToggle = true;
+			}
+		}
+		
+		if (await this.#currentLPsuccessFlag(pObject) < 0) {
+			//under zero, reset to zero
+			await this.#setcurrentLPsuccessFlag(pObject, 0);
+		}
+			
+		return vToggle;
 	}
 	
 	//Formulas

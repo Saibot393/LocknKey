@@ -94,6 +94,29 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	default: LnKSystemutils.SystemdefaultLockPickItem()
+  });  
+  
+  game.settings.register(cModuleName, "CritMethod", {
+	name: Translate("Settings.CritMethod.name"),
+	hint: Translate("Settings.CritMethod.descrp"),
+	scope: "client",
+	config: true,
+	type: String,
+	choices: {
+		"CritMethod-noCrit": Translate("Settings.RiderMovement.options.noCrit"),
+		"CritMethod-natCrit": Translate("Settings.RiderMovement.options.natCrit"),
+		"CritMethod-natCritpm10": Translate("Settings.RiderMovement.options.natCritpm10")
+	},
+	default: "CritMethod-natCrit"
+  });
+  
+  game.settings.register(cModuleName, "RemoveLPoncritFail", {
+	name: Translate("Settings.RemoveLPoncritFail.name"),
+	hint: Translate("Settings.RemoveLPoncritFail.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
   }); 
   
   game.settings.register(cModuleName, "LockPickFormula", {
