@@ -28,7 +28,9 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
-- Lockpick item: name or compendium id of the item used to pick locks
+- Crit system: to change the way crits are calculated (support Nat1/20 and Pf2e system)
+- Lockpick items: name or compendium id of the item used to pick locks
+- Remove Lockpick on critical fail: to remove Lockpick item on critical failures
 - Lockpick roll formula: the dice formula used for lockpick rolls
 - Break lock roll formula: the dice formula used for break lock rolls
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
@@ -37,12 +39,14 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
 #### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
+- Remove key on use: to remove the key once it has been used (or reduce the stack by one)
 #### Walls/Lockable Tokens(separate tab):
 - Lockable: if this token can be locked
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Lock break DC: the difficulty class to break a lock
+- Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
 #### Tokens/Items:
 - Lockpick formula: an additional formula added to lockpicking rolls (for items only the best formula in the inventory is used)
 - Override Lockpick formula: to override the standard formula for this token/the owner
