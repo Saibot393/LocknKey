@@ -28,7 +28,7 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
-- Crit system: to change the way crits are calculated (support Nat1/20 and Pf2e system)
+- Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
 - Remove Lockpick on critical fail: to remove Lockpick item on critical failures
 - Lockpick roll formula: the dice formula used for lockpick rolls
