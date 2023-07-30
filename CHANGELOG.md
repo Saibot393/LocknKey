@@ -1,4 +1,4 @@
-## v1.4.0 (unreleased)
+## v1.4.0
 - Improved behaviour when a player tries to interact with a object that is not a lock or a lock that is out of reach
 - Added Critical rolls world setting
   - No crits to disable crits
