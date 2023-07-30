@@ -52,7 +52,7 @@ class KeyManager {
 			}
 		}
 		else {
-			LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			//LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
 		}
 	}
 	
