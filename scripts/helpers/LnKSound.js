@@ -15,9 +15,9 @@ class LnKSound {
 	static PlaySoundRequest(pSound, pSceneID) {} //plays sound pSound if enabled
 	
 	//specifics
-	static async PlayLockSound(pLockType, pLock) {} //start PlaySound requests for Lock sound
+	static async PlayLockSound(pLock) {} //start PlaySound requests for Lock sound
 	
-	static async PlayunLockSound(pLockType, pLock) {} //start PlaySound requests for unLock sound
+	static async PlayunLockSound(pLock) {} //start PlaySound requests for unLock sound
 	
 	static PlayDiceSound(pCharacter) {} //start PlaySound requests for Dice sound
 	
@@ -45,14 +45,14 @@ class LnKSound {
 	}
 	
 	//specifics
-	static async PlayLockSound(pLockType, pLock) {
-		if (await LnKutils.isTokenLocktype(pLockType)) {
+	static async PlayLockSound(pLock) {
+		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
 			LnKSound.PlaySound(cLockSound, FCore.sceneof(pLock).id);
 		}
 	}
 	
-	static async PlayunLockSound(pLockType, pLock) {
-		if (await LnKutils.isTokenLocktype(pLockType)) {
+	static async PlayunLockSound(pLock) {
+		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
 			LnKSound.PlaySound(cunLockSound, FCore.sceneof(pLock).id);
 		}
 	}
@@ -61,13 +61,16 @@ class LnKSound {
 		LnKSound.PlaySound(cDiceSound, FCore.sceneof(pCharacter).id);
 	}
 }
-
+/*
 Hooks.on(cModuleName+".onLock", (pLockType, pLock) => LnKSound.PlayLockSound(pLockType, pLock));
 		
 Hooks.on(cModuleName+".onunLock", (pLockType, pLock) => LnKSound.PlayunLockSound(pLockType, pLock));
 
 Hooks.on(cModuleName+".DiceRoll", (pRollType, pCharacter) => LnKSound.PlayDiceSound(pCharacter));
+*/
 
 export function PlaySoundRequest(pData) {
 	LnKSound.PlaySoundRequest(pData.pSound, pData.pSceneID);
 }
+
+export { LnKSound }

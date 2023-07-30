@@ -3,6 +3,7 @@ import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
+import { LnKSound } from "./helpers/LnKSound.js";
 
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
@@ -92,7 +93,9 @@ class KeyManager {
 				//roll dice according to formula
 				vRoll =  new Roll(vRollFormula, vRollData);
 				
-				Hooks.call(cModuleName+".DiceRoll", cLUpickLock, pCharacter);//SOUND
+				LnKSound.PlayDiceSound(pCharacter);
+				
+				Hooks.callAll(cModuleName+".DiceRoll", pUseType, pCharacter);
 				
 				await vRoll.evaluate();
 				

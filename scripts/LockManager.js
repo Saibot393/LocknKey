@@ -2,6 +2,7 @@ import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUpickLock, cLUb
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
+import { LnKSound } from "./helpers/LnKSound.js";
 
 //does everything Lock related
 class LockManager {
@@ -175,7 +176,9 @@ class LockManager {
 				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
 		
-		Hooks.call(cModuleName+".onLock", vLocktype, pLock);
+		LnKSound.PlayunLockSound(pLock);
+		
+		Hooks.callAll(cModuleName+".onLock", vLocktype, pLock);
 	}
 	
 	static async onunLock(pLock, pLockusetype) {
@@ -189,7 +192,9 @@ class LockManager {
 				LnKPopups.TextPopUpID(pLock, "unlockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
 		
-		Hooks.call(cModuleName+".onunLock", vLocktype, pLock);
+		LnKSound.PlayLockSound(pLock);
+		
+		Hooks.callAll(cModuleName+".onunLock", vLocktype, pLock);
 	}
 	
 	//lock type
