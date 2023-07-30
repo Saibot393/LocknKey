@@ -44,6 +44,7 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Lockable: if this token can be locked
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
+- Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Lock break DC: the difficulty class to break a lock
 - Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
