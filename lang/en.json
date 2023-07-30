@@ -8,7 +8,10 @@
 			"LockTokens"				: "Lock settings",
 			"CharacterTokens"			: "Character settings",
 			"KeyItems"					: "Key settings",
-			"LPItems"					: "Lock manipulations settings"
+			"LPItems"					: "Lock manipulations settings",
+			"Passkey"					: "Password",
+			"EnterPasskey"				: "Enter the password:",
+			"ConfirmPasskey"			: "Confirm"
 		},
 		
 		"Popup" : {
@@ -27,7 +30,8 @@
 				"break"					: "This lock is alread open"
 			},
 			"breakLockfailed"			: "Failed to break lock",
-			"NotaLock"					: "Not a lock"
+			"NotaLock"					: "Not a lock",
+			"WrongPassword"				: "Wrong password"
 		},	
 		
 		"ChatMessage" : {
@@ -160,6 +164,11 @@
 					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\")",
 					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
 				}
+			},
+			
+			"PasskeysFlag" : {
+				"name"					: "Passwords",
+				"descrp"				: "Passwords that can unlock this lock (seperated with \";\")"
 			},
 			
 			"RemoveKeyonUseFlag" : {

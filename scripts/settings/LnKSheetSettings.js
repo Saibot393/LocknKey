@@ -209,7 +209,7 @@ class LnKSheetSettings {
 												
 		//setting lock ids									
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPasskeysF +".name"), 
-												vhint : Translate("SheetSettings."+ cPasskeysF +".descrp.lock"), 
+												vhint : Translate("SheetSettings."+ cPasskeysF +".descrp"), 
 												vtype : "text", 
 												vwide : true,
 												vvalue : LnKFlags.PassKeys(pApp.object),

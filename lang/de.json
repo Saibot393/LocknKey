@@ -8,7 +8,10 @@
 			"LockTokens"				: "Schloss Einstellungen",
 			"CharacterTokens"			: "Charakter Einstellungen",
 			"KeyItems"					: "Schlüssel Einstellungen",
-			"LPItems"					: "Schlossmanipulations Einstellungen"
+			"LPItems"					: "Schlossmanipulations Einstellungen",
+			"Passkey"					: "Passwort",
+			"EnterPasskey"				: "Passwort eingeben:",
+			"ConfirmPasskey"			: "Bestätigen"
 		},
 		
 		"Popup" : {
@@ -27,7 +30,8 @@
 				"break"					: "Schloss ist bereits offen"
 			},
 			"breakLockfailed"			: "Schloss aufbrechen fehlgeschlagen",
-			"NotaLock"					: "Kein Schloss"
+			"NotaLock"					: "Kein Schloss",
+			"WrongPassword"				: "Falsches Passwort"
 		},	
 		
 		"ChatMessage" : {
@@ -160,6 +164,11 @@
 					"lock" 				: "IDs welche dieses Schloss auf-/abschließen können (mit \";\" getrennt)",
 					"key" 				: "IDs welche dieser Schlüssel auf-/abschließen kann (mit \";\" getrennt)"
 				}
+			},
+			
+			"PasskeysFlag" : {
+				"name"					: "Passwörter",
+				"descrp"				: "Passwörter welche dieses Schloss aufschließen können (mit \";\" getrennt)"
 			},
 			
 			"RemoveKeyonUseFlag" : {
