@@ -1,9 +1,11 @@
-import { cModuleName, Translate, LnKutils, cLUuseKey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
 import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
+
+const cLnKKeyIcon = "fa-key";
 
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
@@ -23,6 +25,8 @@ class KeyManager {
 	
 	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {} //the (best) roll used to circumvent pLock using puseMethod
 	
+	static createPasskeyDialog(pLockObject, pLockType, pCharacter) {} //used to creat the passkey dialog
+	
 	//IMPLEMENTATIONS
 	static async onatemptedLockuse(pLockObject, pUseType) {
 		let vCharacter = LnKutils.PrimaryCharacter();
@@ -34,7 +38,8 @@ class KeyManager {
 				//check if lock is in reach
 				switch (pUseType) {
 					case cLUuseKey:
-						KeyManager.onatemptedKeyuse(pLockObject, vCharacter);
+					case cLUusePasskey:
+						KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter);
 						break;
 					case cLUpickLock:
 					case cLUbreakLock:
@@ -51,20 +56,33 @@ class KeyManager {
 		}
 	}
 	
-	static async onatemptedKeyuse(pLockObject, pCharacter) {	
+	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter) {	
 		let vKeyItems;
 		let vFittingKey;
 		let vLockType = await LnKutils.Locktype(pLockObject);
-
-		if (pLockObject && pCharacter) {
-			vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
-			
-			//only key which contains keyid matching at least one key id of pLockObject fits
-			vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
-			
-			if (vFittingKey) {	
-				game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id}});
-			}
+		
+		switch (pUseType) {
+			case cLUuseKey:
+				if (pLockObject && pCharacter) {
+					vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
+					
+					//only key which contains keyid matching at least one key id of pLockObject fits
+					vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
+					
+					if (vFittingKey) {	
+						game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id}});
+					}
+					else {
+						if (true/*LnKFlag.hasPasskey(pLockObject)*/) {
+							//no key item => use Passkey
+							KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
+						}
+					}
+				}
+				break;
+			case cLUusePasskey:
+				KeyManager.createPasskeyDialog(pLockObject, vLockType, pCharacter);
+			break;
 		}
 	}
 	
@@ -124,7 +142,7 @@ class KeyManager {
 	static onKeyContext(pHTML, pButtons) {
 		pButtons.push({
 			name: Translate("Context.KeyCopy"),
-			icon: '<i class="fa-solid fa-key"></i>',
+			icon: '<i class="fa-solid ${cLnKKeyIcon}"></i>',
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
@@ -140,7 +158,7 @@ class KeyManager {
 		
 		pButtons.push({
 			name: Translate("Context.KeyPaste"),
-			icon: '<i class="fa-solid fa-key"></i>',
+			icon: '<i class="fa-solid ${cLnKKeyIcon}"></i>',
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
@@ -210,6 +228,21 @@ class KeyManager {
 		}
 		
 		return [vRollFormula, vBestItemID];
+	}
+	
+	static async createPasskeyDialog(pLockObject, pLockType, pCharacter) {
+		new Dialog({
+			title: Translate("Titles.Passkey"),
+			content: `<label>${Translate("Titles.EnterPasskey")}</label>
+					<input type="text" id="Passkey" name="Passkey">`,
+			buttons: {
+				button1: {
+					label: Translate("Titles.ConfirmPasskey"),
+					callback: (html) => {game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}})},
+					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+				}
+			}
+		}).render(true);
 	}
 }
 

@@ -25,10 +25,11 @@ const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 //Lock use TYPES
 const cLUisGM = "LockuseGM"; //if a Lock is used by a GM
 const cLUuseKey = "LockuseKey"; //if a Key is used on a lock
+const cLUusePasskey = "LockusePasskey"; //if a Passkey (paasword or PIN) is used on lock
 const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
 const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
 
-export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUpickLock, cLUbreakLock}
+export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
