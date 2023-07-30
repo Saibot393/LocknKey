@@ -16,8 +16,9 @@ const cLockBreakDCF = "LockBreakDCFlag"; //the dc of the lock (for lock picking)
 const cLBFormulaF = "LBFormulaFlag"; //the Formula the token/item adds to LockBreak rolls
 const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormulaFlag overrides the global formula (instead of being added)
 const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
+const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF }
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -44,6 +45,13 @@ class LnKFlags {
 	static KeyIDs(pObject) {} //returns string of key IDs of pObject
 	
 	static RemoveKeyonUse(pKey) {} //returns of this key is removed on use
+	
+	//Passkeys
+	static PassKeys(pObject) {} //returns string of Passkeys of pObject
+	
+	static HasPasskey(pObject) {} //if pObject has a Passkey
+	
+	static MatchingPasskey(pObject, Passkey) {} //if Passkey matches pObject
 	
 	//copy paste
 	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
@@ -253,6 +261,19 @@ class LnKFlags {
 		return false; //default if anything fails
 	} 
 	
+	static #PasskeysFlag (pObject) { 
+	//returns content of Passkeys flag of pObject (if any) (collection of IDs)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cPasskeysF)) {
+				return vFlag.PasskeysFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
+	} 
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -383,6 +404,24 @@ class LnKFlags {
 		return this.#RemoveKeyonUseFlag(pKey);
 	} 
 	
+	//Passkeys
+	static PassKeys(pObject) {
+		return this.#PasskeysFlag(pObject);
+	}
+	
+	static HasPasskey(pObject) {
+		return (this.#PasskeysFlag(pObject).length > 0);
+	}
+	
+	static MatchingPasskey(pObject, Passkey) {
+		if (Passkey.length > 0) {
+			//empty Passkey not allowed
+			return this.#PasskeysFlag(pObject).split(cDelimiter).includes(Passkey);
+		}
+		
+		return false;
+	}
+	
 	//copy paste
 	static copyIDKeys(pObject) {
 		cIDKeyBuffer = this.#IDKeysFlag(pObject);
@@ -445,11 +484,7 @@ class LnKFlags {
 		
 		await this.#setcurrentLPsuccessFlag(pObject, await this.#currentLPsuccessFlag(pObject) + pdelta);
 		
-		console.log(await this.#currentLPsuccessFlag(pObject));
-		console.log(await this.#requiredLPsuccessFlag(pObject));
-		
 		if (await this.#currentLPsuccessFlag(pObject) >= await this.#requiredLPsuccessFlag(pObject)) {
-			console.log("here");
 			//success limit reached, reset successes and toggle lock
 			await this.#setcurrentLPsuccessFlag(pObject, 0);
 			

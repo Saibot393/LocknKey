@@ -1,6 +1,6 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -197,6 +197,7 @@ class LnKSheetSettings {
 	
 	//standard setting groups
 	static AddLockstandardsettings(pApp, pHTML, pData, pto) {
+												
 		//setting wall ids									
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
 												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
@@ -204,6 +205,15 @@ class LnKSheetSettings {
 												vwide : true,
 												vvalue : LnKFlags.KeyIDs(pApp.object),
 												vflagname : cIDKeysF
+												}, pto);
+												
+		//setting lock ids									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPasskeysF +".name"), 
+												vhint : Translate("SheetSettings."+ cPasskeysF +".descrp.lock"), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.PassKeys(pApp.object),
+												vflagname : cPasskeysF
 												}, pto);
 												
 		//setting lock dc									

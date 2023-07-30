@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -9,6 +9,8 @@ class LockManager {
 	//DECLARATIONS
 	//basics
 	static async useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
+	
+	static async useLockPasskey(pLock, pCharacter, pPasskey) {} //handels pLock use of pCharacter with Passkey pPasskey
 	
 	static async circumventLock(pLock, pCharacter, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
 	
@@ -56,6 +58,16 @@ class LockManager {
 				}
 			}
 		};
+	}
+	
+	static async useLockPasskey(pLock, pCharacter, pPasskey) {
+		if (LnKFlags.MatchingPasskey(pLock, pPasskey)) {
+			//Passkey matches
+			LockManager.ToggleLock(pLock, cLUuseKey);
+		}	
+		else {
+			LnKPopups.TextPopUpID(pLock, "WrongPassword"); //MESSAGE POPUP
+		}
 	}
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {
@@ -137,6 +149,9 @@ class LockManager {
 						case cLUuseKey:
 							//a key was used on the lock
 							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID);
+							break;
+						case cLUusePasskey:
+							LockManager.useLockPasskey(vLock, vCharacter, puseData.EnteredPasskey);
 							break;
 						case cLUpickLock:
 						case cLUbreakLock:

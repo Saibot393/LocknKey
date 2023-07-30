@@ -73,7 +73,7 @@ class KeyManager {
 						game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id}});
 					}
 					else {
-						if (true/*LnKFlag.hasPasskey(pLockObject)*/) {
+						if (LnKFlags.HasPasskey(pLockObject)) {
 							//no key item => use Passkey
 							KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
 						}
@@ -241,7 +241,8 @@ class KeyManager {
 					callback: (html) => {game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}})},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
-			}
+			},
+			default: Translate("Titles.ConfirmPasskey")
 		}).render(true);
 	}
 }
