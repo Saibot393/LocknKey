@@ -40,8 +40,8 @@ function Translate(pName, pWords = {}){
 	return vText;
 }
 
-var lastSearchedItemtype; //Saves the last item type for which a path was searched
-var lastItempath; //Saves the last path that was found for lastSearchedItemtype
+var vlastSearchedItemtype; //Saves the last item type for which a path was searched
+var vlastItempath; //Saves the last path that was found for lastSearchedItemtype
 
 class LnKutils {
 	//DELCARATIONS		
@@ -241,17 +241,20 @@ class LnKutils {
 	}
 	
 	static async TokenInventory(pToken, pfiltered = false) {
+		/* too slow
 		if (pfiltered) {
 			let vOldItems = pToken.actor.items.map(vItem => vItem);
 			let vItems = [];
 			
 			for (let i = 0; i <= vOldItems.length - 1; i++) {
+				
 				if (await LnKutils.getItemquantity(vOldItems[i]) > 0) {
 					vItems[vItems.length] = vOldItems[i];
 				}
 			}
 			return vItems;
 		}
+		*/
 		
 		return pToken.actor.items;
 	}
@@ -295,9 +298,9 @@ class LnKutils {
 			let vsubPath;
 			let vPrimeKeys = Object.keys(pItem);
 			
-			if (pItemtype.length > 0 && (pItemtype == lastSearchedItemtype)) {
+			if (pItemtype == vlastSearchedItemtype) {
 				//if item path already known just return it
-				return lastItempath;
+				return vlastItempath;
 			}
 			
 			if (vPrimeKeys.length) {
@@ -325,8 +328,8 @@ class LnKutils {
 			
 			if (vPath.length > 0) {
 				//to potentially increase the next searches speed
-				lastSearchedItemtype = pItemtype;
-				lastItempath = vPath;
+				vlastSearchedItemtype = pItemtype;
+				vlastItempath = vPath;
 			}
 		}
 		

@@ -198,7 +198,7 @@ class LnKFlags {
 			}
 		}
 		
-		return 1; //default if anything fails
+		return 0; //default if anything fails
 	} 
 	
 	static #LockBreakDCFlag (pObject) { 

@@ -90,7 +90,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   game.settings.register(cModuleName, "CritMethod", {
 	name: Translate("Settings.CritMethod.name"),
 	hint: Translate("Settings.CritMethod.descrp"),
-	scope: "client",
+	scope: "world",
 	config: true,
 	type: String,
 	choices: {
