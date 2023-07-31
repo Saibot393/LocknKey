@@ -1,0 +1,263 @@
+{
+  "LocknKey": {
+    "Titles": {
+      "LocknKey": "Lock & Key",
+      "WorldSettings": "世界设置 (仅限GM)",
+      "ClientSettings": "用户设置",
+      "GMonly": "仅限GM",
+      "LockTokens": "锁设置",
+      "CharacterTokens": "角色设置",
+      "KeyItems": "钥匙设置",
+      "LPItems": "锁的操控设置",
+      "Passkey": "密码",
+      "EnterPasskey": "输入密码:",
+      "ConfirmPasskey": "确定"
+    },
+
+    "Popup": {
+      "TokenisLocked": "{pLockName}上锁了",
+      "DoorisLocked": "这扇门上锁了",
+      "Lockoutofreach": "够不到这把锁~",
+      "lockedDoor": "门现已上锁",
+      "lockedToken": "{pLockName}现已上锁",
+      "unlockedDoor": "门现已解锁",
+      "unlockedToken": "{pLockName}现已解锁",
+      "GamePaused": "游戏被暂停了",
+      "noLockPickItem": "没有撬锁工具",
+      "pickLockfailed": "撬锁失败",
+      "cantLock": {
+        "deafult": "这把锁无法被上锁",
+        "break": "这把锁已经被打开了"
+      },
+      "breakLockfailed": "砸锁失败",
+      "NotaLock": "不是一把锁",
+      "WrongPassword": "密码错误"
+    },
+
+    "ChatMessage": {
+      "LockPick": "{pName}尝试撬锁:",
+      "LockPicksuccess": {
+        "crit": "{pName}撬锁大成功",
+        "default": "{pName}撬锁成功"
+      },
+      "LockPickfail": {
+        "crit": "{pName}撬锁大失败",
+        "default": "{pName}撬锁失败"
+      },
+      "LockBreak": "{pName}尝试砸锁:",
+      "LockBreaksuccess": {
+        "crit": "{pName}砸锁大成功",
+        "default": "{pName}砸锁成功"
+      },
+      "LockBreakfail": {
+        "crit": "{pName}砸锁大失败",
+        "default": "{pName}砸锁失败"
+      }
+    },
+
+    "Settings": {
+      "useGMquickKeys": {
+        "name": "启用GM操控",
+        "descrp": "允许GM使用底部列出的快捷键（影响带*的项目）"
+      },
+
+      "allowLocking": {
+        "name": "允许PL上锁",
+        "descrp": "如果PL有对应的钥匙，允许PL上锁"
+      },
+
+      "startasLocked": {
+        "name": "初始即上锁",
+        "descrp": "新注册的锁默认上锁"
+      },
+
+      "LockDistance": {
+        "name": "锁的距离",
+        "descrp": "可以与锁互动的距离（使用游戏内单位）"
+      },
+
+      "UseArmReachDistance": {
+        "name": "使用 \"Arms Reach\" 距离",
+        "descrp": "使用模组 \"Arms Reach\" 内的距离来设置与锁互动的距离"
+      },
+
+      "alwaysopenOwned": {
+        "name": "打开自己拥有的锁",
+        "descrp": "PL总是可以打开自己拥有的的token，不论是否上锁了"
+      },
+
+      "preventUseinPause": {
+        "name": "阻止暂停时使用钥匙",
+        "descrp": "阻止PL在暂停时使用钥匙"
+      },
+
+      "autoKeyuse": {
+        "name": "自动使用钥匙",
+        "descrp": "PL在与锁互动时会自动使用对应的钥匙"
+      },
+
+      "KeyItemtype": {
+        "name": "钥匙物品类型",
+        "descrp": "模组生成新钥匙时使用的物品类型，留空则使用默认类型(在F12 - Console 中输入 \"game.items.documentClass.TYPES\" 来列出可用的类型)"
+      },
+
+      "usePf2eSystem": {
+        "name": "使用PF2E掷骰系统",
+        "descrp": "使用PF2E掷骰系统 (关闭本模组的自定义掷骰公式与大成功系统，由PF2E系统取代)"
+      },
+
+      "CritMethod": {
+        "name": "大成功/大失败",
+        "descrp": "如何界定大成功与大失败",
+        "options": {
+          "noCrit": "没有大成功与大失败",
+          "natCrit": "掷出1或20",
+          "natCritpm10": "掷出1或20 或是 ±10DC [譬如Pf2e]"
+        }
+      },
+
+      "LockPickItem": {
+        "name": "撬锁物品",
+        "descrp": "撬锁物品的名字或者合集IDs (推荐), 如果不需要特定物品就可以撬锁请填\"-\"  (多个物品请以\";\"分隔) （译注：拖动物品到聊天框可以快速得到物品id）"
+      },
+
+      "RemoveLPoncritFail": {
+        "name": "大失败时移除撬锁物品",
+        "descrp": "在大失败时移除撬锁物品(或者将物品数量减1)"
+      },
+
+      "LockPickFormula": {
+        "name": "撬锁掷骰公式",
+        "descrp": "撬锁时的掷骰公式(例：\"1d20 + @actor.skills.thievery.mod\", 本模组的Github页面上有帮助页)"
+      },
+
+      "LockBreakFormula": {
+        "name": "砸锁掷骰公式",
+        "descrp": "砸锁时的掷骰公式(例：\"1d20 + @actor.skills.athletics.mod - 2\", 本模组的Github页面上有帮助页)"
+      },
+
+      "LockBreakunlockable": {
+        "name": "损坏的锁可被解锁",
+        "descrp": "让已经损坏的锁可以被解锁"
+      },
+
+      "onlyCombatMultiSuccess": {
+        "name": "仅在战斗中需要多次解锁",
+        "descrp": "非战斗状态忽略设定的多次解锁设置"
+      },
+
+      "MessagePopUps": {
+        "name": "弹出消息",
+        "descrp": "上锁与开锁时弹出多条消息"
+      },
+
+      "PlayLockSounds": {
+        "name": "播放锁的音效",
+        "descrp": "上锁/开锁时播放音效"
+      }
+    },
+
+    "SheetSettings": {
+      "LockableFlag": {
+        "name": "可被上锁",
+        "descrp": "这个物体可否被上锁"
+      },
+
+      "LockedFlag": {
+        "name": "已上锁",
+        "descrp": "这个物体是否被上锁"
+      },
+
+      "IDKeysFlag": {
+        "name": "钥匙ID",
+        "descrp": {
+          "lock": "可以给这把锁上锁或开锁的钥匙ID (多个时以\";\"分隔)",
+          "key": "这把钥匙可上锁或开锁的锁ID (多个时以\";\"分隔)"
+        }
+      },
+
+      "PasskeysFlag": {
+        "name": "密码",
+        "descrp": "解锁这把锁的密码 (多个时以\";\"分隔)"
+      },
+
+      "RemoveKeyonUseFlag": {
+        "name": "使用时消耗",
+        "descrp": "这把钥匙是否在被使用后消耗(或者物品数量减1)"
+      },
+
+      "LockDCFlag": {
+        "name": "撬锁DC",
+        "descrp": "开锁的DC, 适用于撬锁 (-1 则不可撬锁)"
+      },
+
+      "LockBreakDCFlag": {
+        "name": "砸锁DC",
+        "descrp": "开锁的DC, 适用于砸锁 (-1 则不可砸锁)"
+      },
+
+      "requiredLPsuccessFlag": {
+        "name": "需要的撬锁成功次数",
+        "descrp": "需要多少次成功的撬锁才能开锁 (以及目前成功了多少次) (大成功视为两次)"
+      },
+
+      "LPFormulaFlag": {
+        "name": "撬锁公式",
+        "descrp": {
+          "token": "这个token撬锁时加入到撬锁掷骰的公式",
+          "item": "物品拥有者撬锁时加入到撬锁掷骰的公式(只应用背包中最高的)"
+        }
+      },
+
+      "LPFormulaOverrideFlag": {
+        "name": "覆盖撬锁公式",
+        "descrp": {
+          "token": "这个token的撬锁公式是否覆盖世界设定",
+          "item": "这个物品的撬锁公式是否覆盖token/世界设定"
+        }
+      },
+
+      "LBFormulaFlag": {
+        "name": "砸锁公式",
+        "descrp": {
+          "token": "这个token砸锁时加入到砸锁掷骰的公式",
+          "item": "物品拥有者砸锁时加入到砸锁掷骰的公式(只应用背包中最高的)"
+        }
+      },
+
+      "LBFormulaOverrideFlag": {
+        "name": "覆盖砸锁公式",
+        "descrp": {
+          "token": "这个token的砸锁公式是否覆盖世界设定",
+          "item": "这个物品的砸锁公式是否覆盖token/世界设定"
+        }
+      }
+    },
+
+    "Context": {
+      "KeyCopy": "复制钥匙ID",
+      "KeyPaste": "粘贴ID进钥匙"
+    },
+
+    "Words": {
+      "Key": "钥匙"
+    },
+
+    "Text": {
+      "GMControls": {
+        "line0": "GM操控:",
+        "line1": "•shift+右键 给锁创建一把新的钥匙",
+        "line2": "•alt+右键   切换token上锁状态(*)",
+        "line3": "•ctrl+右键  复制锁的钥匙id(*)",
+        "line4": "•ctrl+左键  粘贴钥匙id到锁中(*)"
+      },
+
+      "PlayerControls": {
+        "line0": "PL操控:",
+        "line1": "•右键       尝试对锁使用一把钥匙",
+        "line2": "•shift+右键 尝试撬锁",
+        "line3": "•alt+右键   尝试砸锁"
+      }
+    }
+  }
+}
