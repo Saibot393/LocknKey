@@ -82,7 +82,6 @@ class LockManager {
 	}
 	
 	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {
-		console.log(pResultDegree);
 		let vCritMessagesuffix = ".default";
 		let vusedItem;	
 		
