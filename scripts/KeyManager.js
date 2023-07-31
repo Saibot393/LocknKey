@@ -7,7 +7,6 @@ import { LnKSound } from "./helpers/LnKSound.js";
 
 const cLnKKeyIcon = "fa-key";
 
-var vRollDataBuffer = {};
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
 	//DECLARATIONS
@@ -27,8 +26,6 @@ class KeyManager {
 	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {} //the (best) roll used to circumvent pLock using puseMethod
 	
 	static createPasskeyDialog(pLockObject, pLockType, pCharacter) {} //used to creat the passkey dialog
-	
-	static async Pf2eCallBack(proll) {} //callback used by Pf2e rolls
 	
 	//IMPLEMENTATIONS
 	static async onatemptedLockuse(pLockObject, pUseType) {
@@ -134,37 +131,53 @@ class KeyManager {
 							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
 							break;
 					}
+					
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)}});
 				}
 				else {
 					//no roll neccessary, handled by Pf2e system
 					vUsedItemID = vCircumvent.id;
 					
-					vRollDataBuffer = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true}
+					vCallback = async (proll) => {
+						let vResult;
+						
+						switch (proll.outcome) {
+							case 'criticalFailure':
+								vResult = -1;
+								break;
+							case 'failure':
+								vResult = 0;
+								break;
+							case 'success':
+								vResult = 1;
+								break;
+							case 'criticalSuccess':
+								vResult = 2;
+								break;
+							default:
+								vResult = 0;
+								break;
+						}
+						
+						game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true, Pf2eresult : vResult}})
+					};
 		
 					switch (pUseType) {
 						case cLUpickLock:
 							game.pf2e.actions.pickALock({
 								actors: pCharacter.actor,
-								callback: KeyManager.Pf2eCallBack,
+								callback: vCallback,
 								difficultyClass: LnKFlags.LockDCtype(pLockObject, pUseType)
 							});
 							break;
 						case cLUbreakLock:
 							game.pf2e.actions.forceOpen({
 								actors: pCharacter.actor,
-								callback: KeyManager.Pf2eCallBack,
+								callback: vCallback,
 								difficultyClass: LnKFlags.LockDCtype(pLockObject, pUseType)
 							});
 							break;
 					}
-				}
-				
-				//try lock with dice result
-				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)}});
-				}
-				else {
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true}});
 				}			
 			}
 			else {
@@ -280,32 +293,6 @@ class KeyManager {
 			},
 			default: Translate("Titles.ConfirmPasskey")
 		}).render(true);
-	}
-	
-	static async Pf2eCallBack(proll) {
-		let vResult;
-		
-		switch (proll.outcome) {
-			case 'criticalFailure':
-				vResult = -1;
-				break;
-			case 'failure':
-				vResult = 0;
-				break;
-			case 'success':
-				vResult = 1;
-				break;
-			case 'criticalSuccess':
-				vResult = 2;
-				break;
-			default:
-				vResult = 0;
-				break;
-		}
-		
-		vRollDataBuffer["Pf2eresult"] = vResult;
-		
-		game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : vRollDataBuffer})		
 	}
 }
 
