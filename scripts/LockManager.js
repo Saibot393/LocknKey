@@ -296,7 +296,7 @@ class LockManager {
 						break;
 					case cLUpickLock:
 					case cLUuseKey:
-						LnKPopups.TextPopUpID(pLock, "cantLock"); //MESSAGE POPUP
+						LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
 						break;
 				}
 			}
