@@ -27,7 +27,7 @@
 			"pickLockfailed"			: "Failed to pick lock",
 			"cantLock" : {
 				"default"				: "This lock cant be locked",
-				"break"					: "This lock is alread open"
+				"break"					: "This lock is already open"
 			},
 			"breakLockfailed"			: "Failed to break lock",
 			"NotaLock"					: "Not a lock",
