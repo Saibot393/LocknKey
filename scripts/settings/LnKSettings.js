@@ -156,6 +156,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "onlyCombatMultiSuccess", {
+	name: Translate("Settings.onlyCombatMultiSuccess.name"),
+	hint: Translate("Settings.onlyCombatMultiSuccess.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });  
+  
   //client
   game.settings.register(cModuleName, "MessagePopUps", {
 	name: Translate("Settings.MessagePopUps.name"),
@@ -194,7 +203,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.LockBreakunlockable"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.onlyCombatMultiSuccess"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `

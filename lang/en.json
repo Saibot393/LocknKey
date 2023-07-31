@@ -141,6 +141,11 @@
 				"descrp"				: "Makes lock that have been broken unlockable"				
 			},
 			
+			"onlyCombatMultiSuccess" : {
+				"name" 					: "Multi-success during combat only",
+				"descrp"				: "Ignores set required Lockpicking successes outside of combat"				
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		

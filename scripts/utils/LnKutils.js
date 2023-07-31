@@ -1,3 +1,4 @@
+import * as FCore from "../CoreVersionComp.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 import { LnKSystemutils, cPf2eLoottype, cLockTypeLootPf2e } from "./LnKSystemutils.js";
 import { Geometricutils } from "./Geometricutils.js";
@@ -115,6 +116,8 @@ class LnKutils {
 	static LBformulaWorld() {} //returns the worlds formula used for Lock breaking rolls
 	
 	static formulaWorld(pType) {} //returns the worlds formula used for pType [cLUpickLock, cLUbreakLock]
+	
+	static useMultiSuccess(pObject) {} //returns of MultiSuccess is active for pObject
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
@@ -561,6 +564,17 @@ class LnKutils {
 				return "";
 				break;
 		}
+	}
+	
+	static useMultiSuccess(pObject) {
+		let vScene = FCore.sceneof(pObject);
+		
+		if (vScene && game.settings.get(cModuleName, "onlyCombatMultiSuccess")) {
+			//lock if combat is active in scene of pObject
+			return game.combats.find(vCombat => vCombat.scene.id == vScene.id && vCombat.started)
+		}
+		
+		return true;
 	}
 	
 	//arrays

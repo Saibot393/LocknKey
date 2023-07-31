@@ -484,7 +484,7 @@ class LnKFlags {
 		
 		await this.#setcurrentLPsuccessFlag(pObject, await this.#currentLPsuccessFlag(pObject) + pdelta);
 		
-		if (await this.#currentLPsuccessFlag(pObject) >= await this.#requiredLPsuccessFlag(pObject)) {
+		if (!LnKutils.useMultiSuccess(pObject) || (await this.#currentLPsuccessFlag(pObject) >= await this.#requiredLPsuccessFlag(pObject))) {
 			//success limit reached, reset successes and toggle lock
 			await this.#setcurrentLPsuccessFlag(pObject, 0);
 			

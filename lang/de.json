@@ -141,6 +141,11 @@
 				"descrp"				: "Mache Schlösser welche aufgebrochen wurden unabschließbar"				
 			},
 			
+			"onlyCombatMultiSuccess" : {
+				"name" 					: "Mehrere Erfolge nur während Kämpfen",
+				"descrp"				: "Ignoriert die benötigten Erfolge außerhalb von Kämpfen"				
+			},
+			
 			"MessagePopUps" : {
 				"name" 					: "Text popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		

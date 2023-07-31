@@ -1,6 +1,10 @@
 export function sceneof(pToken) {
 	let vscene = pToken.scene;
 	
+	if (!vscene && pToken.object) {
+		vscene = pToken.object.scene;
+	}
+	
 	if (!vscene) {
 		//for FVTT v10
 		if (canvas.scene.tokens.get(pToken.id)) {
