@@ -1,7 +1,7 @@
 ## v1.6.0
 - Improved Pf2e integration (thanks to [cadowtin](https://github.com/cadowtin))
   - New setting Use Pf2e roll system to use the Pf2e system instead of the Lock & Key roll and crit settings
-  -Should be fully compatible with the Pf2e rules system
+  - Should be fully compatible with the Pf2e rules system
 - Added Multi-success during combat only to disablerequired multi success outside of combat
 - Added quantity check for Lockpicks (in most systems, some systems are weird)
 
