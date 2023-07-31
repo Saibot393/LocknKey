@@ -191,7 +191,7 @@ class KeyManager {
 	static onKeyContext(pHTML, pButtons) {
 		pButtons.push({
 			name: Translate("Context.KeyCopy"),
-			icon: '<i class="fa-solid ${cLnKKeyIcon}"></i>',
+			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
@@ -207,7 +207,7 @@ class KeyManager {
 		
 		pButtons.push({
 			name: Translate("Context.KeyPaste"),
-			icon: '<i class="fa-solid ${cLnKKeyIcon}"></i>',
+			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
 				let vItem = game.items.get(vID);
