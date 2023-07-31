@@ -14,8 +14,6 @@ class LockManager {
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
 	
-	static async circumventLockPf2e(pLock, pCharacter, pUsedItemID, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] [Pf2e specific]
-	
 	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {} //called when pCharacter tries to circumvent pLock using pMethodtype with pResultDegree
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
@@ -83,47 +81,8 @@ class LockManager {
 		LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, vSuccessDegree, pMethodtype, true)
 	}
 	
-	static async circumventLockPf2e(pLock, pCharacter, pUsedItemID, pMethodtype) {
-		//use Pf2e successDegree
-		let vCallback = async (proll) => {
-							switch (proll.outcome) {
-								case 'criticalFailure':
-									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, -1, pMethodtype);
-									break;
-								case 'failure':
-									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 0, pMethodtype);
-									break;
-								case 'success':
-									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 1, pMethodtype);
-									break;
-								case 'criticalSuccess':
-									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 2, pMethodtype);
-									break;
-								default:
-									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 0, pMethodtype);
-									break;
-							}
-						};
-		
-		switch (pMethodtype) {
-			case cLUpickLock:
-				game.pf2e.actions.pickALock({
-					actors: pCharacter.actor,
-					callback: vCallback,
-					difficultyClass: LnKFlags.LockDCtype(pLock, pMethodtype)
-				});
-				break;
-			case cLUbreakLock:
-				game.pf2e.actions.forceOpen({
-					actors: pCharacter.actor,
-					callback: vCallback,
-					difficultyClass: LnKFlags.LockDCtype(pLock, pMethodtype)
-				});
-				break;
-		}
-	}
-	
 	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {
+		console.log(pResultDegree);
 		let vCritMessagesuffix = ".default";
 		let vusedItem;	
 		
@@ -223,8 +182,8 @@ class LockManager {
 								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType);
 							}
 							else {
-								//no Roll result yet, use Pf2e system
-								LockManager.circumventLockPf2e(vLock, vCharacter, puseData.UsedItemID, puseData.useType);
+								//use Pf2e systems result
+								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Pf2eresult, puseData.useType);
 							}
 							break;
 					}
