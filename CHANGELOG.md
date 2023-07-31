@@ -1,3 +1,7 @@
+## v1.6.2
+- Added Chinese translation (thanks to [feederze](https://github.com/feederze))
+- Fixed a few translations bugs/typos (thanks to [cadowtin](https://github.com/cadowtin))
+
 ## v1.6.1
 - Fixed a few UI bugs
 
