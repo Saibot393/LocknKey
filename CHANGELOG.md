@@ -1,3 +1,6 @@
+## v1.6.1
+- Fixed a few UI bugs
+
 ## v1.6.0
 - Improved Pf2e integration (thanks to [cadowtin](https://github.com/cadowtin))
   - New setting Use Pf2e roll system to use the Pf2e system instead of the Lock & Key roll and crit settings
