@@ -1,3 +1,7 @@
+## v1.5.0
+- Added passwords for locks
+- Removed "Not a lock" message to reduce unnecessary popups
+
 ## v1.4.1
 - Several small bug fixes and improvements
 
