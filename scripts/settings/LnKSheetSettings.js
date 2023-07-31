@@ -125,7 +125,7 @@ class LnKSheetSettings {
 		
 		//setting wall is lockable
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
-												vhint : Translate("SheetSettings."+ cLockableF +".descrp.wall"), 
+												vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
 												vtype : "checkbox", 
 												vvalue : LnKFlags.isLockable(pApp.object),
 												vflagname : cLockableF
