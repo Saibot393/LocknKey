@@ -26,7 +26,7 @@
       "noLockPickItem": "没有撬锁工具",
       "pickLockfailed": "撬锁失败",
       "cantLock": {
-        "deafult": "这把锁无法被上锁",
+        "default": "这把锁无法被上锁",
         "break": "这把锁已经被打开了"
       },
       "breakLockfailed": "砸锁失败",

@@ -26,7 +26,7 @@
 			"noLockPickItem"			: "Keinen Dietrich im Inventar",
 			"pickLockfailed"			: "Schloss knacken fehlgeschlagen",
 			"cantLock" : {
-				"deafult"				: "Schloss kann nicht verschlossen werden",
+				"default"				: "Schloss kann nicht verschlossen werden",
 				"break"					: "Schloss ist bereits offen"
 			},
 			"breakLockfailed"			: "Schloss aufbrechen fehlgeschlagen",
