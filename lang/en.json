@@ -26,7 +26,7 @@
 			"noLockPickItem"			: "No lock pick in inventory",
 			"pickLockfailed"			: "Failed to pick lock",
 			"cantLock" : {
-				"deafult"				: "This lock cant be locked",
+				"default"				: "This lock cant be locked",
 				"break"					: "This lock is alread open"
 			},
 			"breakLockfailed"			: "Failed to break lock",
