@@ -28,12 +28,14 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
+- Use Pf2e roll system: to use the Pf2e system instead of the Lock & Key roll and crit settings
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
 - Remove Lockpick on critical fail: to remove Lockpick item on critical failures
 - Lockpick roll formula: the dice formula used for lockpick rolls
 - Break lock roll formula: the dice formula used for break lock rolls
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
+- Multi-success during combat only: to disable required multi success outside of combat
 #### Client:
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
