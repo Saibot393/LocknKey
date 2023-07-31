@@ -242,8 +242,9 @@ class LnKutils {
 	}
 	
 	static async TokenInventory(pToken, pfiltered = false) {
-		/* too slow
+
 		if (pfiltered) {
+			/* too slow
 			let vOldItems = pToken.actor.items.map(vItem => vItem);
 			let vItems = [];
 			
@@ -254,8 +255,10 @@ class LnKutils {
 				}
 			}
 			return vItems;
+			*/
+			//only return items that have at least 1 in stack (if quantity can be found easily)
+			return pToken.actor.items.filter(vItem => !Number.isInteger(vItem.quantity) || (vItem.quantity > 0));
 		}
-		*/
 		
 		return pToken.actor.items;
 	}

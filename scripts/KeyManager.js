@@ -51,9 +51,11 @@ class KeyManager {
 				LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 			}
 		}
+		/*
 		else {
-			//LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
 		}
+		*/
 	}
 	
 	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter) {	
@@ -101,35 +103,46 @@ class KeyManager {
 			vCircumvent = await KeyManager.cancircumventLock(pCharacter, pLockObject, pUseType); //will save if circumvention possible and the item
 			if (vCircumvent) {
 				
-				[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType, vRollData);
-				
-				if (vUsedItemID.length <= 0 && vCircumvent.id) {
-					//no special item was found but vCircumvent is item with id, so fall back to vCircumvent
+				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
+					//get rollformula and used item (for roll formula)
+					[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType, vRollData);
+					
+					if (vUsedItemID.length <= 0 && vCircumvent.id) {
+						//no special item was found but vCircumvent is item with id, so fall back to vCircumvent
+						vUsedItemID = vCircumvent.id;
+					}
+					
+					//roll dice according to formula
+					vRoll =  new Roll(vRollFormula, vRollData);
+					
+					LnKSound.PlayDiceSound(pCharacter);
+					
+					Hooks.callAll(cModuleName+".DiceRoll", pUseType, pCharacter);
+					
+					await vRoll.evaluate();
+					
+					//ouput dice result in chat
+					switch (pUseType) {
+						case cLUpickLock:
+							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+							break;
+						case cLUbreakLock:
+							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+							break;
+					}
+				}
+				else {
+					//no roll neccessary, handled by Pf2e system
 					vUsedItemID = vCircumvent.id;
 				}
 				
-				//roll dice according to formula
-				vRoll =  new Roll(vRollFormula, vRollData);
-				
-				LnKSound.PlayDiceSound(pCharacter);
-				
-				Hooks.callAll(cModuleName+".DiceRoll", pUseType, pCharacter);
-				
-				await vRoll.evaluate();
-				
-				//ouput dice result in chat
-				switch (pUseType) {
-					case cLUpickLock:
-						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
-						break;
-					case cLUbreakLock:
-						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
-						break;
-				}
-				
-				
 				//try lock with dice result
-				game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)}});
+				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)}});
+				}
+				else {
+					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true}});
+				}			
 			}
 			else {
 				if (pUseType == cLUpickLock) {

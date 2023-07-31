@@ -92,14 +92,16 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
 												vflagname : cRemoveKeyonUseF
 												}, `div[data-tab="${cModuleName}"]`);
-												
-		//create title for Lockpick/Break items
-		vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
-		
-		pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+					
+		if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
+			//create title for Lockpick/Break items
+			vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
+			
+			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
 
-		//formulas
-		LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
+			//formulas
+			LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
+		}
 												
 		if (pApp.LnKTabactive) {
 			pApp.activateTab(cModuleName);
@@ -134,65 +136,79 @@ class LnKSheetSettings {
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {
+		let vLockSettings = await LnKutils.isLockCompatible(pApp.token);
+		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
+		
+		let vTitle;
+		
 		//setup
-		let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
-		let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
-		
-		let vTabIcon;
-		
-		if (await LnKutils.isLockCompatible(pApp.token)) {
-			vTabIcon = cLnKLockIcon;
-		}
-		else {
-			vTabIcon = cLnKKeyIcon;
-		}
-		
-		let vTabButtonHTML = 	`
-						<a class="item" data-tab="${cModuleName}">
-							<i class="fas ${vTabIcon}"></i>
-							${Translate("Titles."+cModuleName)}
-						</a>
-						`; //tab button HTML
-		let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
-		
-		vTabbar.append(vTabButtonHTML);
-		vprevTab.after(vTabContentHTML);	
+		if (vLockSettings || vLockFormulaSettings) {
+			//only if any settings at all
+			let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
+			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
+			
+			let vTabIcon;
+			
+			if (await LnKutils.isLockCompatible(pApp.token)) {
+				vTabIcon = cLnKLockIcon;
+			}
+			else {
+				vTabIcon = cLnKKeyIcon;
+			}
+			
+			let vTabButtonHTML = 	`
+							<a class="item" data-tab="${cModuleName}">
+								<i class="fas ${vTabIcon}"></i>
+								${Translate("Titles."+cModuleName)}
+							</a>
+							`; //tab button HTML
+			let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+			
+			vTabbar.append(vTabButtonHTML);
+			vprevTab.after(vTabContentHTML);	
+			
+			if (vLockSettings && vLockFormulaSettings) {
+				//create title for lock compatible tokens
+				vTitle = `<h3 class="border">${Translate("Titles.LockTokens")}</h3>`;
 				
-		if (await LnKutils.isLockCompatible(pApp.token)) {
-			//settings	
-			
-			//create title for lock compatible tokens
-			let vTitle = `<h3 class="border">${Translate("Titles.LockTokens")}</h3>`;
-			
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
-			
-			//setting token is lockable
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
-													vhint : Translate("SheetSettings."+ cLockableF +".descrp.token"), 
-													vtype : "checkbox", 
-													vvalue : LnKFlags.isLockable(pApp.token),
-													vflagname : cLockableF
-													}, `div[data-tab="${cModuleName}"]`);
-													
-			//setting token is locked								
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
-													vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
-													vtype : "checkbox", 
-													vvalue : LnKFlags.isLocked(pApp.token),
-													vflagname : cLockedF
-													}, `div[data-tab="${cModuleName}"]`);	
+				pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			}
+				
+			if (vLockSettings) {
+				//settings
+				
+				//setting token is lockable
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
+														vhint : Translate("SheetSettings."+ cLockableF +".descrp.token"), 
+														vtype : "checkbox", 
+														vvalue : LnKFlags.isLockable(pApp.token),
+														vflagname : cLockableF
+														}, `div[data-tab="${cModuleName}"]`);
+														
+				//setting token is locked								
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
+														vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
+														vtype : "checkbox", 
+														vvalue : LnKFlags.isLocked(pApp.token),
+														vflagname : cLockedF
+														}, `div[data-tab="${cModuleName}"]`);	
 
-			//Lock standard settings
-			LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);
-
-			//create title for Character tokens
-			vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
+				//Lock standard settings
+				LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);	
+			}
 			
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);	
+			if (vLockSettings && vLockFormulaSettings) {
+				//createtitle for Character tokens
+				vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
+				
+				pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			}
+			
+			//formulas
+			if (vLockFormulaSettings) { //replaced by Pf2e
+				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
+			}
 		}
-		
-		//formulas
-		LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
 	} 
 	
 	//standard setting groups

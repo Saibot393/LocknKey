@@ -12,7 +12,11 @@ class LockManager {
 	
 	static async useLockPasskey(pLock, pCharacter, pPasskey) {} //handels pLock use of pCharacter with Passkey pPasskey
 	
-	static async circumventLock(pLock, pCharacter, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
+	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
+	
+	static async circumventLockPf2e(pLock, pCharacter, pUsedItemID, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] [Pf2e specific]
+	
+	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {} //called when pCharacter tries to circumvent pLock using pMethodtype with pResultDegree
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
@@ -71,30 +75,80 @@ class LockManager {
 	}
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {
-		let vCritMessagesuffix = ".default";
+		//only handles custom successDegree
 		let vSuccessDegree;
-		let vusedItem;
 		
-		if (pUsedItemID.length > 0) {
-			vusedItem = (await LnKutils.TokenInventory(pCharacter)).get(pUsedItemID);
+		vSuccessDegree = LnKutils.successDegree(pRollresult, pDiceresult, LnKFlags.LockDCtype(pLock, pMethodtype));
+		
+		LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, vSuccessDegree, pMethodtype, true)
+	}
+	
+	static async circumventLockPf2e(pLock, pCharacter, pUsedItemID, pMethodtype) {
+		//use Pf2e successDegree
+		let vCallback = async (proll) => {
+							switch (proll.outcome) {
+								case 'criticalFailure':
+									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, -1, pMethodtype);
+									break;
+								case 'failure':
+									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 0, pMethodtype);
+									break;
+								case 'success':
+									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 1, pMethodtype);
+									break;
+								case 'criticalSuccess':
+									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 2, pMethodtype);
+									break;
+								default:
+									LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, 0, pMethodtype);
+									break;
+							}
+						};
+		
+		switch (pMethodtype) {
+			case cLUpickLock:
+				game.pf2e.actions.pickALock({
+					actors: pCharacter.actor,
+					callback: vCallback,
+					difficultyClass: LnKFlags.LockDCtype(pLock, pMethodtype)
+				});
+				break;
+			case cLUbreakLock:
+				game.pf2e.actions.forceOpen({
+					actors: pCharacter.actor,
+					callback: vCallback,
+					difficultyClass: LnKFlags.LockDCtype(pLock, pMethodtype)
+				});
+				break;
 		}
+	}
+	
+	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {
+		let vCritMessagesuffix = ".default";
+		let vusedItem;	
 		
-		if (LnKFlags.isLockable(pLock)) {
-			vSuccessDegree = LnKutils.successDegree(pRollresult, pDiceresult, LnKFlags.LockDCtype(pLock, pMethodtype));
-			
-			if ((vSuccessDegree > 1) || (vSuccessDegree < 0)) {
+		if (LnKFlags.isLockable(pLock)) {	
+		
+			if ((pResultDegree > 1) || (pResultDegree < 0)) {
 				vCritMessagesuffix = ".crit";
 			}
 			
-			if (LnKutils.beatsDC(pRollresult, LnKFlags.LockDCtype(pLock, pMethodtype))) {	
+			if (pUsedItemID && pUsedItemID.length > 0) {
+				vusedItem = (await LnKutils.TokenInventory(pCharacter)).get(pUsedItemID);
+			}	
+			
+			if (pResultDegree > 0) {
+				//success
 				switch (pMethodtype) {
 							case cLUpickLock:
-								if (await LnKFlags.changeLockPicksuccesses(pLock, vSuccessDegree)) {
+								if (await LnKFlags.changeLockPicksuccesses(pLock, pResultDegree)) {
 									//only toggle lock if enough seccesses have been achieved
 									LockManager.ToggleLock(pLock, pMethodtype);
 								}
 								
-								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								if (pChatMessages) {
+									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								}
 								
 								break;
 							case cLUbreakLock:
@@ -102,18 +156,25 @@ class LockManager {
 									//something could fail during Lock toggle								
 									await LockManager.onBreakLock(pLock);
 								}
-								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreaksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								
+								if (pChatMessages) {
+									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreaksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								}
 								
 								break;
 				}
 			}
 			else {
+				//failure
 				switch (pMethodtype) {
 							case cLUpickLock:
 								LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
-								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								
-								if (vSuccessDegree < 0 && game.settings.get(cModuleName, "RemoveLPoncritFail") && vusedItem) {
+								if (pChatMessages) {
+									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								}
+								
+								if (pResultDegree < 0 && game.settings.get(cModuleName, "RemoveLPoncritFail") && vusedItem) {
 									//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
 									LnKutils.removeoneItem(vusedItem, pCharacter);
 								}
@@ -121,14 +182,17 @@ class LockManager {
 								break;
 							case cLUbreakLock:
 								LnKPopups.TextPopUpID(pLock, "breakLockfailed"); //MESSAGE POPUP
-								await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								
+								if (pChatMessages) {
+									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+								}
 								break;
 				}
 			}
 		}
 		else {
 			LnKPopups.TextPopUpID(pLock, "NotaLock"); //MESSAGE POPUP
-		}
+		}		
 	}
 	
 	static LockuseRequest(puseData) {
@@ -155,7 +219,13 @@ class LockManager {
 							break;
 						case cLUpickLock:
 						case cLUbreakLock:
-							LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType);
+							if (!puseData.usePf2eRoll) {
+								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType);
+							}
+							else {
+								//no Roll result yet, use Pf2e system
+								LockManager.circumventLockPf2e(vLock, vCharacter, puseData.UsedItemID, puseData.useType);
+							}
 							break;
 					}
 				}

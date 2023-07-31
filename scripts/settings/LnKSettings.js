@@ -87,11 +87,21 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.Systemdefaultitemtype()
   }); 
   
+  game.settings.register(cModuleName, "usePf2eSystem", {
+	name: Translate("Settings.usePf2eSystem.name"),
+	hint: Translate("Settings.usePf2eSystem.descrp"),
+	scope: "world",
+	config: LnKSystemutils.isPf2e(),
+	type: Boolean,
+	default: false,
+	requiresReload: true
+  }); 
+  
   game.settings.register(cModuleName, "CritMethod", {
 	name: Translate("Settings.CritMethod.name"),
 	hint: Translate("Settings.CritMethod.descrp"),
 	scope: "world",
-	config: true,
+	config: !game.settings.get(cModuleName, "usePf2eSystem"), //replaced by Pf2e
 	type: String,
 	choices: {
 		"CritMethod-noCrit": Translate("Settings.CritMethod.options.noCrit"),
@@ -123,7 +133,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.LockPickFormula.name"),
 	hint: Translate("Settings.LockPickFormula.descrp"),
 	scope: "world",
-	config: true,
+	config: !game.settings.get(cModuleName, "usePf2eSystem"), //replaced by Pf2e
 	type: String,
 	default: LnKSystemutils.SystemdefaultLPformula()
   }); 
@@ -132,7 +142,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.LockBreakFormula.name"),
 	hint: Translate("Settings.LockBreakFormula.descrp"),
 	scope: "world",
-	config: true,
+	config: !game.settings.get(cModuleName, "usePf2eSystem"), //replaced by Pf2e
 	type: String,
 	default: LnKSystemutils.SystemdefaultLBformula()
   }); 

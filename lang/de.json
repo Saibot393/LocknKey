@@ -101,6 +101,11 @@
 				"descrp"				: "Der Gegenstandstyp den das Modul für neue Schlüssel benutzt, leer lassen um den standard Typen zu benutzen (Erhalt einer Liste valider Typen durch Eingeben von \"game.items.documentClass.TYPES\" in die F12 Konsole)"		
 			},
 			
+			"usePf2eSystem" : {
+				"name" 					: "Nutze Pf2e Würfelsystem",
+				"descrp"				: "Nutzt das Pf2e Würfelsystem (Deaktiviert Lock & Key Wurfformeln und Kritsystem um anstatt dessen das Pf2e rules-System zu nutzen)"						
+			},
+			
 			"CritMethod" : {
 				"name" 					: "Krit System",
 				"descrp"				: "Die Art und Weise auf welche kritische Würfe bestimmt werden",

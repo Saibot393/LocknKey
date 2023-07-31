@@ -101,6 +101,11 @@
 				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
 			},
 			
+			"usePf2eSystem" : {
+				"name" 					: "Use Pf2e roll system",
+				"descrp"				: "Use the Pf2e roll system (disables Lock & Key custom roll formulas and crit settings in favor of the Pf2e rules system)"						
+			},
+			
 			"CritMethod" : {
 				"name" 					: "Crit system",
 				"descrp"				: "The way critical rolls are determined",
