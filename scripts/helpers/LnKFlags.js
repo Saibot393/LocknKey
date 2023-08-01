@@ -24,7 +24,8 @@ export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverri
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
 	LocknotPickable : 1,
-	LocknotBreakable : 2
+	LocknotBreakable : 2,
+	LockPasskeyTitle : 3
 };
 
 export { cCustomPopup };
@@ -628,7 +629,7 @@ class LnKFlags {
 			vID = pID;
 		}
 		
-		if ((typeof pID) == "string") {		
+		if ((typeof vID) == "string") {		
 			if (vID == "") {
 				return this.#CustomPopupsFlag(pObject);
 			}
@@ -641,6 +642,8 @@ class LnKFlags {
 				}
 			}
 		}
+		
+		return "";
 	}
 	
 	static CustomPopupsKeys() {

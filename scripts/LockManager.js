@@ -3,6 +3,7 @@ import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
+import { cCustomPopup } from "./helpers/LnKFlags.js";
 
 //does everything Lock related
 class LockManager {
@@ -35,9 +36,11 @@ class LockManager {
 	
 	static async isUnlocked(pObject, pPopup = false) {} //if pObject is currently unlocked
 	
-	static TokenisUnlocked(pToken, pPopup = false) {} //if pToken is currently unlocked
+	static TokenisUnlocked(pToken) {} //if pToken is currently unlocked
 	
 	static UserCanopenToken(pToken, pPopup = false) {} //if the current user can open pToken
+	
+	static async LockedMessage(pObject) {} //emmits a locked message
 	
 	//copy paste
 	static copyLock(pLock) {} //copy the Locks Key IDs
@@ -333,36 +336,60 @@ class LockManager {
 	
 	static async isUnlocked(pObject, pPopup = false) {
 		let vLocktype = await LnKutils.Locktype(pObject);
+		let vUnlocked = true;
+		let vMessage;
 		
-		switch (vLocktype) {
-			case cLockTypeDoor:
-				if (pObject.ds == 2) {
-						if (pPopup) {
-							LnKPopups.TextPopUpID(pToken, "DoorisLocked"); //MESSAGE POPUP
-						}
-					
-					return false;
-				}
-				return true;
-			case cLockTypeLootPf2e:
-			default:
-				return LockManager.TokenisUnlocked(pObject, pPopup)
+		if (vLocktype == cLockTypeDoor) {
+			vUnlocked = (pObject.ds != 2);
 		}
-	}
-	
-	static TokenisUnlocked(pToken, pPopup = false) {
-		let vUnlocked = !(LnKFlags.isLocked(pToken));
+		else {
+			if (LnKutils.isTokenLock(vLocktype)) {
+				vUnlocked = LockManager.UserCanopenToken(pObject);
+			}
+			else {
+				vUnlocked = !LnKFlags.isLocked(pObject);
+			}
+		}
 		
 		if (pPopup && !vUnlocked) {
-			LnKPopups.TextPopUpID(pToken, "TokenisLocked", {pLockName : pToken.name}); //MESSAGE POPUP
+			LockManager.LockedMessage(pObject);
 		}
 		
+		return vUnlocked;
+	}
+	
+	static TokenisUnlocked(pToken) {		
 		return !(LnKFlags.isLocked(pToken));
 	}
 	
-	static UserCanopenToken(pToken, pPopup = false) {
-		return LockManager.TokenisUnlocked(pToken, pPopup) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"))
+	static UserCanopenToken(pToken, pPopup = false) {		
+		let vUnlocked = LockManager.TokenisUnlocked(pToken) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
+		
+		if (pPopup && !vUnlocked) {
+			LockManager.LockedMessage(pToken);
+		}
+		
+		return vUnlocked;
 	}
+	
+	static async LockedMessage(pObject) {
+		let vLocktype = await LnKutils.Locktype(pObject);
+		
+		let vMessage = LnKFlags.getCustomPopups(pObject, cCustomPopup.LockLocked);
+		
+		if (vMessage.length) {
+			LnKPopups.TextPopUp(pObject, vMessage);
+		}
+		else {
+			if (vLocktype == cLockTypeDoor) {
+				LnKPopups.TextPopUpID(pObject, "DoorisLocked"); //MESSAGE POPUP
+			}
+			
+			if (LnKutils.isTokenLock(vLocktype) && pObject.name) {
+				LnKPopups.TextPopUpID(pObject, "TokenisLocked", {pLockName : pObject.name}); //MESSAGE POPUP
+			}
+		}		
+	} 
 	
 	//copy paste
 	static copyLock(pLock) {
@@ -397,6 +424,10 @@ Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
 Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {	
 	if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: paste lock IDs
 		LockManager.pasteLock(pDoorDocument);
+	}
+	
+	if (!game.user.isGM) {
+		LockManager.isUnlocked(pDoorDocument, true);
 	}
 });
 

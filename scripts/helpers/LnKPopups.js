@@ -14,15 +14,17 @@ class LnKPopups {
 		let vText = pText;
 		let vLockType = await LnKutils.Locktype(pObject);
 		
-		for (let vWord of Object.keys(pWords)) {
-			vText = vText.replace("{" + vWord + "}", pWords[vWord]);
+		if (pText.length) {
+			for (let vWord of Object.keys(pWords)) {
+				vText = vText.replace("{" + vWord + "}", pWords[vWord]);
+			}
+			
+			//other clients pop up
+			game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pLockType : vLockType, pText : vText}});
+			
+			//own pop up
+			LnKPopups.PopUpRequest(pObject.id, vLockType, vText);
 		}
-		
-		//other clients pop up
-		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pLockType : vLockType, pText : vText}});
-		
-		//own pop up
-		LnKPopups.PopUpRequest(pObject.id, vLockType, vText);
 	}
 	
 	static TextPopUpID(pObject, pID, pWords = {}) {

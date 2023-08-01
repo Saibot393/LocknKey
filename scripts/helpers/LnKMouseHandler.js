@@ -48,19 +48,23 @@ class LnKMouseHandler {
 		//doors	
 	static RegisterDoorLeftClick() {
 		//register onDoorLeftClick (if possible with lib-wrapper)
+		/*
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "DoorControl.prototype._onMouseDown", function(vWrapped, ...args) {LnKMouseHandler.onDoorLeftClick(...args, this.wall); return vWrapped(...args)}, "WRAPPER");
+			libWrapper.register(cModuleName, "DoorControl.prototype.onclick", function(vWrapped, ...args) {LnKMouseHandler.onDoorLeftClick(...args, this.wall); return vWrapped(...args)}, "WRAPPER");
 		}
 		else {
-			const vOldDoorCall = DoorControl.prototype._onMouseDown;
+		*/
+		const vOldDoorCall = DoorControl.prototype.onclick;
+		
+		DoorControl.prototype.onclick = function (pEvent) {
+			LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
 			
-			DoorControl.prototype._onMouseDown = function (pEvent) {
-				LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
-				
+			if (vOldDoorCall) {
 				let vDoorCallBuffer = vOldDoorCall.bind(this);
 				vDoorCallBuffer(pEvent);
 			}
-		}		
+		}
+		//}		
 	}
 	
 	static RegisterDoorRightClick() {

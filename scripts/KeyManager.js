@@ -4,6 +4,7 @@ import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
+import { cCustomPopup } from "./helpers/LnKFlags.js";
 
 const cLnKKeyIcon = "fa-key";
 
@@ -30,25 +31,43 @@ class KeyManager {
 	//IMPLEMENTATIONS
 	static async onatemptedLockuse(pLockObject, pUseType) {
 		let vCharacter = LnKutils.PrimaryCharacter();
+		let vProblemPopup = "";
 		
-		if (LnKFlags.isLockable(pLockObject)) {
-			//check if pLockObject is even Lockable
-			
-			if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-				//check if lock is in reach
-				switch (pUseType) {
-					case cLUuseKey:
-					case cLUusePasskey:
-						KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter);
-						break;
-					case cLUpickLock:
-					case cLUbreakLock:
-						KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
-						break;
-				}
+		if (LnKFlags.LockDCtype(pLockObject, pUseType) == Infinity) {
+			//Lock cant be picked/broken => possible popup message
+			switch (pUseType) {
+				case cLUpickLock:
+					vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotPickable);
+					break;
+				case cLUbreakLock:
+					vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotBreakable);
+					break;
 			}
-			else {
-				LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+		}
+		
+		if (vProblemPopup.length) {
+			LnKPopups.TextPopUp(pLockObject, vProblemPopup); //MESSAGE POPUP
+		}
+		else {
+			if (LnKFlags.isLockable(pLockObject)) {
+				//check if pLockObject is even Lockable
+				
+				if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
+					//check if lock is in reach
+					switch (pUseType) {
+						case cLUuseKey:
+						case cLUusePasskey:
+							KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter);
+							break;
+						case cLUpickLock:
+						case cLUbreakLock:
+							KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
+							break;
+					}
+				}
+				else {
+					LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+				}
 			}
 		}
 		/*
@@ -280,9 +299,16 @@ class KeyManager {
 	}
 	
 	static async createPasskeyDialog(pLockObject, pLockType, pCharacter) {
+		let vTitle = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LockPasskeyTitle);
+		
+		if (!vTitle.length) {
+			//revert to default if no custom
+			vTitle = Translate("Titles.EnterPasskey");
+		}
+		
 		new Dialog({
 			title: Translate("Titles.Passkey"),
-			content: `<label>${Translate("Titles.EnterPasskey")}</label>
+			content: `<label>${vTitle}</label>
 					<input type="text" id="Passkey" name="Passkey">`,
 			buttons: {
 				button1: {
