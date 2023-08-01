@@ -43,7 +43,8 @@
 	"scripts/helpers/LnKMouseHandler.js",
 	"scripts/settings/LnKSheetSettings.js",
 	"scripts/settings/LnKSettings.js",
-	"scripts/compatibility/LnKCompatibility.js"
+	"scripts/compatibility/LnKCompatibility.js",
+	"scripts/helpers/MacroHooks.js"
   ],
   "url": "https://github.com/Saibot393/LocknKey",
   "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v1.6.2.zip",

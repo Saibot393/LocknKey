@@ -327,3 +327,12 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token
 }); 
 
 Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Key context
+
+//wrap export functions
+function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUuseKey); };
+
+function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUpickLock); };
+
+function BreakHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUbreakLock); };
+
+export { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock }

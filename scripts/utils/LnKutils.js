@@ -61,6 +61,10 @@ class LnKutils {
 	
 	static hoveredToken() {} //get first hovered token
 	
+	static hoveredWall() {} //get first hovered wall
+	
+	static hoveredObject() {} //get first hovered object
+	
 	static PrimaryCharacter() {} //returns the first selected token document if available or the default character document
 	
 	//items
@@ -214,6 +218,24 @@ class LnKutils {
 		}
 		else {
 			return null;
+		}
+	}
+	
+	static hoveredWall() {
+		if (canvas.walls.hover) {
+			return canvas.walls.hover.document;
+		}
+		else {
+			return null;
+		}		
+	}
+	
+	static hoveredObject() {
+		if (LnKutils.hoveredWall()) {
+			return LnKutils.hoveredWall();
+		}
+		else {
+			return LnKutils.hoveredToken();
 		}
 	}
 	
