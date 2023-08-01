@@ -1,6 +1,7 @@
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF } from "../helpers/LnKFlags.js";
+import { cCustomPopup } from "../helpers/LnKFlags.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -139,7 +140,6 @@ class LnKSheetSettings {
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {
-		console.log(pHTML);
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.token);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
@@ -217,36 +217,33 @@ class LnKSheetSettings {
 	
 	//dialogs
 	static OpenCustomPopups(pApp) {
-		console.log(pApp);
-		let vContent = LnKSheetSettings.createHTMLOption({	vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
-															vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
-															vtype : "text", 
-															vvalue : LnKFlags.isLocked(pApp.token),
-															vflagname : cLockedF
-															}, `form[id="popupcontent"]`, true);
-		vContent = vContent + LnKSheetSettings.createHTMLOption({	vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
-															vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
-															vtype : "text", 
-															vvalue : LnKFlags.isLocked(pApp.token),
-															vflagname : cLockableF
-															}, `form[id="popupcontent"]`, true);
-															
-		console.log(vContent);
+		let vContent = ``;
+		let vsubFlagname;
+		
+		for (let vKey of LnKFlags.CustomPopupsKeys()) {
+			vsubFlagname = cCustomPopupsF + "." + vKey;
+			
+			vContent = vContent + LnKSheetSettings.createHTMLOption({	vlabel : Translate("SheetSettings."+ vsubFlagname +".name"), 
+																		//vhint : Translate("SheetSettings."+ vsubFlagname +".descrp"), 
+																		vtype : "text", 
+																		vvalue : LnKFlags.getCustomPopups(pApp.object, vKey),
+																		vflagname : vsubFlagname,
+																		vID : vKey
+																		}, true);
+		}
 														
-		let vtest = new Dialog({
+		new Dialog({
 			title: Translate("Titles.CustomPopups"),
 			content: vContent,
 			buttons: {
 				button1: {
 					label: Translate("Titles.ConfirmPopups"),
-					callback: (html) => {let vInputs = []; for(let i = 0; i < 2; i++){vInputs[i] = html.find("*input")[i].value}; console.log(vInputs)},
+					callback: (html) => {let vInputs = {}; for(let vKey of LnKFlags.CustomPopupsKeys()){vInputs[vKey] = html.find(`input#${vKey}`).val()}; LnKFlags.setCustomPopups(pApp.object, vInputs)},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
 			},
 			default: Translate("Titles.ConfirmCustomPopups")
-		}).render(true);		
-
-		console.log(vtest);
+		}).render(true);	
 	}
 	
 	//standard setting groups
@@ -295,7 +292,7 @@ class LnKSheetSettings {
 												}, pto);
 
 		//custom popups menu button
-		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> Translate("SheetSettings.CustomPopupsButton.name") </button>`;
+		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings.CustomPopupsButton.name")} </button>`;
 		pHTML.find(pto).append(vButton);
 		pHTML.find(`button[id="${cModuleName}.CustomPopupsButton"]`).click(function() {LnKSheetSettings.OpenCustomPopups(pApp)});
 	} 
@@ -339,13 +336,18 @@ class LnKSheetSettings {
 	//support
 	
 	static AddHTMLOption(pHTML, pInfos, pto) {
-		pHTML.find(pto/*`div[data-tab="${cModuleName}"]`*/).append(LnKSheetSettings.createHTMLOption(pInfos, pto))
+		pHTML.find(pto/*`div[data-tab="${cModuleName}"]`*/).append(LnKSheetSettings.createHTMLOption(pInfos))
 	}
 	
-	static createHTMLOption(pInfos, pto, pwithformgroup = false) {
+	static createHTMLOption(pInfos, pwithformgroup = false) {
 		let vlabel = "Name";	
 		if (pInfos.hasOwnProperty("vlabel")) {
 			vlabel = pInfos.vlabel;
+		}
+		
+		let vID = "Name";	
+		if (pInfos.hasOwnProperty("vID")) {
+			vID = pInfos.vID;
 		}
 		
 		let vtype = "text";	
@@ -402,15 +404,15 @@ class LnKSheetSettings {
 		switch (vtype){
 			case "number":
 			case "text":
-				vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" value="${vvalue}">`;
+				vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} value="${vvalue}">`;
 				break;
 				
 			case "checkbox":
 				if (vvalue) {
-					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" checked>`;
+					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} checked>`;
 				}
 				else {
-					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}">`;
+					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID}>`;
 				}
 				break;
 				
@@ -429,7 +431,7 @@ class LnKSheetSettings {
 				vnewHTML = vnewHTML + `</select>`;
 				break;
 			case "numberpart":
-				vnewHTML = vnewHTML + `<input type=number name="flags.${cModuleName}.${vflagname[0]}" value="${vvalue[0]}"><label>/</label><input type=number name="flags.${cModuleName}.${vflagname[1]}" value="${vvalue[1]}">`;
+				vnewHTML = vnewHTML + `<input type=number name="flags.${cModuleName}.${vflagname[0]}" id=${vID} value="${vvalue[0]}"><label>/</label><input type=number name="flags.${cModuleName}.${vflagname[1]}" id=${vID} value="${vvalue[1]}">`;
 				break;
 		}
 			

@@ -17,8 +17,17 @@ const cLBFormulaF = "LBFormulaFlag"; //the Formula the token/item adds to LockBr
 const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormulaFlag overrides the global formula (instead of being added)
 const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
 const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
+const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF }
+
+const cCustomPopup = { //all Custompopups and their IDs
+	LockLocked : 0,
+	LocknotPickable : 1,
+	LocknotBreakable : 2
+};
+
+export { cCustomPopup };
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -90,6 +99,13 @@ class LnKFlags {
 	static HasFormula(pObject, pType) {} //returns if the Token/Item has a Formula for pTpye [cLUpickLock, cLUbreakLock]
 	
 	static FormulaOverride(pObject, pType) {} //if this objects Formula for pTpye [cLUpickLock, cLUbreakLock] overrides the global formula
+	
+	//popups
+	static setCustomPopups(pObject, pPopups) {} //set the custom popups of pObject to pPopups
+	
+	static getCustomPopups(pObject, pID = "") {} //get the custom Popups of pObject (or a specific element where pID can be the numerical value (see cCustomPopup) or the Key)
+	
+	static CustomPopupsKeys() {} //returns all Custompopups Keys sorted by their IDs
 	
 	//IMPLEMENTATIONS
 	
@@ -274,6 +290,25 @@ class LnKFlags {
 		return ""; //default if anything fails
 	} 
 	
+	static #CustomPopupsFlag (pObject) { 
+	//returns content of CustomPopups Flag of pObject (if any) (array of srtings)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cCustomPopupsF)) {
+				return vFlag.CustomPopupsFlag;
+			}
+		}
+		
+		let vZeroResult = {};
+		
+		for (let vKey of LnKFlags.CustomPopupsKeys()) {
+			vZeroResult[vKey] == "";
+		}
+		
+		return vZeroResult; //default if anything fails
+	} 
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -343,6 +378,16 @@ class LnKFlags {
 			return true;
 		}
 		return false;		
+	}
+	
+	static async #setCustomPopupsFlag(pObject, pContent) {
+	//sets content of CustomPopupsFlag (must be number)
+		if (pObject && typeof pContent == "object") {
+			await pObject.setFlag(cModuleName, cCustomPopupsF, pContent);
+			
+			return true;
+		}
+		return false;			
 	}
 	
 	//basic
@@ -567,6 +612,39 @@ class LnKFlags {
 				return false;
 				break;
 		}			
+	}
+	
+	//popups
+	static setCustomPopups(pObject, pPopups) {
+		this.#setCustomPopupsFlag(pObject, pPopups)
+	}
+	
+	static getCustomPopups(pObject, pID = "") {
+		let vID;
+		if ((typeof pID) == "number") {
+			vID = LnKFlags.CustomPopupsKeys().find(vKey => cCustomPopup[vKey] == pID);
+		}
+		else {
+			vID = pID;
+		}
+		
+		if ((typeof pID) == "string") {		
+			if (vID == "") {
+				return this.#CustomPopupsFlag(pObject);
+			}
+			else {
+				if (LnKFlags.CustomPopupsKeys().includes(vID) && this.#CustomPopupsFlag(pObject)[vID] != undefined) {
+					return this.#CustomPopupsFlag(pObject)[vID];
+				}
+				else {
+					return "";
+				}
+			}
+		}
+	}
+	
+	static CustomPopupsKeys() {
+		return Object.keys(cCustomPopup).sort(function(va,vb){return cCustomPopup[va] - cCustomPopup[vb]});
 	}
 }
 
