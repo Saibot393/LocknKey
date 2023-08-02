@@ -12,6 +12,7 @@ A GM can alt+right-click lockable tokens to lock or unlock them.
 
 The key IDs of doors, tokens and keys can be copied and pasted into one another to connect them. To copy or paste a keys IDs right click it in the item section and choose one of the options from the context menu. To copy a tokens or doors IDs ctrl+right-click them and to paste them ctrl+left-click them.
 
+All of these controlls can also be achieved through the included macros.
 ##### Examples:
 
 - I. Copy Door A's key IDs and paste them into Loot Token B (or vice versa). All keys that can unlock/lock Door A can now also unlock/lock Loot Token B (or vice versa).
@@ -50,6 +51,8 @@ The key IDs of doors, tokens and keys can be copied and pasted into one another 
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Lock break DC: the difficulty class to break a lock
 - Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
+- Custom Popups: to set custom Popup messages for certain player actions
+- Lock Sound [Token only]:to set the sound set used for interactions with this lock
 #### Tokens/Items:
 - Lockpick formula: an additional formula added to lockpicking rolls (for items only the best formula in the inventory is used)
 - Override Lockpick formula: to override the standard formula for this token/the owner
