@@ -1,3 +1,6 @@
+## v1.7.1
+- Small fix for Item-Piles compatibility
+
 ## v1.7.0
 - Added Macros for player and GM actions
 - Added Lock setting Custom Popups to set custom Popup messages for certain player actions
