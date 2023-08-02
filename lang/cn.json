@@ -200,6 +200,40 @@
         "name": "需要的撬锁成功次数",
         "descrp": "需要多少次成功的撬锁才能开锁 (以及目前成功了多少次) (大成功视为两次)"
       },
+	  
+	"CustomPopupsFlag" : {
+		"openButtonname"			: "Custom Popups",
+		"Title"						: "Custom Popups",
+		"name"						: "Set custom Popups for certain player interactions:",
+		"LockLocked" : {
+			"name"					: "Lock is locked:"
+		},
+		"LocknotPickable" : {
+			"name"					: "Lock cant be picked:"
+		},
+		"LocknotBreakable" : {
+			"name"					: "Lock cant be broken:"
+		},
+		"LockPasskeyTitle" : {
+			"name"					: "Password dialog prompt:"
+		},
+		"confirmButtonname"        	: "Confirm Popups"
+	},
+	
+	"SoundVariantFlag" : {
+		"name"					: "Lock Sound",
+		"descrp"				: "Set the sound set used for actions with this door",
+		"options" : {
+			"futuristic"		: "Futuristic",
+			"industrial"		: "Industrial",
+			"jail"				: "Jail",
+			"metal"				: "Metal",
+			"shutter"			: "Shutter",
+			"sliding"			: "Sliding",
+			"stone"				: "Stone",
+			"wood"				: "Wood"
+		}
+	},
 
       "LPFormulaFlag": {
         "name": "撬锁公式",

@@ -46,6 +46,14 @@
 	"scripts/compatibility/LnKCompatibility.js",
 	"scripts/helpers/MacroHooks.js"
   ],
+  "packs": [
+	{
+	  "name": "lock-and-key",
+	  "label": "Lock & Key",
+	  "path": "packs/lock-and-key.db",
+	  "type": "Macro"
+	}
+  ],
   "url": "https://github.com/Saibot393/LocknKey",
   "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v1.6.2.zip",
   "manifest": "https://github.com/Saibot393/LocknKey/releases/latest/download/module.json",

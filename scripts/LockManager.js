@@ -377,6 +377,8 @@ class LockManager {
 		
 		let vMessage = LnKFlags.getCustomPopups(pObject, cCustomPopup.LockLocked);
 		
+		LnKSound.PlayLockedSound(pObject);
+		
 		if (vMessage.length) {
 			LnKPopups.TextPopUp(pObject, vMessage);
 		}

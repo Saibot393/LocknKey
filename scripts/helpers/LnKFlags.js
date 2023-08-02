@@ -18,8 +18,9 @@ const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormula
 const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
 const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
 const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
+const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should play for locking
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -107,6 +108,9 @@ class LnKFlags {
 	static getCustomPopups(pObject, pID = "") {} //get the custom Popups of pObject (or a specific element where pID can be the numerical value (see cCustomPopup) or the Key)
 	
 	static CustomPopupsKeys() {} //returns all Custompopups Keys sorted by their IDs
+	
+	//sounds
+	static SoundVariant(pObject) {} //returns sound variant for this token
 	
 	//IMPLEMENTATIONS
 	
@@ -308,6 +312,19 @@ class LnKFlags {
 		}
 		
 		return vZeroResult; //default if anything fails
+	} 
+	
+	static #SoundVariantFlag (pObject) { 
+	//returns content of SoundVariantFlag of pObject (if any) (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cSoundVariantF)) {
+				return vFlag.SoundVariantFlag;
+			}
+		}
+		
+		return "wood"; //default if anything fails
 	} 
 	
 	static async #setIDKeysFlag (pObject, pContent) {
@@ -648,6 +665,11 @@ class LnKFlags {
 	
 	static CustomPopupsKeys() {
 		return Object.keys(cCustomPopup).sort(function(va,vb){return cCustomPopup[va] - cCustomPopup[vb]});
+	}
+	
+	//sounds
+	static SoundVariant(pObject) {
+		return this.#SoundVariantFlag(pObject);
 	}
 }
 

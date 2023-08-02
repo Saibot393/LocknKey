@@ -201,6 +201,40 @@
 				"descrp"				: "How many Lockpicking successes are required for this lock (and how many have already been added) (crits count as 2)"				
 			},
 			
+			"CustomPopupsFlag" : {
+				"openButtonname"			: "Custom Popups",
+				"Title"						: "Custom Popups",
+				"name"						: "Set custom Popups for certain player interactions:",
+				"LockLocked" : {
+					"name"					: "Lock is locked:"
+				},
+				"LocknotPickable" : {
+					"name"					: "Lock cant be picked:"
+				},
+				"LocknotBreakable" : {
+					"name"					: "Lock cant be broken:"
+				},
+				"LockPasskeyTitle" : {
+					"name"					: "Password dialog prompt:"
+				},
+				"confirmButtonname"        	: "Confirm Popups"
+			},
+			
+			"SoundVariantFlag" : {
+				"name"					: "Lock Sound",
+				"descrp"				: "Set the sound set used for actions with this door",
+				"options" : {
+					"futuristic"		: "Futuristic",
+					"industrial"		: "Industrial",
+					"jail"				: "Jail",
+					"metal"				: "Metal 🤘",
+					"shutter"			: "Shutter",
+					"sliding"			: "Sliding",
+					"stone"				: "Stone",
+					"wood"				: "Wood"
+				}
+			},
+			
 			"LPFormulaFlag" : {
 				"name" 					: "Lockpick formula",
 				"descrp" : {

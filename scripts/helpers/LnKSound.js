@@ -1,11 +1,19 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName } from "../utils/LnKutils.js";
+import { LnKFlags } from "./LnKFlags.js";
 
-const cLockSound = "sounds/doors/wood/lock.ogg";
-const cunLockSound = "sounds/doors/wood/unlock.ogg";
+const cDoorSoundPath = "sounds/doors/";
+const cLockSound = "/lock.ogg";
+const cunLockSound = "/unlock.ogg";
+const cLockedSound = "/test.ogg";
+
 const cFallbackSound = "sounds/lock.wav";
 
+const cSoundVariants = ["futuristic", "industrial", "jail", "metal", "shutter", "sliding", "stone", "wood"];
+
 const cDiceSound = "sounds/dice.wav";
+
+export { cSoundVariants };
 
 class LnKSound {
 	//DECLARATIONS
@@ -18,6 +26,8 @@ class LnKSound {
 	static async PlayLockSound(pLock) {} //start PlaySound requests for Lock sound
 	
 	static async PlayunLockSound(pLock) {} //start PlaySound requests for unLock sound
+	
+	static async PlayLockedSound(pLock) {} //start PlaySound requests for Locked sound
 	
 	static PlayDiceSound(pCharacter) {} //start PlaySound requests for Dice sound
 	
@@ -47,15 +57,21 @@ class LnKSound {
 	//specifics
 	static async PlayLockSound(pLock) {
 		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
-			LnKSound.PlaySound(cLockSound, FCore.sceneof(pLock).id);
+			LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockSound, FCore.sceneof(pLock).id);
 		}
 	}
 	
 	static async PlayunLockSound(pLock) {
 		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
-			LnKSound.PlaySound(cunLockSound, FCore.sceneof(pLock).id);
+			LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cunLockSound, FCore.sceneof(pLock).id);
 		}
 	}
+	
+	static async PlayLockedSound(pLock) {
+		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
+			LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockedSound, FCore.sceneof(pLock).id);
+		}		
+	} 
 	
 	static PlayDiceSound(pCharacter) {
 		LnKSound.PlaySound(cDiceSound, FCore.sceneof(pCharacter).id);

@@ -1,7 +1,9 @@
+import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
+import { cSoundVariants } from "../helpers/LnKSound.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -199,6 +201,15 @@ class LnKSheetSettings {
 
 				//Lock standard settings
 				LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);	
+				
+				//Sound setting
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cSoundVariantF +".name"), 
+														vhint : Translate("SheetSettings."+ cSoundVariantF +".descrp"), 
+														vtype : "select", 
+														voptions : cSoundVariants,
+														vvalue : LnKFlags.SoundVariant(pApp.token), 
+														vflagname : cSoundVariantF
+														}, `div[data-tab="${cModuleName}"]`);
 			}
 			
 			if (vLockSettings && vLockFormulaSettings) {
@@ -217,7 +228,7 @@ class LnKSheetSettings {
 	
 	//dialogs
 	static OpenCustomPopups(pApp) {
-		let vContent = ``;
+		let vContent = `<p> ${Translate("SheetSettings."+ cCustomPopupsF +".name")}`;
 		let vsubFlagname;
 		
 		for (let vKey of LnKFlags.CustomPopupsKeys()) {
@@ -233,16 +244,16 @@ class LnKSheetSettings {
 		}
 														
 		new Dialog({
-			title: Translate("Titles.CustomPopups"),
+			title: Translate("SheetSettings."+ cCustomPopupsF + ".Title"),
 			content: vContent,
 			buttons: {
 				button1: {
-					label: Translate("Titles.ConfirmPopups"),
+					label: Translate("SheetSettings."+ cCustomPopupsF + ".confirmButtonname"),
 					callback: (html) => {let vInputs = {}; for(let vKey of LnKFlags.CustomPopupsKeys()){vInputs[vKey] = html.find(`input#${vKey}`).val()}; LnKFlags.setCustomPopups(pApp.object, vInputs)},
-					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+					icon: `<i class="fas ${cLnKLockIcon}"></i>`
 				}
 			},
-			default: Translate("Titles.ConfirmCustomPopups")
+			default: Translate("SheetSettings."+ cCustomPopupsF + ".confirmButtonname")
 		}).render(true);	
 	}
 	
@@ -282,17 +293,19 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.LockBreakDC(pApp.object, true),
 												vflagname : cLockBreakDCF
 												}, pto);
-										
-		//setting for current of required successes
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
-												vhint : Translate("SheetSettings."+ crequiredLPsuccessF +".descrp"), 
-												vtype : "numberpart", 
-												vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
-												vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
-												}, pto);
+		
+		if (FCore.Fversion() > 10) {
+			//setting for current of required successes
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
+													vhint : Translate("SheetSettings."+ crequiredLPsuccessF +".descrp"), 
+													vtype : "numberpart", 
+													vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
+													vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
+													}, pto);
+		}
 
 		//custom popups menu button
-		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings.CustomPopupsButton.name")} </button>`;
+		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings." + cCustomPopupsF + ".openButtonname")} </button>`;
 		pHTML.find(pto).append(vButton);
 		pHTML.find(`button[id="${cModuleName}.CustomPopupsButton"]`).click(function() {LnKSheetSettings.OpenCustomPopups(pApp)});
 	} 
@@ -421,10 +434,10 @@ class LnKSheetSettings {
 				
 				for (let i = 0; i < voptions.length; i++) {
 					if (voptions[i] == vvalue) {
-						vnewHTML = vnewHTML + `<option value="${voptions[i]}" selected>${Translate("TokenSettings." + vflagname+ ".options." + voptions[i])}</option>`;
+						vnewHTML = vnewHTML + `<option value="${voptions[i]}" selected>${Translate("SheetSettings." + vflagname+ ".options." + voptions[i])}</option>`;
 					}
 					else {
-						vnewHTML = vnewHTML + `<option value="${voptions[i]}">${Translate("TokenSettings." + vflagname+ ".options." + voptions[i])}</option>`;
+						vnewHTML = vnewHTML + `<option value="${voptions[i]}">${Translate("SheetSettings." + vflagname+ ".options." + voptions[i])}</option>`;
 					}
 				}
 				

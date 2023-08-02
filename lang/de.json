@@ -201,6 +201,40 @@
 				"descrp"				: "Wie viele Erfolge notwendig sind um dieses Schloss zu knacken (und wie viele bereits erzielt wurden) (Krits zählen als 2)"				
 			},
 			
+			"CustomPopupsFlag" : {
+				"openButtonname"			: "Eigene Popups",
+				"Title"						: "Eigene Popups",
+				"name"						: "Setze eigene Popups für gewisse Spieler Interaktionen:",
+				"LockLocked" : {
+					"name"					: "Schloss ist abgeschlossen:"
+				},
+				"LocknotPickable" : {
+					"name"					: "Schloss kann nicht geknackt werden:"
+				},
+				"LocknotBreakable" : {
+					"name"					: "Schloss kann nicht gebrochen werden:"
+				},
+				"LockPasskeyTitle" : {
+					"name"					: "Passwort Eingabe:"
+				},
+				"confirmButtonname"        	: "Popups bestätigen"
+			},
+			
+			"SoundVariantFlag" : {
+				"name"					: "Schloss Geräusche",
+				"descrp"				: "Das Geräuschset welches für Interaktionen mit diesem Schloss verwendet wird",
+				"options" : {
+					"futuristic"		: "Futuristisch",
+					"industrial"		: "Industriel",
+					"jail"				: "Gefängnis",
+					"metal"				: "Metall 🤘",
+					"shutter"			: "Läden",
+					"sliding"			: "Gleiten",
+					"stone"				: "Stein",
+					"wood"				: "Holz"
+				}
+			},
+			
 			"LPFormulaFlag" : {
 				"name" 					: "Schlossknack Wurfformel",
 				"descrp" : {
