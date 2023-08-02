@@ -1,3 +1,8 @@
+## v1.7.0
+- Added Macros for player and GM actions
+- Added Lock setting Custom Popups to set custom Popup messages for certain player actions
+- Added Token Lock setting Lock Sound to set the sound set used for interactions with this lock
+
 ## v1.6.2
 - Added Chinese translation (thanks to [feederze](https://github.com/feederze))
 - Fixed a few translations bugs/typos (thanks to [cadowtin](https://github.com/cadowtin))
