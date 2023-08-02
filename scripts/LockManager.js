@@ -461,11 +461,11 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 	return true; //if anything fails
 });
 
-export { LockuseRequest, isUnlocked }
-
 //wrap and export functions
 function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }
 function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObject, pPopup)} //if pObject is currently unlocked
+
+export { LockuseRequest, isUnlocked }
 
 //wrap export macro functions, GM only
 function TogglehoveredLockGM() {if (game.user.isGM) { return LockManager.ToggleLock(LnKutils.hoveredObject(), cLUisGM)}};

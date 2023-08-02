@@ -14,7 +14,7 @@ class LnKCompatibility {
 	
 	static onunLock(pLockType, pLock) {} //called if a object is locked
 	
-	static synchIPLock(pLock, vUpdate) {} //called if an item pile is updated manually
+	static async synchIPLock(pLock, vUpdate) {} //called if an item pile is updated manually
 	
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
@@ -33,8 +33,8 @@ class LnKCompatibility {
 		}	
 	}
 	
-	static synchIPLock(pLock) {
-		if (LnKutils.Locktype(pLock) == cLockTypeLootIP) {
+	static async synchIPLock(pLock) {
+		if (await LnKutils.Locktype(pLock) == cLockTypeLootIP) {
 			LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
 		}
 	}
@@ -48,5 +48,7 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName+".onunLock", (...args) => {LnKCompatibility.onunLock(...args)});
 		
 		Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)});
+		
+		//Hooks.on("item-piles-preClickItemPile", (vItemPile) => {isUnlocked(vItemPile, true);}); //just for messages
 	}
 });
