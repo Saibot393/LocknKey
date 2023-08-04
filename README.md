@@ -33,6 +33,8 @@ All of these controlls can also be achieved through the included macros.
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
 - Remove Lockpick on critical fail: to remove Lockpick item on critical failures
+- Jam lock on critical lockpick fail: to automatically set locks as jammed
+- Keys can't be used on jammed locks: to prevent matching keys from being used on jammed locks
 - Lockpick roll formula: the dice formula used for lockpick rolls
 - Break lock roll formula: the dice formula used for break lock rolls
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
@@ -48,6 +50,7 @@ All of these controlls can also be achieved through the included macros.
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
+- Jammed: to set this lock as jammed preventing it from being picked
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Lock break DC: the difficulty class to break a lock
 - Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
