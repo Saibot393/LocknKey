@@ -1,3 +1,11 @@
+## v1.8.0
+- Added Lock jamming
+  - World settings:
+    - Jam lock on critical lockpick fail to automatically set locks as jammed
+    - Keys can't be used on jammed locks to prevent matching keys from being used on jammed locks
+  - Token settings:
+    - Jammed to set this lock as jammed preventing it from being picked
+
 ## v1.7.1
 - Small fix for Item-Piles compatibility
 
