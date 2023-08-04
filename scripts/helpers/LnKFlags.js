@@ -19,6 +19,7 @@ const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
 const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
 const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
 const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should play for locking
+const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
 
 export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF }
 
@@ -77,6 +78,8 @@ class LnKFlags {
 	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock] (return Infinity should DC<0 if not praw)
 	
 	static JamLock(pLock) {} //sets pLock Lockpick DC to unpickable value (-1)
+	
+	static Lockisjammed(pLock) {} //if this Lock is jammed
 	
 	//Lock progress
 	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
@@ -329,6 +332,19 @@ class LnKFlags {
 		return "wood"; //default if anything fails
 	} 
 	
+	static #LockjammedFlag (pObject) { 
+	//returns content of LockjammedFlag of pObject (if any) (Boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLockjammedF)) {
+				return vFlag.LockjammedFlag;
+			}
+		}
+		
+		return false; //default if anything fails
+	} 
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -410,6 +426,16 @@ class LnKFlags {
 		return false;			
 	}
 	
+	static async #setLockjammedFlag(pObject, pContent) {
+	//sets content of Lockjammed flag (must be boolean)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cLockjammedF, Boolean(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
 	//basic
 	static async makeLockable(pObject) {
 		if (!this.#LockableFlag(pObject)) {
@@ -458,6 +484,13 @@ class LnKFlags {
 	}
 	
 	static matchingIDKeys(pObject1, pObject2) {
+		if (game.settings.get(cModuleName, "JamedLockKeyunusable")) {
+			if (this.#LockjammedFlag(pObject1) || this.#LockjammedFlag(pObject2)) {
+				//one object has a jammed lock and Key ids are deactivated on jam
+				return false;
+			}
+		}
+		
 		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length);
 	}
 	
@@ -504,7 +537,7 @@ class LnKFlags {
 	static LockDC(pLock, praw = false) {
 		let vDC = this.#LockDCFlag(pLock);
 		
-		if (vDC < 0 && !praw) {
+		if ((vDC < 0 || LnKFlags.Lockisjammed(pLock)) && !praw) {
 			vDC = Infinity;
 		}
 		
@@ -536,11 +569,11 @@ class LnKFlags {
 	}
 	
 	static JamLock(pLock) {
-		this.#setLockDCFlag(pLock, -1);
-		
-		if (game.settings.get(cModuleName, "JamedLockKeyunusable")) {
-			this.#setIDKeysFlag(pLock, "");
-		}
+		this.#setLockableFlag(pLock, true);
+	}
+	
+	static Lockisjammed(pLock) {
+		return this.#LockjammedFlag(pLock);
 	}
 	
 	//Lock progress
