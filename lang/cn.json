@@ -31,7 +31,10 @@
       },
       "breakLockfailed": "砸锁失败",
       "NotaLock": "不是一把锁",
-      "WrongPassword": "密码错误"
+      "WrongPassword": "密码错误",
+	  "Lockisjammed": "Lock is jammed",
+	  "Lockpickbroke": "Lockpick broke",
+	  "jammedLock": "Jammed the lock"
     },
 
     "ChatMessage": {
@@ -125,6 +128,16 @@
         "name": "大失败时移除撬锁物品",
         "descrp": "在大失败时移除撬锁物品(或者将物品数量减1)"
       },
+	  
+			"JamLockonLPcritFail" : {
+				"name" 					: "Jam lock on critical lockpick fail",
+				"descrp"				: "Doors are jammed on critical lockpick fails and cant be picked anymore"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "Keys can't be used on jammed locks",
+				"descrp"				: "Jammed locks will no longer accept matching keys"		
+			},
 
       "LockPickFormula": {
         "name": "撬锁掷骰公式",
@@ -180,6 +193,11 @@
         "name": "密码",
         "descrp": "解锁这把锁的密码 (多个时以\";\"分隔)"
       },
+			
+		"LockjammedFlag" : {
+			"name"					: "Jammed",
+			"descrp"				: "If this lock is jammed (see world settings)"				
+		},
 
       "RemoveKeyonUseFlag": {
         "name": "使用时消耗",

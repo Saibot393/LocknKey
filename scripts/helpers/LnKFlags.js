@@ -21,7 +21,7 @@ const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
 const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should play for locking
 const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -483,14 +483,7 @@ class LnKFlags {
 		this.#addIDKeysFlag(pLock, vnewID);
 	}
 	
-	static matchingIDKeys(pObject1, pObject2) {
-		if (game.settings.get(cModuleName, "JamedLockKeyunusable")) {
-			if (this.#LockjammedFlag(pObject1) || this.#LockjammedFlag(pObject2)) {
-				//one object has a jammed lock and Key ids are deactivated on jam
-				return false;
-			}
-		}
-		
+	static matchingIDKeys(pObject1, pObject2) {		
 		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length);
 	}
 	
@@ -569,7 +562,7 @@ class LnKFlags {
 	}
 	
 	static JamLock(pLock) {
-		this.#setLockableFlag(pLock, true);
+		this.#setLockjammedFlag(pLock, true);
 	}
 	
 	static Lockisjammed(pLock) {

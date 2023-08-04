@@ -54,15 +54,21 @@ class LockManager {
 		
 		if (vKey) {
 			if (LnKFlags.matchingIDKeys(pLock, vKey)) {
-				//key fits
-				LockManager.ToggleLock(pLock, cLUuseKey);
-				
-				if (LnKFlags.RemoveKeyonUse(vKey)) {
-					//remove one from stack, which will also delte if no key left
-					LnKutils.removeoneItem(vKey, pCharacter);
+				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
+					//lock is jammed and cant be opened by key
+					LnKPopups.TextPopUpID(pLock, "Lockisjammed"); //MESSAGE POPUP
+				}
+				else {
+					//key fits
+					LockManager.ToggleLock(pLock, cLUuseKey);
+					
+					if (LnKFlags.RemoveKeyonUse(vKey)) {
+						//remove one from stack, which will also delte if no key left
+						LnKutils.removeoneItem(vKey, pCharacter);
+					}
 				}
 			}
-		};
+		}
 	}
 	
 	static async useLockPasskey(pLock, pCharacter, pPasskey) {
@@ -143,7 +149,7 @@ class LockManager {
 									
 									if (game.settings.get(cModuleName, "JamLockonLPcritFail")) {
 										LnKFlags.JamLock(pLock);
-										LnKPopups.TextPopUpID(pLock, "Lockjammed"); //MESSAGE POPUP
+										LnKPopups.TextPopUpID(pLock, "jammedLock"); //MESSAGE POPUP
 									}
 								}
 								else {

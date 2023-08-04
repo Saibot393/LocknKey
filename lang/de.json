@@ -31,7 +31,10 @@
 			},
 			"breakLockfailed"			: "Schloss aufbrechen fehlgeschlagen",
 			"NotaLock"					: "Kein Schloss",
-			"WrongPassword"				: "Falsches Passwort"
+			"WrongPassword"				: "Falsches Passwort",
+			"Lockisjammed"				: "Schloss ist verklemmt",
+			"Lockpickbroke"				: "Dietrich ist zerbrochen",
+			"jammedLock"				: "Schloss verklemmt"
 		},	
 		
 		"ChatMessage" : {
@@ -124,6 +127,16 @@
 			"RemoveLPoncritFail" : {
 				"name" 					: "Verbrauche Dietrich bei kritischem Misserfolg",
 				"descrp"				: "Ob bei einem kritischen Misserfolg der benutze Dietrich entfernt werden soll (bzw. der Stapel um 1 verringert wird)"		
+			},	
+
+			"JamLockonLPcritFail" : {
+				"name" 					: "Schloss bei kritischem Misserfolg verklemmen",
+				"descrp"				: "Verklemmte Schlösser können nicht mehr genkackt werden"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "Verklemmte Schlösser verweigern Schlüssel",
+				"descrp"				: "Verklemmte Schlösser können nicht mehr mit passenden Schlüsseln geöffnet werden"		
 			},			
 			
 			"LockPickFormula" : {
@@ -179,6 +192,11 @@
 			"PasskeysFlag" : {
 				"name"					: "Passwörter",
 				"descrp"				: "Passwörter welche dieses Schloss aufschließen können (mit \";\" getrennt)"
+			},
+			
+			"LockjammedFlag" : {
+				"name"					: "Verklemmt",
+				"descrp"				: "Ob dieses Schloss verklemmt ist (siehe Welteinstellungen)"				
 			},
 			
 			"RemoveKeyonUseFlag" : {

@@ -31,7 +31,10 @@
 			},
 			"breakLockfailed"			: "Failed to break lock",
 			"NotaLock"					: "Not a lock",
-			"WrongPassword"				: "Wrong password"
+			"WrongPassword"				: "Wrong password",
+			"Lockisjammed"				: "Lock is jammed",
+			"Lockpickbroke"				: "Lockpick broke",
+			"jammedLock"				: "Jammed the lock"
 		},	
 		
 		"ChatMessage" : {
@@ -126,6 +129,16 @@
 				"descrp"				: "If the used Lockpick is removed on a critical fail (or if the stack is reduced by 1)"		
 			},	
 			
+			"JamLockonLPcritFail" : {
+				"name" 					: "Jam lock on critical lockpick fail",
+				"descrp"				: "Doors are jammed on critical lockpick fails and cant be picked anymore"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "Keys can't be used on jammed locks",
+				"descrp"				: "Jammed locks will no longer accept matching keys"		
+			},
+			
 			"LockPickFormula" : {
 				"name" 					: "Lockpick roll formula",
 				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
@@ -179,6 +192,11 @@
 			"PasskeysFlag" : {
 				"name"					: "Passwords",
 				"descrp"				: "Passwords that can unlock this lock (seperated with \";\")"
+			},
+			
+			"LockjammedFlag" : {
+				"name"					: "Jammed",
+				"descrp"				: "If this lock is jammed (see world settings)"				
 			},
 			
 			"RemoveKeyonUseFlag" : {

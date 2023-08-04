@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 
@@ -202,14 +202,16 @@ class LnKSheetSettings {
 				//Lock standard settings
 				LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);	
 				
-				//Sound setting
-				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cSoundVariantF +".name"), 
-														vhint : Translate("SheetSettings."+ cSoundVariantF +".descrp"), 
-														vtype : "select", 
-														voptions : cSoundVariants,
-														vvalue : LnKFlags.SoundVariant(pApp.token), 
-														vflagname : cSoundVariantF
-														}, `div[data-tab="${cModuleName}"]`);
+				if (FCore.Fversion() > 10) {
+					//Sound setting
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cSoundVariantF +".name"), 
+															vhint : Translate("SheetSettings."+ cSoundVariantF +".descrp"), 
+															vtype : "select", 
+															voptions : cSoundVariants,
+															vvalue : LnKFlags.SoundVariant(pApp.token), 
+															vflagname : cSoundVariantF
+															}, `div[data-tab="${cModuleName}"]`);
+				}
 			}
 			
 			if (vLockSettings && vLockFormulaSettings) {
@@ -260,7 +262,7 @@ class LnKSheetSettings {
 	//standard setting groups
 	static AddLockstandardsettings(pApp, pHTML, pData, pto) {
 												
-		//setting wall ids									
+		//setting lock ids									
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
 												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
 												vtype : "text", 
@@ -269,13 +271,21 @@ class LnKSheetSettings {
 												vflagname : cIDKeysF
 												}, pto);
 												
-		//setting lock ids									
+		//setting passkeys									
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPasskeysF +".name"), 
 												vhint : Translate("SheetSettings."+ cPasskeysF +".descrp"), 
 												vtype : "text", 
 												vwide : true,
 												vvalue : LnKFlags.PassKeys(pApp.object),
 												vflagname : cPasskeysF
+												}, pto);
+												
+		//setting lock dc									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockjammedF +".name"), 
+												vhint : Translate("SheetSettings."+ cLockjammedF +".descrp"), 
+												vtype : "checkbox", 
+												vvalue : LnKFlags.Lockisjammed(pApp.object),
+												vflagname : cLockjammedF
 												}, pto);
 												
 		//setting lock dc									
@@ -293,16 +303,15 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.LockBreakDC(pApp.object, true),
 												vflagname : cLockBreakDCF
 												}, pto);
+												
 		
-		if (FCore.Fversion() > 10) {
-			//setting for current of required successes
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
-													vhint : Translate("SheetSettings."+ crequiredLPsuccessF +".descrp"), 
-													vtype : "numberpart", 
-													vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
-													vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
-													}, pto);
-		}
+		//setting for current of required successes
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
+												vhint : Translate("SheetSettings."+ crequiredLPsuccessF +".descrp"), 
+												vtype : "numberpart", 
+												vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
+												vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
+												}, pto);
 
 		//custom popups menu button
 		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings." + cCustomPopupsF + ".openButtonname")} </button>`;
