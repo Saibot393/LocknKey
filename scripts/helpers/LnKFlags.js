@@ -76,6 +76,8 @@ class LnKFlags {
 	
 	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock] (return Infinity should DC<0 if not praw)
 	
+	static JamLock(pLock) {} //sets pLock Lockpick DC to unpickable value (-1)
+	
 	//Lock progress
 	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
 	
@@ -530,6 +532,14 @@ class LnKFlags {
 			default:
 				return false;
 				break;
+		}
+	}
+	
+	static JamLock(pLock) {
+		this.#setLockDCFlag(pLock, -1);
+		
+		if (game.settings.get(cModuleName, "JamedLockKeyunusable")) {
+			this.#setIDKeysFlag(pLock, "");
 		}
 	}
 	

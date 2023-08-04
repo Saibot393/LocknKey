@@ -129,15 +129,25 @@ class LockManager {
 				//failure
 				switch (pMethodtype) {
 							case cLUpickLock:
-								LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
 								
 								if (pChatMessages) {
 									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								}
 								
-								if (pResultDegree < 0 && game.settings.get(cModuleName, "RemoveLPoncritFail") && vusedItem) {
-									//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
-									LnKutils.removeoneItem(vusedItem, pCharacter);
+								if (pResultDegree < 0) {
+									if (game.settings.get(cModuleName, "RemoveLPoncritFail") && vusedItem) {
+										//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
+										LnKutils.removeoneItem(vusedItem, pCharacter);
+										LnKPopups.TextPopUpID(pLock, "Lockpickbroke"); //MESSAGE POPUP
+									}
+									
+									if (game.settings.get(cModuleName, "JamLockonLPcritFail")) {
+										LnKFlags.JamLock(pLock);
+										LnKPopups.TextPopUpID(pLock, "Lockjammed"); //MESSAGE POPUP
+									}
+								}
+								else {
+									LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
 								}
 								
 								break;

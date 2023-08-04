@@ -129,6 +129,24 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
+  game.settings.register(cModuleName, "JamLockonLPcritFail", {
+	name: Translate("Settings.JamLockonLPcritFail.name"),
+	hint: Translate("Settings.JamLockonLPcritFail.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });
+  
+  game.settings.register(cModuleName, "JamedLockKeyunusable", {
+	name: Translate("Settings.JamedLockKeyunusable.name"),
+	hint: Translate("Settings.JamedLockKeyunusable.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });
+  
   game.settings.register(cModuleName, "LockPickFormula", {
 	name: Translate("Settings.LockPickFormula.name"),
 	hint: Translate("Settings.LockPickFormula.descrp"),
