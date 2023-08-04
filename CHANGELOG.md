@@ -3,7 +3,7 @@
   - World settings:
     - Jam lock on critical lockpick fail to automatically set locks as jammed
     - Keys can't be used on jammed locks to prevent matching keys from being used on jammed locks
-  - Token settings:
+  - Lock settings:
     - Jammed to set this lock as jammed preventing it from being picked
 
 ## v1.7.1
