@@ -1,3 +1,6 @@
+## v1.8.1
+- Updated Chinese translation (thanks to [feederze](https://github.com/feederze))
+  
 ## v1.8.0
 - Added Lock jamming
   - World settings:
