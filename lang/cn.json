@@ -13,7 +13,6 @@
       "EnterPasskey": "输入密码:",
       "ConfirmPasskey": "确定"
     },
-
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
       "DoorisLocked": "这扇门上锁了",
@@ -32,11 +31,10 @@
       "breakLockfailed": "砸锁失败",
       "NotaLock": "不是一把锁",
       "WrongPassword": "密码错误",
-	  "Lockisjammed": "Lock is jammed",
-	  "Lockpickbroke": "Lockpick broke",
-	  "jammedLock": "Jammed the lock"
+      "Lockisjammed": "锁被堵住了",
+      "Lockpickbroke": "撬锁器损坏了",
+      "jammedLock": "堵住了锁"
     },
-
     "ChatMessage": {
       "LockPick": "{pName}尝试撬锁:",
       "LockPicksuccess": {
@@ -57,58 +55,47 @@
         "default": "{pName}砸锁失败"
       }
     },
-
     "Settings": {
       "useGMquickKeys": {
         "name": "启用GM操控",
         "descrp": "允许GM使用底部列出的快捷键（影响带*的项目）"
       },
-
       "allowLocking": {
         "name": "允许PL上锁",
         "descrp": "如果PL有对应的钥匙，允许PL上锁"
       },
-
       "startasLocked": {
         "name": "初始即上锁",
         "descrp": "新注册的锁默认上锁"
       },
-
       "LockDistance": {
         "name": "锁的距离",
         "descrp": "可以与锁互动的距离（使用游戏内单位）"
       },
-
       "UseArmReachDistance": {
         "name": "使用 \"Arms Reach\" 距离",
         "descrp": "使用模组 \"Arms Reach\" 内的距离来设置与锁互动的距离"
       },
-
       "alwaysopenOwned": {
         "name": "打开自己拥有的锁",
         "descrp": "PL总是可以打开自己拥有的的token，不论是否上锁了"
       },
-
       "preventUseinPause": {
         "name": "阻止暂停时使用钥匙",
         "descrp": "阻止PL在暂停时使用钥匙"
       },
-
       "autoKeyuse": {
         "name": "自动使用钥匙",
         "descrp": "PL在与锁互动时会自动使用对应的钥匙"
       },
-
       "KeyItemtype": {
         "name": "钥匙物品类型",
         "descrp": "模组生成新钥匙时使用的物品类型，留空则使用默认类型(在F12 - Console 中输入 \"game.items.documentClass.TYPES\" 来列出可用的类型)"
       },
-
       "usePf2eSystem": {
         "name": "使用PF2E掷骰系统",
         "descrp": "使用PF2E掷骰系统 (关闭本模组的自定义掷骰公式与大成功系统，由PF2E系统取代)"
       },
-
       "CritMethod": {
         "name": "大成功/大失败",
         "descrp": "如何界定大成功与大失败",
@@ -118,69 +105,56 @@
           "natCritpm10": "掷出1或20 或是 ±10DC [譬如Pf2e]"
         }
       },
-
       "LockPickItem": {
         "name": "撬锁物品",
         "descrp": "撬锁物品的名字或者合集IDs (推荐), 如果不需要特定物品就可以撬锁请填\"-\"  (多个物品请以\";\"分隔) （译注：拖动物品到聊天框可以快速得到物品id）"
       },
-
       "RemoveLPoncritFail": {
         "name": "大失败时移除撬锁物品",
         "descrp": "在大失败时移除撬锁物品(或者将物品数量减1)"
       },
-	  
-			"JamLockonLPcritFail" : {
-				"name" 					: "Jam lock on critical lockpick fail",
-				"descrp"				: "Doors are jammed on critical lockpick fails and cant be picked anymore"		
-			},
-			
-			"JamedLockKeyunusable" : {
-				"name" 					: "Keys can't be used on jammed locks",
-				"descrp"				: "Jammed locks will no longer accept matching keys"		
-			},
-
+      "JamLockonLPcritFail": {
+        "name": "在大失败时堵住锁",
+        "descrp": "在大失败时堵住锁,使得它不能再被撬锁。"
+      },
+      "JamedLockKeyunusable": {
+        "name": "堵住的锁不可以使用钥匙",
+        "descrp": "堵住的锁不再被对应的钥匙打开"
+      },
       "LockPickFormula": {
         "name": "撬锁掷骰公式",
         "descrp": "撬锁时的掷骰公式(例：\"1d20 + @actor.skills.thievery.mod\", 本模组的Github页面上有帮助页)"
       },
-
       "LockBreakFormula": {
         "name": "砸锁掷骰公式",
         "descrp": "砸锁时的掷骰公式(例：\"1d20 + @actor.skills.athletics.mod - 2\", 本模组的Github页面上有帮助页)"
       },
-
       "LockBreakunlockable": {
         "name": "损坏的锁可被解锁",
         "descrp": "让已经损坏的锁可以被解锁"
       },
-
       "onlyCombatMultiSuccess": {
         "name": "仅在战斗中需要多次解锁",
         "descrp": "非战斗状态忽略设定的多次解锁设置"
       },
-
       "MessagePopUps": {
         "name": "弹出消息",
         "descrp": "上锁与开锁时弹出多条消息"
       },
-
       "PlayLockSounds": {
         "name": "播放锁的音效",
         "descrp": "上锁/开锁时播放音效"
       }
     },
-
     "SheetSettings": {
       "LockableFlag": {
         "name": "可被上锁",
         "descrp": "这个物体可否被上锁"
       },
-
       "LockedFlag": {
         "name": "已上锁",
         "descrp": "这个物体是否被上锁"
       },
-
       "IDKeysFlag": {
         "name": "钥匙ID",
         "descrp": {
@@ -188,71 +162,62 @@
           "key": "这把钥匙可上锁或开锁的锁ID (多个时以\";\"分隔)"
         }
       },
-
       "PasskeysFlag": {
         "name": "密码",
         "descrp": "解锁这把锁的密码 (多个时以\";\"分隔)"
       },
-			
-		"LockjammedFlag" : {
-			"name"					: "Jammed",
-			"descrp"				: "If this lock is jammed (see world settings)"				
-		},
-
+      "LockjammedFlag": {
+        "name": "Jammed",
+        "descrp": "If this lock is jammed (see world settings)"
+      },
       "RemoveKeyonUseFlag": {
         "name": "使用时消耗",
         "descrp": "这把钥匙是否在被使用后消耗(或者物品数量减1)"
       },
-
       "LockDCFlag": {
         "name": "撬锁DC",
         "descrp": "开锁的DC, 适用于撬锁 (-1 则不可撬锁)"
       },
-
       "LockBreakDCFlag": {
         "name": "砸锁DC",
         "descrp": "开锁的DC, 适用于砸锁 (-1 则不可砸锁)"
       },
-
       "requiredLPsuccessFlag": {
         "name": "需要的撬锁成功次数",
         "descrp": "需要多少次成功的撬锁才能开锁 (以及目前成功了多少次) (大成功视为两次)"
       },
-	  
-	"CustomPopupsFlag" : {
-		"openButtonname"			: "Custom Popups",
-		"Title"						: "Custom Popups",
-		"name"						: "Set custom Popups for certain player interactions:",
-		"LockLocked" : {
-			"name"					: "Lock is locked:"
-		},
-		"LocknotPickable" : {
-			"name"					: "Lock cant be picked:"
-		},
-		"LocknotBreakable" : {
-			"name"					: "Lock cant be broken:"
-		},
-		"LockPasskeyTitle" : {
-			"name"					: "Password dialog prompt:"
-		},
-		"confirmButtonname"        	: "Confirm Popups"
-	},
-	
-	"SoundVariantFlag" : {
-		"name"					: "Lock Sound",
-		"descrp"				: "Set the sound set used for actions with this door",
-		"options" : {
-			"futuristic"		: "Futuristic",
-			"industrial"		: "Industrial",
-			"jail"				: "Jail",
-			"metal"				: "Metal",
-			"shutter"			: "Shutter",
-			"sliding"			: "Sliding",
-			"stone"				: "Stone",
-			"wood"				: "Wood"
-		}
-	},
-
+      "CustomPopupsFlag": {
+        "openButtonname": "自定义弹出消息",
+        "Title": "自定义弹出消息",
+        "name": "为特定的玩家互动设置弹出消息:",
+        "LockLocked": {
+          "name": "锁被上锁了:"
+        },
+        "LocknotPickable": {
+          "name": "无法撬锁:"
+        },
+        "LocknotBreakable": {
+          "name": "无法砸锁:"
+        },
+        "LockPasskeyTitle": {
+          "name": "密码框文本:"
+        },
+        "confirmButtonname": "确定弹出消息"
+      },
+      "SoundVariantFlag": {
+        "name": "锁的声音",
+        "descrp": "设置与这扇门互动时的声音集",
+        "options": {
+          "futuristic": "未来",
+          "industrial": "工业",
+          "jail": "监狱",
+          "metal": "金属",
+          "shutter": "窗户",
+          "sliding": "滑动",
+          "stone": "石制",
+          "wood": "木制"
+        }
+      },
       "LPFormulaFlag": {
         "name": "撬锁公式",
         "descrp": {
@@ -260,7 +225,6 @@
           "item": "物品拥有者撬锁时加入到撬锁掷骰的公式(只应用背包中最高的)"
         }
       },
-
       "LPFormulaOverrideFlag": {
         "name": "覆盖撬锁公式",
         "descrp": {
@@ -268,7 +232,6 @@
           "item": "这个物品的撬锁公式是否覆盖token/世界设定"
         }
       },
-
       "LBFormulaFlag": {
         "name": "砸锁公式",
         "descrp": {
@@ -276,7 +239,6 @@
           "item": "物品拥有者砸锁时加入到砸锁掷骰的公式(只应用背包中最高的)"
         }
       },
-
       "LBFormulaOverrideFlag": {
         "name": "覆盖砸锁公式",
         "descrp": {
@@ -285,16 +247,13 @@
         }
       }
     },
-
     "Context": {
       "KeyCopy": "复制钥匙ID",
       "KeyPaste": "粘贴ID进钥匙"
     },
-
     "Words": {
       "Key": "钥匙"
     },
-
     "Text": {
       "GMControls": {
         "line0": "GM操控:",
@@ -303,7 +262,6 @@
         "line3": "•ctrl+右键  复制锁的钥匙id(*)",
         "line4": "•ctrl+左键  粘贴钥匙id到锁中(*)"
       },
-
       "PlayerControls": {
         "line0": "PL操控:",
         "line1": "•右键       尝试对锁使用一把钥匙",
