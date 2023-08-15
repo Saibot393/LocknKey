@@ -6,7 +6,7 @@ import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
 class LnKMouseHandler {
 	//DECLARATIONS
 	//registers
-	static RegisterRightClicks() {} //call all register functions
+	static RegisterClicks() {} //call all register functions
 	
 		//doors
 	static RegisterDoorLeftClick() {} //register Door leftclick
@@ -36,7 +36,7 @@ class LnKMouseHandler {
 	
 	//IMPLEMENTATIONS
 	//registers
-	static RegisterRightClicks() {
+	static RegisterClicks() {
 		LnKMouseHandler.RegisterDoorLeftClick();
 		LnKMouseHandler.RegisterDoorRightClick();
 		
@@ -179,5 +179,5 @@ class LnKMouseHandler {
 
 //Hooks
 Hooks.on("init", function() {
-	LnKMouseHandler.RegisterRightClicks();
+	LnKMouseHandler.RegisterClicks();
 });

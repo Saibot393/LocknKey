@@ -267,7 +267,10 @@ class LnKutils {
 	}
 	
 	static async TokenInventory(pToken, pfiltered = false) {
-
+		let vItems;
+		
+		vItems = LnKSystemutils.SystemInventory(pToken);
+		
 		if (pfiltered) {
 			/* too slow
 			let vOldItems = pToken.actor.items.map(vItem => vItem);
@@ -282,10 +285,10 @@ class LnKutils {
 			return vItems;
 			*/
 			//only return items that have at least 1 in stack (if quantity can be found easily)
-			return pToken.actor.items.filter(vItem => !Number.isInteger(vItem.quantity) || (vItem.quantity > 0));
+			return vItems.filter(vItem => !Number.isInteger(vItem.quantity) || (vItem.quantity > 0));
 		}
 		
-		return pToken.actor.items;
+		return vItems;
 	}
 	
 	static LockPickItems() {

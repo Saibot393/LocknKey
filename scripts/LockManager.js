@@ -50,7 +50,7 @@ class LockManager {
 	//IMPLEMENTATIONS
 	//basics
 	static async useLockKey(pLock, pCharacter, pKeyItemID) {
-		let vKey = (await LnKutils.TokenInventory(pCharacter)).get(pKeyItemID);
+		let vKey = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pKeyItemID);
 		
 		if (vKey) {
 			if (LnKFlags.matchingIDKeys(pLock, vKey)) {
@@ -101,7 +101,7 @@ class LockManager {
 			}
 			
 			if (pUsedItemID && pUsedItemID.length > 0) {
-				vusedItem = (await LnKutils.TokenInventory(pCharacter)).get(pUsedItemID);
+				vusedItem = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pUsedItemID);
 			}	
 			
 			if (pResultDegree > 0) {

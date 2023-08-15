@@ -10,6 +10,7 @@ const cWarhammer4e = "wfrp4e"; //name of the warhammer 4e system
 const cDarkEye5e = "dsa5"; //name of the black eye 5e system
 const cBitD = "blades-in-the-dark"; //name of the blades in the dark system
 const cCyberpunkRED = "cyberpunk-red-core"; //name of the cyberpunk red core system
+const cSandbox = "sandbox"; //name of the sandbox system
 
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
@@ -33,6 +34,8 @@ class LnKSystemutils {
 	static SystemdefaultLPformula() {} //returns the default formula for Lock Picking in the current system	
 	
 	static SystemdefaultLBformula() {} //returns the default formula for Lock breaking in the current system	
+	
+	static SystemInventory(pToken) {} //returns the inventory of pToken in the current system
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -77,21 +80,25 @@ class LnKSystemutils {
 				break;
 			default:
 				//default fall backs
-				if (game.items.documentClass.TYPES.includes("object")) {
-					return "object"
+				if (game.items) {
+					if (game.items.documentClass.TYPES.includes("object")) {
+						return "object"
+					}
+					if (game.items.documentClass.TYPES.includes("item")) {
+						return "item"
+					}
+					if (game.items.documentClass.TYPES.includes("tool")) {
+						return "tool"
+					}
+					if (game.items.documentClass.TYPES.includes("equipment")) {
+						return "equipment"
+					}
+					return game.items.documentClass.TYPES[0];
 				}
-				if (game.items.documentClass.TYPES.includes("item")) {
-					return "item"
-				}
-				if (game.items.documentClass.TYPES.includes("tool")) {
-					return "tool"
-				}
-				if (game.items.documentClass.TYPES.includes("equipment")) {
-					return "equipment"
-				}
-				return game.items.documentClass.TYPES[0];
 				break;
 		}
+		
+		return "";
 	}
 	
 	static SystemdefaultLockPickItem() {
@@ -134,6 +141,15 @@ class LnKSystemutils {
 			default:
 				return "";
 		}		
+	}
+	
+	static SystemInventory(pToken) {
+		switch (game.system.id) {
+			case cSandbox:
+				return pToken.actor.system.citems.map(vItem => game.items.get(vItem.id)).filter(vItem => vItem);
+			default:
+				return pToken.actor.items;
+		}
 	}
 }
 

@@ -213,13 +213,13 @@ class KeyManager {
 			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
-				let vItem = game.items.get(vID);
+				let vItem = game.items.find(vItem => vItem.id == vID);
 				//handle only key items
 				return vItem.flags.hasOwnProperty(cModuleName);
 			},
 			callback: async (pElement) => {
 				let vID = pElement.data('document-id');
-				let vItem = game.items.get(vID);
+				let vItem = game.items.find(vItem => vItem.id == vID);
 				LnKFlags.copyIDKeys(vItem);
 			}
 		});
@@ -229,13 +229,13 @@ class KeyManager {
 			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
 			condition: (pElement) => {
 				let vID = pElement.data('document-id');
-				let vItem = game.items.get(vID);
+				let vItem = game.items.find(vItem => vItem.id == vID);
 				//handle only key items
 				return vItem.flags.hasOwnProperty(cModuleName);
 			},
 			callback: async (pElement) => {
 				let vID = pElement.data('document-id');
-				let vItem = game.items.get(vID);
+				let vItem = game.items.find(vItem => vItem.id == vID);
 				LnKFlags.pasteIDKeys(vItem);
 			}
 		});
