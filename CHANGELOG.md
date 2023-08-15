@@ -1,3 +1,6 @@
+## v1.8.2
+- Added support for the Sandbox system
+
 ## v1.8.1
 - Updated Chinese translation (thanks to [feederze](https://github.com/feederze))
   
