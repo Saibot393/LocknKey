@@ -149,7 +149,7 @@ class LnKSystemutils {
 	static SystemInventory(pToken) {
 		switch (game.system.id) {
 			case cSandbox:
-				return pToken.actor.system.citems.map(vItem => game.items.get(vItem.id)).filter(vItem => vItem);
+				return pToken.actor.system.citems.map(vItem => game.items.get(vItem.id) || game.items.get(vItem.ciKey)).filter(vItem => vItem);
 			default:
 				return pToken.actor.items;
 		}

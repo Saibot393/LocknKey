@@ -57,7 +57,7 @@ class LockManager {
 		let vKey = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pKeyItemID);
 		
 		if (vKey) {
-			if (LnKFlags.matchingIDKeys(vKey, pLock, game.settings.get("UseKeynameasID"))) {
+			if (LnKFlags.matchingIDKeys(vKey, pLock, game.settings.get(cModuleName, "UseKeynameasID"))) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
 					//lock is jammed and cant be opened by key
 					LnKPopups.TextPopUpID(pLock, "Lockisjammed"); //MESSAGE POPUP
@@ -533,6 +533,10 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 	}
 	
 	return true; //if anything fails
+});
+
+Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
+	LockManager.LockuseRequest(pData);
 });
 
 //wrap and export functions

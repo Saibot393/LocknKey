@@ -24,6 +24,8 @@ class KeyManager {
 	
 	static KeyItems(pInventory) {} //returns all Key items in pInventory
 	
+	static requestLockuse(puseData) {} //send a request to use Lock acording to pData
+	
 	//support
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {} //if pCharacter can circumvent pLock using puseMethod
 	
@@ -38,7 +40,7 @@ class KeyManager {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vProblemPopup = "";
 		
-		if (vCharacter) {
+		if (vCharacter && pLockObject) {
 			if (LnKFlags.LockDCtype(pLockObject, pUseType) == Infinity) {
 				//Lock cant be picked/broken => possible popup message
 				switch (pUseType) {
@@ -92,13 +94,15 @@ class KeyManager {
 		switch (pUseType) {
 			case cLUuseKey:
 				if (pLockObject && pCharacter) {
-					vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
+					//vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
+					vKeyItems = await LnKutils.TokenInventory(pCharacter, true);
 					
 					//only key which contains keyid matching at least one key id of pLockObject fits
-					vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject, game.settings.get("UseKeynameasID")));
+					vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject, game.settings.get(cModuleName, "UseKeynameasID")));				
 					
 					if (vFittingKey) {	
-						game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id}});
+						let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id};
+						KeyManager.requestLockuse(vData);
 					}
 					else {
 						if (LnKFlags.HasPasskey(pLockObject)) {
@@ -158,7 +162,9 @@ class KeyManager {
 							break;
 					}
 					
-					game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)}});
+					let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice.map(vdice => vdice.total)};
+					
+					KeyManager.requestLockuse(vData);
 				}
 				else {
 					//no roll neccessary, handled by Pf2e system
@@ -185,7 +191,9 @@ class KeyManager {
 								break;
 						}
 						
-						game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true, Pf2eresult : vResult}})
+						let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true, Pf2eresult : vResult};
+					
+						KeyManager.requestLockuse(vData);
 					};
 		
 					switch (pUseType) {
@@ -250,6 +258,15 @@ class KeyManager {
 	
 	static KeyItems(pInventory) {
 		return pInventory.filter(vItem => vItem.flags.hasOwnProperty(cModuleName));
+	}
+	
+	static requestLockuse(puseData) {
+		if (game.user.isGM) {
+			Hooks.call(cModuleName + ".LockuseRequest", puseData);
+		}
+		else {
+			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : puseData});
+		}		
 	}
 	
 	//support
@@ -325,7 +342,7 @@ class KeyManager {
 			buttons: {
 				button1: {
 					label: Translate("Titles.ConfirmPasskey"),
-					callback: (html) => {game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}})},
+					callback: (html) => {let vData = {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}; KeyManager.requestLockuse(vData)},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
 			},
