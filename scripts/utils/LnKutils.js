@@ -68,7 +68,7 @@ class LnKutils {
 	static PrimaryCharacter() {} //returns the first selected token document if available or the default character document
 	
 	//items
-	static async createKeyItem(pName = Translate("Word.Key")) {} // creates new key item and returns the document
+	static async createKeyItem(pName = Translate("Word.Key"), pFolder = "") {} // creates new key item and returns the document
 	
 	static Keyitemtype() {} //returns the used type of item for keys
 	
@@ -91,6 +91,8 @@ class LnKutils {
 	static async changeItemquantity(pItem, pdelta, pCharacter = undefined) {} //trys to change the quantity of pItem
 	
 	static async removeoneItem(pItem, pCharacter) {} //trys to reduce quantity by one, if not possible, deletes item
+	
+	static getItemFolders() {} //returns an array of all Folders, including array with the name and the ID
 	
 	//locks
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
@@ -251,8 +253,8 @@ class LnKutils {
 	}
 	
 	//items
-	static async createKeyItem(pName = Translate("Words.Key")) {
-		let vDocument = Item.create({name : pName, type : LnKutils.Keyitemtype(), img:"icons/sundries/misc/key-steel.webp"});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
+	static async createKeyItem(pName = Translate("Words.Key"), pFolder = "") {
+		let vDocument = Item.create({name : pName, type : LnKutils.Keyitemtype(), img:"icons/sundries/misc/key-steel.webp", folder : pFolder});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
 		
 		return vDocument;//await vDocument.constructor.create(vDocument);
 	}
@@ -449,6 +451,10 @@ class LnKutils {
 		if (!(await LnKutils.changeItemquantity(pItem, -1, pCharacter))) {
 			await pCharacter.actor.deleteEmbeddedDocuments("Item", [pItem.id]);
 		}
+	}
+	
+	static getItemFolders() {
+		return [["",""]].concat(game.items.directory.folders.map(vFolder => [vFolder.name, vFolder.id]));
 	}
 	
 	//locks

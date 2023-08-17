@@ -90,6 +90,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.Systemdefaultitemtype()
   }); 
   
+  game.settings.register(cModuleName, "KeyitemCreationPopup", {
+	name: Translate("Settings.KeyitemCreationPopup.name"),
+	hint: Translate("Settings.KeyitemCreationPopup.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: true
+  });
+  
   game.settings.register(cModuleName, "UseKeynameasID", {
 	name: Translate("Settings.UseKeynameasID.name"),
 	hint: Translate("Settings.UseKeynameasID.descrp"),
@@ -130,6 +139,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	default: LnKSystemutils.SystemdefaultLockPickItem()
+  });  
+  
+  game.settings.register(cModuleName, "MentionLockPickItem", {
+	name: Translate("Settings.MentionLockPickItem.name"),
+	hint: Translate("Settings.MentionLockPickItem.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
   });  
   
   game.settings.register(cModuleName, "RemoveLPoncritFail", {

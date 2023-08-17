@@ -5,6 +5,8 @@ import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
 
+const cLnKKeyIcon = "fa-key";
+
 //does everything Lock related
 class LockManager {
 	//DECLARATIONS
@@ -21,6 +23,8 @@ class LockManager {
 	
 	//LockKeys
 	static async newLockKey(pLock) {} //create a new item key for pLock
+	
+	static createKeycreationDialog(pLock) {} //used to create a popup with the options to create a new key for pLock
 	
 	//events
 	static async onLock(pLock, pLockusetype) {} //calledif a lock is locked
@@ -114,7 +118,12 @@ class LockManager {
 								}
 								
 								if (pChatMessages) {
-									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+									if (game.settings.get(cModuleName, "MentionLockPickItem") && vusedItem && vusedItem.name) {
+										await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccessLPName"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
+									}
+									else {
+										await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+									}
 								}
 								
 								break;
@@ -135,13 +144,24 @@ class LockManager {
 				//failure
 				switch (pMethodtype) {
 							case cLUpickLock:
+								let vRemoveLP = game.settings.get(cModuleName, "RemoveLPoncritFail") && (pResultDegree < 0) && vusedItem;
 								
 								if (pChatMessages) {
-									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+									if (game.settings.get(cModuleName, "MentionLockPickItem") && vusedItem && vusedItem.name) {
+										if (vRemoveLP) {
+											await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfailLPNameremove"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
+										}
+										else {
+											await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfailLPName"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
+										}
+									}
+									else {
+										await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+									}
 								}
 								
 								if (pResultDegree < 0) {
-									if (game.settings.get(cModuleName, "RemoveLPoncritFail") && vusedItem) {
+									if (vRemoveLP) {
 										//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
 										LnKutils.removeoneItem(vusedItem, pCharacter);
 										LnKPopups.TextPopUpID(pLock, "Lockpickbroke"); //MESSAGE POPUP
@@ -220,10 +240,48 @@ class LockManager {
 				await LnKFlags.makeLockable(pLock)
 			}		
 			
-			let vItem = await LnKutils.createKeyItem();
+			if (game.settings.get(cModuleName, "KeyitemCreationPopup")) {
+				LockManager.createKeycreationDialog(pLock);
+			}
+			else {
+				let vItem = await LnKutils.createKeyItem();
 			
-			LnKFlags.linkKeyLock(vItem, pLock);
+				LnKFlags.linkKeyLock(vItem, pLock);
+			}
 		}
+	}
+	
+	static createKeycreationDialog(pLock) {
+		let vHTML = `<label>${Translate("Titles.Keyname")}</label>
+					<input type="text" id="Keyname" name="Keyname" value="${Translate("Words.Key")}">
+					<label>${Translate("Titles.Keyfolder")}</label>
+					<select name="Folder">`;
+					
+		let vFolder = LnKutils.getItemFolders();
+		
+		for (let i = 0; i < vFolder.length; i++) {
+			vHTML = vHTML + `<option value="${vFolder[i][1]}">${vFolder[i][0]}</option>`;
+		}
+		
+		vHTML = vHTML + `</select>`;
+		
+		let a = new Dialog({
+			title: Translate("Titles.Keycreation"),
+			content: vHTML,
+			buttons: {
+				button1: {
+					label: Translate("Titles.ConfirmKeycreation"),
+					callback: async (html) => {
+						let vItem = await LnKutils.createKeyItem(html.find("input#Keyname").val(), html.find("[name=Folder]").find("option:selected").val());
+						LnKFlags.linkKeyLock(vItem, pLock);
+					},
+					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+				}
+			},
+			default: Translate("Titles.ConfirmPasskey")
+		}).render(true);	
+
+		console.log(a);
 	}
 	
 	//events
