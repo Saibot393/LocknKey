@@ -1,6 +1,9 @@
 import { cModuleName, Translate, LnKutils} from "../utils/LnKutils.js";
 import { LnKSystemutils} from "../utils/LnKSystemutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
+import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock } from "../KeyManager.js";
+import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
+
 
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Settings
@@ -85,6 +88,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	default: LnKSystemutils.Systemdefaultitemtype()
+  }); 
+  
+  game.settings.register(cModuleName, "UseKeynameasID", {
+	name: Translate("Settings.UseKeynameasID.name"),
+	hint: Translate("Settings.UseKeynameasID.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
   }); 
   
   game.settings.register(cModuleName, "usePf2eSystem", {
@@ -184,6 +196,19 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   });  
   
   //client
+  game.settings.register(cModuleName, "ControlSceme", {
+	name: Translate("Settings.ControlSceme.name"),
+	hint: Translate("Settings.ControlSceme.descrp"),
+	scope: "client",
+	config: true,
+	type: String,
+	choices: {
+		"ControlSceme-rightKeys"   : Translate("Settings.ControlSceme.options.rightKeys"),
+		"ControlSceme-rightPopups" : Translate("Settings.ControlSceme.options.rightPopups")
+	},
+	default: "ControlSceme-rightKeys"
+  });
+  
   game.settings.register(cModuleName, "MessagePopUps", {
 	name: Translate("Settings.MessagePopUps.name"),
 	hint: Translate("Settings.MessagePopUps.descrp"),
@@ -201,6 +226,79 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Boolean,
 	default: true
   }); 
+  
+  //Keys (GM)
+  game.keybindings.register(cModuleName, "ToggleLock", {
+	name: Translate("Keys.ToggleLock.name"),
+	hint: Translate("Keys.ToggleLock.descrp"),
+	onDown: () => { TogglehoveredLockGM(); },
+	restricted: true,
+	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "CopyLock", {
+	name: Translate("Keys.CopyLock.name"),
+	hint: Translate("Keys.CopyLock.descrp"),
+	onDown: () => { CopyhoveredLockGM(); },
+	restricted: true,
+	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "PasteLock", {
+	name: Translate("Keys.PasteLock.name"),
+	hint: Translate("Keys.PasteLock.descrp"),
+	onDown: () => { PastehoveredLockGM(); },
+	restricted: true,
+	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "CreatenewKey", {
+	name: Translate("Keys.CreatenewKey.name"),
+	hint: Translate("Keys.CreatenewKey.descrp"),
+	onDown: () => { CreateNewKeyhoveredGM(); },
+	restricted: true,
+	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  //Key
+  game.keybindings.register(cModuleName, "UseKey", {
+    name: Translate("Keys.UseKey.name"),
+    hint: Translate("Keys.UseKey.descrp"),
+    editable: [
+      {
+        key: "KeyK"
+      }
+    ],
+    onDown: () => { UseKeyonHoveredLock(); },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "PickLock", {
+    name: Translate("Keys.PickLock.name"),
+    hint: Translate("Keys.PickLock.descrp"),
+    editable: [
+      {
+        key: "KeyP"
+      }
+    ],
+    onDown: () => { PickHoveredLock(); },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "BreakLock", {
+    name: Translate("Keys.BreakLock.name"),
+    hint: Translate("Keys.BreakLock.descrp"),
+    editable: [
+      {
+        key: "KeyL"
+      }
+    ],
+    onDown: () => { BreakHoveredLock(); },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
 });
 
 //Hooks
@@ -229,14 +327,14 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 					<h3 class="border">${Translate("Titles.ClientSettings")}</h3>
 					`;
 		 
-		pHTML.find('input[name="' + cModuleName + '.MessagePopUps"]').closest(".form-group").before(vnewHTML);
-		
-		//player controlls
-		vnewHTML = ``;
-		for (let i = 0; i <= 3; i++) {
-			vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
-		}
-		
-		pHTML.find('input[name="' + cModuleName + '.PlayLockSounds"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('select[name="' + cModuleName + '.ControlSceme"]').closest(".form-group").before(vnewHTML);
 	}
+	
+	//player controlls
+	vnewHTML = ``;
+	for (let i = 0; i <= 3; i++) {
+		vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
+	}
+	
+	pHTML.find('input[name="' + cModuleName + '.PlayLockSounds"]').closest(".form-group").after(vnewHTML);
 });

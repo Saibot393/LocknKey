@@ -7,6 +7,9 @@ import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
 
 const cLnKKeyIcon = "fa-key";
+const cLnKPickLockIcon = "fa-solid fa-toolbox";
+const cLnKBreakLockIcon = "fa-solid fa-hammer";
+const cLnKCancelIcon = "fa-solid fa-xmark";
 
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
@@ -28,53 +31,57 @@ class KeyManager {
 	
 	static createPasskeyDialog(pLockObject, pLockType, pCharacter) {} //used to creat the passkey dialog
 	
+	static createLockuseDialog(pLockObject) {} //used to create a popup with use options
+	
 	//IMPLEMENTATIONS
 	static async onatemptedLockuse(pLockObject, pUseType) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vProblemPopup = "";
 		
-		if (LnKFlags.LockDCtype(pLockObject, pUseType) == Infinity) {
-			//Lock cant be picked/broken => possible popup message
-			switch (pUseType) {
-				case cLUpickLock:
-					vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotPickable);
-					break;
-				case cLUbreakLock:
-					vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotBreakable);
-					break;
+		if (vCharacter) {
+			if (LnKFlags.LockDCtype(pLockObject, pUseType) == Infinity) {
+				//Lock cant be picked/broken => possible popup message
+				switch (pUseType) {
+					case cLUpickLock:
+						vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotPickable);
+						break;
+					case cLUbreakLock:
+						vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotBreakable);
+						break;
+				}
 			}
-		}
-		
-		if (vProblemPopup.length) {
-			LnKPopups.TextPopUp(pLockObject, vProblemPopup); //MESSAGE POPUP
-		}
-		else {
-			if (LnKFlags.isLockable(pLockObject)) {
-				//check if pLockObject is even Lockable
-				
-				if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-					//check if lock is in reach
-					switch (pUseType) {
-						case cLUuseKey:
-						case cLUusePasskey:
-							KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter);
-							break;
-						case cLUpickLock:
-						case cLUbreakLock:
-							KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
-							break;
+			
+			if (vProblemPopup.length) {
+				LnKPopups.TextPopUp(pLockObject, vProblemPopup); //MESSAGE POPUP
+			}
+			else {
+				if (LnKFlags.isLockable(pLockObject)) {
+					//check if pLockObject is even Lockable
+					
+					if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
+						//check if lock is in reach
+						switch (pUseType) {
+							case cLUuseKey:
+							case cLUusePasskey:
+								KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter);
+								break;
+							case cLUpickLock:
+							case cLUbreakLock:
+								KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
+								break;
+						}
+					}
+					else {
+						LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 					}
 				}
-				else {
-					LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
-				}
 			}
+			/*
+			else {
+				LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			}
+			*/
 		}
-		/*
-		else {
-			LnKPopups.TextPopUpID(pLockObject, "NotaLock", {pLockName : pLockObject.name}); //MESSAGE POPUP
-		}
-		*/
 	}
 	
 	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter) {	
@@ -88,7 +95,7 @@ class KeyManager {
 					vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
 					
 					//only key which contains keyid matching at least one key id of pLockObject fits
-					vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject));
+					vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject, game.settings.get("UseKeynameasID")));
 					
 					if (vFittingKey) {	
 						game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id}});
@@ -325,27 +332,70 @@ class KeyManager {
 			default: Translate("Titles.ConfirmPasskey")
 		}).render(true);
 	}
+	
+	static createLockuseDialog(pLockObject) {
+		let vDialog = new Dialog({
+			title: Translate("Titles.Lockuse"),
+			buttons: {
+				UseKey: {
+					label: Translate("Titles.UseKey"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey);},
+					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+				}, 
+				PickLock: {
+					label: Translate("Titles.PickLock"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUpickLock);},
+					icon: `<i class="fas ${cLnKPickLockIcon}"></i>`
+				}, 
+				BreakLock: {
+					label: Translate("Titles.BreakLock"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
+					icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
+				}, 
+				Close: {
+					label: Translate("Titles.Close"),
+					callback: () => {},
+					icon: `<i class="fas ${cLnKCancelIcon}"></i>`
+				}, 
+			}
+		}).render(true);
+			
+		Hooks.once("renderDialog", (pDialog, pHTML, pdata) => {//Token Lock use
+			if (pDialog.appID == vDialog.appID) {
+				pHTML.find(`div.dialog-buttons`).css("flex-direction", "column"); //make buttons appear as list	
+				pHTML.css("height", "max-content"); //resize window
+			}
+		}); 
+	}
 }
 
 function onLockRightClick(pDocument, pInfos) {
 	if (!game.user.isGM) {//CLIENT: use key
 		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
-			if (pInfos.shiftKey) {
-				KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
-			}
-			else {
-				if (pInfos.altKey) {
-					KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
-				}
-				else {
-					KeyManager.onatemptedLockuse(pDocument, cLUuseKey);
-				}
+			switch (game.settings.get(cModuleName, "ControlSceme")) {
+				case "ControlSceme-rightKeys" :
+					if (pInfos.shiftKey) {
+						KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
+					}
+					else {
+						if (pInfos.altKey) {
+							KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
+						}
+						else {
+							KeyManager.onatemptedLockuse(pDocument, cLUuseKey);
+						}
+					}
+					break;
+				case "ControlSceme-rightPopups" :
+				default:
+					KeyManager.createLockuseDialog(pDocument);
+					break;
 			}
 		}
 		else {
 			LnKPopups.TextPopUpID(pDocument, "GamePaused"); //MESSAGE POPUP
 		}
-	}	
+	}
 }
 
 //Hooks

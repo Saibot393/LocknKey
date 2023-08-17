@@ -53,7 +53,7 @@ class LnKFlags {
 	
 	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
-	static matchingIDKeys(pObject1, pObject2) {} //returns of pObject1 and pObject2 have at least one matching key (excluding "")
+	static matchingIDKeys(pObject1, pObject2, pConsiderName1 = false) {} //returns if pObject1 and pObject2 have at least one matching key (excluding "") (pConsiderName1 if name of pObject should be considerd as an ID)
 	
 	static KeyIDs(pObject) {} //returns string of key IDs of pObject
 	
@@ -501,8 +501,8 @@ class LnKFlags {
 		this.#addIDKeysFlag(pLock, vnewID);
 	}
 	
-	static matchingIDKeys(pObject1, pObject2) {		
-		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length);
+	static matchingIDKeys(pObject1, pObject2, pConsiderName1 = false) {	
+		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length) || (pConsiderName1 && pObject1.name && this.#IDKeysFlag(pObject2).split(cDelimiter).includes(pObject1.name));
 	}
 	
 	static KeyIDs(pObject) {

@@ -53,7 +53,7 @@ class LockManager {
 		let vKey = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pKeyItemID);
 		
 		if (vKey) {
-			if (LnKFlags.matchingIDKeys(pLock, vKey)) {
+			if (LnKFlags.matchingIDKeys(vKey, pLock, game.settings.get("UseKeynameasID"))) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
 					//lock is jammed and cant be opened by key
 					LnKPopups.TextPopUpID(pLock, "Lockisjammed"); //MESSAGE POPUP
