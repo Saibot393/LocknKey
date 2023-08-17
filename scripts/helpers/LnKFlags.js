@@ -20,8 +20,9 @@ const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
 const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
 const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should play for locking
 const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
+const cSpecialLPF = "SpecialLPFlag"; //Flag that sets special Lock picks
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -80,6 +81,10 @@ class LnKFlags {
 	static JamLock(pLock) {} //sets pLock Lockpick DC to unpickable value (-1)
 	
 	static Lockisjammed(pLock) {} //if this Lock is jammed
+	
+	static GetSpecialLockpicks(pLock, praw = false) {} //gets all Special lock picks for pLock
+	
+	static hasSpecialLockpicks(pLock) {} //if pLock has special Lockpicks
 	
 	//Lock progress
 	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
@@ -345,6 +350,19 @@ class LnKFlags {
 		return false; //default if anything fails
 	} 
 	
+	static #SpecialLPFlag (pObject) {
+	//returns content of SpecialLPFlag of pObject (String)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cSpecialLPF)) {
+				return vFlag.SpecialLPFlag;
+			}
+		}
+		
+		return ""; //default if anything fails		
+	}
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -567,6 +585,19 @@ class LnKFlags {
 	
 	static Lockisjammed(pLock) {
 		return this.#LockjammedFlag(pLock);
+	}
+	
+	static GetSpecialLockpicks(pLock, praw = false) {
+		if (praw) {
+			return this.#SpecialLPFlag(pLock);
+		}
+		else {
+			return this.#SpecialLPFlag(pLock).split(cDelimiter).filter(vElement => vElement.length > 0);
+		}
+	}
+	
+	static hasSpecialLockpicks(pLock) {
+		return (LnKFlags.GetSpecialLockpicks(pLock).length > 0);
 	}
 	
 	//Lock progress

@@ -76,9 +76,9 @@ class LnKutils {
 	
 	static LockPickItems() {} //returns an array of names/ids of Lock Pick items
 	
-	static isLockPickItem(pItem) {} //if item qualifies as LockPick item
+	static isLockPickItem(pItem, pSpecialLockpicks = []) {} //if item qualifies as LockPick item
 	
-	static hasLockPickItem(pInventory) {} //returns if pInventory includes LockPick item
+	static hasLockPickItem(pInventory, pSpecialLockpicks = []) {} //returns if pInventory includes LockPick item
 	
 	static LockPickItemsin(pInventory) {} //returns all valid Lock pick items in pInventory
 	
@@ -300,12 +300,17 @@ class LnKutils {
 		}
 	}
 	
-	static isLockPickItem(pItem) {
+	static isLockPickItem(pItem, pSpecialLockpicks = []) {
 		//if either name or id matches
-		return (LnKutils.includesone(pItem.name, LnKutils.LockPickItems()) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, LnKutils.LockPickItems())));
+		if (pSpecialLockpicks.length) {
+			return (LnKutils.includesone(pItem.name, pSpecialLockpicks) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, pSpecialLockpicks)));
+		}
+		else {
+			return (LnKutils.includesone(pItem.name, LnKutils.LockPickItems()) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, LnKutils.LockPickItems())));
+		}
 	}
 	
-	static hasLockPickItem(pInventory) {
+	static hasLockPickItem(pInventory, pSpecialLockpicks = []) {
 		if (LnKutils.LockPickItems().find(vElement => vElement == cEmptySymbol)) {
 			//Lock pick item is disabled
 			return true;
@@ -316,7 +321,7 @@ class LnKutils {
 			return false;
 		}
 
-		return pInventory.find(vItem => LnKutils.isLockPickItem(vItem));
+		return pInventory.find(vItem => LnKutils.isLockPickItem(vItem, pSpecialLockpicks));
 	}
 	
 	static LockPickItemsin(pInventory) {

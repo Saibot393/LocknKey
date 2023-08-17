@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 
@@ -280,7 +280,7 @@ class LnKSheetSettings {
 												vflagname : cPasskeysF
 												}, pto);
 												
-		//setting lock dc									
+		//setting Lock jammed									
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockjammedF +".name"), 
 												vhint : Translate("SheetSettings."+ cLockjammedF +".descrp"), 
 												vtype : "checkbox", 
@@ -294,6 +294,15 @@ class LnKSheetSettings {
 												vtype : "number", 
 												vvalue : LnKFlags.LockDC(pApp.object, true),
 												vflagname : cLockDCF
+												}, pto);
+												
+		//setting Special Lockpicks									
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cSpecialLPF +".name"), 
+												vhint : Translate("SheetSettings."+ cSpecialLPF +".descrp"), 
+												vtype : "text", 
+												vwide : true,
+												vvalue : LnKFlags.GetSpecialLockpicks(pApp.object, true),
+												vflagname : cSpecialLPF
 												}, pto);
 												
 		//setting lock break dc									

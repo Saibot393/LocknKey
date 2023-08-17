@@ -249,7 +249,12 @@ class KeyManager {
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {
 		switch (puseMethod) {
 			case cLUpickLock:
-				return await LnKutils.hasLockPickItem(await LnKutils.TokenInventory(pCharacter, true));
+				if (LnKFlags.hasSpecialLockpicks(pLock)) {
+					return await LnKutils.hasLockPickItem(await LnKutils.TokenInventory(pCharacter, true), LnKFlags.GetSpecialLockpicks(pLock));
+				}
+				else {
+					return await LnKutils.hasLockPickItem(await LnKutils.TokenInventory(pCharacter, true));
+				}
 				break;
 			case cLUbreakLock:
 				return true; //no item required

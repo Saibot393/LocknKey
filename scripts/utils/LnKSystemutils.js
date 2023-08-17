@@ -78,6 +78,9 @@ class LnKSystemutils {
 			case cCyberpunkRED:
 				return "gear";
 				break;
+			case cSandbox:
+				return "cItem";
+				break;
 			default:
 				//default fall backs
 				if (game.items) {
