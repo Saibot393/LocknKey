@@ -1,6 +1,6 @@
 ## v1.9.0 (unreleased)
 - Added Control Keys for Lock interactions (for both GM and player controls)
-- Added client setting Control sceme to either use the standard controls to interact with doors or get a pop up when right-clicking a lock
+- Added client setting Control sceme to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
 - Added world setting Key creation menu to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
 - Added world setting Use key name as ID to use the keys name as an additional ID when interacting with locks
 - Added world setting Mention lockpick item to give additional information in the chat regarding the used item when picking a lock
