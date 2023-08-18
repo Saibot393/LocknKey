@@ -248,7 +248,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Keys (GM)
   game.keybindings.register(cModuleName, "ToggleLock", {
 	name: Translate("Keys.ToggleLock.name"),
-	hint: Translate("Keys.ToggleLock.descrp"),
 	onDown: () => { TogglehoveredLockGM(); },
 	restricted: true,
 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
@@ -256,7 +255,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "CopyLock", {
 	name: Translate("Keys.CopyLock.name"),
-	hint: Translate("Keys.CopyLock.descrp"),
 	onDown: () => { CopyhoveredLockGM(); },
 	restricted: true,
 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
@@ -264,7 +262,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "PasteLock", {
 	name: Translate("Keys.PasteLock.name"),
-	hint: Translate("Keys.PasteLock.descrp"),
 	onDown: () => { PastehoveredLockGM(); },
 	restricted: true,
 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
@@ -272,7 +269,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "CreatenewKey", {
 	name: Translate("Keys.CreatenewKey.name"),
-	hint: Translate("Keys.CreatenewKey.descrp"),
 	onDown: () => { CreateNewKeyhoveredGM(); },
 	restricted: true,
 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
@@ -281,7 +277,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   //Key
   game.keybindings.register(cModuleName, "UseKey", {
     name: Translate("Keys.UseKey.name"),
-    hint: Translate("Keys.UseKey.descrp"),
     editable: [
       {
         key: "KeyK"
@@ -294,7 +289,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "PickLock", {
     name: Translate("Keys.PickLock.name"),
-    hint: Translate("Keys.PickLock.descrp"),
     editable: [
       {
         key: "KeyP"
@@ -307,7 +301,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "BreakLock", {
     name: Translate("Keys.BreakLock.name"),
-    hint: Translate("Keys.BreakLock.descrp"),
     editable: [
       {
         key: "KeyL"

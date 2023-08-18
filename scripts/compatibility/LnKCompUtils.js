@@ -1,5 +1,6 @@
 import { cModuleName } from "../utils/LnKutils.js";
 import { LnKFlags } from "../helpers/LnKFlags.js";
+import { Geometricutils } from "../utils/Geometricutils.js";
 
 //Module Names
 const cStairways = "stairways";
@@ -106,14 +107,24 @@ class LnKCompUtils {
 	
 	static ARWithinLockingDistance(pCharacter, pLock) {
 		if (LnKCompUtils.isactiveModule(cArmReach)) {
-			return game.modules.get(cArmReach).api.isReachable(pCharacter, pLock);
+			if (game.modules.get(cArmReach).api) {
+				return game.modules.get(cArmReach).api.isReachable(pCharacter, pLock);
+			}
+			else {
+				return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKCompUtils.ARReachDistance();
+			}
 		}		
 		
 		if (LnKCompUtils.isactiveModule(cArmReachold)) {
-			return game.modules.get(cArmReachold).api.isReachable(pCharacter, pLock);
+			if (game.modules.get(cArmReachold).api) {
+				return game.modules.get(cArmReachold).api.isReachable(pCharacter, pLock);
+			}
+			else {
+				return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKCompUtils.ARReachDistance();
+			}
 		}	
 		
-		return true;//if anything failse
+		return true;//if anything fails
 	}
 	
 	//specific: ItemPiles

@@ -12,6 +12,15 @@
 			"Passkey"					: "Passwort",
 			"EnterPasskey"				: "Passwort eingeben:",
 			"ConfirmPasskey"			: "Bestätigen"
+			"Lockuse"					: "Schloss benutzen",
+			"UseKey"					: "Benutze Schlüssel",
+			"PickLock"					: "Knacke Schloss",
+			"BreakLock"					: "Zerbreche Schloss",
+			"Close"						: "Schließen",
+			"Keycreation"				: "Schlüssel generieren",
+			"Keyname"					: "Schlüsselname",
+			"Keyfolder"				: "Schlüssel Zielordner",
+			"ConfirmKeycreation"			: "Erschaffen"
 		},
 		
 		"Popup" : {
@@ -47,6 +56,18 @@
 				"crit"					: "{pName} ist beim Schloss knacken kritisch gescheitert",
 				"default" 				: "{pName} hat das Schloss nicht knacken können"
 			},
+			"LockPicksuccessLPName" : {
+				"crit"					: "{pName} hatte beim Schloss knacken mit {pLPName} kritischen Erfolg",
+				"default" 				: "{pName} hat das Schloss erfolgreich mit {pLPName} geknackt"
+			},
+			"LockPickfailLPName" : {
+				"crit"					: "{pName} ist beim Schloss knacken mit {pLPName} kritisch gescheitert",
+				"default" 				: "{pName} hat das Schloss mit {pLPName} nicht knacken können"
+			},
+			"LockPickfailLPNameremove" : {
+				"crit"					: "{pName} ist beim Schloss knacken kritisch gescheitert und hat {pLPName} zerbrochen"
+			},
+			
 			"LockBreak"					: "{pName} hat versucht ein Schloss aufzubrechen:",
 			"LockBreaksuccess" : {
 				"crit"					: "{pName} hatte beim Schloss aufbrechen kritischen Erfolg",
@@ -104,6 +125,16 @@
 				"descrp"				: "Der Gegenstandstyp den das Modul für neue Schlüssel benutzt, leer lassen um den standard Typen zu benutzen (Erhalt einer Liste valider Typen durch Eingeben von \"game.items.documentClass.TYPES\" in die F12 Konsole)"		
 			},
 			
+			"KeyitemCreationPopup" : {
+				"name" 					: "Schlüssel-Erschaffungsmenu",
+				"descrp"				: "Ob beim generieren eines neuen Schlüssels ein Menu für die Eingabe des Namens und des Ordners angezeigt werden soll"		
+			},		
+
+			"UseKeynameasID" : {
+				"name" 					: "Schlüsselname als ID",
+				"descrp"				: "Ob der Name von Schlüsseln als zusätzliche ID für das öffnen von Schlössern benutzt werden soll"		
+			},			
+			
 			"usePf2eSystem" : {
 				"name" 					: "Nutze Pf2e Würfelsystem",
 				"descrp"				: "Nutzt das Pf2e Würfelsystem (Deaktiviert Lock & Key Wurfformeln und Kritsystem um anstatt dessen das Pf2e rules-System zu nutzen)"						
@@ -122,6 +153,11 @@
 			"LockPickItem" : {
 				"name" 					: "Dietrich Gegenstände",
 				"descrp"				: "Die Namen oder die Kompendium IDs (empfohlen) der Gegenstände welche zum Schlösserknacken benutzt werden können, \"-\" sollte kein Gegenstand gebraucht werden (seperated with \";\")"		
+			},
+			
+			"MentionLockPickItem" : {
+				"name" 					: "Dietrich erwähnen",
+				"descrp"				: "Ob der benutzte Dietrich im Chat erwähnt werden soll"		
 			},
 			
 			"RemoveLPoncritFail" : {
@@ -159,6 +195,15 @@
 				"descrp"				: "Ignoriert die benötigten Erfolge außerhalb von Kämpfen"				
 			},
 			
+			"ControlSceme" : {
+				"name" 					: "Kontrol Schema",
+				"descrp"				: "Schema welches für die Spiele Ssteuerung benutzt wird (rechts-click + taste ist unten unter \"Spieler Steuerung\" beschrieben",	
+				"options" : {
+					"rightKeys"			: "rechts-click + taste",
+					"rightPopups"		: "rechts-click popup-Menu"
+				}
+			},	
+			
 			"MessagePopUps" : {
 				"name" 					: "Text popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
@@ -167,6 +212,36 @@
 			"PlayLockSounds" : {
 				"name" 					: "Schloss Geräusche",
 				"descrp"				: "Spiele geräusche ab wenn ein Schloss auf-/abgeschlossen wird"		
+			}
+		},
+		
+		"Keys" : {
+			"ToggleLock" : {
+				"name"					: "Schloss abschließen/aufschließen"
+			},
+			
+			"CopyLock" : {
+				"name"					: "Schloss IDs kopieren"
+			},
+			
+			"PasteLock" : {
+				"name"					: "Schloss IDs einfügen"
+			},
+			
+			"CreatenewKey" : {
+				"name"					: "Neuen Schlüssel erschaffen"
+			},
+			
+			"UseKey" : {
+				"name"					: "Schlüssel nutzen"
+			},
+			
+			"PickLock" : {
+				"name"					: "Schloss knacken"
+			},
+			
+			"BreakLock" : {
+				"name"					: "Schloss aufbrechen"
 			}
 		},
 		
@@ -207,6 +282,11 @@
 			"LockDCFlag" : {
 				"name" 					: "Schloss SG",
 				"descrp"				: "Der Schwierigkeitsgrad dieses Schlosses (-1 um das Knacken zu verhindern)"					
+			},
+			
+			"SpecialLPFlag" : {
+				"name" 					: "Spezieller Dietrich",
+				"descrp"				: "Spezieller Dietrich welcher für dieses Schloss benötigt wird (ID oder Name, mehrere Einträge mit \";\" getrennt)"					
 			},
 			
 			"LockBreakDCFlag" : {
@@ -283,7 +363,7 @@
 					"token" 			: "Ob die Schloss aufbrechen Wurfformel dieser Figur die Weltformel überschreibt",
 					"item"				: "Ob die Schloss aufbrechen Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
 				}				
-			}
+			}	
 		},
 		
 		"Context" : {
@@ -305,10 +385,10 @@
 			},
 			
 			"PlayerControls" : {
-				"line0"					: "GM controls:",
-				"line1" 				: "•right-click um zu versuchen einen Schlüssel mit einem Schloss zu benutzen",
-				"line2" 				: "•shift+right-click um zu versuchen ein Schloss zu knacken",
-				"line3" 				: "•alt+right-click um zu versuchen ein Schloss aufzubrechen"
+				"line0"					: "Spieler Steuerung:",
+				"line1" 				: "•rechts-click um zu versuchen einen Schlüssel mit einem Schloss zu benutzen",
+				"line2" 				: "•shift+rechts-click um zu versuchen ein Schloss zu knacken",
+				"line3" 				: "•alt+rechts-click um zu versuchen ein Schloss aufzubrechen"
 			}
 		}
 	}

@@ -11,7 +11,16 @@
       "LPItems": "锁的操控设置",
       "Passkey": "密码",
       "EnterPasskey": "输入密码:",
-      "ConfirmPasskey": "确定"
+      "ConfirmPasskey": "确定",
+	  "Lockuse"					: "Lock use",
+	  "UseKey"					: "Use a key",
+	  "PickLock"					: "Pick lock",
+	  "BreakLock"					: "Break lock",
+	  "Close"						: "Close",
+		"Keycreation"				: "Key creation",
+		"Keyname"					: "Key name",
+		"Keyfolder"				: "Key target folder",
+		"ConfirmKeycreation"			: "Create"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
@@ -45,6 +54,18 @@
         "crit": "{pName}撬锁大失败",
         "default": "{pName}撬锁失败"
       },
+		"LockPicksuccessLPName" : {
+			"crit"					: "{pName} critically succeeded at picking the lock with {pLPName}",
+			"default" 				: "{pName} succeeded at picking the lock with {pLPName}"
+		},
+		"LockPickfailLPName" : {
+			"crit"					: "{pName} critically failed at picking the lock with {pLPName}",
+			"default" 				: "{pName} failed at picking the lock with {pLPName}"
+		},
+		"LockPickfailLPNameremove" : {
+			"crit"					: "{pName} critically failed at picking the lock and broke {pLPName}"
+		},
+		
       "LockBreak": "{pName}尝试砸锁:",
       "LockBreaksuccess": {
         "crit": "{pName}砸锁大成功",
@@ -92,6 +113,15 @@
         "name": "钥匙物品类型",
         "descrp": "模组生成新钥匙时使用的物品类型，留空则使用默认类型(在F12 - Console 中输入 \"game.items.documentClass.TYPES\" 来列出可用的类型)"
       },
+		"KeyitemCreationPopup" : {
+			"name" 					: "Key creation menu",
+			"descrp"				: "If a menu should be shown for newly generated key to change their name and folder"		
+		},		
+
+		"UseKeynameasID" : {
+			"name" 					: "Key name as ID",
+			"descrp"				: "If a keys name should be considered as an additional ID for the purpose of opening locks"		
+		},	
       "usePf2eSystem": {
         "name": "使用PF2E掷骰系统",
         "descrp": "使用PF2E掷骰系统 (关闭本模组的自定义掷骰公式与大成功系统，由PF2E系统取代)"
@@ -109,6 +139,10 @@
         "name": "撬锁物品",
         "descrp": "撬锁物品的名字或者合集IDs (推荐), 如果不需要特定物品就可以撬锁请填\"-\"  (多个物品请以\";\"分隔) （译注：拖动物品到聊天框可以快速得到物品id）"
       },
+		"MentionLockPickItem" : {
+			"name" 					: "Mention lockpick item",
+			"descrp"				: "If the used lockpick item should be mentioned in the chat"		
+		},
       "RemoveLPoncritFail": {
         "name": "大失败时移除撬锁物品",
         "descrp": "在大失败时移除撬锁物品(或者将物品数量减1)"
@@ -137,6 +171,14 @@
         "name": "仅在战斗中需要多次解锁",
         "descrp": "非战斗状态忽略设定的多次解锁设置"
       },
+	"ControlSceme" : {
+		"name" 					: "Control sceme",
+		"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
+		"options" : {
+			"rightKeys"			: "right-click + key",
+			"rightPopups"		: "right-click popup-menu"
+		}
+	},	
       "MessagePopUps": {
         "name": "弹出消息",
         "descrp": "上锁与开锁时弹出多条消息"
@@ -146,6 +188,35 @@
         "descrp": "上锁/开锁时播放音效"
       }
     },
+	"Keys" : {
+		"ToggleLock" : {
+			"name"					: "Toggle lock"
+		},
+		
+		"CopyLock" : {
+			"name"					: "Copy lock ids"
+		},
+		
+		"PasteLock" : {
+			"name"					: "Paste lock ids"
+		},
+		
+		"CreatenewKey" : {
+			"name"					: "Create new key"
+		},
+		
+		"UseKey" : {
+			"name"					: "Use key"
+		},
+		
+		"PickLock" : {
+			"name"					: "Pick lock"
+		},
+		
+		"BreakLock" : {
+			"name"					: "Break lock"
+		}
+	},
     "SheetSettings": {
       "LockableFlag": {
         "name": "可被上锁",
@@ -178,6 +249,10 @@
         "name": "撬锁DC",
         "descrp": "开锁的DC, 适用于撬锁 (-1 则不可撬锁)"
       },
+		"SpecialLPFlag" : {
+			"name" 					: "Special lockpick",
+			"descrp"				: "Special lockpick required to pick this lock (ID or name, multiple entries seperated with \";\")"					
+		},
       "LockBreakDCFlag": {
         "name": "砸锁DC",
         "descrp": "开锁的DC, 适用于砸锁 (-1 则不可砸锁)"

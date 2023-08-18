@@ -321,60 +321,62 @@ class LockManager {
 	static async ToggleLock(pLock, pLockusetype) {
 		let vValidToggle;
 		
-		switch (pLockusetype) {
-			case cLUisGM:
-				vValidToggle = true; //GMs can allways toggle
-				break
-			case cLUbreakLock:
-				vValidToggle = !(await LockManager.isUnlocked(pLock)); //only locked doors can be toggled through break
-				break;
-			case cLUpickLock:
-			case cLUuseKey:
-			default:
-				vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
-				break;
-		}
-		
-		if (vValidToggle) {
-			//if setting is set to false, only GM can lock locks
-			let vLocktype = await LnKutils.Locktype(pLock);
-			
-			if (pLockusetype == cLUisGM) {
-				await LnKFlags.makeLockable(pLock);
-			}
-			
-			switch(vLocktype) {
-				case cLockTypeDoor:
-					await LockManager.ToggleDoorLock(pLock, pLockusetype);
-					
-					return true;
+		if (pLock) {
+			switch (pLockusetype) {
+				case cLUisGM:
+					vValidToggle = true; //GMs can allways toggle
+					break
+				case cLUbreakLock:
+					vValidToggle = !(await LockManager.isUnlocked(pLock)); //only locked doors can be toggled through break
 					break;
-				case cLockTypeLootPf2e:
+				case cLUpickLock:
+				case cLUuseKey:
 				default:
-					await LnKFlags.invertLockedstate(pLock);
-					
-					if (LnKFlags.isLocked(pLock)) {
-						LockManager.onLock(pLock, pLockusetype);
-					}
-					else {
-						LockManager.onunLock(pLock, pLockusetype);
-					}
-					
-					return true;
+					vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
 					break;
 			}
-		}
-		else {
-			//give reasons for Invalid
-			if (await LockManager.isUnlocked(pLock)) {
-				switch (pLockusetype) {
-					case cLUbreakLock:
-						LnKPopups.TextPopUpID(pLock, "cantLock.break"); //MESSAGE POPUP
+			
+			if (vValidToggle) {
+				//if setting is set to false, only GM can lock locks
+				let vLocktype = await LnKutils.Locktype(pLock);
+				
+				if (pLockusetype == cLUisGM) {
+					await LnKFlags.makeLockable(pLock);
+				}
+				
+				switch(vLocktype) {
+					case cLockTypeDoor:
+						await LockManager.ToggleDoorLock(pLock, pLockusetype);
+						
+						return true;
 						break;
-					case cLUpickLock:
-					case cLUuseKey:
-						LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
+					case cLockTypeLootPf2e:
+					default:
+						await LnKFlags.invertLockedstate(pLock);
+						
+						if (LnKFlags.isLocked(pLock)) {
+							LockManager.onLock(pLock, pLockusetype);
+						}
+						else {
+							LockManager.onunLock(pLock, pLockusetype);
+						}
+						
+						return true;
 						break;
+				}
+			}
+			else {
+				//give reasons for Invalid
+				if (await LockManager.isUnlocked(pLock)) {
+					switch (pLockusetype) {
+						case cLUbreakLock:
+							LnKPopups.TextPopUpID(pLock, "cantLock.break"); //MESSAGE POPUP
+							break;
+						case cLUpickLock:
+						case cLUuseKey:
+							LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
+							break;
+					}
 				}
 			}
 		}

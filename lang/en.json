@@ -11,7 +11,16 @@
 			"LPItems"					: "Lock manipulations settings",
 			"Passkey"					: "Password",
 			"EnterPasskey"				: "Enter the password:",
-			"ConfirmPasskey"			: "Confirm"
+			"ConfirmPasskey"			: "Confirm",
+			"Lockuse"					: "Lock use",
+			"UseKey"					: "Use a key",
+			"PickLock"					: "Pick lock",
+			"BreakLock"					: "Break lock",
+			"Close"						: "Close",
+			"Keycreation"				: "Key creation",
+			"Keyname"					: "Key name",
+			"Keyfolder"				: "Key target folder",
+			"ConfirmKeycreation"			: "Create"
 		},
 		
 		"Popup" : {
@@ -47,6 +56,18 @@
 				"crit"					: "{pName} critically failed at picking the lock",
 				"default" 				: "{pName} failed at picking the lock"
 			},
+			"LockPicksuccessLPName" : {
+				"crit"					: "{pName} critically succeeded at picking the lock with {pLPName}",
+				"default" 				: "{pName} succeeded at picking the lock with {pLPName}"
+			},
+			"LockPickfailLPName" : {
+				"crit"					: "{pName} critically failed at picking the lock with {pLPName}",
+				"default" 				: "{pName} failed at picking the lock with {pLPName}"
+			},
+			"LockPickfailLPNameremove" : {
+				"crit"					: "{pName} critically failed at picking the lock and broke {pLPName}"
+			},
+			
 			"LockBreak"					: "{pName} tried to break a lock:",
 			"LockBreaksuccess" : {
 				"crit"					: "{pName} critically succeeded at breaking the lock",
@@ -104,6 +125,16 @@
 				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
 			},
 			
+			"KeyitemCreationPopup" : {
+				"name" 					: "Key creation menu",
+				"descrp"				: "If a menu should be shown for newly generated key to change their name and folder"		
+			},		
+
+			"UseKeynameasID" : {
+				"name" 					: "Key name as ID",
+				"descrp"				: "If a keys name should be considered as an additional ID for the purpose of opening locks"		
+			},	
+			
 			"usePf2eSystem" : {
 				"name" 					: "Use Pf2e roll system",
 				"descrp"				: "Use the Pf2e roll system (disables Lock & Key custom roll formulas and crit settings in favor of the Pf2e rules system)"						
@@ -122,6 +153,11 @@
 			"LockPickItem" : {
 				"name" 					: "Lockpick items",
 				"descrp"				: "Names or compendium IDs (recommended) of a lockpicking items, \"-\" if no item is necessary (seperated with \";\")"		
+			},
+			
+			"MentionLockPickItem" : {
+				"name" 					: "Mention lockpick item",
+				"descrp"				: "If the used lockpick item should be mentioned in the chat"		
 			},
 			
 			"RemoveLPoncritFail" : {
@@ -159,6 +195,15 @@
 				"descrp"				: "Ignores set required Lockpicking successes outside of combat"				
 			},
 			
+			"ControlSceme" : {
+				"name" 					: "Control sceme",
+				"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
+				"options" : {
+					"rightKeys"			: "right-click + key",
+					"rightPopups"		: "right-click popup-menu"
+				}
+			},			
+			
 			"MessagePopUps" : {
 				"name" 					: "Message popups",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
@@ -167,6 +212,36 @@
 			"PlayLockSounds" : {
 				"name" 					: "Play lock sounds",
 				"descrp"				: "Play a sound when a lock is locked/unlocked"		
+			}
+		},
+		
+		"Keys" : {
+			"ToggleLock" : {
+				"name"					: "Toggle lock"
+			},
+			
+			"CopyLock" : {
+				"name"					: "Copy lock ids"
+			},
+			
+			"PasteLock" : {
+				"name"					: "Paste lock ids"
+			},
+			
+			"CreatenewKey" : {
+				"name"					: "Create new key"
+			},
+			
+			"UseKey" : {
+				"name"					: "Use key"
+			},
+			
+			"PickLock" : {
+				"name"					: "Pick lock"
+			},
+			
+			"BreakLock" : {
+				"name"					: "Break lock"
 			}
 		},
 		
@@ -207,6 +282,11 @@
 			"LockDCFlag" : {
 				"name" 					: "Lock DC",
 				"descrp"				: "The difficulty class of this Lock, used for lockpicking (-1 to prevent lockpicking)"					
+			},
+			
+			"SpecialLPFlag" : {
+				"name" 					: "Special lockpick",
+				"descrp"				: "Special lockpick required to pick this lock (ID or name, multiple entries seperated with \";\")"					
 			},
 			
 			"LockBreakDCFlag" : {
