@@ -19,6 +19,8 @@ All of these controlls can also be achieved through the included macros.
 - II. Copy Door A's key IDs and paste them into Key B (or vice versa). Key B can now unlock/lock Door A.
 - III. Copy Key A's key IDs and paste them into Key B. All doors that can be opened by Key A can now also be opened by Key B (but not the other way around).
 
+All player and GM controls also have corresponding key binds.
+
 ### Settings:
 
 #### World:
@@ -29,9 +31,12 @@ All of these controlls can also be achieved through the included macros.
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
+- Key creation menu: to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
+- Key name as ID: to use the keys name as an additional ID when interacting with locks
 - Use Pf2e roll system: to use the Pf2e system instead of the Lock & Key roll and crit settings
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
+- Mention lockpick item: to give additional information in the chat regarding the used item when picking a lock
 - Remove Lockpick on critical fail: to remove Lockpick item on critical failures
 - Jam lock on critical lockpick fail: to automatically set locks as jammed
 - Keys can't be used on jammed locks: to prevent matching keys from being used on jammed locks
@@ -40,6 +45,7 @@ All of these controlls can also be achieved through the included macros.
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
 - Multi-success during combat only: to disable required multi success outside of combat
 #### Client:
+- Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
 #### Keys(separate tab):
@@ -52,6 +58,7 @@ All of these controlls can also be achieved through the included macros.
 - Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
 - Jammed: to set this lock as jammed preventing it from being picked
 - Lock DC: the difficulty class of a lock, used for lockpicking
+- Special lockpick: to set a special lockpick required to pick this lock
 - Lock break DC: the difficulty class to break a lock
 - Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
 - Custom Popups: to set custom Popup messages for certain player actions
