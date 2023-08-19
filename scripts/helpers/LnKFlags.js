@@ -59,6 +59,8 @@ class LnKFlags {
 	
 	static RemoveKeyonUse(pKey) {} //returns of this key is removed on use
 	
+	static HasKey(pLock) {} //returns if Lock has Key
+	
 	//Passkeys
 	static PassKeys(pObject) {} //returns string of Passkeys of pObject
 	
@@ -77,6 +79,10 @@ class LnKFlags {
 	static LockBreakDC(pLock, praw = false) {} //returns the LockBreakDC of pLock (return Infinity should DC<0 if not praw)
 	
 	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock] (return Infinity should DC<0 if not praw)
+	
+	static canbePicked(pLock) {} //returns if this lock can be picked
+	
+	static canbeBroken(pLock) {} //returns if this lock can be broken
 	
 	static JamLock(pLock) {} //sets pLock Lockpick DC to unpickable value (-1)
 	
@@ -513,6 +519,10 @@ class LnKFlags {
 		return this.#RemoveKeyonUseFlag(pKey);
 	} 
 	
+	static HasKey(pLock) {
+		return (this.#IDKeysFlag(pLock).length > 0);
+	}
+	
 	//Passkeys
 	static PassKeys(pObject) {
 		return this.#PasskeysFlag(pObject);
@@ -577,6 +587,14 @@ class LnKFlags {
 				return false;
 				break;
 		}
+	}
+	
+	static canbePicked(pLock) {
+		return LnKFlags.LockDC(pLock) < Infinity && (!LnKFlags.Lockisjammed(pLock));
+	}
+	
+	static canbeBroken(pLock) {
+		return LnKFlags.LockBreakDC(pLock) < Infinity;
 	}
 	
 	static JamLock(pLock) {

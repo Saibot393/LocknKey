@@ -100,7 +100,11 @@
       "alwaysopenOwned": {
         "name": "打开自己拥有的锁",
         "descrp": "PL总是可以打开自己拥有的的token，不论是否上锁了"
-      },
+      },		
+		"showallLockInteractions" : {
+			"name" 					: "Show all lock interactions",
+			"descrp"				: "Always show all interaction options for locks (for the evil GM in you)"					
+		},
       "preventUseinPause": {
         "name": "阻止暂停时使用钥匙",
         "descrp": "阻止PL在暂停时使用钥匙"

@@ -110,6 +110,11 @@
 				"descrp"				: "Erlaubt es spielern eigene Marken immer zu öffnen, auch wenn sie verschlossen sind"		
 			},
 			
+			"showallLockInteractions" : {
+				"name" 					: "Zeige alle Schloss Interaktionen",
+				"descrp"				: "Zeige immer alles Schloss Interaktionen (für die bösen SLs unter euch)"					
+			},
+			
 			"preventUseinPause" : {
 				"name" 					: "Verhindere Schlüssel-Nutzung in Pause",
 				"descrp"				: "Verhindert, dass Spieler Schlüssel benutzen können während das Spiel pausiert ist"		

@@ -356,39 +356,61 @@ class KeyManager {
 	static createLockuseDialog(pLockObject) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		
+		let vshowKey;
+		let vshowPicklock;
+		let vshowBreaklock;
+		
+		let vButtons = {};
+		
 		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-			let vDialog = new Dialog({
-				title: Translate("Titles.Lockuse"),
-				buttons: {
-					UseKey: {
+			vshowKey = LnKFlags.HasPasskey(pLockObject) || LnKFlags.HasKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
+			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
+			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
+			
+			if (vshowKey || vshowPicklock || vshowBreaklock) {
+				
+				if (vshowKey) {
+					vButtons["UseKey"] = {
 						label: Translate("Titles.UseKey"),
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey);},
 						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
-					}, 
-					PickLock: {
+					}
+				}
+				
+				if (vshowPicklock) {
+					vButtons["PickLock"] = {
 						label: Translate("Titles.PickLock"),
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUpickLock);},
 						icon: `<i class="fas ${cLnKPickLockIcon}"></i>`
-					}, 
-					BreakLock: {
+					}
+				}
+				
+				if (vshowBreaklock) {
+					vButtons["BreakLock"] = {
 						label: Translate("Titles.BreakLock"),
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
 						icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
-					}, 
-					Close: {
+					}
+				}
+				
+				vButtons["Close"] = {
 						label: Translate("Titles.Close"),
 						callback: () => {},
 						icon: `<i class="fas ${cLnKCancelIcon}"></i>`
-					}, 
 				}
-			}).render(true);
 				
-			Hooks.once("renderDialog", (pDialog, pHTML, pdata) => {//Token Lock use
-				if (pDialog.appID == vDialog.appID) {
-					pHTML.find(`div.dialog-buttons`).css("flex-direction", "column"); //make buttons appear as list	
-					pHTML.css("height", "max-content"); //resize window
-				}
-			}); 
+				let vDialog = new Dialog({
+					title: Translate("Titles.Lockuse"),
+					buttons: vButtons
+				}).render(true);
+					
+				Hooks.once("renderDialog", (pDialog, pHTML, pdata) => {//Token Lock use
+					if (pDialog.appID == vDialog.appID) {
+						pHTML.find(`div.dialog-buttons`).css("flex-direction", "column"); //make buttons appear as list	
+						pHTML.css("height", "max-content"); //resize window
+					}
+				}); 
+			}
 		}
 		else {
 			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP

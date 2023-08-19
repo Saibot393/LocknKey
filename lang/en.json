@@ -110,6 +110,11 @@
 				"descrp"				: "Players can always open owned tokens, even if they are locked"		
 			},
 			
+			"showallLockInteractions" : {
+				"name" 					: "Show all lock interactions",
+				"descrp"				: "Always show all interaction options for locks (for the evil GM in you)"					
+			},
+			
 			"preventUseinPause" : {
 				"name" 					: "Prevent key use while paused",
 				"descrp"				: "Prevent players from using keys while the game is paused"		
