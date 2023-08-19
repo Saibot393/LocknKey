@@ -109,6 +109,9 @@ class KeyManager {
 							//no key item => use Passkey
 							KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
 						}
+						else {
+							LnKPopups.TextPopUpID(pLockObject, "nomatchingKey"); //MESSAGE POPUP
+						}
 					}
 				}
 				break;

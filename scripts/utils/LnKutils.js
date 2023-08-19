@@ -304,12 +304,13 @@ class LnKutils {
 	
 	static isLockPickItem(pItem, pSpecialLockpicks = []) {
 		//if either name or id matches
+		let vLockpickItems = LnKutils.LockPickItems();
+		
 		if (pSpecialLockpicks.length) {
-			return (LnKutils.includesone(pItem.name, pSpecialLockpicks) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, pSpecialLockpicks)));
+			vLockpickItems = pSpecialLockpicks;
 		}
-		else {
-			return (LnKutils.includesone(pItem.name, LnKutils.LockPickItems()) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, LnKutils.LockPickItems())));
-		}
+		
+		return (LnKutils.includesone(pItem.name, vLockpickItems) || (pItem.flags.core && pItem.flags.core.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, vLockpickItems)) || LnKutils.includesone(pItem.id, vLockpickItems) || (pItem.ciKey && LnKutils.includesone(pItem.ciKey, vLockpickItems)));
 	}
 	
 	static hasLockPickItem(pInventory, pSpecialLockpicks = []) {
