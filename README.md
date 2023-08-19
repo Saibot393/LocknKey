@@ -29,6 +29,7 @@ All player and GM controls also have corresponding key binds.
 - Start as locked: if new lockable objects should start as locked
 - Lock distance: the maximum distance from which a lock can be used
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
+- Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
 - Key creation menu: to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
