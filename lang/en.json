@@ -33,6 +33,7 @@
 			"unlockedToken"				: "{pLockName} is now unlocked",
 			"GamePaused"				: "The game is paused",
 			"noLockPickItem"			: "No lock pick in inventory",
+			"nomatchingKey"				: "No matching key",
 			"pickLockfailed"			: "Failed to pick lock",
 			"cantLock" : {
 				"default"				: "This lock cant be locked",

@@ -33,6 +33,7 @@
 			"unlockedToken"				: "{pLockName} ist nun unverschlossen",
 			"GamePaused"				: "Das Spiel ist pausiert",
 			"noLockPickItem"			: "Keinen Dietrich im Inventar",
+			"nomatchingKey"				: "No matching key",
 			"pickLockfailed"			: "Schloss knacken fehlgeschlagen",
 			"cantLock" : {
 				"default"				: "Schloss kann nicht verschlossen werden",

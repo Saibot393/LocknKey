@@ -32,6 +32,7 @@
       "unlockedToken": "{pLockName}现已解锁",
       "GamePaused": "游戏被暂停了",
       "noLockPickItem": "没有撬锁工具",
+	  "nomatchingKey"				: "No matching key",
       "pickLockfailed": "撬锁失败",
       "cantLock": {
         "default": "这把锁无法被上锁",
