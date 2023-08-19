@@ -1,3 +1,10 @@
+## v1.9.1
+- Fixed bug in relation to lockpick items in the Sandbox module
+- Added "no matching key" popup
+- Lock interaction popup will now only show up if the interacting token is within interaction range
+- Added option Show all lock interactions to show even unavailable options the interaction popup
+  - Impossible interaction options (if for example a DC is set to -1) will no longer show up in the popup
+
 ## v1.9.0
 - Added Control Keys for Lock interactions (for both GM and player controls)
 - Added client setting Control sceme to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
