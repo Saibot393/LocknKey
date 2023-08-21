@@ -1,3 +1,6 @@
+## v1.9.3
+- Fixed libwrapper warning with Monks enhanced journals
+
 ## v1.9.2
 - Some bug fixes for v10 and the Sandbox system
 
