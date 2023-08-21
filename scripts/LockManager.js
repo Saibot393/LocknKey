@@ -119,10 +119,10 @@ class LockManager {
 								
 								if (pChatMessages) {
 									if (game.settings.get(cModuleName, "MentionLockPickItem") && vusedItem && vusedItem.name) {
-										await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccessLPName"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
+										await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockPicksuccessLPName"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
 									}
 									else {
-										await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+										await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockPicksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 									}
 								}
 								
@@ -134,7 +134,7 @@ class LockManager {
 								}
 								
 								if (pChatMessages) {
-									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreaksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockBreaksuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								}
 								
 								break;
@@ -149,14 +149,14 @@ class LockManager {
 								if (pChatMessages) {
 									if (game.settings.get(cModuleName, "MentionLockPickItem") && vusedItem && vusedItem.name) {
 										if (vRemoveLP) {
-											await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfailLPNameremove"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
+											await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockPickfailLPNameremove"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
 										}
 										else {
-											await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfailLPName"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
+											await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockPickfailLPName"+vCritMessagesuffix, {pName : pCharacter.name, pLPName : vusedItem.name})}); //CHAT MESSAGE
 										}
 									}
 									else {
-										await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+										await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockPickfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 									}
 								}
 								
@@ -181,7 +181,7 @@ class LockManager {
 								LnKPopups.TextPopUpID(pLock, "breakLockfailed"); //MESSAGE POPUP
 								
 								if (pChatMessages) {
-									await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								}
 								break;
 				}
@@ -280,8 +280,6 @@ class LockManager {
 			},
 			default: Translate("Titles.ConfirmPasskey")
 		}).render(true);	
-
-		console.log(a);
 	}
 	
 	//events

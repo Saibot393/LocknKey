@@ -54,14 +54,29 @@ class LnKMouseHandler {
 		}
 		else {
 		*/
-		const vOldDoorCall = DoorControl.prototype.onclick;
 		
-		DoorControl.prototype.onclick = function (pEvent) {
-			LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
+		if (FCore.Fversion() > 10) {
+			const vOldDoorCall = DoorControl.prototype.onclick;
 			
-			if (vOldDoorCall) {
-				let vDoorCallBuffer = vOldDoorCall.bind(this);
-				vDoorCallBuffer(pEvent);
+			DoorControl.prototype.onclick = function (pEvent) {
+				LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
+				
+				if (vOldDoorCall) {
+					let vDoorCallBuffer = vOldDoorCall.bind(this);
+					vDoorCallBuffer(pEvent);
+				}
+			}			
+		}
+		else {
+			const vOldDoorCall = DoorControl.prototype._onMouseDown;
+			
+			DoorControl.prototype._onMouseDown = function (pEvent) {
+				LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
+				
+				if (vOldDoorCall) {
+					let vDoorCallBuffer = vOldDoorCall.bind(this);
+					vDoorCallBuffer(pEvent);
+				}
 			}
 		}
 		//}		
