@@ -1,3 +1,6 @@
+## v1.9.2
+- Some bug fixes for v10 and the Sandbox system
+
 ## v1.9.1
 - Fixed bug in relation to lockpick items in the Sandbox module
 - Added "no matching key" popup
