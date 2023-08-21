@@ -9,6 +9,7 @@ const cArmReachold = "arms-reach";
 const cItemPiles = "item-piles";
 const cLibWrapper = "lib-wrapper";
 const cRideable = "Rideable";
+const cMonksEJ = "monks-enhanced-journal";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
@@ -19,7 +20,7 @@ const cIPLoottype = "pile"; //type of loot tokens in Item Piles
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
 
-export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper}
+export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ}
 export { cLockTypeLootIP };
 
 class LnKCompUtils {

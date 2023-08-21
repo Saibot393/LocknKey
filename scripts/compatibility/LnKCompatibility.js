@@ -1,4 +1,4 @@
-import { LnKCompUtils, cItemPiles } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
 import { LnKutils, cModuleName } from "../utils/LnKutils.js";
 import { isUnlocked } from "../LockManager.js";
@@ -51,4 +51,8 @@ Hooks.once("init", () => {
 		
 		//Hooks.on("item-piles-preClickItemPile", (vItemPile) => {isUnlocked(vItemPile, true);}); //just for messages
 	}
+	
+	if (LnKCompUtils.isactiveModule(cMonksEJ)) {
+		libWrapper.ignore_conflicts(cModuleName, cMonksEJ, "Token.prototype._onClickRight");
+	}	
 });
