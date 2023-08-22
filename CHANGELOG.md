@@ -1,3 +1,12 @@
+## v1.9.4
+- Improved Item Piles integration
+  - There is a small chance, that previously locked item piles will not unlock correctly, in this case:
+    - Click configure at the top border of the character sheet of the item pile
+    - Check the "Enabled" option
+    - Update document
+  - or select the token and execute this macro:
+    - canvas.tokens.controlled[0].document.setFlag("item-piles", "data.enabled", true)
+   
 ## v1.9.3
 - Fixed libwrapper warning with Monks enhanced journals
 
