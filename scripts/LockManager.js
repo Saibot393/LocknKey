@@ -436,8 +436,8 @@ class LockManager {
 		return !(LnKFlags.isLocked(pToken));
 	}
 	
-	static UserCanopenToken(pToken, pPopup = false) {		
-		let vUnlocked = LockManager.TokenisUnlocked(pToken) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
+	static UserCanopenToken(pToken, pPopup = false) {	
+		let vUnlocked = game.user.isGM || LockManager.TokenisUnlocked(pToken) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
 		
 		if (pPopup && !vUnlocked) {
 			LockManager.LockedMessage(pToken);
@@ -541,9 +541,12 @@ Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
 
 //wrap and export functions
 function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }
+
 function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObject, pPopup)} //if pObject is currently unlocked
 
-export { LockuseRequest, isUnlocked }
+function UserCanopenToken(pToken, pPopup = false) {return LockManager.UserCanopenToken(pToken, pPopup)} //if the current user can open pToken
+
+export { LockuseRequest, isUnlocked, UserCanopenToken }
 
 //wrap export macro functions, GM only
 function TogglehoveredLockGM() {if (game.user.isGM) { return LockManager.ToggleLock(LnKutils.hoveredObject(), cLUisGM)}};

@@ -129,8 +129,8 @@ class LnKCompUtils {
 	}
 	
 	//specific: ItemPiles
-	static setIPLock(pItemPile, pLocked) {
-		pItemPile.setFlag(cItemPiles,"data.enabled", !pLocked)
+	static setIPLock(pItemPile, pLocked) { //DEPRICATED, here to solve potential bugs with old data
+		pItemPile.setFlag(cItemPiles,"data.enabled", /*!pLocked*/true)
 	}
 }
 

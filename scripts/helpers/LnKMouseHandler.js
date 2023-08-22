@@ -187,6 +187,7 @@ class LnKMouseHandler {
 	//additional
 	static canHUD(pEvent, pToken) { //adapted from core
 		if ( canvas.controls.ruler.active ) return false;
+		
 		return game.user.isGM || (pToken.actor?.testUserPermission(game.user, "OWNER") ?? false);
 	}
 	
