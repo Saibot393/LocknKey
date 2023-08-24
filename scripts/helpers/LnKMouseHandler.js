@@ -54,7 +54,6 @@ class LnKMouseHandler {
 		}
 		else {
 		*/
-		
 		if (FCore.Fversion() > 10) {
 			const vOldDoorCall = DoorControl.prototype.onclick;
 			
@@ -68,14 +67,19 @@ class LnKMouseHandler {
 			}			
 		}
 		else {
-			const vOldDoorCall = DoorControl.prototype._onMouseDown;
-			
-			DoorControl.prototype._onMouseDown = function (pEvent) {
-				LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
+			if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+				libWrapper.register(cModuleName, "DoorControl.prototype._onMouseDown", function(vWrapped, ...args) {LnKMouseHandler.onDoorLeftClick(...args, this.wall); return vWrapped(...args)}, "WRAPPER");
+			}
+			else {
+				const vOldDoorCall = DoorControl.prototype._onMouseDown;
 				
-				if (vOldDoorCall) {
-					let vDoorCallBuffer = vOldDoorCall.bind(this);
-					vDoorCallBuffer(pEvent);
+				DoorControl.prototype._onMouseDown = function (pEvent) {
+					LnKMouseHandler.onDoorLeftClick(pEvent, this.wall);
+					
+					if (vOldDoorCall) {
+						let vDoorCallBuffer = vOldDoorCall.bind(this);
+						vDoorCallBuffer(pEvent);
+					}
 				}
 			}
 		}

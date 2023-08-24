@@ -501,7 +501,7 @@ Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {
 	if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: paste lock IDs
 		LockManager.pasteLock(pDoorDocument);
 	}
-	
+
 	if (!game.user.isGM) {
 		LockManager.isUnlocked(pDoorDocument, true);
 	}
