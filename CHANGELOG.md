@@ -1,3 +1,6 @@
+## v1.9.5
+- Fixed bug for v10 regarding left clicking doors
+
 ## v1.9.4
 - Improved Item Piles integration
   - There is a small chance, that previously locked item piles will not unlock correctly, in this case:
