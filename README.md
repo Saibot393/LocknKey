@@ -92,4 +92,4 @@ The module contains an English, a German, and a Chinese (thanks to [feederze](ht
 
 ---
 
-**If you have suggestions, questions, or requests for additional features please [let me know](https://github.com/Saibot393/Rideable/issues).**
+**If you have suggestions, questions, or requests for additional features please [let me know](https://github.com/Saibot393/LocknKey/issues).**
