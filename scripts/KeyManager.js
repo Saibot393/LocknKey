@@ -33,7 +33,7 @@ class KeyManager {
 	
 	static createPasskeyDialog(pLockObject, pLockType, pCharacter) {} //used to creat the passkey dialog
 	
-	static createLockuseDialog(pLockObject) {} //used to create a popup with use options
+	static async createLockuseDialog(pLockObject) {} //used to create a popup with use options
 	
 	//IMPLEMENTATIONS
 	static async onatemptedLockuse(pLockObject, pUseType) {
@@ -353,8 +353,9 @@ class KeyManager {
 		}).render(true);
 	}
 	
-	static createLockuseDialog(pLockObject) {
+	static async createLockuseDialog(pLockObject) {
 		let vCharacter = LnKutils.PrimaryCharacter();
+		let vLockType = await LnKutils.Locktype(pLockObject);
 		
 		let vshowKey;
 		let vshowPicklock;
@@ -367,32 +368,34 @@ class KeyManager {
 			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			
-			if (vshowKey || vshowPicklock || vshowBreaklock) {
 				
-				if (vshowKey) {
-					vButtons["UseKey"] = {
-						label: Translate("Titles.UseKey"),
-						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey);},
-						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
-					}
+			if (vshowKey) {
+				vButtons["UseKey"] = {
+					label: Translate("Titles.UseKey"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey);},
+					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
-				
-				if (vshowPicklock) {
-					vButtons["PickLock"] = {
-						label: Translate("Titles.PickLock"),
-						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUpickLock);},
-						icon: `<i class="fas ${cLnKPickLockIcon}"></i>`
-					}
+			}
+			
+			if (vshowPicklock) {
+				vButtons["PickLock"] = {
+					label: Translate("Titles.PickLock"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUpickLock);},
+					icon: `<i class="fas ${cLnKPickLockIcon}"></i>`
 				}
-				
-				if (vshowBreaklock) {
-					vButtons["BreakLock"] = {
-						label: Translate("Titles.BreakLock"),
-						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
-						icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
-					}
+			}
+			
+			if (vshowBreaklock) {
+				vButtons["BreakLock"] = {
+					label: Translate("Titles.BreakLock"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
+					icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
 				}
+			}
+			
+			await Hooks.callAll(cModuleName + ".DoorInteractionMenu", vButtons, pLockObject, vLockType, vCharacter, game.settings.get(cModuleName, "showallLockInteractions"));
 				
+			if (Object.keys(vButtons).length) {
 				vButtons["Close"] = {
 						label: Translate("Titles.Close"),
 						callback: () => {},
@@ -437,7 +440,9 @@ function onLockRightClick(pDocument, pInfos) {
 					break;
 				case "ControlSceme-rightPopups" :
 				default:
-					KeyManager.createLockuseDialog(pDocument);
+					if (!pInfos.shiftKey && !pInfos.altKey && !pInfos.ctrlKey) {
+						KeyManager.createLockuseDialog(pDocument);
+					}
 					break;
 			}
 		}
