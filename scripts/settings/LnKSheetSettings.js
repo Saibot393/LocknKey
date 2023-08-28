@@ -65,7 +65,7 @@ class LnKSheetSettings {
 
 	
 		let vTabButtonHTML = 	`
-						<a class="list-row" data-tab="${cModuleName}">
+						<a class="item list-row" data-tab="${cModuleName}">
 							<i class="fas ${cLnKKeyIcon}"></i>
 							${Translate("Titles."+cModuleName)}
 						</a>
