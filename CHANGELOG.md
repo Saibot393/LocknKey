@@ -1,5 +1,7 @@
 ## v1.9.6
 - Improved visual compatibility with modules like Tidy5e sheets (Thanks to [Ikabodo](https://github.com/Ikabodo))
+- Added support for the [Perceptive](https://foundryvtt.com/packages/perceptive) module
+  - A "Peek lock" option will be added to the lock interaction menu
 
 ## v1.9.5
 - Fixed bug for v10 regarding left clicking doors

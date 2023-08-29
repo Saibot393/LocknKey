@@ -83,6 +83,8 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
   - Locked tokens can not be mounted or unmounted
 - [FoundryVTT Arms Reach](https://foundryvtt.com/packages/foundryvtt-arms-reach)/[Arms Reach](https://foundryvtt.com/packages/arms-reach):
   - Additional setting "Use Arms Reach distance": to use the "Arms Reach" distance instead of the set Mounting distance
+- [Perceptive](https://foundryvtt.com/packages/perceptive):
+  - A "Peek lock" option will be added to the lock interaction menu
 - [libWrapper](https://foundryvtt.com/packages/lib-wrapper/):
   - Improves compatibility with other modules, strongly recommended
 
