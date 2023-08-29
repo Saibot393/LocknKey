@@ -19,8 +19,9 @@
 			"Close"						: "Close",
 			"Keycreation"				: "Key creation",
 			"Keyname"					: "Key name",
-			"Keyfolder"				: "Key target folder",
-			"ConfirmKeycreation"			: "Create"
+			"Keyfolder"					: "Key target folder",
+			"ConfirmKeycreation"		: "Create",
+			"Basic"						: "Basic"
 		},
 		
 		"Popup" : {

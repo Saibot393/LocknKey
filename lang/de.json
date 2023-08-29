@@ -19,8 +19,9 @@
 			"Close"						: "Schließen",
 			"Keycreation"				: "Schlüssel generieren",
 			"Keyname"					: "Schlüsselname",
-			"Keyfolder"				: "Schlüssel Zielordner",
-			"ConfirmKeycreation"			: "Erschaffen"
+			"Keyfolder"					: "Schlüssel Zielordner",
+			"ConfirmKeycreation"		: "Erschaffen",
+			"Basic"						: "Basis"
 		},
 		
 		"Popup" : {

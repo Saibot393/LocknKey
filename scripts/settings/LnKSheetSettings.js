@@ -4,6 +4,7 @@ import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
 import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
+import {WallTabInserter} from "../helpers/WallTabInserter.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -116,6 +117,10 @@ class LnKSheetSettings {
 	
 	static WallSheetSettings(pApp, pHTML, pData) {
 		//setup
+		//create Tabs if necessary
+		WallTabInserter.InsertWallTabs(pApp, pHTML, pData);
+			
+		/*
 		let vprevElement = pHTML.find(`fieldset.door-options`);
 		if (!vprevElement.length) {
 			//if door options was not found, try other search
@@ -128,6 +133,21 @@ class LnKSheetSettings {
 							</fieldset>`;
 							
 		vprevElement.after(vNewSection);
+		*/
+		
+		let vTabbar = pHTML.find(`nav.sheet-tabs`);
+		let vprevTab = pHTML.find(`div[data-tab="basic"]`); //places rideable tab after last core tab "basic"
+		
+		let vTabButtonHTML = 	`
+						<a class="item" data-tab="${cModuleName}">
+							<i class="fas ${cLnKLockIcon}"></i>
+							${Translate("Titles."+cModuleName)}
+						</a>
+						`; //tab button HTML
+		let vTabContentHTML = `<div class="tab" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+		
+		vTabbar.append(vTabButtonHTML);
+		vprevTab.after(vTabContentHTML);	
 		
 		//setting wall is lockable
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
@@ -135,10 +155,10 @@ class LnKSheetSettings {
 												vtype : "checkbox", 
 												vvalue : LnKFlags.isLockable(pApp.object),
 												vflagname : cLockableF
-												}, `fieldset.${cModuleName}-options`);
+												}, `div[data-tab="${cModuleName}"]`);
 						
 		//Lock standard settings
-		LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `fieldset.${cModuleName}-options`);
+		LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {

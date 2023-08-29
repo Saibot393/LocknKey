@@ -20,7 +20,8 @@
 		"Keycreation"				: "Key creation",
 		"Keyname"					: "Key name",
 		"Keyfolder"				: "Key target folder",
-		"ConfirmKeycreation"			: "Create"
+		"ConfirmKeycreation"			: "Create",
+			"Basic"						: "Basic"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
