@@ -1,3 +1,6 @@
+## v1.9.7
+- Wall settings will now appear in their own tab and the settings sheet will fit on your screen again
+
 ## v1.9.6
 - Improved visual compatibility with modules like Tidy5e sheets (Thanks to [Ikabodo](https://github.com/Ikabodo))
 - Added support for the [Perceptive](https://foundryvtt.com/packages/perceptive) module
