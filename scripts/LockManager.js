@@ -98,8 +98,7 @@ class LockManager {
 		let vCritMessagesuffix = ".default";
 		let vusedItem;	
 		
-		if (LnKFlags.isLockable(pLock)) {	
-		
+		if (LnKFlags.isLockable(pLock)) {
 			if ((pResultDegree > 1) || (pResultDegree < 0)) {
 				vCritMessagesuffix = ".crit";
 			}

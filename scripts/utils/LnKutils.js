@@ -552,21 +552,26 @@ class LnKutils {
 				vsuccessDegree = -1;//crit F
 			}
 			
+			console.log(vsuccessDegree);
 			if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCritpm10") {
 				//+-10 crit
 				if (vsuccessDegree == 1) {
-					if (pRollresult => pDC + 10) {
+					if (pRollresult >= (pDC + 10)) {
 						vsuccessDegree = 2;//crit S
 					}
 				}
 				
 				if (vsuccessDegree == 0) {
-					if (pRollresult <= pDC - 10) {
+					if (pRollresult <= (pDC - 10)) {
 						vsuccessDegree = -1;//crit F
 					}
 				}	
 			}
 		}
+		
+		console.log(pDC);
+		console.log(pRollresult);
+		console.log(vsuccessDegree);
 		
 		return vsuccessDegree;
 	}

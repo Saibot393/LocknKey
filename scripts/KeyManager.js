@@ -204,14 +204,14 @@ class KeyManager {
 							game.pf2e.actions.pickALock({
 								actors: pCharacter.actor,
 								callback: vCallback,
-								difficultyClass: LnKFlags.LockDCtype(pLockObject, pUseType)
+								difficultyClass: {value : LnKFlags.LockDCtype(pLockObject, pUseType)}
 							});
 							break;
 						case cLUbreakLock:
 							game.pf2e.actions.forceOpen({
 								actors: pCharacter.actor,
 								callback: vCallback,
-								difficultyClass: LnKFlags.LockDCtype(pLockObject, pUseType)
+								difficultyClass: {value : LnKFlags.LockDCtype(pLockObject, pUseType)}
 							});
 							break;
 					}
