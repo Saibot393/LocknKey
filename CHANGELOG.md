@@ -1,3 +1,7 @@
+## v1.9.8
+- Fixed bug with Pf2e roll integration
+- Fixed critical result identification bug
+
 ## v1.9.7
 - Wall settings will now appear in their own tab and the settings sheet will fit on your screen again
 
