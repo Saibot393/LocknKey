@@ -1,3 +1,6 @@
+## v1.9.9
+- Improved arms reach integration
+
 ## v1.9.8
 - Fixed bug with Pf2e roll integration
 - Fixed critical result identification bug
