@@ -128,6 +128,9 @@ class LnKSystemutils {
 			case cDnD5e:
 				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.total";
 				break;
+			case cPf1eName:
+				return "@actor.system.skills.dev.mod";
+				break;
 			default:
 				return "";
 		}
@@ -140,6 +143,9 @@ class LnKSystemutils {
 				break;
 			case cDnD5e:
 				return "1d20 + @actor.system.abilities.str.mod + @actor.system.skills.ath.value";
+				break;
+			case cPf1eName:
+				return "@actor.system.abilities.str.mod";
 				break;
 			default:
 				return "";

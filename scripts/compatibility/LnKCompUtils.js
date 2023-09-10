@@ -109,7 +109,7 @@ class LnKCompUtils {
 	static ARWithinLockingDistance(pCharacter, pLock) {
 		if (LnKCompUtils.isactiveModule(cArmReach)) {
 			if (game.modules.get(cArmReach).api) {
-				return game.modules.get(cArmReach).api.isReachable(pCharacter, pLock);
+				return game.modules.get(cArmReach).api.isReachable(pCharacter.object, pLock.object);
 			}
 			else {
 				return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKCompUtils.ARReachDistance();
@@ -118,7 +118,8 @@ class LnKCompUtils {
 		
 		if (LnKCompUtils.isactiveModule(cArmReachold)) {
 			if (game.modules.get(cArmReachold).api) {
-				return game.modules.get(cArmReachold).api.isReachable(pCharacter, pLock);
+				console.log(pCharacter, pLock);
+				return game.modules.get(cArmReachold).api.isReachable(pCharacter.object, pLock.object);
 			}
 			else {
 				return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKCompUtils.ARReachDistance();
