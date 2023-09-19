@@ -1,3 +1,6 @@
+## v1.9.10
+- Updated the Chinese translation (thanks to Thousand (_thousand@Discord))
+
 ## v1.9.9
 - Improved arms reach integration
 
