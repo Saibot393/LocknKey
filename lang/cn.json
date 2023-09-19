@@ -12,16 +12,16 @@
       "Passkey": "密码",
       "EnterPasskey": "输入密码:",
       "ConfirmPasskey": "确定",
-	  "Lockuse"					: "Lock use",
-	  "UseKey"					: "Use a key",
-	  "PickLock"					: "Pick lock",
-	  "BreakLock"					: "Break lock",
-	  "Close"						: "Close",
-		"Keycreation"				: "Key creation",
-		"Keyname"					: "Key name",
-		"Keyfolder"				: "Key target folder",
-		"ConfirmKeycreation"			: "Create",
-			"Basic"						: "Basic"
+	  "Lockuse"					: "上锁",
+	  "UseKey"					: "使用钥匙",
+	  "PickLock"					: "撬锁",
+	  "BreakLock"					: "砸锁",
+	  "Close"						: "关闭",
+		"Keycreation"				: "创建钥匙",
+		"Keyname"					: "钥匙名字",
+		"Keyfolder"				: "目标文件夹",
+		"ConfirmKeycreation"			: "创建",
+			"Basic"						: "基本"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
@@ -33,7 +33,7 @@
       "unlockedToken": "{pLockName}现已解锁",
       "GamePaused": "游戏被暂停了",
       "noLockPickItem": "没有撬锁工具",
-	  "nomatchingKey"				: "No matching key",
+	  "nomatchingKey"				: "没有可用的钥匙",
       "pickLockfailed": "撬锁失败",
       "cantLock": {
         "default": "这把锁无法被上锁",
@@ -57,15 +57,15 @@
         "default": "{pName}撬锁失败"
       },
 		"LockPicksuccessLPName" : {
-			"crit"					: "{pName} critically succeeded at picking the lock with {pLPName}",
-			"default" 				: "{pName} succeeded at picking the lock with {pLPName}"
+			"crit"					: "{pName} 撬锁大成功 {pLPName}",
+			"default" 				: "{pName} 撬锁成功 {pLPName}"
 		},
 		"LockPickfailLPName" : {
-			"crit"					: "{pName} critically failed at picking the lock with {pLPName}",
-			"default" 				: "{pName} failed at picking the lock with {pLPName}"
+			"crit"					: "{pName} 撬锁大失败 {pLPName}",
+			"default" 				: "{pName} 撬锁失败 {pLPName}"
 		},
 		"LockPickfailLPNameremove" : {
-			"crit"					: "{pName} critically failed at picking the lock and broke {pLPName}"
+			"crit"					: "{pName} 撬锁大失败并且把锁孔堵住了 {pLPName}"
 		},
 		
       "LockBreak": "{pName}尝试砸锁:",
@@ -104,8 +104,8 @@
         "descrp": "PL总是可以打开自己拥有的的token，不论是否上锁了"
       },		
 		"showallLockInteractions" : {
-			"name" 					: "Show all lock interactions",
-			"descrp"				: "Always show all interaction options for locks (for the evil GM in you)"					
+			"name" 					: "显示所有锁的交互功能",
+			"descrp"				: "永远显示所有锁的功能，无论这个功能用不用得了 (混乱邪恶GM推荐)"					
 		},
       "preventUseinPause": {
         "name": "阻止暂停时使用钥匙",
@@ -120,13 +120,13 @@
         "descrp": "模组生成新钥匙时使用的物品类型，留空则使用默认类型(在F12 - Console 中输入 \"game.items.documentClass.TYPES\" 来列出可用的类型)"
       },
 		"KeyitemCreationPopup" : {
-			"name" 					: "Key creation menu",
-			"descrp"				: "If a menu should be shown for newly generated key to change their name and folder"		
+			"name" 					: "钥匙创建菜单",
+			"descrp"				: "创建钥匙时是否让设置菜单弹出"		
 		},		
 
 		"UseKeynameasID" : {
-			"name" 					: "Key name as ID",
-			"descrp"				: "If a keys name should be considered as an additional ID for the purpose of opening locks"		
+			"name" 					: "钥匙名则是ID",
+			"descrp"				: "在开锁时，是否应将钥匙名称视为ID"		
 		},	
       "usePf2eSystem": {
         "name": "使用PF2E掷骰系统",
@@ -146,8 +146,8 @@
         "descrp": "撬锁物品的名字或者合集IDs (推荐), 如果不需要特定物品就可以撬锁请填\"-\"  (多个物品请以\";\"分隔) （译注：拖动物品到聊天框可以快速得到物品id）"
       },
 		"MentionLockPickItem" : {
-			"name" 					: "Mention lockpick item",
-			"descrp"				: "If the used lockpick item should be mentioned in the chat"		
+			"name" 					: "撬锁时提起撬锁工具",
+			"descrp"				: "是否应在聊天栏中提及使用过的开锁工具"		
 		},
       "RemoveLPoncritFail": {
         "name": "大失败时移除撬锁物品",
@@ -178,11 +178,11 @@
         "descrp": "非战斗状态忽略设定的多次解锁设置"
       },
 	"ControlSceme" : {
-		"name" 					: "Control sceme",
-		"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
+		"name" 					: "控制方案",
+		"descrp"				: "用于游戏控制的模式 (right-click+keys is described in more detail below under \"Player controls\"",	
 		"options" : {
-			"rightKeys"			: "right-click + key",
-			"rightPopups"		: "right-click popup-menu"
+			"rightKeys"			: "左键 + 按键",
+			"rightPopups"		: "左键弹出菜单"
 		}
 	},	
       "MessagePopUps": {
@@ -196,31 +196,31 @@
     },
 	"Keys" : {
 		"ToggleLock" : {
-			"name"					: "Toggle lock"
+			"name"					: "上锁"
 		},
 		
 		"CopyLock" : {
-			"name"					: "Copy lock ids"
+			"name"					: "复制锁ID"
 		},
 		
 		"PasteLock" : {
-			"name"					: "Paste lock ids"
+			"name"					: "黏贴锁ID"
 		},
 		
 		"CreatenewKey" : {
-			"name"					: "Create new key"
+			"name"					: "创造新钥匙"
 		},
 		
 		"UseKey" : {
-			"name"					: "Use key"
+			"name"					: "使用钥匙"
 		},
 		
 		"PickLock" : {
-			"name"					: "Pick lock"
+			"name"					: "撬锁"
 		},
 		
 		"BreakLock" : {
-			"name"					: "Break lock"
+			"name"					: "砸锁"
 		}
 	},
     "SheetSettings": {
@@ -256,8 +256,8 @@
         "descrp": "开锁的DC, 适用于撬锁 (-1 则不可撬锁)"
       },
 		"SpecialLPFlag" : {
-			"name" 					: "Special lockpick",
-			"descrp"				: "Special lockpick required to pick this lock (ID or name, multiple entries seperated with \";\")"					
+			"name" 					: "特殊撬锁",
+			"descrp"				: "开锁需要特定的撬锁工具 (ID or name, multiple entries seperated with \";\")"					
 		},
       "LockBreakDCFlag": {
         "name": "砸锁DC",
