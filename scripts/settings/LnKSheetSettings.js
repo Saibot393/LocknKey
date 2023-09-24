@@ -32,6 +32,8 @@ class LnKSheetSettings {
 	
 	static RegisterItemSheetTabChange() {} //support for Item sheets to make sure LnK tab stays active during updates
 	
+	static FixSheetWindow(pHTML) {} //fixes the formating of pHTML sheet window
+	
 	//IMPLEMENTATIONS
 	
 	static ItemSheetSettings(pApp, pHTML, pData) {
@@ -246,6 +248,8 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
 			}
 		}
+		
+		LnKSheetSettings.FixSheetWindow(pHTML);
 	} 
 	
 	//dialogs
@@ -514,6 +518,20 @@ class LnKSheetSettings {
 				
 				vSheetCallBuffer(args);
 			}
+		}		
+	}
+	
+	static FixSheetWindow(pHTML) {
+		let vNeededWidth = 0;
+
+		pHTML.find(`nav.sheet-tabs[data-group="main"]`).children().each(function() {
+			vNeededWidth = vNeededWidth + $(this).outerWidth() ;
+		});
+		
+		console.log(pHTML.find(`nav.sheet-tabs[data-group="main"]`).children());
+		
+		if (vNeededWidth > pHTML.width()) {
+			pHTML.width(vNeededWidth);
 		}		
 	}
 }
