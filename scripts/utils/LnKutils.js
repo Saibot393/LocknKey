@@ -246,7 +246,7 @@ class LnKutils {
 		
 		if ((!vCharacter || !vCharacter.isOwner) && game.user.character) {
 			//select a token representing the standard character of the player
-			vCharacter = canvas.scene.tokens.find(vToken => vToken.actor.id == game.user.character.id);
+			vCharacter = canvas.scene.tokens.find(vToken => vToken.actor.id == game.user.character?.id);
 		}
 		
 		return vCharacter;
@@ -568,10 +568,6 @@ class LnKutils {
 				}	
 			}
 		}
-		
-		console.log(pDC);
-		console.log(pRollresult);
-		console.log(vsuccessDegree);
 		
 		return vsuccessDegree;
 	}
