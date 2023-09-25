@@ -1,3 +1,7 @@
+## v1.9.12
+- Added additional ids of lock pick items for Pf2e (thanks to [ottyn](https://github.com/Saibot393/LocknKey/issues/created_by/ottyn))
+  - will only be added when using the system defaults ("") or resetting the settings
+
 ## v1.9.11
 - The tab bar of token settings should be less likely to overflow when multiple modules add tabs
 
