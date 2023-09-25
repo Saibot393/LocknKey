@@ -107,7 +107,7 @@ class LnKSystemutils {
 	static SystemdefaultLockPickItem() {
 		switch (game.system.id) {
 			case cPf2eName:
-				return "zvLyCVD8g2PdHJAc";
+				return "zvLyCVD8g2PdHJAc;6nrCxNQFycUVFOV2;Ejmv9IHGp9Ad9dgu;QnuL1UEot8ptWNb1;spqcRLBsMOC9WTcd;fprUZviW8khm2BLo;AFE073UYI0mkWuUs";
 				break;
 			case cDnD5e:
 				return "woWZ1sO5IUVGzo58";
