@@ -1,3 +1,6 @@
+## v1.9.13
+- Small bug fix
+
 ## v1.9.12
 - Added additional IDs of lock pick items for Pf2e (thanks to [ottyn](https://github.com/Saibot393/LocknKey/issues/created_by/ottyn))
   - will only be added when using the system defaults ("") or resetting the settings
