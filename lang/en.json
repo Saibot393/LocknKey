@@ -374,7 +374,7 @@
 			
 			"ReplacementItemFlag" : {
 				"name" 					: "Replacement Items",
-				"descrp" 				: "Names or IDs of Items that get consumed instead of this item when a roll fails"			
+				"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
 			}			
 		},
 		

@@ -374,7 +374,7 @@
 			
 			"ReplacementItemFlag" : {
 				"name" 					: "Ersatz Gegenstände",
-				"descrp" 				: "Namen oder IDs von Gegenständen welche anstatt dieses Gegenstandes bei Fehlwürfen konsumiert werden"			
+				"descrp" 				: "Gegenstände welche anstatt dieses Gegenstandes bei Fehlwürfen konsumiert werden (ID oder Name, mehrere Einträge mit \";\" getrennt)"			
 			}	
 		},
 		
