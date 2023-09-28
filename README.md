@@ -69,6 +69,7 @@ All player and GM controls also have corresponding key binds.
 - Override Lockpick formula: to override the standard formula for this token/the owner
 - Break lock formula: an additional formula added to break lock rolls (for items only the best formula in the inventory is used)
 - Override Break lock formula: to override the standard formula for this token/the owner
+- Replacement items[Items only]: to set items that get consumed instead of this item when a roll fails
 
 ### Compatibility:
 
