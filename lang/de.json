@@ -370,6 +370,11 @@
 					"token" 			: "Ob die Schloss aufbrechen Wurfformel dieser Figur die Weltformel überschreibt",
 					"item"				: "Ob die Schloss aufbrechen Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
 				}				
+			},
+			
+			"ReplacementItemFlag" : {
+				"name" 					: "Ersatz Gegenstände",
+				"descrp" 				: "Namen oder IDs von Gegenständen welche anstatt dieses Gegenstandes bei Fehlwürfen konsumiert werden"			
 			}	
 		},
 		

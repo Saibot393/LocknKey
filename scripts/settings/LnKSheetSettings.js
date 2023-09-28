@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -101,16 +101,24 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
 												vflagname : cRemoveKeyonUseF
 												}, `div[data-tab="${cModuleName}"]`);
-					
-		if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
-			//create title for Lockpick/Break items
-			vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
 			
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
-
+		//create title for Lockpick/Break items
+		vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
+		
+		pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			
+		if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
 			//formulas
 			LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
 		}
+		
+		//setting replacement item
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
+												vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
+												vtype : "text", 
+												vvalue : LnKFlags.ReplacementItems(pApp.object, true),
+												vflagname : cReplacementItemF
+												}, `div[data-tab="${cModuleName}"]`);
 												
 		if (pApp.LnKTabactive) {
 			pApp.activateTab(cModuleName);
@@ -527,8 +535,6 @@ class LnKSheetSettings {
 		pHTML.find(`nav.sheet-tabs[data-group="main"]`).children().each(function() {
 			vNeededWidth = vNeededWidth + $(this).outerWidth() ;
 		});
-		
-		console.log(pHTML.find(`nav.sheet-tabs[data-group="main"]`).children());
 		
 		if (vNeededWidth > pHTML.width()) {
 			pHTML.width(vNeededWidth);

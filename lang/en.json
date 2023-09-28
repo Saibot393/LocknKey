@@ -370,7 +370,12 @@
 					"token" 			: "If this tokens Break lock formula overrides the world formula",
 					"item"				: "If this items Break lock formula overrides the tokens/worlds formula"
 				}				
-			}		
+			},
+			
+			"ReplacementItemFlag" : {
+				"name" 					: "Replacement Items",
+				"descrp" 				: "Names or IDs of Items that get consumed instead of this item when a roll fails"			
+			}			
 		},
 		
 		"Context" : {

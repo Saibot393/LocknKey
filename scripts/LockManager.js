@@ -161,8 +161,18 @@ class LockManager {
 								
 								if (pResultDegree < 0) {
 									if (vRemoveLP) {
+										let vtoRemove;
+										
+										if (LnKFlags.hasReplacementItem(vusedItem)) {
+											vtoRemove = (await LnKutils.TokenInventory(pCharacter)).find(vItem => LnKutils.isLockPickItem(vItem, LnKFlags.ReplacementItems(vusedItem)));
+										}
+										
+										if (!vtoRemove) {
+											vtoRemove = vusedItem;
+										}
+										
 										//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
-										LnKutils.removeoneItem(vusedItem, pCharacter);
+										LnKutils.removeoneItem(vtoRemove, pCharacter);
 										LnKPopups.TextPopUpID(pLock, "Lockpickbroke"); //MESSAGE POPUP
 									}
 									

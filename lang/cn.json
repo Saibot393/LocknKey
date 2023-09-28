@@ -326,7 +326,11 @@
           "token": "这个token的砸锁公式是否覆盖世界设定",
           "item": "这个物品的砸锁公式是否覆盖token/世界设定"
         }
-      }
+      },			
+			"ReplacementItemFlag" : {
+				"name" 					: "Replacement Items",
+				"descrp" 				: "Names or IDs of Items that get consumed instead of this item when a roll fails"			
+			}	
     },
     "Context": {
       "KeyCopy": "复制钥匙ID",
