@@ -21,8 +21,9 @@ const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
 const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should play for locking
 const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
 const cSpecialLPF = "SpecialLPFlag"; //Flag that sets special Lock picks
+const cReplacementItemF = "ReplacementItemFlag"; //Flag to store ids or names of items that get consumed instead of this item when present
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -60,6 +61,10 @@ class LnKFlags {
 	static RemoveKeyonUse(pKey) {} //returns of this key is removed on use
 	
 	static HasKey(pLock) {} //returns if Lock has Key
+	
+	static ReplacementItems(pItem, praw = false) {} //returns replacement items of pItem
+	
+	static hasReplacementItem(pItem) {} //returns if pItem has replacment items
 	
 	//Passkeys
 	static PassKeys(pObject) {} //returns string of Passkeys of pObject
@@ -369,6 +374,19 @@ class LnKFlags {
 		return ""; //default if anything fails		
 	}
 	
+	static #ReplacementItemFlag (pObject) {
+	//returns content of ReplacementItemFlag ofpObject (String)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cReplacementItemF)) {
+				return vFlag.ReplacementItemFlag;
+			}
+		}
+		
+		return ""; //default if anything fails		
+	}
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -521,6 +539,19 @@ class LnKFlags {
 	
 	static HasKey(pLock) {
 		return (this.#IDKeysFlag(pLock).length > 0);
+	}
+	
+	static ReplacementItems(pItem, praw = false) {
+		if (praw) {
+			return this.#ReplacementItemFlag(pItem);
+		}
+		else {
+			return this.#ReplacementItemFlag(pItem).split(cDelimiter);
+		}
+	}
+	
+	static hasReplacementItem(pItem) {
+		return this.#ReplacementItemFlag(pItem).length > 0;
 	}
 	
 	//Passkeys

@@ -542,7 +542,7 @@ class LnKutils {
 			vsuccessDegree = 0; //F
 		}
 		
-		if (["CritMethod-natCrit", "CritMethod-natCritpm10"].includes(game.settings.get(cModuleName, "CritMethod"))) {
+		if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCrit") {
 			//normal crit
 			if (pDiceDetails[0] == 20) {
 				vsuccessDegree = 2; //crit S
@@ -551,23 +551,34 @@ class LnKutils {
 			if (pDiceDetails[0] == 1) {
 				vsuccessDegree = -1;//crit F
 			}
-			
-			console.log(vsuccessDegree);
-			if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCritpm10") {
-				//+-10 crit
-				if (vsuccessDegree == 1) {
-					if (pRollresult >= (pDC + 10)) {
-						vsuccessDegree = 2;//crit S
-					}
+		}
+		
+		if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCritpm10") {
+		
+			//+-10 crit
+			if (vsuccessDegree == 1) {
+				if (pRollresult >= (pDC + 10)) {
+					vsuccessDegree = 2;//crit S
 				}
-				
-				if (vsuccessDegree == 0) {
-					if (pRollresult <= (pDC - 10)) {
-						vsuccessDegree = -1;//crit F
-					}
-				}	
+			}
+			
+			if (vsuccessDegree == 0) {
+				if (pRollresult <= (pDC - 10)) {
+					vsuccessDegree = -1;//crit F
+				}
+			}	
+			
+			//normal crit
+			if (pDiceDetails[0] == 20) {
+				vsuccessDegree = vsuccessDegree + 1; //crit S
+			}
+			
+			if (pDiceDetails[0] == 1) {
+				vsuccessDegree = vsuccessDegree - 1;//crit F
 			}
 		}
+		
+		vsuccessDegree = Math.min(2, Math.max(-1, vsuccessDegree)); //make sure vsuccessDegree is in [-1, 2]
 		
 		return vsuccessDegree;
 	}
