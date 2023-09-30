@@ -15,7 +15,11 @@ const cMonksEJ = "monks-enhanced-journal";
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
 //const cLockTypeRideable = "LTRideable"; //type for Rideable
 
-const cIPLoottype = "pile"; //type of loot tokens in Item Piles
+const cIPPiletype = "pile"; //type of loot tokens in Item Piles
+const cIPContainertype = "container"; //type of container tokens in Item Piles
+const cIPVaulttype = "vault"; //type of container tokens in Item Piles
+
+const cIPtypes = [cIPPiletype, cIPContainertype, cIPVaulttype];
 
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
@@ -54,7 +58,7 @@ class LnKCompUtils {
 	static async Locktype(pDocument) {	
 		if (pDocument && pDocument.actor) {
 			if (LnKCompUtils.isactiveModule(cItemPiles)) {
-				if (pDocument.getFlag(cItemPiles, "data.type") == cIPLoottype) {
+				if (cIPtypes.includes(pDocument.getFlag(cItemPiles, "data.type"))) {
 					return cLockTypeLootIP;
 				}
 			}
@@ -131,7 +135,9 @@ class LnKCompUtils {
 	
 	//specific: ItemPiles
 	static setIPLock(pItemPile, pLocked) { //DEPRICATED, here to solve potential bugs with old data
-		pItemPile.setFlag(cItemPiles,"data.enabled", /*!pLocked*/true)
+		pItemPile.setFlag(cItemPiles,"data.enabled", /*!pLocked*/true);	
+		
+		pItemPile.setFlag(cItemPiles,"data.locked", /*!pLocked*/pLocked);	
 	}
 }
 

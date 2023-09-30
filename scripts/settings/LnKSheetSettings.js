@@ -215,7 +215,7 @@ class LnKSheetSettings {
 				
 				//setting token is lockable
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
-														vhint : Translate("SheetSettings."+ cLockableF +".descrp.token"), 
+														vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
 														vtype : "checkbox", 
 														vvalue : LnKFlags.isLockable(pApp.token),
 														vflagname : cLockableF
