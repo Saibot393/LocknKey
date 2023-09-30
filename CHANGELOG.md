@@ -1,3 +1,6 @@
+## v1.10.2
+- Improvements for the German translation (thanks to [gsterling](https://github.com/gsterling))
+
 ## v1.10.1
 - Improved compatibility with Item Piles
   - Containers and Vaults should now be lockable
