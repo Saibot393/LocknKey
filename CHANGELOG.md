@@ -1,3 +1,7 @@
+## v1.10.0
+- Added Item setting Replacement items to set items that get consumed instead of this item when a roll fails
+- Improved crit calculation for the Pf2e crit system
+
 ## v1.9.13
 - Small bug fix
 
