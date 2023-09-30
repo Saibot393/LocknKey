@@ -1,3 +1,9 @@
+## v1.10.1
+- Improved compatibility with Item Piles
+  - Containers and Vaults should now be lockable
+  - Containers locked by Item Piles will now be automatically unlocked when unlocked with Lock & Key
+- Fixed small translation error
+
 ## v1.10.0
 - Added Item setting Replacement items to set items that get consumed instead of this item when a roll fails
 - Improved crit calculation for the Pf2e crit system
