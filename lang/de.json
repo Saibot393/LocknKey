@@ -2,13 +2,13 @@
 	"LocknKey" : {
 		"Titles" : {
 			"LocknKey"					: "Lock & Key",
-			"WorldSettings"				: "Welt Einstellungen (nur SL)",
-			"ClientSettings"			: "Spieler Einstellungen",
+			"WorldSettings"				: "Welteinstellungen (nur SL)",
+			"ClientSettings"			: "Spielereinstellungen",
 			"GMonly"					: "nur SL",
-			"LockTokens"				: "Schloss Einstellungen",
-			"CharacterTokens"			: "Charakter Einstellungen",
-			"KeyItems"					: "Schlüssel Einstellungen",
-			"LPItems"					: "Schlossmanipulations Einstellungen",
+			"LockTokens"				: "Schlosseinstellungen",
+			"CharacterTokens"			: "Charaktereinstellungen",
+			"KeyItems"					: "Schlüsseleinstellungen",
+			"LPItems"					: "Schlossmanipulationseinstellungen",
 			"Passkey"					: "Passwort",
 			"EnterPasskey"				: "Passwort eingeben:",
 			"ConfirmPasskey"			: "Bestätigen",
@@ -33,14 +33,14 @@
 			"unlockedDoor"				: "Die Tür ist nun unverschlossen",
 			"unlockedToken"				: "{pLockName} ist nun unverschlossen",
 			"GamePaused"				: "Das Spiel ist pausiert",
-			"noLockPickItem"			: "Keinen Dietrich im Inventar",
-			"nomatchingKey"				: "No matching key",
-			"pickLockfailed"			: "Schloss knacken fehlgeschlagen",
+			"noLockPickItem"			: "Kein Dietrich im Inventar",
+			"nomatchingKey"				: "Kein passender Schlüssel",
+			"pickLockfailed"			: "Schlossknacken fehlgeschlagen",
 			"cantLock" : {
 				"default"				: "Schloss kann nicht verschlossen werden",
 				"break"					: "Schloss ist bereits offen"
 			},
-			"breakLockfailed"			: "Schloss aufbrechen fehlgeschlagen",
+			"breakLockfailed"			: "Schlossaufbrechen fehlgeschlagen",
 			"NotaLock"					: "Kein Schloss",
 			"WrongPassword"				: "Falsches Passwort",
 			"Lockisjammed"				: "Schloss ist verklemmt",
@@ -158,7 +158,7 @@
 			},
 			
 			"LockPickItem" : {
-				"name" 					: "Dietrich Gegenstände",
+				"name" 					: "Dietrichgegenstände",
 				"descrp"				: "Die Namen oder die Kompendium IDs (empfohlen) der Gegenstände welche zum Schlösserknacken benutzt werden können, \"-\" sollte kein Gegenstand gebraucht werden (seperated with \";\")"		
 			},
 			
@@ -188,7 +188,7 @@
 			},
 			
 			"LockBreakFormula" : {
-				"name" 					: "Schloss aufbrechen Wurfformel",
+				"name" 					: "Schlossaufbrechen Wurfformel",
 				"descrp"				: "Die Würfelformel welche für Schloss-aufbrechen-Würfe verwendet wird (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", hilfe auf der Github-Seite des Moduls zu finden)"				
 			},
 			
@@ -203,21 +203,21 @@
 			},
 			
 			"ControlSceme" : {
-				"name" 					: "Kontrol Schema",
+				"name" 					: "Kontrollschema",
 				"descrp"				: "Schema welches für die Spiele Ssteuerung benutzt wird (rechts-click + taste ist unten unter \"Spieler Steuerung\" beschrieben",	
 				"options" : {
-					"rightKeys"			: "rechts-click + taste",
-					"rightPopups"		: "rechts-click popup-Menu"
+					"rightKeys"			: "Rechtsklick + Taste",
+					"rightPopups"		: "Rechtsklick-Popup-Menu"
 				}
 			},	
 			
 			"MessagePopUps" : {
-				"name" 					: "Text popups",
+				"name" 					: "Text-Popups",
 				"descrp"				: "Aktiviert mehrere popups bei Aktionen wie z.B. dem verschließen oder aufschließen von Schlössern"		
 			},
 			
 			"PlayLockSounds" : {
-				"name" 					: "Schloss Geräusche",
+				"name" 					: "Schlossgeräusche",
 				"descrp"				: "Spiele geräusche ab wenn ein Schloss auf-/abgeschlossen wird"		
 			}
 		},
@@ -357,7 +357,7 @@
 			},
 			
 			"LBFormulaFlag" : {
-				"name" 					: "Schloss aufbrechen Wurfformel",
+				"name" 					: "Schlossaufbrechen Wurfformel",
 				"descrp" : {
 					"token" 			: "Die Formel welche Schloss aufbrech Würfen dieser Figur hinzugefügt wird",
 					"item"				: "Die Formel welche Schloss aufbrech Würfen des Besitzers dieses Gegenstandes hinzugefügt wird (nur das beste im Inventar wird genutzt)"
@@ -365,7 +365,7 @@
 			},
 			
 			"LBFormulaOverrideFlag" : {
-				"name" 					: "Überschreibe Schloss aufbrechen Wurfformel",
+				"name" 					: "Überschreibe Schlossaufbrechen Wurfformel",
 				"descrp" : {
 					"token" 			: "Ob die Schloss aufbrechen Wurfformel dieser Figur die Weltformel überschreibt",
 					"item"				: "Ob die Schloss aufbrechen Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
@@ -373,7 +373,7 @@
 			},
 			
 			"ReplacementItemFlag" : {
-				"name" 					: "Ersatz Gegenstände",
+				"name" 					: "Ersatzgegenstände",
 				"descrp" 				: "Gegenstände welche anstatt dieses Gegenstandes bei Fehlwürfen konsumiert werden (ID oder Name, mehrere Einträge mit \";\" getrennt)"			
 			}	
 		},
@@ -390,17 +390,17 @@
 		"Text" : {
 			"GMControls" : {
 				"line0"					: "SL Steuerung:",
-				"line1" 				: "•shift+right-click um einen neuen Schlüssel für ein Schloss zu erschaffen",
-				"line2" 				: "•alt+right-click um ein Lock auf-/ab-zuschließen (*)",
-				"line3" 				: "•ctrl+right-click um die Schlüssel IDs des Schlosses zu kopieren (*)",
-				"line4" 				: "•ctrl+left-click um die Schlüssel IDs in das Schloss einzufügen (*)"
+				"line1" 				: "•Shift+Rechtsklick um einen neuen Schlüssel für ein Schloss zu erschaffen",
+				"line2" 				: "•Alt+Rechtsklick um ein Lock auf-/ab-zuschließen (*)",
+				"line3" 				: "•Strg+Rechtsklick um die Schlüssel IDs des Schlosses zu kopieren (*)",
+				"line4" 				: "•Strg+Linksklick um die Schlüssel IDs in das Schloss einzufügen (*)"
 			},
 			
 			"PlayerControls" : {
 				"line0"					: "Spieler Steuerung:",
-				"line1" 				: "•rechts-click um zu versuchen einen Schlüssel mit einem Schloss zu benutzen",
-				"line2" 				: "•shift+rechts-click um zu versuchen ein Schloss zu knacken",
-				"line3" 				: "•alt+rechts-click um zu versuchen ein Schloss aufzubrechen"
+				"line1" 				: "•Rechtsklick um zu versuchen einen Schlüssel mit einem Schloss zu benutzen",
+				"line2" 				: "•Shift+Rechtsklick um zu versuchen ein Schloss zu knacken",
+				"line3" 				: "•Alt+Rechtsklick um zu versuchen ein Schloss aufzubrechen"
 			}
 		}
 	}
