@@ -57,7 +57,7 @@ Hooks.once("init", () => {
 		
 		Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)}); //DEPRICATED, here to solve potential bugs with old data
 
-		Hooks.on("item-piles-preOpenInterface", (pItemPile, pCharacter) => {if (!UserCanopenToken(pItemPile.token, true)) {return false}})
+		Hooks.on("item-piles-preOpenInterface", (pItemPile, pCharacter) => {if (!UserCanopenToken(pItemPile.token, true)) {game.itempiles?.API?.closeItemPile(pItemPile.token); return false}})
 	}
 	
 	if (LnKCompUtils.isactiveModule(cMonksEJ)) {

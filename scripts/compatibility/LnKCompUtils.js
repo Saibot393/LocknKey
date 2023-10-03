@@ -42,7 +42,7 @@ class LnKCompUtils {
 	static ARWithinLockingDistance(pCharacter, pLock) {} //[ArmReach] returns if pCharacter is close enought to pLock to interact
 	
 	//specific: ItemPiles
-	static setIPLock(pItemPile, pLocked) {} //enables/disables pItemPile´based on pLocked
+	static async setIPLock(pItemPile, pLocked) {} //enables/disables pItemPile´based on pLocked
 	
 	
 	//IMPLEMENTATIONS
@@ -134,13 +134,15 @@ class LnKCompUtils {
 	}
 	
 	//specific: ItemPiles
-	static setIPLock(pItemPile, pLocked) { //DEPRICATED, here to solve potential bugs with old data
+	static async setIPLock(pItemPile, pLocked) { //DEPRICATED, here to solve potential bugs with old data
 		//pItemPile.setFlag(cItemPiles,"data.enabled", /*!pLocked*/true);	
 		
 		//pItemPile.setFlag(cItemPiles,"data.locked", /*!pLocked*/pLocked);
 
 		if (pLocked) {
-			game.itempiles?.API?.lockItemPile(pItemPile);
+			await game.itempiles?.API?.lockItemPile(pItemPile);
+			
+			pItemPile.update({flags : {"item-piles" : {data : {locked : false}}}}); //locking item piles prevents some features from working
 		}
 		else {
 			game.itempiles?.API?.unlockItemPile(pItemPile);
