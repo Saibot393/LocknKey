@@ -1,3 +1,7 @@
+## v1.10.3
+- Improved compatibility with Item Piles
+  - Containers will now be item pile locked/unlocked when using lock & key locking/unlocking
+
 ## v1.10.2
 - Improvements for the German translation (thanks to [gsterling](https://github.com/gsterling))
 
