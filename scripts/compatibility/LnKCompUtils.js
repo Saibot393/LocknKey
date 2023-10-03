@@ -135,9 +135,16 @@ class LnKCompUtils {
 	
 	//specific: ItemPiles
 	static setIPLock(pItemPile, pLocked) { //DEPRICATED, here to solve potential bugs with old data
-		pItemPile.setFlag(cItemPiles,"data.enabled", /*!pLocked*/true);	
+		//pItemPile.setFlag(cItemPiles,"data.enabled", /*!pLocked*/true);	
 		
-		pItemPile.setFlag(cItemPiles,"data.locked", /*!pLocked*/pLocked);	
+		//pItemPile.setFlag(cItemPiles,"data.locked", /*!pLocked*/pLocked);
+
+		if (pLocked) {
+			game.itempiles?.API?.lockItemPile(pItemPile);
+		}
+		else {
+			game.itempiles?.API?.unlockItemPile(pItemPile);
+		}
 	}
 }
 

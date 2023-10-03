@@ -51,7 +51,7 @@ class LnKCompatibility {
 //Hook into other modules
 Hooks.once("init", () => {
 	if (LnKCompUtils.isactiveModule(cItemPiles)) {
-		//Hooks.on(cModuleName+".onLock", (...args) => {LnKCompatibility.onLock(...args)}); //DEPRICATED, here to solve potential bugs with old data
+		Hooks.on(cModuleName+".onLock", (...args) => {LnKCompatibility.onLock(...args)}); //DEPRICATED, here to solve potential bugs with old data
 		
 		Hooks.on(cModuleName+".onunLock", (...args) => {LnKCompatibility.onunLock(...args)}); //DEPRICATED, here to solve potential bugs with old data
 		

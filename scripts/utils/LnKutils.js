@@ -139,6 +139,9 @@ class LnKutils {
 	
 	static async HighestExpectedRollID(pRolls, pData = {}) {} //takes an array of rolls and returs the id of the highest expected roll result
 	
+	//keyboard
+	static KeyisDown(pKeyName) {} //returns if a key belonging to keybinding pKeyName is down
+	
 	//IMPLEMENTATIONS
 	
 	//ID handling
@@ -710,6 +713,15 @@ class LnKutils {
 		}
 		
 		return vID;
+	}
+	
+	//keyboard
+	static KeyisDown(pKeyName) {
+		if (game.keybindings.bindings.get(cModuleName + "." + pKeyName).length > 0) {
+			return Boolean(game.keybindings.get(cModuleName, pKeyName).find(vKey => keyboard.downKeys.has(vKey.key)));
+		}
+		
+		return false;
 	}
 }
 

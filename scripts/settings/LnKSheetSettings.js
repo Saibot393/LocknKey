@@ -115,7 +115,8 @@ class LnKSheetSettings {
 		//setting replacement item
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
 												vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
-												vtype : "text", 
+												vtype : "text",
+												vwide : true,												
 												vvalue : LnKFlags.ReplacementItems(pApp.object, true),
 												vflagname : cReplacementItemF
 												}, `div[data-tab="${cModuleName}"]`);
