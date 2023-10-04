@@ -1,3 +1,7 @@
+## v1.10.4
+- Improved compatibility with Item Piles
+  - Locked containers should now correctly display their popup messages and play their sounds
+
 ## v1.10.3
 - Improved compatibility with Item Piles
   - Containers will now be item pile locked/unlocked when using lock & key locking/unlocking
