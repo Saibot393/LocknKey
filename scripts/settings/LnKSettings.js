@@ -300,7 +300,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
     name: Translate("Keys.PickLock.name"),
     editable: [
       {
-        key: "KeyP"
+        key: "Semicolon"
       }
     ],
     onDown: () => { PickHoveredLock(); },

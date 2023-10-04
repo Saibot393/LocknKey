@@ -173,13 +173,15 @@ class LockManager {
 										
 										//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
 										LnKutils.removeoneItem(vtoRemove, pCharacter);
-										LnKPopups.TextPopUpID(pLock, "Lockpickbroke"); //MESSAGE POPUP
+										LnKPopups.TextPopUpID(pLock, "Lockpickbroke", {}, true); //MESSAGE POPUP
 									}
 									
 									if (game.settings.get(cModuleName, "JamLockonLPcritFail")) {
 										LnKFlags.JamLock(pLock);
-										LnKPopups.TextPopUpID(pLock, "jammedLock"); //MESSAGE POPUP
+										LnKPopups.TextPopUpID(pLock, "jammedLock", {}, true); //MESSAGE POPUP
 									}
+									
+									LnKPopups.TextPopUpQueue(pLock); //MESSAGE POPUP
 								}
 								else {
 									LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
