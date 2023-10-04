@@ -1,3 +1,7 @@
+## v1.10.5
+- The Lock jammed and Broke lockpick popups will no longer overlap when triggered by the same interaction
+- Changed the standard Pick lock hotkey to prevent overlap with Pf2e system
+
 ## v1.10.4
 - Improved compatibility with Item Piles
   - Locked containers should now correctly display their popup messages and play their sounds
