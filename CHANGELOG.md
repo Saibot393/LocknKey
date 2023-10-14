@@ -1,3 +1,6 @@
+## v1.10.6
+- Added default ids/formulas/types for D&D 3.5e
+
 ## v1.10.5
 - The Lock jammed and Broke lockpick popups will no longer overlap when triggered by the same interaction
 - Changed the standard Pick lock hotkey to prevent overlap with Pf2e system
