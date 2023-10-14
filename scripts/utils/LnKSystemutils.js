@@ -2,6 +2,7 @@
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
 const cPf1eName = "pf1"; //name of Pathfinder 1. edition system
 const cDnD5e = "dnd5e"; //name of D&D 5e system
+const cDnD35e = "D35E"; //name of the D&D 3.5e system
 const cAdvanced5e = "a5e"; //name of the advanced D&D 5e system
 const cStarFinderName = "sfrpg"; //name of Starfinder system
 const c13thage = "archmage"; //name of the 13th age system
@@ -51,6 +52,8 @@ class LnKSystemutils {
 				break;
 			case cDnD5e:
 				return "tool";
+			case cDnD35e:
+				return "equipment";
 			case cStarFinderName:
 				return "technological";
 				break;
@@ -112,6 +115,9 @@ class LnKSystemutils {
 			case cDnD5e:
 				return "woWZ1sO5IUVGzo58";
 				break;
+			case cDnD35e:
+				return "JPR4dAKnUbJFsvMi;JPR4dAdnUbJFsvMi";
+				break;
 			case cPf1eName:
 				return "Tools, Thieves'";
 				break;
@@ -128,6 +134,9 @@ class LnKSystemutils {
 			case cDnD5e:
 				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.total";
 				break;
+			case cDnD35e:
+				return "1d20 + @actor.system.skills.opl.mod";
+				break;
 			case cPf1eName:
 				return "@actor.system.skills.dev.mod";
 				break;
@@ -143,6 +152,9 @@ class LnKSystemutils {
 				break;
 			case cDnD5e:
 				return "1d20 + @actor.system.abilities.str.mod + @actor.system.skills.ath.value";
+				break;
+			case cDnD35e:
+				return "1d20 + @actor.system.abilities.str.mod";
 				break;
 			case cPf1eName:
 				return "@actor.system.abilities.str.mod";
