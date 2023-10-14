@@ -6,6 +6,8 @@
 
 A GM can shift+right-click doors and loot containers (PF2e or Item Piles) to create a new key for them in the item sections. Every player that has a key in their inventory can lock or unlock matching doors and tokens with a right-click. If a lock has a password, an appropriate prompt to enter said password can be triggered by right-clicking the lock. Locked tokens can not be looted. Players can attempt to pick a lock by shift+right-clicking a lock and try to break a lock by alt+right-clicking it.
 
+A tutorial for some of the features can be found [here](https://youtu.be/HO_-sb4wSHQ).
+ 
 #### GM controls
 
 A GM can alt+right-click lockable tokens to lock or unlock them.
