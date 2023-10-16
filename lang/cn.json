@@ -138,7 +138,9 @@
         "options": {
           "noCrit": "没有大成功与大失败",
           "natCrit": "掷出1或20",
-          "natCritpm10": "掷出1或20 或是 ±10DC [譬如Pf2e]"
+          "natCritpm10": "掷出1或20 或是 ±10DC [譬如Pf2e]",
+		  "d100WFRP4"			: "d100 Nat1/100 [e.g. WFRP4e]",
+		  "d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]"
         }
       },
       "LockPickItem": {

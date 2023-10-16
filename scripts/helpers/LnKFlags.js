@@ -589,7 +589,7 @@ class LnKFlags {
 	static LockDC(pLock, praw = false) {
 		let vDC = this.#LockDCFlag(pLock);
 		
-		if ((vDC < 0 || LnKFlags.Lockisjammed(pLock)) && !praw) {
+		if ((vDC == -1 || LnKFlags.Lockisjammed(pLock)) && !praw) {
 			vDC = Infinity;
 		}
 		
@@ -599,7 +599,7 @@ class LnKFlags {
 	static LockBreakDC(pLock, praw = false) {
 		let vDC = this.#LockBreakDCFlag(pLock);
 		
-		if (vDC < 0 && !praw) {
+		if (vDC == -1 && !praw) {
 			vDC = Infinity;
 		}
 		

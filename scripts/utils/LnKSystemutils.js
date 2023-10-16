@@ -12,6 +12,7 @@ const cDarkEye5e = "dsa5"; //name of the black eye 5e system
 const cBitD = "blades-in-the-dark"; //name of the blades in the dark system
 const cCyberpunkRED = "cyberpunk-red-core"; //name of the cyberpunk red core system
 const cSandbox = "sandbox"; //name of the sandbox system
+const cWarhammerFRP4e = "wfrp4e"; //name of the warhammer fantasy roleplaying 4e system
 
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
@@ -138,7 +139,10 @@ class LnKSystemutils {
 				return "1d20 + @actor.system.skills.opl.mod";
 				break;
 			case cPf1eName:
-				return "@actor.system.skills.dev.mod";
+				return "1d20 + @actor.system.skills.dev.mod";
+				break;
+			case cWarhammer4e:
+				return "1d100 - @actor.characteristics.dex.value";
 				break;
 			default:
 				return "";
@@ -157,7 +161,7 @@ class LnKSystemutils {
 				return "1d20 + @actor.system.abilities.str.mod";
 				break;
 			case cPf1eName:
-				return "@actor.system.abilities.str.mod";
+				return "1d20 + @actor.system.abilities.str.mod";
 				break;
 			default:
 				return "";

@@ -82,7 +82,7 @@ class LnKutils {
 	
 	static LockPickItemsin(pInventory) {} //returns all valid Lock pick items in pInventory
 	
-	static async ItemQuantityPath(pItem, pItemtype = "") {} //returns the path to the items quantity in form of an array ([] if no path found)
+	static async ItemQuantityPath(pItem, pItemtype = "", pSearchDepth = 10) {} //returns the path to the items quantity in form of an array ([] if no path found)
 	
 	static setItemquantity(pItem, pset, pCharacter = undefined) {} //trys to set quantity of pItem to pset
 	
@@ -334,10 +334,11 @@ class LnKutils {
 		return pInventory.filter(vItem => LnKutils.isLockPickItem(vItem));
 	}
 	
-	static async ItemQuantityPath(pItem, pItemtype = "") {
+	static async ItemQuantityPath(pItem, pItemtype = "", pSearchDepth = 10) {
+		//pSearchDepth 10 is only an estimation
 		let vPath = [];
 		
-		if (pItem) {
+		if (pItem && pSearchDepth > 0) {
 			let vsubPath;
 			let vPrimeKeys = Object.keys(pItem);
 			
@@ -356,7 +357,7 @@ class LnKutils {
 					for (let i = 0; i < vPrimeKeys.length; i++) {
 						if (vPath.length == 0) {
 							//only (recursive)search if not already found
-							vsubPath = LnKutils.ItemQuantityPath(pItem[vPrimeKeys[i]]);
+							vsubPath = LnKutils.ItemQuantityPath(pItem[vPrimeKeys[i]], pSearchDepth-1);
 							
 							if (vsubPath.length > 0) {
 								//subpath includes quantity, unshift path name into start of array and be done
@@ -538,47 +539,70 @@ class LnKutils {
 	static successDegree(pRollresult, pDiceDetails, pDC) {
 		let vsuccessDegree;
 		
-		if (pRollresult >= pDC) {
-			vsuccessDegree = 1; //S
-		}
-		else {
-			vsuccessDegree = 0; //F
-		}
-		
-		if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCrit") {
-			//normal crit
-			if (pDiceDetails[0] == 20) {
-				vsuccessDegree = 2; //crit S
-			}
-			
-			if (pDiceDetails[0] == 1) {
-				vsuccessDegree = -1;//crit F
-			}
+		//normal success/failure
+		switch (game.settings.get(cModuleName, "CritMethod")) {
+			case "CritMethod-d100WFRP4":
+			case "CritMethod-d100WFRP4Doubles":
+				vsuccessDegree = Number(pRollresult <= pDC); //F || S			
+				break;
+			default:
+				vsuccessDegree = Number(pRollresult >= pDC); //F || S
+				break;
 		}
 		
-		if (game.settings.get(cModuleName, "CritMethod") == "CritMethod-natCritpm10") {
-		
-			//+-10 crit
-			if (vsuccessDegree == 1) {
-				if (pRollresult >= (pDC + 10)) {
-					vsuccessDegree = 2;//crit S
+		//crit
+		switch (game.settings.get(cModuleName, "CritMethod")) {
+			case "CritMethod-natCrit":
+				//normal crit
+				if (pDiceDetails[0] == 20) {
+					vsuccessDegree = 2; //crit S
 				}
-			}
-			
-			if (vsuccessDegree == 0) {
-				if (pRollresult <= (pDC - 10)) {
+				
+				if (pDiceDetails[0] == 1) {
 					vsuccessDegree = -1;//crit F
 				}
-			}	
-			
-			//normal crit
-			if (pDiceDetails[0] == 20) {
-				vsuccessDegree = vsuccessDegree + 1; //crit S
-			}
-			
-			if (pDiceDetails[0] == 1) {
-				vsuccessDegree = vsuccessDegree - 1;//crit F
-			}
+				break;
+			case "CritMethod-natCritpm10":
+				//+-10 crit
+				if (vsuccessDegree == 1) {
+					if (pRollresult >= (pDC + 10)) {
+						vsuccessDegree = 2;//crit S
+					}
+				}
+				
+				if (vsuccessDegree == 0) {
+					if (pRollresult <= (pDC - 10)) {
+						vsuccessDegree = -1;//crit F
+					}
+				}	
+				
+				//normal crit
+				if (pDiceDetails[0] == 20) {
+					vsuccessDegree = vsuccessDegree + 1; //crit S
+				}
+				
+				if (pDiceDetails[0] == 1) {
+					vsuccessDegree = vsuccessDegree - 1;//crit F
+				}
+				break;
+			case "CritMethod-d100WFRP4":
+				if (pDiceDetails[0] == 1) {
+					vsuccessDegree = 2; //crit S
+				}
+				
+				if (pDiceDetails[0] == 100) {
+					vsuccessDegree = -1; //crit F
+				}
+				break;
+			case "CritMethod-d100WFRP4Doubles":
+				if (pDiceDetails[0] == 1 || (vsuccessDegree > 0 && pDiceDetails[0]%11 == 0)) {
+					vsuccessDegree = 2; //crit S
+				}
+				
+				if (pDiceDetails[0] == 100 || (vsuccessDegree <= 0 && pDiceDetails[0]%11 == 0)) {
+					vsuccessDegree = -1; //crit F
+				}
+				break;
 		}
 		
 		vsuccessDegree = Math.min(2, Math.max(-1, vsuccessDegree)); //make sure vsuccessDegree is in [-1, 2]
