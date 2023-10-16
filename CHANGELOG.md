@@ -1,3 +1,7 @@
+## v1.10.7
+- Bug fix to prevent error when a lock pick is removed
+- Added new crit systems for Warhammer Fantasy Roleplay 4e
+
 ## v1.10.6
 - Added default ids/formulas/types for D&D 3.5e
 
