@@ -539,6 +539,10 @@ class LnKutils {
 	static successDegree(pRollresult, pDiceDetails, pDC) {
 		let vsuccessDegree;
 		
+		if (pDC == Infinity) {
+			return 0; //auto fail on infinity DC
+		}
+		
 		//normal success/failure
 		switch (game.settings.get(cModuleName, "CritMethod")) {
 			case "CritMethod-d100WFRP4":

@@ -127,7 +127,9 @@ class LockManager {
 								
 								break;
 							case cLUbreakLock:
+								console.log("check1");
 								if (await LockManager.ToggleLock(pLock, pMethodtype)) {	
+									console.log("check2");
 									//something could fail during Lock toggle								
 									await LockManager.onBreakLock(pLock);
 								}
@@ -424,12 +426,14 @@ class LockManager {
 		let vUnlocked = true;
 		let vMessage;
 		
+		console.log(vLocktype);
+		
 		if (vLocktype == cLockTypeDoor) {
 			vUnlocked = (pObject.ds != 2);
 		}
 		else {
 			if (LnKutils.isTokenLock(vLocktype)) {
-				vUnlocked = LockManager.UserCanopenToken(pObject);
+				vUnlocked = LockManager.TokenisUnlocked(pObject);
 			}
 			else {
 				vUnlocked = !LnKFlags.isLocked(pObject);
