@@ -1,3 +1,7 @@
+## v1.10.8
+- Fixed bug with the success/failure detection under certain conditions
+- Fixed bug that prevented item pile locks from being broken
+
 ## v1.10.7
 - Bug fix to prevent error when a lock pick is removed
 - Added new crit systems for Warhammer Fantasy Roleplay 4e
