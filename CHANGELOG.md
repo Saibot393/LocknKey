@@ -1,3 +1,6 @@
+## v1.10.9
+- Improved compatibility with Item Piles
+
 ## v1.10.8
 - Fixed bug with the success/failure detection under certain conditions
 - Fixed bug that prevented item pile locks from being broken
