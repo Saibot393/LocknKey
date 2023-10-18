@@ -142,7 +142,7 @@ class LnKCompUtils {
 		if (pLocked) {
 			await game.itempiles?.API?.lockItemPile(pItemPile);
 			
-			pItemPile.update({flags : {"item-piles" : {data : {locked : false}}}}); //locking item piles prevents some features from working
+			//pItemPile.update({flags : {"item-piles" : {data : {locked : false}}}}); //locking item piles prevents some features from working
 		}
 		else {
 			game.itempiles?.API?.unlockItemPile(pItemPile);

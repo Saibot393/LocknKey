@@ -36,6 +36,7 @@ class LnKCompatibility {
 	}
 	
 	static async synchIPLock(pLock) {
+		console.log(pLock);
 		if (await LnKutils.Locktype(pLock) == cLockTypeLootIP) {
 			LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
 		}
@@ -55,7 +56,11 @@ Hooks.once("init", () => {
 		
 		Hooks.on(cModuleName+".onunLock", (...args) => {LnKCompatibility.onunLock(...args)}); //DEPRICATED, here to solve potential bugs with old data
 		
-		Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)}); //DEPRICATED, here to solve potential bugs with old data
+		//Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)}); //DEPRICATED, here to solve potential bugs with old data
+		
+		Hooks.on("updateToken", (pToken, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchIPLock(pToken)}});
+		
+		Hooks.on("item-piles-rattleItemPile", () => Hooks.call(cModuleName + "." + "TokendblClick", LnKutils.hoveredToken(), {}));
 
 		Hooks.on("item-piles-preOpenInterface", (pItemPile, pCharacter) => {if (!UserCanopenToken(pItemPile.token, true)) {game.itempiles?.API?.closeItemPile(pItemPile.token); return false}})
 	}
