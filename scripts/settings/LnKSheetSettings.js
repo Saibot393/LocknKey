@@ -557,6 +557,8 @@ class LnKSheetSettings {
 	}
 }
 
+export {LnKSheetSettings};
+
 
 Hooks.once("ready", () => {
 	if (game.user.isGM) {

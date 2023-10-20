@@ -10,6 +10,7 @@ const cItemPiles = "item-piles";
 const cLibWrapper = "lib-wrapper";
 const cRideable = "Rideable";
 const cMonksEJ = "monks-enhanced-journal";
+const cMATT = "monks-active-tiles";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
@@ -24,7 +25,7 @@ const cIPtypes = [cIPPiletype, cIPContainertype, cIPVaulttype];
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
 
-export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ}
+export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT}
 export { cLockTypeLootIP };
 
 class LnKCompUtils {

@@ -23,6 +23,8 @@ const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
 const cSpecialLPF = "SpecialLPFlag"; //Flag that sets special Lock picks
 const cReplacementItemF = "ReplacementItemFlag"; //Flag to store ids or names of items that get consumed instead of this item when present
 const cLPAttemptsF = "LPAttemptsFlag"; //FLag to store the ammount of Lock Pick attempts of this lock
+const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how many FreeLockCircumvents this token has
+const ccanbeeCircumventedFreeF = "canbeeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
 
 export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF }
 
@@ -103,6 +105,14 @@ class LnKFlags {
 	static hasLPAttemptsLeft(pLock) {} //returns of pLock has any LP attempts left
 	
 	static async ReduceLPAttempts(pLock) {} //reduces the Lock pick attempts left in pLock
+	
+	static async giveFreeLockCircumvent(pToken) {} //gives pToken a free lock circumvent
+	
+	static async removeFreeLockCircumvent(pToken) {} //takes a free lock circumvent from pToken
+	
+	static hasFreeLockCircumvent(pToken) {} //returns if pToken has a free lock circumvent
+	
+	static canbeCircumventedFree(pLock) {} //returns if pLock can be circumvented with a free circumvent
 	
 	//Lock progress
 	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
@@ -407,6 +417,32 @@ class LnKFlags {
 		return game.settings.get(cModuleName, "defaultLPAttempts"); //default if anything fails				
 	}
 	
+	static #FreeLockCircumventsFlag (pObject) {
+	//returns content of FreeLockCircumventsFlag ofpObject (number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cFreeLockCircumventsF)) {
+				return vFlag.FreeLockCircumventsFlag;
+			}
+		}
+		
+		return 0; //default if anything fails				
+	}
+	
+	static #canbeeCircumventedFreeFlag (pObject) {
+	//returns content of canbeeCircumventedFreeFlag ofpObject (number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(ccanbeeCircumventedFreeF)) {
+				return vFlag.canbeeCircumventedFreeFlag;
+			}
+		}
+		
+		return true; //default if anything fails				
+	}
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -502,6 +538,16 @@ class LnKFlags {
 	//sets content of LPAttemptsFlag (must be number)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cLPAttemptsF, Number(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #setFreeLockCircumventsFlag(pObject, pContent) {
+	//sets content of FreeLockCircumventsFlag (must be number)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cFreeLockCircumventsF, Number(pContent));
 			
 			return true;
 		}
@@ -699,6 +745,22 @@ class LnKFlags {
 			console.log("check2");
 			await this.#setLPAttemptsFlag(pLock, this.#LPAttemptsFlag(pLock)-1);
 		}
+	}
+	
+	static async giveFreeLockCircumvent(pToken) {
+		this.#setFreeLockCircumventsFlag(pToken, 1);
+	}
+	
+	static async removeFreeLockCircumvent(pToken) {
+		this.#setFreeLockCircumventsFlag(pToken, 0);
+	}
+	
+	static hasFreeLockCircumvent(pToken) {
+		return this.#FreeLockCircumventsFlag(pToken) > 0;
+	}
+	
+	static canbeCircumventedFree(pLock) {
+		return this.#canbeeCircumventedFreeFlag(pLock);
 	}
 	
 	//Lock progress

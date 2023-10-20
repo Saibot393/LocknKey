@@ -1,4 +1,4 @@
-import { LnKCompUtils, cItemPiles, cMonksEJ } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
 import { LnKutils, cModuleName } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken } from "../LockManager.js";
@@ -17,6 +17,11 @@ class LnKCompatibility {
 	static async synchIPLock(pLock, vUpdate) {} //called if an item pile is updated manually
 	
 	static onIPinteraction(pLock, pInfos) {} //called when someone interacts with a itempile token
+	
+	//specific: MATT
+	static addTriggerSettings(pApp, pHTML, pData, pAddTriggerTab = false) {} //adds the Lock & Key Trigger settings to pApp
+	
+	static onLnKLockUse(pLock, pCharacter, pInfos) {} //called when someone uses a lock (only GM side)
 	
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
@@ -47,6 +52,15 @@ class LnKCompatibility {
 			isUnlocked(pLock, true);
 		}
 	} //called when someone interacts with a token
+	
+	//specific: MATT
+	static addTriggerSettings(pApp, pHTML, pData, pAddTriggerTab = false) {
+		
+	}
+	
+	static onLnKLockUse(pLock, pCharacter, pInfos) {
+		
+	}
 }
 
 //Hook into other modules
@@ -67,5 +81,11 @@ Hooks.once("init", () => {
 	
 	if (LnKCompUtils.isactiveModule(cMonksEJ)) {
 		libWrapper.ignore_conflicts(cModuleName, cMonksEJ, "Token.prototype._onClickRight");
-	}	
+	}
+
+	if (LnKCompUtils.isactiveModule(cMATT)) {
+		Hooks.on(cModuleName + ".WallLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData));
+		
+		Hooks.on(cModuleName + ".LockUse", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
+	}
 });
