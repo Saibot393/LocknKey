@@ -188,6 +188,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   });
   
+  game.settings.register(cModuleName, "defaultLPAttempts", {
+	name: Translate("Settings.defaultLPAttempts.name"),
+	hint: Translate("Settings.defaultLPAttempts.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
   game.settings.register(cModuleName, "LockPickFormula", {
 	name: Translate("Settings.LockPickFormula.name"),
 	hint: Translate("Settings.LockPickFormula.descrp"),
@@ -222,7 +231,16 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: false
-  });  
+  }); 
+
+  game.settings.register(cModuleName, "LockCircumventName", {
+	name: Translate("Settings.LockCircumventName.name"),
+	hint: Translate("Settings.LockCircumventName.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  });    
   
   //client
   game.settings.register(cModuleName, "ControlSceme", {

@@ -56,6 +56,8 @@ class LockManager {
 	static async useLockKey(pLock, pCharacter, pKeyItemID) {
 		let vKey = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pKeyItemID);
 		
+		let vOutcome = 0;
+		
 		if (vKey) {
 			if (LnKFlags.matchingIDKeys(vKey, pLock, game.settings.get(cModuleName, "UseKeynameasID"))) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
@@ -66,6 +68,8 @@ class LockManager {
 					//key fits
 					LockManager.ToggleLock(pLock, cLUuseKey);
 					
+					vOutcome = 1;
+					
 					if (LnKFlags.RemoveKeyonUse(vKey)) {
 						//remove one from stack, which will also delte if no key left
 						LnKutils.removeoneItem(vKey, pCharacter);
@@ -73,16 +77,24 @@ class LockManager {
 				}
 			}
 		}
+		
+		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUuseKey, Outcome : vOutcome});
 	}
 	
 	static async useLockPasskey(pLock, pCharacter, pPasskey) {
+		let vOutcome = 0;
+		
 		if (LnKFlags.MatchingPasskey(pLock, pPasskey)) {
 			//Passkey matches
 			LockManager.ToggleLock(pLock, cLUuseKey);
+			
+			vOutcome = 1;
 		}	
 		else {
 			LnKPopups.TextPopUpID(pLock, "WrongPassword"); //MESSAGE POPUP
 		}
+		
+		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUusePasskey, Outcome : vOutcome});
 	}
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {
@@ -161,6 +173,8 @@ class LockManager {
 									}
 								}
 								
+								await LnKFlags.ReduceLPAttempts(pLock);
+								
 								if (pResultDegree < 0) {
 									if (vRemoveLP) {
 										let vtoRemove;
@@ -199,10 +213,12 @@ class LockManager {
 								break;
 				}
 			}
+			
+			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : pMethodtype, Outcome : pResultDegree});
 		}
 		else {
 			LnKPopups.TextPopUpID(pLock, "NotaLock"); //MESSAGE POPUP
-		}		
+		}	
 	}
 	
 	static LockuseRequest(puseData) {

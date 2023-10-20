@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -170,6 +170,8 @@ class LnKSheetSettings {
 						
 		//Lock standard settings
 		LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);
+		
+		Hooks.call(cModuleName + ".WallLockSettings", pApp, pHTML, pData);
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData) {
@@ -255,6 +257,10 @@ class LnKSheetSettings {
 			//formulas
 			if (vLockFormulaSettings) { //replaced by Pf2e
 				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
+			}
+			
+			if (vLockSettings) {
+				Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 			}
 		}
 		
@@ -353,6 +359,14 @@ class LnKSheetSettings {
 												vtype : "numberpart", 
 												vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
 												vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
+												}, pto);
+									
+		//setting for LP attempts left in this lock
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPAttemptsF +".name"), 
+												vhint : Translate("SheetSettings."+ cLPAttemptsF +".descrp"), 
+												vtype : "number", 
+												vvalue : LnKFlags.LPAttemptsLeft(pApp.object, true),
+												vflagname : cLPAttemptsF,
 												}, pto);
 
 		//custom popups menu button

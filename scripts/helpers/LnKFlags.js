@@ -22,8 +22,9 @@ const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should 
 const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
 const cSpecialLPF = "SpecialLPFlag"; //Flag that sets special Lock picks
 const cReplacementItemF = "ReplacementItemFlag"; //Flag to store ids or names of items that get consumed instead of this item when present
+const cLPAttemptsF = "LPAttemptsFlag"; //FLag to store the ammount of Lock Pick attempts of this lock
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -96,6 +97,12 @@ class LnKFlags {
 	static GetSpecialLockpicks(pLock, praw = false) {} //gets all Special lock picks for pLock
 	
 	static hasSpecialLockpicks(pLock) {} //if pLock has special Lockpicks
+	
+	static LPAttemptsLeft(pLock, pRAW = false) {} //retunrst he ammount of Lockpick attempts left in pLock
+	
+	static hasLPAttemptsLeft(pLock) {} //returns of pLock has any LP attempts left
+	
+	static async ReduceLPAttempts(pLock) {} //reduces the Lock pick attempts left in pLock
 	
 	//Lock progress
 	static requiredLPsuccess(pLock) {} //returns the required LP successes of this lock
@@ -387,6 +394,19 @@ class LnKFlags {
 		return ""; //default if anything fails		
 	}
 	
+	static #LPAttemptsFlag (pObject) {
+	//returns content of LPAttemptsFlag ofpObject (number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLPAttemptsF)) {
+				return vFlag.LPAttemptsFlag;
+			}
+		}
+		
+		return game.settings.get(cModuleName, "defaultLPAttempts"); //default if anything fails				
+	}
+	
 	static async #setIDKeysFlag (pObject, pContent) {
 	//sets content of IDKeysFlag (must be array of IDs)
 		if (pObject) {
@@ -472,6 +492,16 @@ class LnKFlags {
 	//sets content of Lockjammed flag (must be boolean)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cLockjammedF, Boolean(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #setLPAttemptsFlag(pObject, pContent) {
+	//sets content of LPAttemptsFlag (must be number)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cLPAttemptsF, Number(pContent));
 			
 			return true;
 		}
@@ -589,7 +619,7 @@ class LnKFlags {
 	static LockDC(pLock, praw = false) {
 		let vDC = this.#LockDCFlag(pLock);
 		
-		if ((vDC == -1 || LnKFlags.Lockisjammed(pLock)) && !praw) {
+		if ((vDC == -1 || LnKFlags.Lockisjammed(pLock) || !LnKFlags.LPAttemptsLeft(pLock)) && !praw) {
 			vDC = Infinity;
 		}
 		
@@ -621,7 +651,7 @@ class LnKFlags {
 	}
 	
 	static canbePicked(pLock) {
-		return LnKFlags.LockDC(pLock) < Infinity && (!LnKFlags.Lockisjammed(pLock));
+		return LnKFlags.LockDC(pLock) < Infinity && (!LnKFlags.Lockisjammed(pLock)) && LnKFlags.hasLPAttemptsLeft(pLock);
 	}
 	
 	static canbeBroken(pLock) {
@@ -645,8 +675,30 @@ class LnKFlags {
 		}
 	}
 	
-	static hasSpecialLockpicks(pLock) {
-		return (LnKFlags.GetSpecialLockpicks(pLock).length > 0);
+	static LPAttemptsLeft(pLock, pRAW = false) {
+		let vLPAleft = this.#LPAttemptsFlag(pLock);
+		
+		if (pRAW) {
+			return vLPAleft;
+		}
+		
+		if (vLPAleft < 0) {
+			vLPAleft = Infinity;
+		}
+		
+		return vLPAleft;
+	}
+	
+	static hasLPAttemptsLeft(pLock) {
+		return LnKFlags.LPAttemptsLeft(pLock) > 0;
+	}
+	
+	static async ReduceLPAttempts(pLock) {
+		console.log("check1");
+		if (LnKFlags.hasLPAttemptsLeft(pLock)) {
+			console.log("check2");
+			await this.#setLPAttemptsFlag(pLock, this.#LPAttemptsFlag(pLock)-1);
+		}
 	}
 	
 	//Lock progress

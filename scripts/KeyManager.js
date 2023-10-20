@@ -7,6 +7,7 @@ import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
 
 const cLnKKeyIcon = "fa-key";
+const cLnKPasswordIcon = "fa-regular fa-pen-to-square";
 const cLnKPickLockIcon = "fa-solid fa-toolbox";
 const cLnKBreakLockIcon = "fa-solid fa-hammer";
 const cLnKCancelIcon = "fa-solid fa-xmark";
@@ -14,9 +15,9 @@ const cLnKCancelIcon = "fa-solid fa-xmark";
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
 	//DECLARATIONS
-	static async onatemptedLockuse(pLockObject, pUseType) {} //called if a player tries to use a lock
+	static async onatemptedLockuse(pLockObject, pUseType, pFallBack = true) {} //called if a player tries to use a lock
 	
-	static async onatemptedKeyuse(pLockObject, pCharacter) {} //called if a player tries to usa a key on pLockObject 
+	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter, pFallBack = true) {} //called if a player tries to usa a key on pLockObject 
 	
 	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {} //called if a player tries to circumvent pLockObject using pUsetype [cLUpickLock, cLUbreakLock]
 	
@@ -36,7 +37,7 @@ class KeyManager {
 	static async createLockuseDialog(pLockObject) {} //used to create a popup with use options
 	
 	//IMPLEMENTATIONS
-	static async onatemptedLockuse(pLockObject, pUseType) {
+	static async onatemptedLockuse(pLockObject, pUseType, pFallBack = true) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vProblemPopup = "";
 		
@@ -65,7 +66,7 @@ class KeyManager {
 						switch (pUseType) {
 							case cLUuseKey:
 							case cLUusePasskey:
-								KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter);
+								KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter, pFallBack);
 								break;
 							case cLUpickLock:
 							case cLUbreakLock:
@@ -86,7 +87,7 @@ class KeyManager {
 		}
 	}
 	
-	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter) {	
+	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter, pFallBack = true) {	
 		let vKeyItems;
 		let vFittingKey;
 		let vLockType = await LnKutils.Locktype(pLockObject);
@@ -105,7 +106,7 @@ class KeyManager {
 						KeyManager.requestLockuse(vData);
 					}
 					else {
-						if (LnKFlags.HasPasskey(pLockObject)) {
+						if (LnKFlags.HasPasskey(pLockObject) && pFallBack) {
 							//no key item => use Passkey
 							KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
 						}
@@ -358,13 +359,15 @@ class KeyManager {
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		
 		let vshowKey;
+		let vshowPassKey;
 		let vshowPicklock;
 		let vshowBreaklock;
 		
 		let vButtons = {};
 		
 		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
-			vshowKey = LnKFlags.HasPasskey(pLockObject) || LnKFlags.HasKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
+			vshowKey =  LnKFlags.HasKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
+			vshowPassKey = LnKFlags.HasPasskey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			
@@ -372,8 +375,16 @@ class KeyManager {
 			if (vshowKey) {
 				vButtons["UseKey"] = {
 					label: Translate("Titles.UseKey"),
-					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey);},
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey, false);},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+				}
+			}
+			
+			if (vshowPassKey) {
+				vButtons["UsePasskey"] = {
+					label: Translate("Titles.UsePasskey"),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUusePasskey);},
+					icon: `<i class="fas ${cLnKPasswordIcon}"></i>`
 				}
 			}
 			
