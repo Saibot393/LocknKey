@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
@@ -106,18 +106,40 @@ class KeyManager {
 						KeyManager.requestLockuse(vData);
 					}
 					else {
-						if (LnKFlags.HasPasskey(pLockObject) && pFallBack) {
-							//no key item => use Passkey
-							KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
+						let vnoKeyMessage = true;
+						
+						if (pFallBack) {
+							if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
+								//use free circumvent if available
+								KeyManager.onatemptedKeyuse(pLockObject, cLUFreeCircumvent, pCharacter);
+								
+								vnoKeyMessage = false;
+							}
+							else {
+								if (LnKFlags.HasPasskey(pLockObject)) {
+									//no key item => use Passkey
+									KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
+									
+									vnoKeyMessage = false;
+								}
+							}
 						}
-						else {
+						
+						if (vnoKeyMessage) {
 							LnKPopups.TextPopUpID(pLockObject, "nomatchingKey"); //MESSAGE POPUP
 						}
 					}
 				}
 				break;
+			case cLUFreeCircumvent:
+				if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
+					let vData = {useType : cLUFreeCircumvent, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id};
+					KeyManager.requestLockuse(vData);					
+				}
 			case cLUusePasskey:
-				KeyManager.createPasskeyDialog(pLockObject, vLockType, pCharacter);
+				if (LnKFlags.HasPasskey(pLockObject)) {
+					KeyManager.createPasskeyDialog(pLockObject, vLockType, pCharacter);
+				}
 			break;
 		}
 	}

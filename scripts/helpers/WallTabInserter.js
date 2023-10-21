@@ -1,6 +1,6 @@
 import {cModuleName, Translate} from "../utils/LnKutils.js";
 
-const cBaicIcon = "fa-building-columns";
+const cBasicIcon = "fa-building-columns";
 
 class WallTabInserter {
 	//DECLARATIONS
@@ -17,7 +17,7 @@ class WallTabInserter {
 			//create tab header with basic settings
 			let vTabs = `<nav class="sheet-tabs tabs">
 							<a class="item active" data-tab="basic">
-								<i class="fas ${cBaicIcon}"></i>
+								<i class="fas ${cBasicIcon}"></i>
 								${Translate("Titles.Basic")}
 							</a>
 						</nav>`;

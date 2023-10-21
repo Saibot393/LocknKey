@@ -22,6 +22,21 @@ const cIPVaulttype = "vault"; //type of container tokens in Item Piles
 
 const cIPtypes = [cIPPiletype, cIPContainertype, cIPVaulttype];
 
+//Trigger conditions for MATT
+const cTCNever = "never";
+const cTCAlways = "always";
+const cTCFailure = "failure";
+const cTCcritFailure = "critfailure";
+const cTCSuccess = "success";
+
+const cTConditions = [cTCNever, cTCAlways, cTCFailure, cTCcritFailure, cTCSuccess];
+const cSimpleTConditions = [cTCNever, cTCAlways, cTCFailure, cTCSuccess];
+
+const cMATTTriggerTileF = "MATTTriggerTileFlag";
+const cMATTTriggerConditionsF = "MATTTriggerConditionsFlag";
+
+export {cMATTTriggerConditionsF, cTConditions, cSimpleTConditions, cTCNever, cTCAlways, cTCFailure, cTCcritFailure, cTCSuccess}
+
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
 
@@ -45,6 +60,14 @@ class LnKCompUtils {
 	//specific: ItemPiles
 	static async setIPLock(pItemPile, pLocked) {} //enables/disables pItemPile´based on pLocked
 	
+	//specific: MATT
+	static async MATTTriggerTile(pLock) {} //returns Tile triggered by pLock actions
+	
+	static setMATTTriggercondition(pLock, pType, pCondition) {} //sets the MATT trigger condition of pLock
+	
+	static MattTriggerCondition(pLock, pType) {} //returns the MATT trigger condition of pLock for pType
+	
+	static MATTTriggered(pLock, pType, pOutcome) {} //returns if a triiger of pType with pOutcome triggers the MATT tile of pLock
 	
 	//IMPLEMENTATIONS
 	//basic
@@ -147,6 +170,64 @@ class LnKCompUtils {
 		}
 		else {
 			game.itempiles?.API?.unlockItemPile(pItemPile);
+		}
+	}
+	
+	//specific: MATT
+	static async MATTTriggerTile(pLock) {
+		let vID = pLock?.flags[cMATT]?.entity.id; //from MATT
+		
+		if (vID) {
+			return fromUuid(vID);
+		}
+		
+		vID = pLock?.flags[cMATTTriggerTileF]; //from LnK
+		
+		if (vID) {
+			return pLock.parent.tiles.get(vID);
+		}
+	}
+	
+	static setMATTTriggercondition(pLock, pType, pCondition) {
+		if (pLock) {
+			pLock.setFlag(cModuleName, cMATTTriggerConditionsF + "." + pType, pCondition);
+		}
+	}
+	
+	static MattTriggerCondition(pLock, pType) {
+		let vTriggerCondition;
+		
+		let vFlags = pLock.flags[cModuleName];
+		
+		if (vFlags?.hasOwnProperty(cMATTTriggerConditionsF)) {
+			vTriggerCondition = vFlags[cMATTTriggerConditionsF][pType];
+		}
+		
+		if (cTConditions.includes(vTriggerCondition)) {
+			return vTriggerCondition;
+		}
+		else {
+			return cTCNever;
+		}
+	}
+	
+	static MATTTriggered(pLock, pType, pOutcome) {
+		switch (LnKCompUtils.MattTriggerCondition(pLock, pType)) {
+			case cTCAlways:
+				return true;
+			case cTCFailure:
+				return pOutcome <= 0;
+				break;
+			case cTCcritFailure:
+				return pOutcome < 0;
+				break;
+			case cTCSuccess:
+				return pOutcome > 0;
+				break;
+			case cTCNever:
+			default:
+				return false;
+				break;
 		}
 	}
 }

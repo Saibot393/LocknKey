@@ -29,8 +29,9 @@ const cLUuseKey = "LockuseKey"; //if a Key is used on a lock
 const cLUusePasskey = "LockusePasskey"; //if a Passkey (paasword or PIN) is used on lock
 const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
 const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
+const cLUFreeCircumvent = "LockuseFree"; //if a lock gets circumvented via e.g. a knock spell
 
-export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock}
+export {cModuleName, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);

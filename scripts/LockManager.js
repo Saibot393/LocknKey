@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -18,6 +18,8 @@ class LockManager {
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
 	
 	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {} //called when pCharacter tries to circumvent pLock using pMethodtype with pResultDegree
+	
+	static useFreeCircumvent(pLock, pCharacter) {} //handels use of free lock circumvents (e.g. knock spell)
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
@@ -139,9 +141,7 @@ class LockManager {
 								
 								break;
 							case cLUbreakLock:
-								console.log("check1");
 								if (await LockManager.ToggleLock(pLock, pMethodtype)) {	
-									console.log("check2");
 									//something could fail during Lock toggle								
 									await LockManager.onBreakLock(pLock);
 								}
@@ -221,6 +221,16 @@ class LockManager {
 		}	
 	}
 	
+	static useFreeCircumvent(pLock, pCharacter) {
+		if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
+			LnKFlags.removeFreeLockCircumvent(pCharacter);
+			
+			let vToggled = LockManager.ToggleLock(pLock, cLUFreeCircumvent);
+			
+			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUFreeCircumvent, Outcome : Number(vToggled)});
+		}
+	}
+	
 	static LockuseRequest(puseData) {
 		if (game.user.isGM) {
 			//only relevant for GMs
@@ -252,6 +262,9 @@ class LockManager {
 								//use Pf2e systems result
 								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Pf2eresult, puseData.useType);
 							}
+							break;
+						case cLUFreeCircumvent:
+								LockManager.useFreeCircumvent(vLock, vCharacter);
 							break;
 					}
 				}
@@ -356,6 +369,8 @@ class LockManager {
 				case cLUbreakLock:
 					vValidToggle = !(await LockManager.isUnlocked(pLock)); //only locked doors can be toggled through break
 					break;
+				case cLUFreeCircumvent:
+					vValidToggle = !(await LockManager.isUnlocked(pLock)) && LnKFlags.canbeCircumventedFree(pLock);
 				case cLUpickLock:
 				case cLUuseKey:
 				default:
@@ -399,6 +414,13 @@ class LockManager {
 						case cLUbreakLock:
 							LnKPopups.TextPopUpID(pLock, "cantLock.break"); //MESSAGE POPUP
 							break;
+						case cLUFreeCircumvent:
+							if (!LnKFlags.canbeCircumventedFree(pLock)) {
+								LnKPopups.TextPopUpID(pLock, "cantcircumventFree"); //MESSAGE POPUP
+							}
+							else {
+								LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
+							}
 						case cLUpickLock:
 						case cLUuseKey:
 							LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
