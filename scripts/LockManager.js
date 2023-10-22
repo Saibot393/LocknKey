@@ -371,6 +371,7 @@ class LockManager {
 					break;
 				case cLUFreeCircumvent:
 					vValidToggle = !(await LockManager.isUnlocked(pLock)) && LnKFlags.canbeCircumventedFree(pLock);
+					break;
 				case cLUpickLock:
 				case cLUuseKey:
 				default:
@@ -463,8 +464,6 @@ class LockManager {
 		let vLocktype = await LnKutils.Locktype(pObject);
 		let vUnlocked = true;
 		let vMessage;
-		
-		console.log(vLocktype);
 		
 		if (vLocktype == cLockTypeDoor) {
 			vUnlocked = (pObject.ds != 2);

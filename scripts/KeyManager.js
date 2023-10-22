@@ -76,6 +76,7 @@ class KeyManager {
 						switch (pUseType) {
 							case cLUuseKey:
 							case cLUusePasskey:
+							case cLUFreeCircumvent:
 								KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter, pFallBack);
 								break;
 							case cLUpickLock:
@@ -404,7 +405,7 @@ class KeyManager {
 			vshowPassKey = LnKFlags.HasPasskey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
-			vshowFreeCircumvent = (LnKFlags.hasFreeLockCircumvent(pCharacter) && LnKFlags.canbeCircumventedFree(pLockObject)) || game.settings.get(cModuleName, "showallLockInteractions");
+			vshowFreeCircumvent = (LnKFlags.hasFreeLockCircumvent(vCharacter) && LnKFlags.canbeCircumventedFree(pLockObject)) || game.settings.get(cModuleName, "showallLockInteractions");
 				
 			if (vshowFreeCircumvent) {
 				vButtons[cLUFreeCircumvent] = {
