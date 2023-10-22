@@ -1,3 +1,13 @@
+## v1.11.0
+- Added Lock setting Lockpicking attempts left to limit the amount of lock pick attempts for this lock
+- Added World setting Default Lock pick attempts to set with how many lock pick attempts a lock normally starts
+- Added World setting Lock circumvention keywords to set keywords used to identify effects that allow players to circumvent locks (e.g. the spell "Knock")
+- Added Client Setting Lock circumvention indicator position to set where in the token HUD the Lock circumvention indicator should be displayed
+- Added compatibility with [Monk's Active Tile Triggers](https://foundryvtt.com/packages/monks-active-tiles)
+  - Adds additional Lock & Key related triggers for doors and lockable tokens (adds a new triggers tab to lockable tokens)
+  - Adds a textbox to enter the tile which should be triggered for lockable tokens
+  - The following landings can be optionally used to differentiate between the different Lock & Key triggers: `LockuseKey`, `LockusePasskey`, `LockusePick`, `LockuseBreak`, `LockuseFree`
+
 ## v1.10.9
 - Improved compatibility with Item Piles
 
