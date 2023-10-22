@@ -239,7 +239,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: String,
-	default: ""
+	default: LnKSystemutils.SystemFreeCircumventdefaultKeyword()
   });    
   
   //client
@@ -273,6 +273,20 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Boolean,
 	default: true
   }); 
+  
+  game.settings.register(cModuleName, "FreeCircumventButtonPosition", {
+	name: Translate("Settings.FreeCircumventButtonPosition.name"),
+	hint: Translate("Settings.FreeCircumventButtonPosition.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	choices: {
+		"none": Translate("Settings.FreeCircumventButtonPosition.options.none"),
+		"left": Translate("Settings.FreeCircumventButtonPosition.options.left"),
+		"right": Translate("Settings.FreeCircumventButtonPosition.options.right")
+	},
+	default: "none"
+  });
   
   //Keys (GM)
   game.keybindings.register(cModuleName, "ToggleLock", {
@@ -376,5 +390,5 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
 	}
 	
-	pHTML.find('input[name="' + cModuleName + '.PlayLockSounds"]').closest(".form-group").after(vnewHTML);
+	pHTML.find('select[name="' + cModuleName + '.FreeCircumventButtonPosition"]').closest(".form-group").after(vnewHTML);
 });

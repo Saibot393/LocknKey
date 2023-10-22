@@ -5,12 +5,14 @@ import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
+import { LnKSystemutils} from "./utils/LnKSystemutils.js";
 
 const cLnKKeyIcon = "fa-key";
 const cLnKPasswordIcon = "fa-regular fa-pen-to-square";
 const cLnKPickLockIcon = "fa-solid fa-toolbox";
 const cLnKBreakLockIcon = "fa-solid fa-hammer";
 const cLnKCancelIcon = "fa-solid fa-xmark";
+const cLnKFreeCircumventIcon = "fa-solid fa-wand-magic-sparkles";
 
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
@@ -32,9 +34,17 @@ class KeyManager {
 	
 	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {} //the (best) roll used to circumvent pLock using puseMethod
 	
+	//ui
 	static createPasskeyDialog(pLockObject, pLockType, pCharacter) {} //used to creat the passkey dialog
 	
 	static async createLockuseDialog(pLockObject) {} //used to create a popup with use options
+
+	static addKeyHUD() {} //called to add Key icon to token HUD 
+	
+	//ons
+	static onLockRightClick(pDocument, pInfos) {} //called when a lock is RightClicked
+		
+	static onChatMessage(pMessage, pInfos, pSender) {} //called when a chat message is registered
 	
 	//IMPLEMENTATIONS
 	static async onatemptedLockuse(pLockObject, pUseType, pFallBack = true) {
@@ -353,6 +363,7 @@ class KeyManager {
 		return [vRollFormula, vBestItemID];
 	}
 	
+	//ui
 	static async createPasskeyDialog(pLockObject, pLockType, pCharacter) {
 		let vTitle = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LockPasskeyTitle);
 		
@@ -384,6 +395,7 @@ class KeyManager {
 		let vshowPassKey;
 		let vshowPicklock;
 		let vshowBreaklock;
+		let vshowFreeCircumvent;
 		
 		let vButtons = {};
 		
@@ -392,35 +404,43 @@ class KeyManager {
 			vshowPassKey = LnKFlags.HasPasskey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
-			
+			vshowFreeCircumvent = (LnKFlags.hasFreeLockCircumvent(pCharacter) && LnKFlags.canbeCircumventedFree(pLockObject)) || game.settings.get(cModuleName, "showallLockInteractions");
 				
+			if (vshowFreeCircumvent) {
+				vButtons[cLUFreeCircumvent] = {
+					label: Translate("Titles." + cLUFreeCircumvent),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUFreeCircumvent);},
+					icon: `<i class="fas ${cLnKFreeCircumventIcon}"></i>`
+				}		
+			}
+			
 			if (vshowKey) {
-				vButtons["UseKey"] = {
-					label: Translate("Titles.UseKey"),
+				vButtons[cLUuseKey] = {
+					label: Translate("Titles." + cLUuseKey),
 					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUuseKey, false);},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
 			}
 			
 			if (vshowPassKey) {
-				vButtons["UsePasskey"] = {
-					label: Translate("Titles.UsePasskey"),
+				vButtons[cLUusePasskey] = {
+					label: Translate("Titles." + cLUusePasskey),
 					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUusePasskey);},
 					icon: `<i class="fas ${cLnKPasswordIcon}"></i>`
 				}
 			}
 			
 			if (vshowPicklock) {
-				vButtons["PickLock"] = {
-					label: Translate("Titles.PickLock"),
+				vButtons[cLUpickLock] = {
+					label: Translate("Titles." + cLUpickLock),
 					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUpickLock);},
 					icon: `<i class="fas ${cLnKPickLockIcon}"></i>`
 				}
 			}
 			
 			if (vshowBreaklock) {
-				vButtons["BreakLock"] = {
-					label: Translate("Titles.BreakLock"),
+				vButtons[cLUbreakLock] = {
+					label: Translate("Titles." + cLUbreakLock),
 					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
 					icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
 				}
@@ -452,47 +472,88 @@ class KeyManager {
 			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 		}
 	}
-}
 
-function onLockRightClick(pDocument, pInfos) {
-	if (!game.user.isGM) {//CLIENT: use key
-		if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
-			switch (game.settings.get(cModuleName, "ControlSceme")) {
-				case "ControlSceme-rightKeys" :
-					if (pInfos.shiftKey) {
-						KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
-					}
-					else {
-						if (pInfos.altKey) {
-							KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
-						}
-						else {
-							KeyManager.onatemptedLockuse(pDocument, cLUuseKey, true);
-						}
-					}
-					break;
-				case "ControlSceme-rightPopups" :
-				default:
-					if (!pInfos.shiftKey && !pInfos.altKey && !pInfos.ctrlKey) {
-						KeyManager.createLockuseDialog(pDocument);
-					}
-					break;
+	static addKeyHUD(pHUD, pHTML, pToken) {
+		let vToken = LnKutils.TokenfromID(pToken._id);
+		
+		if (vToken) {
+			if (LnKFlags.hasFreeLockCircumvent(vToken) && vToken.isOwner) {
+				let vButtonPosition = game.settings.get(cModuleName, "FreeCircumventButtonPosition");
+				
+				if (vButtonPosition != "none") {		
+					let vButtonHTML = `<div class="control-icon" data-action="FreeCircumvent"  title="${Translate("Titles.FreeCircumventHUD")}">
+										<i class="${cLnKFreeCircumventIcon}"></i>
+									</div>`;
+					
+					pHTML.find("div.col."+vButtonPosition).append(vButtonHTML);
+					
+					let vButton = pHTML.find(`div[data-action="FreeCircumvent"]`);
+					
+					vButton.click((pEvent) => {LnKFlags.removeFreeLockCircumvent(vToken)});
+				}
 			}
 		}
-		else {
-			LnKPopups.TextPopUpID(pDocument, "GamePaused"); //MESSAGE POPUP
+	}
+	
+	//ons
+	static onLockRightClick(pDocument, pInfos) {
+		if (!game.user.isGM) {//CLIENT: use key
+			if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
+				switch (game.settings.get(cModuleName, "ControlSceme")) {
+					case "ControlSceme-rightKeys" :
+						if (pInfos.shiftKey) {
+							KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
+						}
+						else {
+							if (pInfos.altKey) {
+								KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
+							}
+							else {
+								KeyManager.onatemptedLockuse(pDocument, cLUuseKey, true);
+							}
+						}
+						break;
+					case "ControlSceme-rightPopups" :
+					default:
+						if (!pInfos.shiftKey && !pInfos.altKey && !pInfos.ctrlKey) {
+							KeyManager.createLockuseDialog(pDocument);
+						}
+						break;
+				}
+			}
+			else {
+				LnKPopups.TextPopUpID(pDocument, "GamePaused"); //MESSAGE POPUP
+			}
+		}
+	}
+
+	static onChatMessage(pMessage, pInfos, pSender) {
+		if (game.user.id == pSender) {
+			if (LnKSystemutils.isFreeCircumvent(pMessage)) {
+				let vToken = canvas.tokens.get(pMessage.speaker.token).document;
+				
+				if (vToken) {
+					LnKFlags.giveFreeLockCircumvent(vToken);
+				}
+			}
 		}
 	}
 }
 
 //Hooks
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {//Door Lock use
-	onLockRightClick(pDoorDocument, pInfos);
+	KeyManager.onLockRightClick(pDoorDocument, pInfos);
 });
 
 Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token Lock use
-	onLockRightClick(pTokenDocument, pInfos);
+	KeyManager.onLockRightClick(pTokenDocument, pInfos);
 }); 
+
+Hooks.on("createChatMessage", (pMessage, pInfos, pSender) => {
+	KeyManager.onChatMessage(pMessage, pInfos, pSender);
+});
+
+Hooks.on("renderTokenHUD", (...args) => KeyManager.addKeyHUD(...args));
 
 Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Key context
 

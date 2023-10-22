@@ -103,7 +103,7 @@ class LnKCompatibility {
 													//vhint : Translate("SheetSettings."+ cMATTTriggerConditionsF + "." + vUseType +".descrp"), 
 													vtype : "select",
 													voptions : 	vTypeOptions,		
-													voptionsName : "lockuse",
+													voptionsName : cMATTTriggerConditionsF,
 													vvalue : LnKCompUtils.MattTriggerCondition(pApp.object, vUseType),
 													vflagname : cMATTTriggerConditionsF + "." + vUseType
 													}, `div[data-tab="triggers"]`);	

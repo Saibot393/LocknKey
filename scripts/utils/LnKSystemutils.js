@@ -1,3 +1,5 @@
+import {cModuleName, cDelimiter} from "./LnKutils.js";
+
 //system names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
 const cPf1eName = "pf1"; //name of Pathfinder 1. edition system
@@ -38,6 +40,10 @@ class LnKSystemutils {
 	static SystemdefaultLBformula() {} //returns the default formula for Lock breaking in the current system	
 	
 	static SystemInventory(pToken) {} //returns the inventory of pToken in the current system
+	
+	static SystemFreeCircumventdefaultKeyword() {} //returns the default key word for Free Circumvents
+	
+	static isFreeCircumvent(pMessage) {} //returns if pMessage causes a free circumvent
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -175,6 +181,19 @@ class LnKSystemutils {
 			default:
 				return pToken.actor.items;
 		}
+	}
+	
+	static SystemFreeCircumventdefaultKeyword() {
+		switch (game.system.id) {
+			case cDnD5e:
+				return "Knock";
+			default:
+				return "";
+		}		
+	}
+	
+	static isFreeCircumvent(pMessage) {
+		return game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter).includes(pMessage.flavor);
 	}
 }
 
