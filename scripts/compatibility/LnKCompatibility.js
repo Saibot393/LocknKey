@@ -1,4 +1,4 @@
-import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cMATTTriggerConditionsF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
 import { LnKutils, cModuleName, Translate, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken } from "../LockManager.js";
@@ -22,9 +22,9 @@ class LnKCompatibility {
 	static onIPinteraction(pLock, pInfos) {} //called when someone interacts with a itempile token
 	
 	//specific: MATT
-	static addTriggerSettings(pApp, pHTML, pData, pAddTriggersTab = false) {} //adds the Lock & Key Trigger settings to pApp
+	static addTriggerSettings(pApp, pHTML, pData, pAddBasics = false) {} //adds the Lock & Key Trigger settings to pApp
 	
-	static onLnKLockUse(pLock, pCharacter, pInfos) {} //called when someone uses a lock (only GM side)
+	static async onLnKLockUse(pLock, pCharacter, pInfos) {} //called when someone uses a lock (only GM side)
 	
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
@@ -44,7 +44,6 @@ class LnKCompatibility {
 	}
 	
 	static async synchIPLock(pLock) {
-		console.log(pLock);
 		if (await LnKutils.Locktype(pLock) == cLockTypeLootIP) {
 			LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
 		}
@@ -57,10 +56,9 @@ class LnKCompatibility {
 	} //called when someone interacts with a token
 	
 	//specific: MATT
-	static addTriggerSettings(pApp, pHTML, pData, pAddTriggersTab = false) {
-		if (pAddTriggersTab) {
+	static addTriggerSettings(pApp, pHTML, pData, pAddBasics = false) {
+		if (pAddBasics) {
 			let vTabbar = pHTML.find(`nav.sheet-tabs`);
-			let vprevTab = pHTML.find(`div[data-tab=${cModuleName}]`); //places rideable tab after last core tab "basic"
 			
 			let vTabButtonHTML = 	`
 							<a class="item" data-tab="triggers">
@@ -68,12 +66,24 @@ class LnKCompatibility {
 								${Translate("Titles.triggers")}
 							</a>
 							`; //tab button HTML
-			let vTabContentHTML = `<div class="tab" data-tab="triggers"></div>`; //tab content sheet HTML
 			
-			vTabbar.append(vTabButtonHTML);
-			vprevTab.after(vTabContentHTML);
+			vTabbar.append(vTabButtonHTML);		
 		}
 		
+		let vprevTab = pHTML.find(`div[data-tab=${cModuleName}]`); //places rideable tab after last core tab "basic"
+		let vTabContentHTML = `<div class="tab" data-tab="triggers"></div>`; //tab content sheet HTML
+		vprevTab.after(vTabContentHTML);
+		
+		if (pAddBasics) {
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cMATTTriggerTileF +".name"), 
+													vhint : Translate("SheetSettings."+ cMATTTriggerTileF +".descrp"), 
+													vtype : "text",
+													vwide : true,
+													vvalue : LnKCompUtils.MATTTriggerTileID(pApp.object),
+													vflagname : cMATTTriggerTileF
+													}, `div[data-tab="triggers"]`);		
+		}
+			
 		let vTypeOptions;
 		
 		for (let vUseType of [cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent]) {
@@ -90,20 +100,23 @@ class LnKCompatibility {
 			}
 			
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cMATTTriggerConditionsF + "." + vUseType +".name"), 
-													vhint : Translate("SheetSettings."+ cMATTTriggerConditionsF + "." + vUseType +".descrp"), 
+													//vhint : Translate("SheetSettings."+ cMATTTriggerConditionsF + "." + vUseType +".descrp"), 
 													vtype : "select",
-													voptions : 	vTypeOptions,											
+													voptions : 	vTypeOptions,		
+													voptionsName : "lockuse",
 													vvalue : LnKCompUtils.MattTriggerCondition(pApp.object, vUseType),
 													vflagname : cMATTTriggerConditionsF + "." + vUseType
 													}, `div[data-tab="triggers"]`);	
 		}
 	}
 	
-	static onLnKLockUse(pLock, pCharacter, pInfos) {
-		if (LnKCompatibility.MATTTriggered(pLock, pInfos.UseType, pInfos.Outcome)) {
-			let vTile = LnKCompUtils.MATTTriggerTile(pLock);
+	static async onLnKLockUse(pLock, pCharacter, pInfos) {
+		if (LnKCompUtils.MATTTriggered(pLock, pInfos)) {
+			let vTile = await LnKCompUtils.MATTTriggerTile(pLock);
 			
-			vTile.trigger({ tokens: [pCharacter.object], method: 'lock'});
+			if (vTile) {
+				vTile.trigger({ tokens: [pCharacter], method: 'trigger', options: {landing : pInfos.UseType}});
+			}
 		}
 	}
 }

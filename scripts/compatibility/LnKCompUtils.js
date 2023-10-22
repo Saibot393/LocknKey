@@ -35,7 +35,7 @@ const cSimpleTConditions = [cTCNever, cTCAlways, cTCFailure, cTCSuccess];
 const cMATTTriggerTileF = "MATTTriggerTileFlag";
 const cMATTTriggerConditionsF = "MATTTriggerConditionsFlag";
 
-export {cMATTTriggerConditionsF, cTConditions, cSimpleTConditions, cTCNever, cTCAlways, cTCFailure, cTCcritFailure, cTCSuccess}
+export {cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions, cTCNever, cTCAlways, cTCFailure, cTCcritFailure, cTCSuccess}
 
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
@@ -63,7 +63,9 @@ class LnKCompUtils {
 	//specific: MATT
 	static async MATTTriggerTile(pLock) {} //returns Tile triggered by pLock actions
 	
-	static setMATTTriggercondition(pLock, pType, pCondition) {} //sets the MATT trigger condition of pLock
+	static MATTTriggerTileID(pLock) {} //returns the ID of the triggered tile of this lock
+	
+	static setMATTTriggercondition(pLock, pInfos) {} //sets the MATT trigger condition of pLock
 	
 	static MattTriggerCondition(pLock, pType) {} //returns the MATT trigger condition of pLock for pType
 	
@@ -181,11 +183,29 @@ class LnKCompUtils {
 			return fromUuid(vID);
 		}
 		
-		vID = pLock?.flags[cMATTTriggerTileF]; //from LnK
+		if (pLock?.flags[cModuleName]) {
+			vID = pLock?.flags[cModuleName][cMATTTriggerTileF]; //from LnK
+		}		
 		
 		if (vID) {
 			return pLock.parent.tiles.get(vID);
 		}
+	}
+	
+	static MATTTriggerTileID(pLock) {
+		let vID = pLock?.flags[cMATTTriggerTileF]; //from LnK
+		
+		if (vID) {
+			return vID;
+		}
+		
+		vID = pLock?.flags[cMATT]?.entity.id; //from MATT
+		
+		if (vID) {
+			return vID;
+		}		
+		
+		return "";
 	}
 	
 	static setMATTTriggercondition(pLock, pType, pCondition) {
@@ -211,18 +231,18 @@ class LnKCompUtils {
 		}
 	}
 	
-	static MATTTriggered(pLock, pType, pOutcome) {
-		switch (LnKCompUtils.MattTriggerCondition(pLock, pType)) {
+	static MATTTriggered(pLock, pInfos) {
+		switch (LnKCompUtils.MattTriggerCondition(pLock, pInfos.UseType)) {
 			case cTCAlways:
 				return true;
 			case cTCFailure:
-				return pOutcome <= 0;
+				return pInfos.Outcome <= 0;
 				break;
 			case cTCcritFailure:
-				return pOutcome < 0;
+				return pInfos.Outcome < 0;
 				break;
 			case cTCSuccess:
-				return pOutcome > 0;
+				return pInfos.Outcome > 0;
 				break;
 			case cTCNever:
 			default:

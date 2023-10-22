@@ -467,7 +467,7 @@ function onLockRightClick(pDocument, pInfos) {
 							KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
 						}
 						else {
-							KeyManager.onatemptedLockuse(pDocument, cLUuseKey);
+							KeyManager.onatemptedLockuse(pDocument, cLUuseKey, true);
 						}
 					}
 					break;
@@ -497,7 +497,7 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token
 Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Key context
 
 //wrap export macro functions
-function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUuseKey); };
+function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUuseKey, true); };
 
 function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUpickLock); };
 

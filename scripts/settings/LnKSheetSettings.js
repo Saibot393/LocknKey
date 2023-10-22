@@ -458,6 +458,11 @@ class LnKSheetSettings {
 			voptions = pInfos.voptions;
 		} 
 		
+		let voptionsName = vflagname;
+		if (pInfos.hasOwnProperty("voptionsName")) {
+			voptionsName = pInfos.voptionsName;
+		} 
+		
 		let vnewHTML = ``;
 		
 		if (pwithformgroup) {
@@ -499,10 +504,10 @@ class LnKSheetSettings {
 				
 				for (let i = 0; i < voptions.length; i++) {
 					if (voptions[i] == vvalue) {
-						vnewHTML = vnewHTML + `<option value="${voptions[i]}" selected>${Translate("SheetSettings." + vflagname+ ".options." + voptions[i])}</option>`;
+						vnewHTML = vnewHTML + `<option value="${voptions[i]}" selected>${Translate("SheetSettings." + voptionsName + ".options." + voptions[i])}</option>`;
 					}
 					else {
-						vnewHTML = vnewHTML + `<option value="${voptions[i]}">${Translate("SheetSettings." + vflagname+ ".options." + voptions[i])}</option>`;
+						vnewHTML = vnewHTML + `<option value="${voptions[i]}">${Translate("SheetSettings." + voptionsName + ".options." + voptions[i])}</option>`;
 					}
 				}
 				
