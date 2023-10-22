@@ -9,19 +9,21 @@
       "CharacterTokens": "角色设置",
       "KeyItems": "钥匙设置",
       "LPItems": "锁的操控设置",
-      "Passkey": "密码",
+      "LockusePasskey": "密码",
       "EnterPasskey": "输入密码:",
       "ConfirmPasskey": "确定",
 	  "Lockuse"					: "上锁",
-	  "UseKey"					: "使用钥匙",
-	  "PickLock"					: "撬锁",
-	  "BreakLock"					: "砸锁",
+	  "LockuseKey"					: "使用钥匙",
+	  "LockusePick"					: "撬锁",
+	  "LockuseBreak"				: "砸锁",
 	  "Close"						: "关闭",
 		"Keycreation"				: "创建钥匙",
 		"Keyname"					: "钥匙名字",
 		"Keyfolder"				: "目标文件夹",
 		"ConfirmKeycreation"			: "创建",
-			"Basic"						: "基本"
+		"Basic"						: "基本",
+		"Triggers"					: "Triggers",
+		"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
@@ -44,7 +46,8 @@
       "WrongPassword": "密码错误",
       "Lockisjammed": "锁被堵住了",
       "Lockpickbroke": "撬锁器损坏了",
-      "jammedLock": "堵住了锁"
+      "jammedLock": "堵住了锁",
+	  "cantcircumventFree": "Lock can't be circumvented"
     },
     "ChatMessage": {
       "LockPick": "{pName}尝试撬锁:",
@@ -163,6 +166,10 @@
         "name": "堵住的锁不可以使用钥匙",
         "descrp": "堵住的锁不再被对应的钥匙打开"
       },
+		"defaultLPAttempts" : {
+			"name"					: "Default Lock pick attempts",
+			"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
+		},
       "LockPickFormula": {
         "name": "撬锁掷骰公式",
         "descrp": "撬锁时的掷骰公式(例：\"1d20 + @actor.skills.thievery.mod\", 本模组的Github页面上有帮助页)"
@@ -179,6 +186,10 @@
         "name": "仅在战斗中需要多次解锁",
         "descrp": "非战斗状态忽略设定的多次解锁设置"
       },
+	"LockCircumventName" : {
+		"name" 					: "Lock circumvention keywords",
+		"descrp"				: "Keywords to identify effects (e.g. the \"Knock\" spell)  that allow players to circumvent locks (seperated with \";\")"				
+	},
 	"ControlSceme" : {
 		"name" 					: "控制方案",
 		"descrp"				: "用于游戏控制的模式 (right-click+keys is described in more detail below under \"Player controls\"",	
@@ -194,7 +205,17 @@
       "PlayLockSounds": {
         "name": "播放锁的音效",
         "descrp": "上锁/开锁时播放音效"
-      }
+      },
+			
+	"FreeCircumventButtonPosition" : {
+		"name" 					: "Lock circumvention indicator position",
+		"descrp"				: "The position of the indicator that shows that a token can circumvent the next lock on the token HUD",
+		"options" : {
+			"none"				: "nowhere",
+			"left"				: "left",
+			"right"				: "right"
+		}
+	}
     },
 	"Keys" : {
 		"ToggleLock" : {
@@ -269,6 +290,10 @@
         "name": "需要的撬锁成功次数",
         "descrp": "需要多少次成功的撬锁才能开锁 (以及目前成功了多少次) (大成功视为两次)"
       },
+			"LPAttemptsFlag" : {
+				"name" 					: "Lockpicking attempts left",
+				"descrp"				: "How many Lockpicking attempts are left (-1 for unlimited)"				
+			},
       "CustomPopupsFlag": {
         "openButtonname": "自定义弹出消息",
         "Title": "自定义弹出消息",
@@ -329,10 +354,29 @@
           "item": "这个物品的砸锁公式是否覆盖token/世界设定"
         }
       },			
-			"ReplacementItemFlag" : {
-				"name" 					: "Replacement Items",
-				"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
-			}	
+		"ReplacementItemFlag" : {
+			"name" 					: "Replacement Items",
+			"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
+		},
+		"MATTTriggerTileFlag" : {
+			"name" 					: "Triggered tile ID",
+			"descrp"				: "The ID of the tile triggered by the Lock & Key actions below (you may use different landings)"
+		},
+		
+		"MATTTriggerConditionsFlag" : {
+			"LockuseKey"			: "On Key use",
+			"LockusePasskey"		: "On Password use",
+			"LockusePick"			: "On pick Lock",
+			"LockuseBreak"			: "On break Lock",
+			"LockuseFree"			: "On lock circumvention",
+			"options" : {
+				"never"				: "never",
+				"always"			: "always",
+				"failure"			: "failure",
+				"critfailure"		: "critical failure",
+				"success"			: "success"
+			}
+		}
     },
     "Context": {
       "KeyCopy": "复制钥匙ID",

@@ -277,7 +277,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   game.settings.register(cModuleName, "FreeCircumventButtonPosition", {
 	name: Translate("Settings.FreeCircumventButtonPosition.name"),
 	hint: Translate("Settings.FreeCircumventButtonPosition.descrp"),
-	scope: "world",
+	scope: "client",
 	config: true,
 	type: String,
 	choices: {
@@ -373,7 +373,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.onlyCombatMultiSuccess"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('select[name="' + cModuleName + '.LockCircumventName"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `

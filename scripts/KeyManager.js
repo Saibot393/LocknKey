@@ -531,7 +531,7 @@ class KeyManager {
 	static onChatMessage(pMessage, pInfos, pSender) {
 		if (game.user.id == pSender) {
 			if (LnKSystemutils.isFreeCircumvent(pMessage)) {
-				let vToken = canvas.tokens.get(pMessage.speaker.token).document;
+				let vToken = canvas.tokens.get(pMessage.speaker.token)?.document;
 				
 				if (vToken) {
 					LnKFlags.giveFreeLockCircumvent(vToken);

@@ -9,19 +9,21 @@
 			"CharacterTokens"			: "Character settings",
 			"KeyItems"					: "Key settings",
 			"LPItems"					: "Lock manipulations settings",
-			"Passkey"					: "Password",
+			"LockusePasskey"			: "Password",
 			"EnterPasskey"				: "Enter the password:",
 			"ConfirmPasskey"			: "Confirm",
 			"Lockuse"					: "Lock use",
-			"UseKey"					: "Use a key",
-			"PickLock"					: "Pick lock",
-			"BreakLock"					: "Break lock",
+			"LockuseKey"				: "Use a key",
+			"LockusePick"				: "Pick lock",
+			"LockuseBreak"				: "Break lock",
 			"Close"						: "Close",
 			"Keycreation"				: "Key creation",
 			"Keyname"					: "Key name",
 			"Keyfolder"					: "Key target folder",
 			"ConfirmKeycreation"		: "Create",
-			"Basic"						: "Basic"
+			"Basic"						: "Basic",
+			"Triggers"					: "Triggers",
+			"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove"
 		},
 		
 		"Popup" : {
@@ -45,7 +47,8 @@
 			"WrongPassword"				: "Wrong password",
 			"Lockisjammed"				: "Lock is jammed",
 			"Lockpickbroke"				: "Lockpick broke",
-			"jammedLock"				: "Jammed the lock"
+			"jammedLock"				: "Jammed the lock",
+			"cantcircumventFree"		: "Lock can't be circumvented"
 		},	
 		
 		"ChatMessage" : {
@@ -184,6 +187,11 @@
 				"descrp"				: "Jammed locks will no longer accept matching keys"		
 			},
 			
+			"defaultLPAttempts" : {
+				"name"					: "Default Lock pick attempts",
+				"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
+			},
+			
 			"LockPickFormula" : {
 				"name" 					: "Lockpick roll formula",
 				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
@@ -204,6 +212,11 @@
 				"descrp"				: "Ignores set required Lockpicking successes outside of combat"				
 			},
 			
+			"LockCircumventName" : {
+				"name" 					: "Lock circumvention keywords",
+				"descrp"				: "Keywords to identify effects (e.g. the \"Knock\" spell) that allow players to circumvent locks (seperated with \";\")"				
+			},
+			
 			"ControlSceme" : {
 				"name" 					: "Control sceme",
 				"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
@@ -221,6 +234,16 @@
 			"PlayLockSounds" : {
 				"name" 					: "Play lock sounds",
 				"descrp"				: "Play a sound when a lock is locked/unlocked"		
+			},
+			
+			"FreeCircumventButtonPosition" : {
+				"name" 					: "Lock circumvention indicator position",
+				"descrp"				: "The position of the indicator that shows that a token can circumvent the next lock on the token HUD",
+				"options" : {
+					"none"				: "nowhere",
+					"left"				: "left",
+					"right"				: "right"
+				}
 			}
 		},
 		
@@ -308,6 +331,11 @@
 				"descrp"				: "How many Lockpicking successes are required for this lock (and how many have already been added) (crits count as 2)"				
 			},
 			
+			"LPAttemptsFlag" : {
+				"name" 					: "Lockpicking attempts left",
+				"descrp"				: "How many Lockpicking attempts are left (-1 for unlimited)"				
+			},
+			
 			"CustomPopupsFlag" : {
 				"openButtonname"			: "Custom Popups",
 				"Title"						: "Custom Popups",
@@ -377,7 +405,27 @@
 			"ReplacementItemFlag" : {
 				"name" 					: "Replacement Items",
 				"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
-			}			
+			},
+
+			"MATTTriggerTileFlag" : {
+				"name" 					: "Triggered tile ID",
+				"descrp"				: "The ID of the tile triggered by the Lock & Key actions below (you may use different landings)"
+			},
+			
+			"MATTTriggerConditionsFlag" : {
+				"LockuseKey"			: "On Key use",
+				"LockusePasskey"		: "On Password use",
+				"LockusePick"			: "On pick Lock",
+				"LockuseBreak"			: "On break Lock",
+				"LockuseFree"			: "On lock circumvention",
+				"options" : {
+					"never"				: "never",
+					"always"			: "always",
+					"failure"			: "failure",
+					"critfailure"		: "critical failure",
+					"success"			: "success"
+				}
+			}
 		},
 		
 		"Context" : {

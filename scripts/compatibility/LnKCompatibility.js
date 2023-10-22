@@ -63,7 +63,7 @@ class LnKCompatibility {
 			let vTabButtonHTML = 	`
 							<a class="item" data-tab="triggers">
 								<i class="fas ${cTriggersIcon}"></i>
-								${Translate("Titles.triggers")}
+								${Translate("Titles.Triggers")}
 							</a>
 							`; //tab button HTML
 			

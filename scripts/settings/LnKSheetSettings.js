@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeeCircumventedFreeF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -368,6 +368,14 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.LPAttemptsLeft(pApp.object, true),
 												vflagname : cLPAttemptsF,
 												}, pto);
+												
+		//can be circumvented free setting
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ ccanbeeCircumventedFreeF +".name"), 
+												vhint : Translate("SheetSettings."+ ccanbeeCircumventedFreeF +".descrp"), 
+												vtype : "checkbox", 
+												vvalue : LnKFlags.canbeCircumventedFree(pApp.object),
+												vflagname : ccanbeeCircumventedFreeF
+												}, pto);		
 
 		//custom popups menu button
 		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings." + cCustomPopupsF + ".openButtonname")} </button>`;

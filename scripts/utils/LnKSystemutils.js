@@ -144,6 +144,9 @@ class LnKSystemutils {
 			case cDnD35e:
 				return "1d20 + @actor.system.skills.opl.mod";
 				break;
+			case cStarFinderName:
+				return "1d20 + @actor.system.skills.eng.mod";
+				break;
 			case cPf1eName:
 				return "1d20 + @actor.system.skills.dev.mod";
 				break;
@@ -165,6 +168,9 @@ class LnKSystemutils {
 				break;
 			case cDnD35e:
 				return "1d20 + @actor.system.abilities.str.mod";
+				break;
+			case cStarFinderName:
+				return "1d20 + @actor.system.skills.ath.mod";
 				break;
 			case cPf1eName:
 				return "1d20 + @actor.system.abilities.str.mod";
@@ -193,7 +199,12 @@ class LnKSystemutils {
 	}
 	
 	static isFreeCircumvent(pMessage) {
-		return game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter).includes(pMessage.flavor);
+		if (game.settings.get(cModuleName, "LockCircumventName").length > 0) {
+			return game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter).includes(pMessage.flavor);
+		}
+		else {
+			return false;
+		}
 	}
 }
 

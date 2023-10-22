@@ -9,19 +9,21 @@
 			"CharacterTokens"			: "Charaktereinstellungen",
 			"KeyItems"					: "Schlüsseleinstellungen",
 			"LPItems"					: "Schlossmanipulationseinstellungen",
-			"Passkey"					: "Passwort",
+			"LockusePasskey"			: "Passwort",
 			"EnterPasskey"				: "Passwort eingeben:",
 			"ConfirmPasskey"			: "Bestätigen",
 			"Lockuse"					: "Schloss benutzen",
-			"UseKey"					: "Benutze Schlüssel",
-			"PickLock"					: "Knacke Schloss",
-			"BreakLock"					: "Zerbreche Schloss",
+			"LockuseKey"				: "Benutze Schlüssel",
+			"LockusePick"				: "Knacke Schloss",
+			"LockuseBreak"				: "Zerbreche Schloss",
 			"Close"						: "Schließen",
 			"Keycreation"				: "Schlüssel generieren",
 			"Keyname"					: "Schlüsselname",
 			"Keyfolder"					: "Schlüssel Zielordner",
 			"ConfirmKeycreation"		: "Erschaffen",
-			"Basic"						: "Basis"
+			"Basic"						: "Basis",
+			"Triggers"					: "Triggers",
+			"FreeCircumventHUD"			: "Diese Figur kann das nächste Schloss umgehen, zum entfernen Klicken"
 		},
 		
 		"Popup" : {
@@ -45,7 +47,8 @@
 			"WrongPassword"				: "Falsches Passwort",
 			"Lockisjammed"				: "Schloss ist verklemmt",
 			"Lockpickbroke"				: "Dietrich ist zerbrochen",
-			"jammedLock"				: "Schloss verklemmt"
+			"jammedLock"				: "Schloss verklemmt",
+			"cantcircumventFree"		: "Schloss kann nicht umgangen werden"
 		},	
 		
 		"ChatMessage" : {
@@ -161,7 +164,7 @@
 			
 			"LockPickItem" : {
 				"name" 					: "Dietrichgegenstände",
-				"descrp"				: "Die Namen oder die Kompendium IDs (empfohlen) der Gegenstände welche zum Schlösserknacken benutzt werden können, \"-\" sollte kein Gegenstand gebraucht werden (seperated with \";\")"		
+				"descrp"				: "Die Namen oder die Kompendium IDs (empfohlen) der Gegenstände welche zum Schlösserknacken benutzt werden können, \"-\" sollte kein Gegenstand gebraucht werden (mit \";\" getrennt)"		
 			},
 			
 			"MentionLockPickItem" : {
@@ -182,6 +185,11 @@
 			"JamedLockKeyunusable" : {
 				"name" 					: "Verklemmte Schlösser verweigern Schlüssel",
 				"descrp"				: "Verklemmte Schlösser können nicht mehr mit passenden Schlüsseln geöffnet werden"		
+			},
+			
+			"defaultLPAttempts" : {
+				"name"					: "Default Lock pick attempts",
+				"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
 			},			
 			
 			"LockPickFormula" : {
@@ -204,6 +212,11 @@
 				"descrp"				: "Ignoriert die benötigten Erfolge außerhalb von Kämpfen"				
 			},
 			
+			"LockCircumventName" : {
+				"name" 					: "Schloss umgehen Schlagwörter",
+				"descrp"				: "Schlagwörter um Effekte (z.B. der \"Knock\" Zauber) zu identifizieren welche es Spielern erlauben Schlösser zu umgehen (mit \";\" getrennt)"				
+			},
+			
 			"ControlSceme" : {
 				"name" 					: "Kontrollschema",
 				"descrp"				: "Schema welches für die Spiele Ssteuerung benutzt wird (rechts-click + taste ist unten unter \"Spieler Steuerung\" beschrieben",	
@@ -221,6 +234,16 @@
 			"PlayLockSounds" : {
 				"name" 					: "Schlossgeräusche",
 				"descrp"				: "Spiele geräusche ab wenn ein Schloss auf-/abgeschlossen wird"		
+			},
+			
+			"FreeCircumventButtonPosition" : {
+				"name" 					: "Schlossumgehungs Indikator Position",
+				"descrp"				: "Position des Indikators welcher anzeigt, dass eine Figur das nächtse Schloss umgehen kann im Figuren HUD",
+				"options" : {
+					"none"				: "nirgendwo",
+					"left"				: "links",
+					"right"				: "rechts"
+				}
 			}
 		},
 		
@@ -308,6 +331,11 @@
 				"descrp"				: "Wie viele Erfolge notwendig sind um dieses Schloss zu knacken (und wie viele bereits erzielt wurden) (Krits zählen als 2)"				
 			},
 			
+			"LPAttemptsFlag" : {
+				"name" 					: "Schlossknack Versuche übrig",
+				"descrp"				: "Wie viele Schlossknack Versuche übrig sind (-1 für unbegrenzt)"				
+			},
+			
 			"CustomPopupsFlag" : {
 				"openButtonname"			: "Eigene Popups",
 				"Title"						: "Eigene Popups",
@@ -377,6 +405,26 @@
 			"ReplacementItemFlag" : {
 				"name" 					: "Ersatzgegenstände",
 				"descrp" 				: "Gegenstände welche anstatt dieses Gegenstandes bei Fehlwürfen konsumiert werden (ID oder Name, mehrere Einträge mit \";\" getrennt)"			
+			},
+
+			"MATTTriggerTileFlag" : {
+				"name" 					: "Ausgelöste Fliesen ID",
+				"descrp"				: "Die ID der durch Lock & Key Aktionen ausgelösten Fliese (Es ist möglich unterschiedliche Landings zu nutzen)"
+			},
+			
+			"MATTTriggerConditionsFlag" : {
+				"LockuseKey.name"		: "Bei Schlüssel nutzung",
+				"LockusePasskey.name"	: "Bei Passwort nutzung",
+				"LockusePick.name"		: "Bei Schloss knacken",
+				"LockuseBreak.name"		: "Bei Schloss auf brechen",
+				"LockuseFree.name"		: "Bei Schloss umgehen",
+				"options" : {
+					"never"				: "niemals",
+					"always"			: "immer",
+					"failure"			: "Misserfolg",
+					"critfailure"		: "kritischer Misserfolg",
+					"success"			: "Erfolg"
+				}
 			}	
 		},
 		
