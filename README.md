@@ -43,14 +43,17 @@ All player and GM controls also have corresponding key binds.
 - Remove Lockpick on critical fail: to remove Lockpick item on critical failures
 - Jam lock on critical lockpick fail: to automatically set locks as jammed
 - Keys can't be used on jammed locks: to prevent matching keys from being used on jammed locks
+- Default Lock pick attempts to set with how many lock pick attempts a lock normally starts
 - Lockpick roll formula: the dice formula used for lockpick rolls
 - Break lock roll formula: the dice formula used for break lock rolls
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
 - Multi-success during combat only: to disable required multi success outside of combat
+- Lock circumvention keywords to set keywords used to identify effects that allow players to circumvent locks (e.g. the spell "Knock")
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
+- Lock circumvention indicator position: to set where in the token HUD the Lock circumvention indicator should be displayed
 #### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Remove key on use: to remove the key once it has been used (or reduce the stack by one)
@@ -66,6 +69,8 @@ All player and GM controls also have corresponding key binds.
 - Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
 - Custom Popups: to set custom Popup messages for certain player actions
 - Lock Sound [Token only]:to set the sound set used for interactions with this lock
+- Lockpicking attempts left: to limit the amount of lock pick attempts for this lock
+- Can be circumvented: to set wether this lock can be circumvented by certain effects (e.g. the spell "Knock")
 #### Tokens/Items:
 - Lockpick formula: an additional formula added to lockpicking rolls (for items only the best formula in the inventory is used)
 - Override Lockpick formula: to override the standard formula for this token/the owner
@@ -90,6 +95,10 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
   - A "Peek lock" option will be added to the lock interaction menu
 - [libWrapper](https://foundryvtt.com/packages/lib-wrapper/):
   - Improves compatibility with other modules, strongly recommended
+- [Monk's Active Tile Triggers](https://foundryvtt.com/packages/monks-active-tiles)
+  - Adds additional Lock & Key related triggers for doors and lockable tokens (adds a new triggers tab to lockable tokens)
+  - Adds a textbox to enter the tile which should be triggered for lockable tokens
+  - The following landings can be optionally used to differentiate between the different Lock & Key triggers: `LockuseKey`, `LockusePasskey`, `LockusePick`, `LockuseBreak`, `LockuseFree`
 
 ### Languages:
 
