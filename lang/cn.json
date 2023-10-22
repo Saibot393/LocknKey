@@ -294,6 +294,10 @@
 				"name" 					: "Lockpicking attempts left",
 				"descrp"				: "How many Lockpicking attempts are left (-1 for unlimited)"				
 			},
+			"canbeCircumventedFreeFlag" : {
+				"name" 					: "Can be circumvented",
+				"descrp"				: "If this lock can be circumvented by effects (e.g. the spell \"Knock\")"				
+			},
       "CustomPopupsFlag": {
         "openButtonname": "自定义弹出消息",
         "Title": "自定义弹出消息",

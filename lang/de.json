@@ -336,6 +336,11 @@
 				"descrp"				: "Wie viele Schlossknack Versuche übrig sind (-1 für unbegrenzt)"				
 			},
 			
+			"canbeCircumventedFreeFlag" : {
+				"name" 					: "Kann umgangen werden",
+				"descrp"				: "Ob dieses Schloss durch gewisse Effekte umgangen werden kann (z.B. der Zauber \"Knock\")"				
+			},
+			
 			"CustomPopupsFlag" : {
 				"openButtonname"			: "Eigene Popups",
 				"Title"						: "Eigene Popups",

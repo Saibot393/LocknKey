@@ -24,9 +24,9 @@ const cSpecialLPF = "SpecialLPFlag"; //Flag that sets special Lock picks
 const cReplacementItemF = "ReplacementItemFlag"; //Flag to store ids or names of items that get consumed instead of this item when present
 const cLPAttemptsF = "LPAttemptsFlag"; //FLag to store the ammount of Lock Pick attempts of this lock
 const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how many FreeLockCircumvents this token has
-const ccanbeeCircumventedFreeF = "canbeeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
+const ccanbeCircumventedFreeF = "canbeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeeCircumventedFreeF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -430,13 +430,13 @@ class LnKFlags {
 		return 0; //default if anything fails				
 	}
 	
-	static #canbeeCircumventedFreeFlag (pObject) {
-	//returns content of canbeeCircumventedFreeFlag ofpObject (number)
+	static #canbeCircumventedFreeFlag (pObject) {
+	//returns content of canbeCircumventedFreeFlag ofpObject (number)
 		let vFlag = this.#LnKFlags(pObject);
 		
 		if (vFlag) {
-			if (vFlag.hasOwnProperty(ccanbeeCircumventedFreeF)) {
-				return vFlag.canbeeCircumventedFreeFlag;
+			if (vFlag.hasOwnProperty(ccanbeCircumventedFreeF)) {
+				return vFlag.canbeCircumventedFreeFlag;
 			}
 		}
 		
@@ -760,7 +760,7 @@ class LnKFlags {
 	}
 	
 	static canbeCircumventedFree(pLock) {
-		return this.#canbeeCircumventedFreeFlag(pLock);
+		return this.#canbeCircumventedFreeFlag(pLock);
 	}
 	
 	//Lock progress
