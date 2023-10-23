@@ -1,3 +1,7 @@
+## v1.11.2
+- Improved MATT integration, MATT trigered dialogs should now be displayed for the correct user
+- Fixed missing translation for MATT trigger conditions
+
 ## v1.11.1
 - Fixed bug that prevented set tile trigger ids to be displayed for lockable tokens
 
