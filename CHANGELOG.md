@@ -1,3 +1,6 @@
+## v1.11.1
+- Fixed bug that prevented set tile trigger ids to be displayed for lockable tokens
+
 ## v1.11.0
 - Added Lock setting Lockpicking attempts left to limit the amount of lock pick attempts for this lock
 - Added World setting Default Lock pick attempts to set with how many lock pick attempts a lock normally starts
