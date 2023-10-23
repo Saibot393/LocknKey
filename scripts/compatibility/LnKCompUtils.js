@@ -239,6 +239,7 @@ class LnKCompUtils {
 		switch (LnKCompUtils.MattTriggerCondition(pLock, pInfos.UseType)) {
 			case cTCAlways:
 				return true;
+				break;
 			case cTCFailure:
 				return pInfos.Outcome <= 0;
 				break;
