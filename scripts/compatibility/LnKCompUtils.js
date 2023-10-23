@@ -193,7 +193,11 @@ class LnKCompUtils {
 	}
 	
 	static MATTTriggerTileID(pLock) {
-		let vID = pLock?.flags[cMATTTriggerTileF]; //from LnK
+		let vID;
+
+		if (pLock?.flags.hasOwnProperty(cModuleName)) {
+			vID = pLock?.flags[cModuleName][cMATTTriggerTileF]; //from LnK
+		}
 		
 		if (vID) {
 			return vID;
