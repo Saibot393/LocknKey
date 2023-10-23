@@ -368,11 +368,11 @@
 		},
 		
 		"MATTTriggerConditionsFlag" : {
-			"LockuseKey"			: "On Key use",
-			"LockusePasskey"		: "On Password use",
-			"LockusePick"			: "On pick Lock",
-			"LockuseBreak"			: "On break Lock",
-			"LockuseFree"			: "On lock circumvention",
+			"LockuseKey.name"		: "On Key use",
+			"LockusePasskey.name"	: "On Password use",
+			"LockusePick.name"		: "On pick Lock",
+			"LockuseBreak.name"		: "On break Lock",
+			"LockuseFree.name"		: "On lock circumvention",
 			"options" : {
 				"never"				: "never",
 				"always"			: "always",

@@ -11,15 +11,15 @@ const cLnKKeyIcon = "fa-key";
 class LockManager {
 	//DECLARATIONS
 	//basics
-	static async useLockKey(pLock, pCharacter, pKeyItemID) {} //handels pLock use of pCharacter with item of pItemID
+	static async useLockKey(pLock, pCharacter, pKeyItemID, puseData = {}) {} //handels pLock use of pCharacter with item of pItemID
 	
-	static async useLockPasskey(pLock, pCharacter, pPasskey) {} //handels pLock use of pCharacter with Passkey pPasskey
+	static async useLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {} //handels pLock use of pCharacter with Passkey pPasskey
 	
-	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
+	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
 	
-	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {} //called when pCharacter tries to circumvent pLock using pMethodtype with pResultDegree
+	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false, puseData = {}) {} //called when pCharacter tries to circumvent pLock using pMethodtype with pResultDegree
 	
-	static useFreeCircumvent(pLock, pCharacter) {} //handels use of free lock circumvents (e.g. knock spell)
+	static useFreeCircumvent(pLock, pCharacter, puseData = {}) {} //handels use of free lock circumvents (e.g. knock spell)
 	
 	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
@@ -55,7 +55,7 @@ class LockManager {
 	
 	//IMPLEMENTATIONS
 	//basics
-	static async useLockKey(pLock, pCharacter, pKeyItemID) {
+	static async useLockKey(pLock, pCharacter, pKeyItemID, puseData = {}) {
 		let vKey = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pKeyItemID);
 		
 		let vOutcome = 0;
@@ -80,10 +80,10 @@ class LockManager {
 			}
 		}
 		
-		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUuseKey, Outcome : vOutcome});
+		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUuseKey, Outcome : vOutcome, useData : puseData});
 	}
 	
-	static async useLockPasskey(pLock, pCharacter, pPasskey) {
+	static async useLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {
 		let vOutcome = 0;
 		
 		if (LnKFlags.MatchingPasskey(pLock, pPasskey)) {
@@ -96,19 +96,19 @@ class LockManager {
 			LnKPopups.TextPopUpID(pLock, "WrongPassword"); //MESSAGE POPUP
 		}
 		
-		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUusePasskey, Outcome : vOutcome});
+		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUusePasskey, Outcome : vOutcome, useData : puseData});
 	}
 	
-	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype) {
+	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {
 		//only handles custom successDegree
 		let vSuccessDegree;
 		
 		vSuccessDegree = LnKutils.successDegree(pRollresult, pDiceresult, LnKFlags.LockDCtype(pLock, pMethodtype));
 		
-		LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, vSuccessDegree, pMethodtype, true)
+		LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, vSuccessDegree, pMethodtype, true, puseData)
 	}
 	
-	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false) {
+	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false, puseData = {}) {
 		let vCritMessagesuffix = ".default";
 		let vusedItem;	
 		
@@ -214,20 +214,20 @@ class LockManager {
 				}
 			}
 			
-			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : pMethodtype, Outcome : pResultDegree});
+			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : pMethodtype, Outcome : pResultDegree, useData : puseData});
 		}
 		else {
 			LnKPopups.TextPopUpID(pLock, "NotaLock"); //MESSAGE POPUP
 		}	
 	}
 	
-	static useFreeCircumvent(pLock, pCharacter) {
+	static useFreeCircumvent(pLock, pCharacter, puseData = {}) {
 		if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
 			LnKFlags.removeFreeLockCircumvent(pCharacter);
 			
 			let vToggled = LockManager.ToggleLock(pLock, cLUFreeCircumvent);
 			
-			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUFreeCircumvent, Outcome : Number(vToggled)});
+			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUFreeCircumvent, Outcome : Number(vToggled), useData : puseData});
 		}
 	}
 	
@@ -248,23 +248,23 @@ class LockManager {
 					switch (puseData.useType) {
 						case cLUuseKey:
 							//a key was used on the lock
-							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID);
+							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID, puseData);
 							break;
 						case cLUusePasskey:
-							LockManager.useLockPasskey(vLock, vCharacter, puseData.EnteredPasskey);
+							LockManager.useLockPasskey(vLock, vCharacter, puseData.EnteredPasskey, puseData);
 							break;
 						case cLUpickLock:
 						case cLUbreakLock:
 							if (!puseData.usePf2eRoll) {
-								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType);
+								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType, puseData);
 							}
 							else {
 								//use Pf2e systems result
-								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Pf2eresult, puseData.useType);
+								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Pf2eresult, puseData.useType, false, puseData);
 							}
 							break;
 						case cLUFreeCircumvent:
-								LockManager.useFreeCircumvent(vLock, vCharacter);
+								LockManager.useFreeCircumvent(vLock, vCharacter, puseData);
 							break;
 					}
 				}

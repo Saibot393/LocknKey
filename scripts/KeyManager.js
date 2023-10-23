@@ -298,11 +298,15 @@ class KeyManager {
 	}
 	
 	static requestLockuse(puseData) {
+		let vuseData = puseData;
+		
+		vuseData.userID = game.user.id;
+		
 		if (game.user.isGM) {
-			Hooks.call(cModuleName + ".LockuseRequest", puseData);
+			Hooks.call(cModuleName + ".LockuseRequest", vuseData);
 		}
 		else {
-			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : puseData});
+			game.socket.emit("module."+cModuleName, {pFunction : "LockuseRequest", pData : vuseData});
 		}		
 	}
 	

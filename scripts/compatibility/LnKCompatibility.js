@@ -26,6 +26,8 @@ class LnKCompatibility {
 	
 	static async onLnKLockUse(pLock, pCharacter, pInfos) {} //called when someone uses a lock (only GM side)
 	
+	static TriggerTilerequest(pData) {} //called when a tile is requested to be triggered
+	
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
 		switch (pLockType) {
@@ -115,7 +117,24 @@ class LnKCompatibility {
 			let vTile = await LnKCompUtils.MATTTriggerTile(pLock);
 			
 			if (vTile) {
-				vTile.trigger({ tokens: [pCharacter], method: 'trigger', options: {landing : pInfos.UseType}});
+				if (!pInfos.useData.userID || pInfos.useData.userID == game.user.id) {
+					vTile.trigger({ tokens: [pCharacter], method: 'trigger', options: {landing : pInfos.UseType}});
+				}
+				else {
+					game.socket.emit("module."+cModuleName, {pFunction : "TriggerTilerequest", pData : {UserID : pInfos.useData.userID, TileID : vTile.id, CharacterID : pCharacter.id, Infos : pInfos}});
+				}
+			}
+		}
+	}
+	
+	static TriggerTilerequest(pData) {
+		if (pData.UserID == game.user.id) {
+			let vTile = canvas.tiles.get(pData.TileID)?.document;
+			
+			let vCharacter = canvas.tokens.get(pData.CharacterID)?.document;
+			
+			if (vTile && vCharacter) {
+				vTile.trigger({ tokens: [vCharacter], method: 'trigger', options: {landing : pData.Infos.UseType}});
 			}
 		}
 	}
@@ -149,3 +168,7 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName + ".LockUse", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
 	}
 });
+
+function TriggerTilerequest(pData) {return LnKCompatibility.TriggerTilerequest(pData)};
+
+export {TriggerTilerequest}
