@@ -1,3 +1,7 @@
+## v1.11.3
+- Added support for the Call of Cthulhu 7e system
+- Added partial support for the Chronicles of Darkness 2e system
+
 ## v1.11.2
 - Improved MATT integration, MATT trigered dialogs should now be displayed for the correct user
 - Fixed missing translation for MATT trigger conditions
