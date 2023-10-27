@@ -116,7 +116,9 @@ class LnKutils {
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
-	static async successDegree(pRollresult, pDiceDetails, pDC) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
+	static async successDegree(pRollresult, pDiceDetails, pDC, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
+	
+	static generateRollInfos(pToken) {} //returns roll infos based on pToken, used by successDegree()
 	
 	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
 	
@@ -537,7 +539,17 @@ class LnKutils {
 		return pRollresult >= pDC;
 	}
 	
-	static async successDegree(pRollresult, pDiceDetails, pDC) {
+	static async successDegree(pRollresult, pDiceDetails, pDC, pInfos = {}) {
+		let vInfos;
+		
+		if (pInfos.documentName == "Token") {
+			//pInfos is a token => generate infos
+			vInfos = LnKutils.generateRollInfos(pInfos);
+		}
+		else {
+			vInfos = pInfos;
+		}
+		
 		let vsuccessDegree;
 		
 		if (pDC == Infinity) {
@@ -677,6 +689,12 @@ class LnKutils {
 		vsuccessDegree = Math.min(2, Math.max(-1, vsuccessDegree)); //make sure vsuccessDegree is in [-1, 2]
 		
 		return vsuccessDegree;
+	}
+	
+	static generateRollInfos(pToken) {
+		let vInfos = {};
+		
+		return vInfos;
 	}
 	
 	static LPformulaWorld() {

@@ -103,7 +103,7 @@ class LockManager {
 		//only handles custom successDegree
 		let vSuccessDegree;
 		
-		vSuccessDegree = await LnKutils.successDegree(pRollresult, pDiceresult, LnKFlags.LockDCtype(pLock, pMethodtype));
+		vSuccessDegree = await LnKutils.successDegree(pRollresult, pDiceresult, LnKFlags.LockDCtype(pLock, pMethodtype), pCharacter);
 		
 		LockManager.oncircumventLockresult(pLock, pCharacter, pUsedItemID, vSuccessDegree, pMethodtype, true, puseData)
 	}

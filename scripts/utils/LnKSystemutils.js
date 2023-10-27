@@ -155,7 +155,7 @@ class LnKSystemutils {
 				return "1d100 - @actor.characteristics.dex.value";
 				break;
 			case cCoC7e:
-				return "1d100/max(1,@actor.system.skills.Locksmith.value)";
+				return "1d100/@actor.system.skills.Locksmith.value";
 				break;
 			default:
 				return "";
