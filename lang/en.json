@@ -158,7 +158,9 @@
 					"natCrit"			: "Nat 1/20",
 					"natCritpm10"		: "Nat 1/20 & +-10 of DC [e.g. Pf2e]",
 					"d100WFRP4"			: "d100 Nat1/100 [e.g. WFRP4e]",
-					"d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]"
+					"d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]",
+					"d100CoC7e"			: "d100 difficulty ranges [e.g. CoC7e]",
+					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]"
 				}
 			},
 			

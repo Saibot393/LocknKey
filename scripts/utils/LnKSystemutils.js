@@ -15,6 +15,7 @@ const cBitD = "blades-in-the-dark"; //name of the blades in the dark system
 const cCyberpunkRED = "cyberpunk-red-core"; //name of the cyberpunk red core system
 const cSandbox = "sandbox"; //name of the sandbox system
 const cWarhammerFRP4e = "wfrp4e"; //name of the warhammer fantasy roleplaying 4e system
+const cCoC7e = "CoC7"; //name of the Call of Cthulhu system 7th edition
 
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
@@ -153,6 +154,9 @@ class LnKSystemutils {
 			case cWarhammer4e:
 				return "1d100 - @actor.characteristics.dex.value";
 				break;
+			case cCoC7e:
+				return "1d100/max(1,@actor.system.skills.Locksmith.value)";
+				break;
 			default:
 				return "";
 		}
@@ -174,6 +178,9 @@ class LnKSystemutils {
 				break;
 			case cPf1eName:
 				return "1d20 + @actor.system.abilities.str.mod";
+				break;
+			case cCoC7e:
+				return "1d100/@actor.system.characteristics.str.value";
 				break;
 			default:
 				return "";

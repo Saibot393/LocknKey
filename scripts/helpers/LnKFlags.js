@@ -740,9 +740,7 @@ class LnKFlags {
 	}
 	
 	static async ReduceLPAttempts(pLock) {
-		console.log("check1");
 		if (LnKFlags.hasLPAttemptsLeft(pLock)) {
-			console.log("check2");
 			await this.#setLPAttemptsFlag(pLock, this.#LPAttemptsFlag(pLock)-1);
 		}
 	}

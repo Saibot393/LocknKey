@@ -116,7 +116,7 @@ class LnKutils {
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
-	static successDegree(pRollresult, pDiceDetails, pDC) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
+	static async successDegree(pRollresult, pDiceDetails, pDC) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
 	
 	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
 	
@@ -537,7 +537,7 @@ class LnKutils {
 		return pRollresult >= pDC;
 	}
 	
-	static successDegree(pRollresult, pDiceDetails, pDC) {
+	static async successDegree(pRollresult, pDiceDetails, pDC) {
 		let vsuccessDegree;
 		
 		if (pDC == Infinity) {
@@ -549,6 +549,9 @@ class LnKutils {
 			case "CritMethod-d100WFRP4":
 			case "CritMethod-d100WFRP4Doubles":
 				vsuccessDegree = Number(pRollresult <= pDC); //F || S			
+				break;
+			case "CritMethod-d100CoC7e":
+			case "CritMethod-d10poolCoD2e":
 				break;
 			default:
 				vsuccessDegree = Number(pRollresult >= pDC); //F || S
@@ -607,6 +610,67 @@ class LnKutils {
 				if (pDiceDetails[0] == 100 || (vsuccessDegree <= 0 && pDiceDetails[0]%11 == 0)) {
 					vsuccessDegree = -1; //crit F
 				}
+				break;
+			case "CritMethod-d100CoC7e":
+				let vCritFailureValue = 100;
+				
+				if ((pDiceDetails[0] / pRollresult) < 50) {
+					vCritFailureValue = 96; //increase crit fail because of low skill value
+				}
+			
+				//normal results
+				switch (pDC) {
+					case 0: //failure required
+						vsuccessDegree = Number(pDiceDetails[0] < vCritFailureValue);
+					break;
+					default:
+					case 1: //success required
+						vsuccessDegree = Number(pRollresult <= 1);
+					break;
+					case 2: //difficult success required
+						vsuccessDegree = Number(pRollresult <= 0.5);
+					break;
+					case 3: //extreme success required
+						vsuccessDegree = Number(pRollresult <= 0.2);
+					break;
+					case 4: //critical success required
+						vsuccessDegree = Number(pDiceDetails[0] == 1);
+					break;
+				}
+				
+				if (pDiceDetails[0] == 1) {
+					vsuccessDegree = 2; //crit S
+				}
+				
+				if (pDiceDetails[0] >= vCritFailureValue) {
+					vsuccessDegree = -1; //crit F
+				}
+				
+				break;
+			case "CritMethod-d10poolCoD2e":
+				let vPoolSuccesses = pRollresult;
+				
+				let vRerollLimit = 10; //find way to alter
+				
+				let vRerollsCount = pDiceDetails.filter(vRollResult => vRollResult >= vRerollLimit).length;	
+
+				let vReroll;
+				
+				let vDieRolls;
+				
+				do {
+					vReroll = new Roll(vRerollsCount+"d10cs>=8");
+					
+					await vReroll.evaluate();
+					
+					vPoolSuccesses = vPoolSuccesses + vReroll.total;
+					
+					vDieRolls = vReroll.dice[0]?.results?.map(vDie => vDie.result);
+					
+					vRerollsCount = vDieRolls.filter(vRollResult => vRollResult >= vRerollLimit);
+				} while (vRerollsCount > 0);
+				
+				vsuccessDegree = Number(vPoolSuccesses >= pDC);
 				break;
 		}
 		

@@ -138,7 +138,9 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 		"CritMethod-natCrit": Translate("Settings.CritMethod.options.natCrit"),
 		"CritMethod-natCritpm10": Translate("Settings.CritMethod.options.natCritpm10"),
 		"CritMethod-d100WFRP4": Translate("Settings.CritMethod.options.d100WFRP4"),
-		"CritMethod-d100WFRP4Doubles": Translate("Settings.CritMethod.options.d100WFRP4Doubles")
+		"CritMethod-d100WFRP4Doubles": Translate("Settings.CritMethod.options.d100WFRP4Doubles"),
+		"CritMethod-d100CoC7e" : Translate("Settings.CritMethod.options.d100CoC7e"),
+		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e")
 	},
 	default: "CritMethod-natCrit"
   });
