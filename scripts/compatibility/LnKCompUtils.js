@@ -196,7 +196,9 @@ class LnKCompUtils {
 		let vID;
 
 		if (pLock?.flags.hasOwnProperty(cModuleName)) {
-			vID = pLock?.flags[cModuleName][cMATTTriggerTileF]; //from LnK
+			if (pLock?.flags[cModuleName]) {
+				vID = pLock?.flags[cModuleName][cMATTTriggerTileF]; //from LnK
+			}
 		}
 		
 		if (vID) {
