@@ -1,3 +1,6 @@
+## v1.11.4
+- Preperation for cross compatibility with planned perceptive MATT triggers
+
 ## v1.11.3
 - Added support for the Call of Cthulhu 7e system
 - Added partial support for the Chronicles of Darkness 2e system
