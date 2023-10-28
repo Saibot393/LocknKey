@@ -9,6 +9,7 @@ import {LnKSheetSettings} from "../settings/LnKSheetSettings.js";
 //LnKCompatibility will take care of compatibility with other modules in regards to calls, currently supported:
 
 const cTriggersIcon = "fa-running";
+
 class LnKCompatibility {
 	//DECLARATIONS
 	
@@ -59,7 +60,9 @@ class LnKCompatibility {
 	
 	//specific: MATT
 	static addTriggerSettings(pApp, pHTML, pData, pAddBasics = false) {
-		if (pAddBasics) {
+		let vAddBasics = pAddBasics && !pHTML.find(`a[data-tab="triggers"]`).length;
+		
+		if (vAddBasics) {
 			let vTabbar = pHTML.find(`nav.sheet-tabs`);
 			
 			let vTabButtonHTML = 	`
@@ -72,11 +75,14 @@ class LnKCompatibility {
 			vTabbar.append(vTabButtonHTML);		
 		}
 		
-		let vprevTab = pHTML.find(`div[data-tab=${cModuleName}]`); //places rideable tab after last core tab "basic"
-		let vTabContentHTML = `<div class="tab" data-tab="triggers"></div>`; //tab content sheet HTML
-		vprevTab.after(vTabContentHTML);
+		if (!pHTML.find(`div[data-tab="triggers"]`).length) {
+			//create new tab field
+			let vprevTab = pHTML.find(`div[data-tab=${cModuleName}]`); //places rideable tab after last core tab "basic"
+			let vTabContentHTML = `<div class="tab" data-tab="triggers"></div>`; //tab content sheet HTML
+			vprevTab.after(vTabContentHTML);
+		}
 		
-		if (pAddBasics) {
+		if (vAddBasics) {
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cMATTTriggerTileF +".name"), 
 													vhint : Translate("SheetSettings."+ cMATTTriggerTileF +".descrp"), 
 													vtype : "text",
