@@ -177,7 +177,7 @@ class LnKCompUtils {
 	
 	//specific: MATT
 	static async MATTTriggerTile(pLock) {
-		let vID = pLock?.flags[cMATT]?.entity.id; //from MATT
+		let vID = pLock?.flags[cMATT]?.entity?.id; //from MATT
 		
 		if (vID) {
 			return fromUuid(vID);
@@ -205,7 +205,7 @@ class LnKCompUtils {
 			return vID;
 		}
 		
-		vID = pLock?.flags[cMATT]?.entity.id; //from MATT
+		vID = pLock?.flags[cMATT]?.entity?.id; //from MATT
 		
 		if (vID) {
 			return vID;

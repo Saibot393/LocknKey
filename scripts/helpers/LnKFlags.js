@@ -25,8 +25,9 @@ const cReplacementItemF = "ReplacementItemFlag"; //Flag to store ids or names of
 const cLPAttemptsF = "LPAttemptsFlag"; //FLag to store the ammount of Lock Pick attempts of this lock
 const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how many FreeLockCircumvents this token has
 const ccanbeCircumventedFreeF = "canbeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
+const cRollOptionsF = "RollOptionsFlag"; //Flag to store roll options
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -35,7 +36,22 @@ const cCustomPopup = { //all Custompopups and their IDs
 	LockPasskeyTitle : 3
 };
 
-export { cCustomPopup };
+const cRollOptionDefault = {
+	LockusePick : {
+		d10CritLimit : 10
+	},
+	LockuseBreak: {
+		d10CritLimit : 10
+	}
+}
+
+const cRollTypes = ["LockusePick", "LockuseBreak"]; //same as cLUpickLock, cLUbreakLock !
+
+const cCritRollOptions = {
+	"CritMethod-d10poolCoD2e" : ["d10CritLimit"]
+};
+
+export { cCustomPopup, cRollTypes, cCritRollOptions };
 
 //buffers
 var cIDKeyBuffer; //saves the coppied IDkeys
@@ -139,6 +155,8 @@ class LnKFlags {
 	static HasFormula(pObject, pType) {} //returns if the Token/Item has a Formula for pTpye [cLUpickLock, cLUbreakLock]
 	
 	static FormulaOverride(pObject, pType) {} //if this objects Formula for pTpye [cLUpickLock, cLUbreakLock] overrides the global formula
+	
+	static RollOptions(pObject, pRollType, pRollOption, pFallbackValue = undefined) {} //returns the pRollOption of pRollType belonging to pObject (returns cRollOptionDefault otherwise)
 	
 	//popups
 	static setCustomPopups(pObject, pPopups) {} //set the custom popups of pObject to pPopups
@@ -441,6 +459,19 @@ class LnKFlags {
 		}
 		
 		return true; //default if anything fails				
+	}
+	
+	static #RollOptionsFlag (pObject) {
+	//returns content of this objects roll options
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cRollOptionsF)) {
+				return vFlag.RollOptionsFlag;
+			}
+		}
+		
+		return cRollOptionDefault;
 	}
 	
 	static async #setIDKeysFlag (pObject, pContent) {
@@ -858,6 +889,24 @@ class LnKFlags {
 				return false;
 				break;
 		}			
+	}
+	
+	static RollOptions(pObject, pRollType, pRollOption, pFallbackValue = undefined) {
+		let vOptions = LnKFlags.#RollOptionsFlag(pObject);
+		
+		if (vOptions.hasOwnProperty(pRollType)) {
+			if (vOptions[pRollType].hasOwnProperty(pRollOption)) {
+				return vOptions[pRollType][pRollOption];
+			}
+		}
+		
+		if (cRollOptionDefault.hasOwnProperty(pRollType)) {
+			if (cRollOptionDefault[pRollType].hasOwnProperty(pRollOption)) {
+				return cRollOptionDefault[pRollType][pRollOption];
+			}
+		}
+		
+		return pFallbackValue; //something failed, panic, let everything go, run, scream, start praying, the apocalypse is near!
 	}
 	
 	//popups

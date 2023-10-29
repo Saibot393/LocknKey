@@ -432,6 +432,21 @@
 					"critfailure"		: "kritischer Misserfolg",
 					"success"			: "Erfolg"
 				}
+			},
+			
+			"RollOptionsFlag" : {
+				"LockusePick" : {
+					"d10CritLimit" : {
+						"name"			: "Schlossknack d10 Krit Limit",
+						"descrp"		: "Der minimale Kritwert für d10 Schlassknackwürfe"
+					}
+				},
+				"LockuseBreak" : {
+					"d10CritLimit" : {
+						"name"			: "Schlossaufbrechen d10 Krit Limit",
+						"descrp"		: "Der minimale Kritwert für d10 Schlossaufbrechwürfe"
+					}					
+				}
 			}	
 		},
 		

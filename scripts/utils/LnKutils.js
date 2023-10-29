@@ -2,6 +2,7 @@ import * as FCore from "../CoreVersionComp.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 import { LnKSystemutils, cPf2eLoottype, cLockTypeLootPf2e } from "./LnKSystemutils.js";
 import { Geometricutils } from "./Geometricutils.js";
+import { LnKFlags } from "../helpers/LnKFlags.js";
 
 //CONSTANTS
 const cModuleName = "LocknKey"; //name of Module
@@ -116,7 +117,7 @@ class LnKutils {
 	
 	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
 	
-	static async successDegree(pRollresult, pDiceDetails, pDC, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
+	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
 	
 	static generateRollInfos(pToken) {} //returns roll infos based on pToken, used by successDegree()
 	
@@ -539,16 +540,7 @@ class LnKutils {
 		return pRollresult >= pDC;
 	}
 	
-	static async successDegree(pRollresult, pDiceDetails, pDC, pInfos = {}) {
-		let vInfos;
-		
-		if (pInfos.documentName == "Token") {
-			//pInfos is a token => generate infos
-			vInfos = LnKutils.generateRollInfos(pInfos);
-		}
-		else {
-			vInfos = pInfos;
-		}
+	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {
 		
 		let vsuccessDegree;
 		
@@ -663,6 +655,10 @@ class LnKutils {
 				let vPoolSuccesses = pRollresult;
 				
 				let vRerollLimit = 10; //find way to alter
+				
+				if (pInfos.hasOwnProperty("RollType")) {
+					vRerollLimit = LnKFlags.RollOptions(pCharacter, pInfos.RollType, "d10CritLimit", vRerollLimit);
+				}
 				
 				let vRerollsCount = pDiceDetails.filter(vRollResult => vRollResult >= vRerollLimit).length;	
 

@@ -382,6 +382,21 @@
 				"critfailure"		: "critical failure",
 				"success"			: "success"
 			}
+		},
+			
+		"RollOptionsFlag" : {
+			"LockusePick" : {
+				"d10CritLimit" : {
+					"name"			: "Lockpick d10 crit limit",
+					"descrp"		: "The minimum crit value for d10 lockpick rolls"
+				}
+			},
+			"LockuseBreak" : {
+				"d10CritLimit" : {
+					"name"			: "Lock break d10 crit limit",
+					"descrp"		: "The minimum crit value for d10 lock break rolls"
+				}					
+			}
 		}
     },
     "Context": {

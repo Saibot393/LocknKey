@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -24,6 +24,8 @@ class LnKSheetSettings {
 	static AddLockstandardsettings(pApp, pHTML, pData, pto) {} //adds the Lock standard settings (IDs, LPDC, LBDC)
 	
 	static AddFormulastandardsettings(pApp, pHTML, pData, pType, pto) {} //adds the character and item standard settings (LP formula, LP override, LB formula, LB override) (pType is either token or item)
+	
+	static AddRollOptions(pApp, pHTML, pData, pto) {} //adds the crit settings roll options to pHTML
 	
 	//support
 	static AddHTMLOption(pHTML, pInfos, pto) {} //adds a new HTML option to pto in pHTML
@@ -257,6 +259,8 @@ class LnKSheetSettings {
 			//formulas
 			if (vLockFormulaSettings) { //replaced by Pf2e
 				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
+				
+				LnKSheetSettings.AddRollOptions(pApp, pHTML, pData,`div[data-tab="${cModuleName}"]` );
 			}
 			
 			if (vLockSettings) {
@@ -417,6 +421,26 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.LBFormulaOverride(pApp.object),
 												vflagname : cLBFormulaOverrideF
 												}, pto);
+	}
+	
+	static AddRollOptions(pApp, pHTML, pData, pto) {
+		let vFlagName;
+		
+		if (cCritRollOptions[game.settings.get(cModuleName, "CritMethod")]) {
+			for (let vRType of cRollTypes) {
+				for (let vROption of cCritRollOptions[game.settings.get(cModuleName, "CritMethod")]) {
+					//Adds crit setting dependent roll options
+					vFlagName = cRollOptionsF + "." + vRType + "." + vROption;
+					
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ vFlagName +".name"), 
+															vhint : Translate("SheetSettings."+ vFlagName +".descrp."), 
+															vtype : "number", 
+															vvalue : LnKFlags.RollOptions(pApp.object, vRType, vROption),
+															vflagname : vFlagName
+															}, pto);				
+				}
+			}
+		}
 	}
 	
 	//support
