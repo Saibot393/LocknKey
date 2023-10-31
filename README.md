@@ -101,10 +101,10 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
   - Adds a textbox to enter the tile which should be triggered for lockable tokens
   - The following landings can be optionally used to differentiate between the different Lock & Key triggers: `LockuseKey`, `LockusePasskey`, `LockusePick`, `LockuseBreak`, `LockuseFree`
   - Adds additional Actions & Filters:
-   - Action Lock to lock a Door/Token
-   - Action Unlock to unlock Door/Token
-   - Action Toggle lock to toggle a Door/Token
-   - Filter Filter by lock state to filter by the lock state (locked/unlocked)
+    - Action Lock to lock a Door/Token
+    - Action Unlock to unlock Door/Token
+    - Action Toggle lock to toggle a Door/Token
+    - Filter Filter by lock state to filter by the lock state (locked/unlocked)
 
 ### Languages:
 
