@@ -479,6 +479,39 @@
 				"line2" 				: "•shift+right-click to try to pick a lock",
 				"line3" 				: "•alt+right-click to try to break a lock"
 			}
+		},
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "Filter",
+				
+				"filter-by-lock-state" : {
+					"name"					: "Filter by lock state",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "Lock state condition",
+							"options" : {
+								"locked"	: "is locked",
+								"unlocked"	: "is unlocked"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "Lock"
+				},
+				
+				"unlock" : {
+					"name"					: "Unlock"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "Toggle lock"
+				}
+			}
 		}
 	}
 }

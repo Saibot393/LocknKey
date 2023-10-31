@@ -479,6 +479,39 @@
 				"line2" 				: "•Shift+Rechtsklick um zu versuchen ein Schloss zu knacken",
 				"line3" 				: "•Alt+Rechtsklick um zu versuchen ein Schloss aufzubrechen"
 			}
+		},
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "Filter",
+				
+				"filter-by-lock-state" : {
+					"name"					: "Filter nach Schlosszustand",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "Schlosszustand Bedingung",
+							"options" : {
+								"locked"	: "ist abgeschlossen",
+								"unlocked"	: "ist aufgeschlossen"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "Schließe ab"
+				},
+				
+				"unlock" : {
+					"name"					: "Schließe auf"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "Schalte Schloss um"
+				}
+			}
 		}
 	}
 }

@@ -44,6 +44,12 @@ function Translate(pName, pWords = {}){
 	return vText;
 }
 
+function TranslateClean(pName){
+	let vText = game.i18n.localize(pName);
+		
+	return vText;
+}
+
 var vlastSearchedItemtype; //Saves the last item type for which a path was searched
 var vlastItempath; //Saves the last path that was found for lastSearchedItemtype
 
@@ -832,4 +838,4 @@ class LnKutils {
 	}
 }
 
-export { Translate, LnKutils }
+export { Translate, TranslateClean, LnKutils }

@@ -610,3 +610,5 @@ function PastehoveredLockGM() {if (game.user.isGM) { return LockManager.pasteLoc
 function CreateNewKeyhoveredGM() {if (game.user.isGM) {return LockManager.newLockKey(LnKutils.hoveredObject())}};
 
 export { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM}
+
+export { LockManager }

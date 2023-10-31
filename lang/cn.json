@@ -424,6 +424,39 @@
         "line2": "•shift+右键 尝试撬锁",
         "line3": "•alt+右键   尝试砸锁"
       }
-    }
+    },
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "Filter",
+				
+				"filter-by-lock-state" : {
+					"name"					: "Filter by lock state",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "Lock state condition",
+							"options" : {
+								"locked"	: "is locked",
+								"unlocked"	: "is unlocked"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "Lock"
+				},
+				
+				"unlock" : {
+					"name"					: "Unlock"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "Toggle lock"
+				}
+			}
+		}
   }
 }

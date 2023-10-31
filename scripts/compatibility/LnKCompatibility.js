@@ -1,7 +1,7 @@
 import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
-import { LnKutils, cModuleName, Translate, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
-import { isUnlocked, UserCanopenToken } from "../LockManager.js";
+import { LnKutils, cModuleName, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
+import { isUnlocked, UserCanopenToken, LockManager } from "../LockManager.js";
 import { LnKFlags, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
 import {LnKSheetSettings} from "../settings/LnKSheetSettings.js";
@@ -172,6 +172,182 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName + ".TokenLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData, true));
 		
 		Hooks.on(cModuleName + ".LockUse", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
+	}
+});
+
+Hooks.once("setupTileActions", (pMATT) => {
+	if (LnKCompUtils.isactiveModule(cMATT)) {
+		if (pMATT) {
+			pMATT.registerTileGroup(cModuleName, Translate("Titles." + cModuleName));
+			
+			//toggle lock
+			pMATT.registerTileAction(cModuleName, 'toggle-lock', {
+				name: Translate(cMATT + ".actions." + "toggle-lock" + ".name"),
+				ctrls: [
+					{
+						id: "entity",
+						name: "MonksActiveTiles.ctrl.select-entity",
+						type: "select",
+						subtype: "entity",
+						options: { show: ['within', 'previous', 'tagger'] },
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+					}
+				],
+				group: cModuleName,
+				fn: async (args = {}) => {
+					let vLocks = await pMATT.getEntities(args);
+					
+					for (let i = 0; i < vLocks.length; i++) {
+						if (vLocks[i]) {
+							LockManager.ToggleLock(vLocks[i], cLUisGM);
+						}
+					}
+				},
+				content: async (trigger, action) => {
+					let entityName = await pMATT.entityName(action.data?.entity);
+					return `<span class="logic-style">${TranslateClean(trigger.name)}</span> <span class="entity-style">${entityName}</span>`;
+				}
+			});
+			
+			//lock
+			pMATT.registerTileAction(cModuleName, 'lock', {
+				name: Translate(cMATT + ".actions." + "lock" + ".name"),
+				ctrls: [
+					{
+						id: "entity",
+						name: "MonksActiveTiles.ctrl.select-entity",
+						type: "select",
+						subtype: "entity",
+						options: { show: ['within', 'previous', 'tagger'] },
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+					}
+				],
+				group: cModuleName,
+				fn: async (args = {}) => {
+					let vLocks = await pMATT.getEntities(args);
+					
+					for (let i = 0; i < vLocks.length; i++) {
+						if (vLocks[i] && await LockManager.isUnlocked(vLocks[i])) {
+							LockManager.ToggleLock(vLocks[i], cLUisGM);
+						}
+					}
+				},
+				content: async (trigger, action) => {
+					let entityName = await pMATT.entityName(action.data?.entity);
+					return `<span class="logic-style">${TranslateClean(trigger.name)}</span> <span class="entity-style">${entityName}</span>`;
+				}
+			});
+			
+			//unlock
+			pMATT.registerTileAction(cModuleName, 'unlock', {
+				name: Translate(cMATT + ".actions." + "unlock" + ".name"),
+				ctrls: [
+					{
+						id: "entity",
+						name: "MonksActiveTiles.ctrl.select-entity",
+						type: "select",
+						subtype: "entity",
+						options: { show: ['within', 'previous', 'tagger'] },
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+					}
+				],
+				group: cModuleName,
+				fn: async (args = {}) => {
+					let vLocks = await pMATT.getEntities(args);
+					
+					for (let i = 0; i < vLocks.length; i++) {
+						if (vLocks[i] && !(await LockManager.isUnlocked(vLocks[i]))) {
+							LockManager.ToggleLock(vLocks[i], cLUisGM);
+						}
+					}
+				},
+				content: async (trigger, action) => {
+					let entityName = await pMATT.entityName(action.data?.entity);
+					return `<span class="logic-style">${TranslateClean(trigger.name)}</span> <span class="entity-style">${entityName}</span>`;
+				}
+			});
+			
+			//filter lock state
+			pMATT.registerTileAction(cModuleName, 'filter-by-lock-state', {
+            name: Translate(cMATT + ".filters." + "filter-by-lock-state" + ".name"),
+            ctrls: [
+                {
+                    id: "entity",
+                    name: "MonksActiveTiles.ctrl.select-entity",
+                    type: "select",
+                    subtype: "entity",
+                    options: { show: ['token', 'within', 'players', 'previous', 'tagger'] },
+                    restrict: (entity) => {
+                        return ((entity instanceof Token) || (entity instanceof Wall));
+                    }
+                },
+                {
+                    id: "filterCondition",
+                    name: Translate(cMATT + ".filters." + "filter-by-lock-state" + ".settings." + "filterCondition" + ".name"),
+                    list: "filterCondition",
+                    type: "list",
+                    defvalue: 'yes'
+                },
+                {
+                    id: "continue",
+                    name: "Continue if",
+                    list: "continue",
+                    type: "list",
+                    defvalue: 'always'
+                }
+            ],
+            values: {
+                "filterCondition": {
+                    "locked": Translate(cMATT + ".filters." + "filter-by-lock-state" + ".settings." + "filterCondition" + ".options." + "locked"),
+                    "unlocked": Translate(cMATT + ".filters." + "filter-by-lock-state" + ".settings." + "filterCondition" + ".options." + "unlocked"),
+                },
+                'continue': {
+                    "always": "Always",
+                    "any": "Any Matches",
+                    "all": "All Matches",
+                }
+            },
+            fn: async (args = {}) => {
+
+                const { action } = args;
+
+                const entities = await pMATT.getEntities(args);
+				
+				let vEntityCount = entities.length;
+
+                let vfilterUnlocked = action.data?.filterCondition == "unlocked";
+				
+				let vUnlockedMap = await Promise.all(entities.map(vObject => isUnlocked(vObject))); //where async filter, js?
+				
+                let vFiltered = entities.filter((vObject, vIndex) => {
+                    return ((vObject instanceof TokenDocument) || (vObject instanceof WallDocument))
+                        && vUnlockedMap[vIndex] == vfilterUnlocked;
+                });
+
+                const vContinue = (action.data?.continue === 'always'
+                    || (action.data?.continue === 'any' && vFiltered.length > 0)
+                    || (action.data?.continue === 'all' && vFiltered.length == vEntityCount && vFiltered.length > 0));
+
+                return { continue: vContinue, tokens: vFiltered };
+
+            },
+            content: async (trigger, action) => {
+                const entityName = await pMATT.entityName(action.data?.entity);
+                let html = `<span class="filter-style">${Translate(cMATT + ".filters.name", false)}</span> <span class="entity-style">${entityName}</span>`;
+				
+				switch(action.data.filterCondition) {
+					case "locked" :
+						html = html + " " + Translate(cMATT + ".filters." + "filter-by-lock-state" + ".settings." + "filterCondition" + ".options." + "locked");
+						break;
+					case "unlocked" : 
+						html = html + " " + Translate(cMATT + ".filters." + "filter-by-lock-state" + ".settings." + "filterCondition" + ".options." + "unlocked");
+						break;
+				}
+				
+                return html;
+            }
+        });
+		}
 	}
 });
 
