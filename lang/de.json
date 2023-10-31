@@ -134,6 +134,11 @@
 				"name" 					: "Gegenstandstyp für Schlüssel",
 				"descrp"				: "Der Gegenstandstyp den das Modul für neue Schlüssel benutzt, leer lassen um den standard Typen zu benutzen (Erhalt einer Liste valider Typen durch Eingeben von \"game.items.documentClass.TYPES\" in die F12 Konsole)"		
 			},
+
+			"LnKSettingTypes" : {
+				"name" 					: "Einstellungs Gegenstandstypen",
+				"descrp"				: "Die Gegenstandstypen für welche die Lock & Key Einstellungen angezeigt werden (getrennt mit \";\", \"all\" für alle typen)"		
+			},
 			
 			"KeyitemCreationPopup" : {
 				"name" 					: "Schlüssel-Erschaffungsmenu",

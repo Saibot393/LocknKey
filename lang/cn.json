@@ -122,6 +122,10 @@
         "name": "钥匙物品类型",
         "descrp": "模组生成新钥匙时使用的物品类型，留空则使用默认类型(在F12 - Console 中输入 \"game.items.documentClass.TYPES\" 来列出可用的类型)"
       },
+		"LnKSettingTypes" : {
+			"name" 					: "Setting item types",
+			"descrp"				: "The item types for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all types)"		
+		},
 		"KeyitemCreationPopup" : {
 			"name" 					: "钥匙创建菜单",
 			"descrp"				: "创建钥匙时是否让设置菜单弹出"		

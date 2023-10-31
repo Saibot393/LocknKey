@@ -99,6 +99,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.Systemdefaultitemtype()
   }); 
   
+  game.settings.register(cModuleName, "LnKSettingTypes", {
+	name: Translate("Settings.LnKSettingTypes.name"),
+	hint: Translate("Settings.LnKSettingTypes.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: "all"
+  }); 
+  
   game.settings.register(cModuleName, "KeyitemCreationPopup", {
 	name: Translate("Settings.KeyitemCreationPopup.name"),
 	hint: Translate("Settings.KeyitemCreationPopup.descrp"),

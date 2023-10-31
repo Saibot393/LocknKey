@@ -1,5 +1,5 @@
 import * as FCore from "../CoreVersionComp.js";
-import { LnKutils, cModuleName, Translate } from "../utils/LnKutils.js";
+import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
 import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
@@ -39,92 +39,94 @@ class LnKSheetSettings {
 	//IMPLEMENTATIONS
 	
 	static ItemSheetSettings(pApp, pHTML, pData) {
-		//setup
-		let vTabbar = pHTML.find(`.sheet-tabs`);
-		if (!vTabbar.length) {
-			//if tab bar was not found, try other search
-			vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
-		}	
-		
-		let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
-		if (!vprevTab.length) {
-			//if tab bar was not found, try other search
-			vprevTab = pHTML.find(`div[tab="details"]`);
+		if (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)) {
+			//setup
+			let vTabbar = pHTML.find(`.sheet-tabs`);
+			if (!vTabbar.length) {
+				//if tab bar was not found, try other search
+				vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
+			}	
+			
+			let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
 			if (!vprevTab.length) {
 				//if tab bar was not found, try other search
-				vprevTab = pHTML.find(`div[data-tab="description"]`);
+				vprevTab = pHTML.find(`div[tab="details"]`);
 				if (!vprevTab.length) {
 					//if tab bar was not found, try other search
-					vprevTab = pHTML.find(`div[tab="description"]`);
+					vprevTab = pHTML.find(`div[data-tab="description"]`);
 					if (!vprevTab.length) {
 						//if tab bar was not found, try other search
-						vprevTab = pHTML.find(`section[data-tab="description"]`);
+						vprevTab = pHTML.find(`div[tab="description"]`);
 						if (!vprevTab.length) {
 							//if tab bar was not found, try other search
-							vprevTab = pHTML.find(`section[tab="description"]`);
+							vprevTab = pHTML.find(`section[data-tab="description"]`);
+							if (!vprevTab.length) {
+								//if tab bar was not found, try other search
+								vprevTab = pHTML.find(`section[tab="description"]`);
+							}
 						}
 					}
 				}
 			}
-		}
 
-	
-		let vTabButtonHTML = 	`
-						<a class="item list-row" data-tab="${cModuleName}">
-							<i class="fas ${cLnKKeyIcon}"></i>
-							${Translate("Titles."+cModuleName)}
-						</a>
-						`; //tab button HTML
-		let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
 		
-		vTabbar.append(vTabButtonHTML);
-		vprevTab.after(vTabContentHTML);	
+			let vTabButtonHTML = 	`
+							<a class="item list-row" data-tab="${cModuleName}">
+								<i class="fas ${cLnKKeyIcon}"></i>
+								${Translate("Titles."+cModuleName)}
+							</a>
+							`; //tab button HTML
+			let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+			
+			vTabbar.append(vTabButtonHTML);
+			vprevTab.after(vTabContentHTML);	
 
-		//settings	
-		
-		//create title for key items
-		let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
-		
-		pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
-		
-		//setting item ids	
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
-												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
-												vtype : "text", 
-												vwide : true,
-												vvalue : LnKFlags.KeyIDs(pApp.object),
-												vflagname : cIDKeysF
-												}, `div[data-tab="${cModuleName}"]`);	
-								
-		//setting remove key on use
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
-												vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
-												vtype : "checkbox", 
-												vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
-												vflagname : cRemoveKeyonUseF
-												}, `div[data-tab="${cModuleName}"]`);
+			//settings	
 			
-		//create title for Lockpick/Break items
-		vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
-		
-		pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			//create title for key items
+			let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
 			
-		if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
-			//formulas
-			LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
-		}
-		
-		//setting replacement item
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
-												vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
-												vtype : "text",
-												vwide : true,												
-												vvalue : LnKFlags.ReplacementItems(pApp.object, true),
-												vflagname : cReplacementItemF
-												}, `div[data-tab="${cModuleName}"]`);
-												
-		if (pApp.LnKTabactive) {
-			pApp.activateTab(cModuleName);
+			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			
+			//setting item ids	
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+													vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
+													vtype : "text", 
+													vwide : true,
+													vvalue : LnKFlags.KeyIDs(pApp.object),
+													vflagname : cIDKeysF
+													}, `div[data-tab="${cModuleName}"]`);	
+									
+			//setting remove key on use
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
+													vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
+													vtype : "checkbox", 
+													vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
+													vflagname : cRemoveKeyonUseF
+													}, `div[data-tab="${cModuleName}"]`);
+				
+			//create title for Lockpick/Break items
+			vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
+			
+			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+				
+			if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
+				//formulas
+				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
+			}
+			
+			//setting replacement item
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
+													vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
+													vtype : "text",
+													vwide : true,												
+													vvalue : LnKFlags.ReplacementItems(pApp.object, true),
+													vflagname : cReplacementItemF
+													}, `div[data-tab="${cModuleName}"]`);
+													
+			if (pApp.LnKTabactive) {
+				pApp.activateTab(cModuleName);
+			}
 		}
 	}
 	

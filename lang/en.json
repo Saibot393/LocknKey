@@ -134,6 +134,11 @@
 				"name" 					: "Type of key items",
 				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
 			},
+
+			"LnKSettingTypes" : {
+				"name" 					: "Setting item types",
+				"descrp"				: "The item types for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all types)"		
+			},
 			
 			"KeyitemCreationPopup" : {
 				"name" 					: "Key creation menu",
