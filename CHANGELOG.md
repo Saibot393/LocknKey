@@ -1,3 +1,7 @@
+## v1.11.5
+- Added crit system dependent settings
+  - Added d10 crit limit setting for d10 pool >=8 and reroll on 10
+
 ## v1.11.4
 - Preperation for cross compatibility with planned perceptive MATT triggers
 
