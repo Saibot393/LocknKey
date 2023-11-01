@@ -1,5 +1,6 @@
 import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock } from "../KeyManager.js";
 import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
+import { ResettoStandardFormulas } from "../utils/LnKSystemutils.js";
 
 //functions for macros
 Hooks.on("init",() => {
@@ -10,6 +11,7 @@ Hooks.on("init",() => {
 		TogglehoveredLockGM,
 		CopyhoveredLockGM,
 		PastehoveredLockGM,
-		CreateNewKeyhoveredGM
+		CreateNewKeyhoveredGM,
+		ResettoStandardFormulas
 	};
 });

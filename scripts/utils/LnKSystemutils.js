@@ -46,6 +46,8 @@ class LnKSystemutils {
 	
 	static isFreeCircumvent(pMessage) {} //returns if pMessage causes a free circumvent
 	
+	static ResettoStandardFormulas(pResets = {pLP : true, pLB : true}) {} //resets the formulas to the standard formulas
+	
 	//IMPLEMENTATIONS
 	//Identification	
 	static isPf2e() {
@@ -140,7 +142,7 @@ class LnKSystemutils {
 				return "1d20 + @actor.skills.thievery.mod";
 				break;
 			case cDnD5e:
-				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.total";
+				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.prof.flat + @actor.system.tools.thief.bonus";
 				break;
 			case cDnD35e:
 				return "1d20 + @actor.system.skills.opl.mod";
@@ -168,7 +170,7 @@ class LnKSystemutils {
 				return "1d20 + @actor.skills.athletics.mod - 2";
 				break;
 			case cDnD5e:
-				return "1d20 + @actor.system.abilities.str.mod + @actor.system.skills.ath.value";
+				return "1d20 + @actor.system.abilities.str.mod + @actor.system.skills.ath.prof.flat";
 				break;
 			case cDnD35e:
 				return "1d20 + @actor.system.abilities.str.mod";
@@ -213,6 +215,18 @@ class LnKSystemutils {
 			return false;
 		}
 	}
+	
+	static async ResettoStandardFormulas(pResets = {pLP : true, pLB : true}) {
+		if (pResets.pLP) {
+			await game.settings.set(cModuleName, "LockPickFormula", LnKSystemutils.SystemdefaultLPformula());
+		}
+		
+		if (pResets.pLB) {
+			await game.settings.set(cModuleName, "LockBreakFormula", LnKSystemutils.SystemdefaultLBformula());
+		}
+	}
 }
+
+export function ResettoStandardFormulas(pResets = {pLP : true, pLB : true}) {LnKSystemutils.ResettoStandardFormulas(pResets)};
 
 export { LnKSystemutils }
