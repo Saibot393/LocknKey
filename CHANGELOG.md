@@ -1,3 +1,11 @@
+## v1.12.0
+- Added world setting Setting item types to set forwhich item types the settings tab should bbe displayed
+- Added custom actions for MATT:
+  - Added action Lock to lock a Door/Token
+  - Added action Unlock to unlock Door/Token
+  - Added action Toggle lock to toggle a Door/Token
+  - Added filter Filter by lock state to filter by the lock state (locked/unlocked)
+
 ## v1.11.5
 - Added crit system dependent settings
   - Added d10 crit limit setting for d10 pool >=8 and reroll on 10

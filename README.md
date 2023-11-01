@@ -34,6 +34,7 @@ All player and GM controls also have corresponding key binds.
 - Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
+- Setting item types: to set forwhich item types the settings tab should be displayed
 - Key creation menu: to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
 - Key name as ID: to use the keys name as an additional ID when interacting with locks
 - Use Pf2e roll system: to use the Pf2e system instead of the Lock & Key roll and crit settings
@@ -99,6 +100,11 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
   - Adds additional Lock & Key related triggers for doors and lockable tokens (adds a new triggers tab to lockable tokens)
   - Adds a textbox to enter the tile which should be triggered for lockable tokens
   - The following landings can be optionally used to differentiate between the different Lock & Key triggers: `LockuseKey`, `LockusePasskey`, `LockusePick`, `LockuseBreak`, `LockuseFree`
+  - Adds additional Actions & Filters:
+    - Action Lock to lock a Door/Token
+    - Action Unlock to unlock Door/Token
+    - Action Toggle lock to toggle a Door/Token
+    - Filter Filter by lock state to filter by the lock state (locked/unlocked)
 
 ### Languages:
 
