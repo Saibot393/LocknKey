@@ -2,7 +2,7 @@
 - Fixed faulty D&D 5e formulas
 - Added new macro `Update Lock & Key world formulas`
 
-D&d 5e players using the default Lock & Key Lock break or Lock pick formula should either use the above formula or manually enter these formulas:
+D&d 5e users using the default Lock & Key Lock break or Lock pick formula should either use the above formula or manually enter these formulas:
 - Lockpick roll formula: `1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.prof.flat + @actor.system.tools.thief.bonus`
 - Break lock roll formula: '1d20 + @actor.system.abilities.str.mod + @actor.system.skills.ath.prof.flat'
 
