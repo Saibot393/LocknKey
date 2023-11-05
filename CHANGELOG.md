@@ -1,4 +1,4 @@
-## v1.12.3
+## v1.12.4
 - Added missing translation string
 
 ## v1.12.3
