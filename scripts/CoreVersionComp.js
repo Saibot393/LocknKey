@@ -19,7 +19,7 @@ export function sceneof(pToken) {
 }
 
 export function keysofevent(pEvent) {
-	if (pEvent.data.originalEvent) {
+	if (pEvent.data?.originalEvent) {
 		return {altKey : pEvent.data.originalEvent.altKey, ctrlKey : pEvent.data.originalEvent.ctrlKey, shiftKey : pEvent.data.originalEvent.shiftKey};
 	}
 	else {

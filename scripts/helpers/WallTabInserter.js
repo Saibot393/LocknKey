@@ -14,6 +14,10 @@ class WallTabInserter {
 			//save basic settings content
 			let vOriginalContent = pHTML.find(`form`);
 			
+			if (!vOriginalContent.length) {
+				vOriginalContent = pHTML;
+			}
+			
 			//create tab header with basic settings
 			let vTabs = `<nav class="sheet-tabs tabs">
 							<a class="item active" data-tab="basic">
