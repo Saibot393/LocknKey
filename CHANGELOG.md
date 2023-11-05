@@ -1,4 +1,7 @@
 ## v1.12.3
+- Added missing translation string
+
+## v1.12.3
 - Added French translation (thanks to [MastaGooz](https://github.com/MastaGooz))
 
 ## v1.12.2
