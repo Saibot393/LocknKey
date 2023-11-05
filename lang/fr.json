@@ -1,0 +1,517 @@
+{
+	"LocknKey" : {
+		"Titles" : {
+			"LocknKey"					: "Lock & Key",
+			"WorldSettings"				: "Paramètre du monde (MJ seulement)",
+			"ClientSettings"			: "Paramètres des joueurs",
+			"GMonly"					: "MJ seulement",
+			"LockTokens"				: "Paramètres des verrous",
+			"CharacterTokens"			: "Paramètres des personnages",
+			"KeyItems"					: "Paramètres des clés",
+			"LPItems"					: "Paramètres de manipulation des verrous",
+			"LockusePasskey"			: "Mot de passe",
+			"EnterPasskey"				: "Entrez le mot de passe:",
+			"ConfirmPasskey"			: "Confirmer",
+			"Lockuse"					: "Utilisation du verrou",
+			"LockuseKey"				: "Utiliser la clé",
+			"LockusePick"				: "Crocheter",
+			"LockuseBreak"				: "Casser le verrou",
+			"Close"						: "Fermer",
+			"Keycreation"				: "Création de clé",
+			"Keyname"					: "Nom de la clé",
+			"Keyfolder"					: "Dossier de création",
+			"ConfirmKeycreation"		: "Créer",
+			"Basic"						: "Basique",
+			"Triggers"					: "Déclencheurs",
+			"FreeCircumventHUD"			: "Ce jeton peut contourner le prochain verrou, cliquez pour annuler"
+		},
+		
+		"Popup" : {
+			"TokenisLocked"				: "{pLockName} est verrouillé",
+			"DoorisLocked"				: "Cette porte est verrouillée",
+			"Lockoutofreach"			: "Ce verrou est trop loin",
+			"lockedDoor"				: "Porte verrouillée",
+			"lockedToken"				: "{pLockName} verrouillé",
+			"unlockedDoor"				: "Porte déverrouillée",
+			"unlockedToken"				: "{pLockName} déverrouillé",
+			"GamePaused"				: "Le jeu est en pause",
+			"noLockPickItem"			: "Pas d'outils de crochetage",
+			"nomatchingKey"				: "Vous n'avez pas la clé",
+			"pickLockfailed"			: "Echec du crochetage",
+			"cantLock" : {
+				"default"				: "Ce verrou ne peut pas être verrouillé",
+				"break"					: "Ce verrou est déjà verrouillé"
+			},
+			"breakLockfailed"			: "Le verrou résiste",
+			"NotaLock"					: "Pas un verrou",
+			"WrongPassword"				: "Mauvais mot de passe",
+			"Lockisjammed"				: "Verrou bloqué",
+			"Lockpickbroke"				: "Outil détruit",
+			"jammedLock"				: "Blocage du verrou",
+			"cantcircumventFree"		: "Verrou incontournable"
+		},	
+		
+		"ChatMessage" : {
+			"LockPick"					: "{pName} a essayé de crocheter un verrou:",
+			"LockPicksuccess" : {
+				"crit"					: "{pName} a obtenu une réussite critique sur un crochetage",
+				"default" 				: "{pName} a réussi un crochetage"
+			},
+			"LockPickfail" : {
+				"crit"					: "{pName} a obtenu un échec critique sur un crochetage",
+				"default" 				: "{pName} a échoué un crochetage"
+			},
+			"LockPicksuccessLPName" : {
+				"crit"					: "{pName} a obtenu une réussite critique sur un crochetage avec {pLPName}",
+				"default" 				: "{pName} a réussi un crochetage avec {pLPName}"
+			},
+			"LockPickfailLPName" : {
+				"crit"					: "{pName} a obtenu un échec critique sur un crochetage avec {pLPName}",
+				"default" 				: "{pName} a échoué un crochetage avec {pLPName}"
+			},
+			"LockPickfailLPNameremove" : {
+				"crit"					: "{pName} a obtenu un échec critique sur un crochetage et a cassé {pLPName}"
+			},
+			
+			"LockBreak"					: "{pName} a essayé de casser un verrou:",
+			"LockBreaksuccess" : {
+				"crit"					: "{pName} a obtenu une réussite critique en essayant de casser un verrou",
+				"default" 				: "{pName} a réussi à casser un verrou"
+			},
+			"LockBreakfail" : {
+				"crit"					: "{pName} a obtenu un échec critique en essayant de casser un verrou",
+				"default" 				: "{pName} a échoué à casser un verrou"
+			}
+		},
+		
+		"Settings" : {
+			"useGMquickKeys" : {
+				"name" 					: "Utiliser les contrôles rapides du MJ",
+				"descrp"				: "Permet au MJ d'utiliser les commandes spéciales liées au verrouillage répertoriées en bas (marquées par *)"
+			},
+			
+			"allowLocking" : {
+				"name" 					: "Permettre aux joueurs de verrouiller",
+				"descrp"				: "Permet aux joueurs de verrouiller les verrous si ils ont la clé"
+			},
+			
+			"startasLocked" : {
+				"name" 					: "Commencer verrouillé",
+				"descrp"				: "Les verrous nouvellement créés commencent verrouillés"
+			},
+	
+			"LockDistance" : {
+				"name" 					: "Distance d'interaction avec les verrous",
+				"descrp"				: "Distance à laquelle les joueurs peuvent intéragir avec les verrous (unité de jeu)"		
+			},
+			
+			"UseArmReachDistance": {
+				"name" 					: "Utiliser la \"Arms Reach\" distance",
+				"descrp"				: "Utilise la distance de \"Arms Reach\" pour les distances d'intéraction"	
+			},
+			
+			"alwaysopenOwned" : {
+				"name" 					: "Toujours ouvert au possesseur",
+				"descrp"				: "Les joueurs peuvent toujours ouvrirles jetons qu'ils possèdent, même si ils sont verouillés"		
+			},
+			
+			"showallLockInteractions" : {
+				"name" 					: "Montrer toutes les interactions des verrous",
+				"descrp"				: "Toujours montrer toutes les options d'interaction des verrous (MJ diabolique)"					
+			},
+			
+			"preventUseinPause" : {
+				"name" 					: "Empêcher les clés d'être utilisées en pause",
+				"descrp"				: "Empêche les joueurs d'utiliser des clés quand le jeu est en pause"		
+			},
+	
+			"autoKeyuse" : {
+				"name" 					: "Utilisation automatique des clés",
+				"descrp"				: "Les joueurs utiliseront automatiquement la clé d'un verrou en interagissant avec"		
+			},
+			
+			"KeyItemtype" : {
+				"name" 					: "Type d'objet des clés",
+				"descrp"				: "Le type d'objet que le module utilisera pour les nouvelles clés, laissez vide pour utiliser le type par défaut (vous pouvez obtenir une liste de types valides en tapant \"game.items.documentClass.TYPES\" dans la console F12)"		
+			},
+
+			"LnKSettingTypes" : {
+				"name" 					: "Paramétrer les types d'objets",
+				"descrp"				: "Les types d'objet pour lesquels les paramètres de verrouillage et de clé sont affichés (séparés avec \";\", \"all\" pour tous les types)"		
+			},
+			
+			"KeyitemCreationPopup" : {
+				"name" 					: "Menu de création de clé",
+				"descrp"				: "Si un menu doit être affiché pour la clé nouvellement générée pour changer son nom et son dossier"		
+			},		
+
+			"UseKeynameasID" : {
+				"name" 					: "Nom de clé comme ID",
+				"descrp"				: "Si le nom d'une clé doit être considéré comme un identifiant supplémentaire pour ouvrir les verrous"		
+			},	
+			
+			"usePf2eSystem" : {
+				"name" 					: "Utiliser le système de lancer de Pf2e",
+				"descrp"				: "Utilisez le système de lancer Pf2e (désactive les formules de lancer personnalisées Lock & Key et les paramètres de critique en faveur du système de règles Pf2e)"						
+			},
+			
+			"CritMethod" : {
+				"name" 					: "Système de critique",
+				"descrp"				: "Comment les lancers critiques sont déterminés",
+				"options" : {
+					"noCrit"			: "Pas de critique",
+					"natCrit"			: "1/20 naturels",
+					"natCritpm10"		: "1/20 naturels & +-10 de DC [e.g. Pf2e]",
+					"d100WFRP4"			: "d100 1/100 naturels [e.g. WFRP4e]",
+					"d100WFRP4Doubles"	: "d100 1/100 naturels & doubles [e.g. WFRP4e]",
+					"d100CoC7e"			: "d100 plages de difficultés [e.g. CoC7e]",
+					"d10poolCoD2e"		: "d10 pool >=8 et relance sur 10 [e.g. CoD2e]"
+				}
+			},
+			
+			"LockPickItem" : {
+				"name" 					: "Objets de crochetage",
+				"descrp"				: "Noms ou ID du conpendium (recommandé) des objets de crochetage, \"-\" si aucun objet est nécessaire (séparés avec \";\")"		
+			},
+			
+			"MentionLockPickItem" : {
+				"name" 					: "Mentionner l'outil de crochetage",
+				"descrp"				: "Si l'objet de crochetage utilisé doit être mentionné dans le chat"		
+			},
+			
+			"RemoveLPoncritFail" : {
+				"name" 					: "Supprimer l'outil de crochetage sur un échec critique",
+				"descrp"				: "Si l'outil de crochetage est supprimé en cas d'échec critique (ou si la quantité est réduite de 1)"		
+			},	
+			
+			"JamLockonLPcritFail" : {
+				"name" 					: "Blocage du verrou sur un échec critique",
+				"descrp"				: "Les verrous sont bloqués en cas d'échec critique et ne peuvent plus être crochetés"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "Les clés ne peuvent pas être utilisées sur les verrous bloqués",
+				"descrp"				: "Les verrous bloqués n'acceptent plus les clés associées"		
+			},
+			
+			"defaultLPAttempts" : {
+				"name"					: "Nombre de tentatives de crochetage par défaut",
+				"descrp"				: "Le nombre par défaut de tentatives de crochetage avant que le verrou ne devienne impossible à crocheter (-1 pour des tentatives illimitées)"
+			},
+			
+			"LockPickFormula" : {
+				"name" 					: "Formule de crochetage de verrou",
+				"descrp"				: "La formule utilisée pour les lancers de dés lors du crochetage d'une serrure (e.g. \"1d20 + @actor.skills.thievery.mod\", aide sur la page Github de ce module)"				
+			},
+			
+			"LockBreakFormula" : {
+				"name" 					: "Formule de cassage de verrou",
+				"descrp"				: "La formule utilisée pour les lancers de dés lors du cassage d'un verrou (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", aide sur la page Github de ce module)"				
+			},
+			
+			"LockBreakunlockable" : {
+				"name" 					: "Empêcher les verrous cassés d'être verrouillés",
+				"descrp"				: "Rend les verrous qui ont été cassés impossible à verrouiller"				
+			},
+			
+			"onlyCombatMultiSuccess" : {
+				"name" 					: "Succès multiples durant les combats uniquement",
+				"descrp"				: "Ignore le nombre de succès requis en crochetage en dehors des combats"				
+			},
+			
+			"LockCircumventName" : {
+				"name" 					: "Mots clés de contournement des verrous",
+				"descrp"				: "Mots clés pour identifier les effets (e.g. le sort \"Knock\") qui permettent aux joueurs de controuner les verrous (séparés avec \";\")"				
+			},
+			
+			"ControlSceme" : {
+				"name" 					: "Schéma de contrôle",
+				"descrp"				: "Schéma de contrôle des verrous (right-click+keys est expliqué plus en détail sous \"Player controls\"",	
+				"options" : {
+					"rightKeys"			: "right-click + key",
+					"rightPopups"		: "right-click popup-menu"
+				}
+			},			
+			
+			"MessagePopUps" : {
+				"name" 					: "Messages popups",
+				"descrp"				: "Permet les messages popups des actions comme verrouiller ou déverrouiller un verrou"		
+			},
+			
+			"PlayLockSounds" : {
+				"name" 					: "Jouer les sons des verrous",
+				"descrp"				: "Jouer un son quand un verrou est verrouillé/déverrouillé"		
+			},
+			
+			"FreeCircumventButtonPosition" : {
+				"name" 					: "Indicateur de position des coutournement des verrous",
+				"descrp"				: "La position de l'indicateur qui montre qu'un jeton peut contourner le prochain verrou sur le HUD du jeton",
+				"options" : {
+					"none"				: "nullepart",
+					"left"				: "gauche",
+					"right"				: "droite"
+				}
+			}
+		},
+		
+		"Keys" : {
+			"ToggleLock" : {
+				"name"					: "Activer le verrou"
+			},
+			
+			"CopyLock" : {
+				"name"					: "Copier d'ID du verrou"
+			},
+			
+			"PasteLock" : {
+				"name"					: "Coller l'ID du verrou"
+			},
+			
+			"CreatenewKey" : {
+				"name"					: "Créer une nouvelle clé"
+			},
+			
+			"UseKey" : {
+				"name"					: "Utiliser la clé"
+			},
+			
+			"PickLock" : {
+				"name"					: "Crocheter le verrou"
+			},
+			
+			"BreakLock" : {
+				"name"					: "Casser le verrou"
+			}
+		},
+		
+		"SheetSettings" : {
+			"LockableFlag" : {
+				"name" 					: "Verrouillable",
+				"descrp"				: "Cet objet est verrouillable"					
+			},
+			
+			"LockedFlag" : {
+				"name" 					: "Verrouillé",
+				"descrp"				: "Cet objet est verrouillé"					
+			},
+			
+			"IDKeysFlag" : {
+				"name" 					: "ID de clé",
+				"descrp" : {
+					"lock" 				: "IDs qui peuvent verrouiller/déverrouiller ce verrou (séparés avec \";\")",
+					"key" 				: "IDs que cette clé peut verrouiller/déverrouiller (séparés avec \";\")"
+				}
+			},
+			
+			"PasskeysFlag" : {
+				"name"					: "Mots de passe",
+				"descrp"				: "Mots de passe qui peuvent déverrouiller ce verrou (séparés avec \";\")"
+			},
+			
+			"LockjammedFlag" : {
+				"name"					: "Bloqué",
+				"descrp"				: "Si ce verroue est bloqué (voir paramètres du monde)"				
+			},
+			
+			"RemoveKeyonUseFlag" : {
+				"name" 					: "Supprimer la clé à l'utilisation",
+				"descrp"				: "Si cette clé est supprimée quand ell est utilisée (ou la quantité réduite de 1)"					
+			},			
+			
+			"LockDCFlag" : {
+				"name" 					: "Difficulté du verrou",
+				"descrp"				: "La difficulté du verrou, utilisée pour le crochetage (-1 pour rendre impossible à crocheter)"					
+			},
+			
+			"SpecialLPFlag" : {
+				"name" 					: "Crochetage spécial",
+				"descrp"				: "Crochetage spécial nécessaire pour ce verrou (ID ou nom, entrée multiples séparées avec \";\")"					
+			},
+			
+			"LockBreakDCFlag" : {
+				"name" 					: "Difficulté de cassage",
+				"descrp"				: "La difficulté du verrou, utilisée pour le cassage (-1 pour rendre impossible à casser)"					
+			},
+			
+			"requiredLPsuccessFlag" : {
+				"name" 					: "Crochetages réussis nécessaires",
+				"descrp"				: "Combien de succès de crochetage sont requis pour cette serrure (et combien ont déjà été tentés) (les crits comptent pour 2)"				
+			},
+			
+			"LPAttemptsFlag" : {
+				"name" 					: "Tentatives de crochetage restantes",
+				"descrp"				: "Combien de tentatives de crochetage restantes (-1 pour illimitées)"				
+			},
+			
+			"canbeCircumventedFreeFlag" : {
+				"name" 					: "Peut être contourné",
+				"descrp"				: "Si ce verrou peut être controuné par des effets (e.g. le sort \"Knock\")"				
+			},
+			
+			"CustomPopupsFlag" : {
+				"openButtonname"			: "Popups personnalisés",
+				"Title"						: "Popups personnalisés",
+				"name"						: "Paramètre des popups personnalisés pour certaines interaction du joueur:",
+				"LockLocked" : {
+					"name"					: "Verrouillé:"
+				},
+				"LocknotPickable" : {
+					"name"					: "Impossible à crocheter:"
+				},
+				"LocknotBreakable" : {
+					"name"					: "Impossible à casser:"
+				},
+				"LockPasskeyTitle" : {
+					"name"					: "Dialogue du mot de passe:"
+				},
+				"confirmButtonname"        	: "Confirmer les popups"
+			},
+			
+			"SoundVariantFlag" : {
+				"name"					: "Son de verou",
+				"descrp"				: "Règle le son des interactions de ce verrou",
+				"options" : {
+					"futuristic"		: "Futuriste",
+					"industrial"		: "Industriel",
+					"jail"				: "Prison",
+					"metal"				: "Métal 🤘",
+					"shutter"			: "Volet",
+					"sliding"			: "Coulissant",
+					"stone"				: "Pierre",
+					"wood"				: "Bois"
+				}
+			},
+			
+			"LPFormulaFlag" : {
+				"name" 					: "Formule de crochetage",
+				"descrp" : {
+					"token" 			: "La formule ajoutée aux jets de crochetage que ce jeton fait",
+					"item"				: "La formule ajoutée aux lancers de crochetage que le propriétaire de cet objet fait (uniquement le meilleur de l'inventaire utilisé)"
+				}			
+			},
+			
+			"LPFormulaOverrideFlag" : {
+				"name" 					: "Remplacer la formule de crochetage",
+				"descrp" : {
+					"token" 			: "Si la formule crochetage de ces jetons remplace la formule du monde",
+					"item"				: "Si la formule crochetage de cet élément remplace la formule des jetons/du monde"
+				}				
+			},
+			
+			"LBFormulaFlag" : {
+				"name" 					: "Formle de cassage",
+				"descrp" : {
+					"token" 			: "La formule ajoutée aux jets de cassage que ce jeton fait",
+					"item"				: "La formule ajoutée aux lancers de cassage que le propriétaire de cet objet fait (uniquement le meilleur de l'inventaire utilisé)"
+				}					
+			},
+			
+			"LBFormulaOverrideFlag" : {
+				"name" 					: "Remplacer la formule de cassage",
+				"descrp" : {
+					"token" 			: "Si la formule cassage de ces jetons remplace la formule du monde",
+					"item"				: "Si la formule cassage de cet élément remplace la formule des jetons/du monde"
+				}				
+			},
+			
+			"ReplacementItemFlag" : {
+				"name" 					: "Remplacement des objets",
+				"descrp" 				: "Objets supprimés à la place de cet objet lorsqu'un lancer échoue (ID ou noms, multiples entrées séparées avec \";\")"			
+			},
+
+			"MATTTriggerTileFlag" : {
+				"name" 					: "ID des tiles de déclenchement",
+				"descrp"				: "ID de la tuile qui délenche les les actions Lock & Key ci-dessous (vous pouvez utiliser différents paliers)"
+			},
+			
+			"MATTTriggerConditionsFlag" : {
+				"LockuseKey.name"		: "A l'utilisation d'une clé",
+				"LockusePasskey.name"	: "A l'utilisation d'un mot de passe",
+				"LockusePick.name"		: "Au crochetage",
+				"LockuseBreak.name"		: "Au cassage",
+				"LockuseFree.name"		: "Au coutournement",
+				"options" : {
+					"never"				: "jamais",
+					"always"			: "toujours",
+					"failure"			: "échec",
+					"critfailure"		: "échec critique",
+					"success"			: "succès"
+				}
+			},
+			
+			"RollOptionsFlag" : {
+				"LockusePick" : {
+					"d10CritLimit" : {
+						"name"			: "Limite des crits des crochetages d10",
+						"descrp"		: "La valeur critique minimale pour les lancers de crochetage d10"
+					}
+				},
+				"LockuseBreak" : {
+					"d10CritLimit" : {
+						"name"			: "Limite des crits des cassage d10",
+						"descrp"		: "La valeur critique minimale pour les lancers de cassage d10"
+					}					
+				}
+			}
+		},
+		
+		"Context" : {
+			"KeyCopy"					: "Copier l'ID de la clé",
+			"KeyPaste"					: "Coller les IDs dans la clé"
+		},
+		
+		"Words" : {
+			"Key"						: "Clé"
+		},
+		
+		"Text" : {
+			"GMControls" : {
+				"line0"					: "Contrôles du MJ:",
+				"line1" 				: "•shift+right-click pour créer une nouvelle clé",
+				"line2" 				: "•alt+right-click pour activer le verrou d'un jeton (*)",
+				"line3" 				: "•ctrl+right-click pour copier les IDs des clés du verrou (*)",
+				"line4" 				: "•ctrl+left-click pour coller les IDs des clés dans le verrou (*)"
+			},
+			
+			"PlayerControls" : {
+				"line0"					: "Contrôles des joueurs:",
+				"line1" 				: "•right-click pour utiliser la clé d'un verrou",
+				"line2" 				: "•shift+right-click pour essayer de crocheter un verrou",
+				"line3" 				: "•alt+right-click pour essayer de casser un verrou"
+			}
+		},
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "Filtrer",
+				
+				"filter-by-lock-state" : {
+					"name"					: "Filtrer par état de verrou",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "Etat de verrou",
+							"options" : {
+								"locked"	: "est verrouillé",
+								"unlocked"	: "est déverrouillé"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "Verrouillé"
+				},
+				
+				"unlock" : {
+					"name"					: "Déverrouillé"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "Basculer le verrouillage"
+				}
+			}
+		}
+	}
+}
