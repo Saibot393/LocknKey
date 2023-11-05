@@ -16,6 +16,7 @@
 			"LockuseKey"				: "Benutze Schlüssel",
 			"LockusePick"				: "Knacke Schloss",
 			"LockuseBreak"				: "Zerbreche Schloss",
+			"LockuseFree"				: "Freie Schlossnutzung",
 			"Close"						: "Schließen",
 			"Keycreation"				: "Schlüssel generieren",
 			"Keyname"					: "Schlüsselname",
