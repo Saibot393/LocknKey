@@ -1,3 +1,6 @@
+## v1.12.2
+- Fixed controls bug with [3D Canvas](https://theripper93.com/module/levels-3d-preview) (Big thanks to [TheRipper93](https://theripper93.com/))
+
 ## v1.12.1
 - Fixed faulty D&D 5e formulas
 - Added new macro `Update Lock & Key world formulas`
