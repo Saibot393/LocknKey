@@ -1,3 +1,6 @@
+## v1.12.3
+- Added French translation (thanks to [MastaGooz](https://github.com/MastaGooz))
+
 ## v1.12.2
 - Fixed controls bug with [3D Canvas](https://theripper93.com/module/levels-3d-preview) (Big thanks to [TheRipper93](https://theripper93.com/))
 
@@ -152,7 +155,7 @@ D&d 5e users using the default Lock & Key Lock break or Lock pick formula should
 - Added support for the Sandbox system
 
 ## v1.8.1
-- Updated Chinese translation (thanks to [feederze](https://github.com/feederze))
+- Updated  translation (thanks to [feederze](https://github.com/feederze))
   
 ## v1.8.0
 - Added Lock jamming
