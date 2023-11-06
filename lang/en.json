@@ -16,6 +16,7 @@
 			"LockuseKey"				: "Use a key",
 			"LockusePick"				: "Pick lock",
 			"LockuseBreak"				: "Break lock",
+			"LockuseFree"				: "Free lock use",
 			"Close"						: "Close",
 			"Keycreation"				: "Key creation",
 			"Keyname"					: "Key name",

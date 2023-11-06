@@ -16,6 +16,7 @@
 	  "LockuseKey"					: "使用钥匙",
 	  "LockusePick"					: "撬锁",
 	  "LockuseBreak"				: "砸锁",
+	"LockuseFree"				: "Free lock use",
 	  "Close"						: "关闭",
 		"Keycreation"				: "创建钥匙",
 		"Keyname"					: "钥匙名字",
