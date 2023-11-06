@@ -1,3 +1,6 @@
+## v1.12.5
+- Fixed bug that caused the lock interaction to pop up for not lock objects
+
 ## v1.12.4
 - Added missing translation string
 
