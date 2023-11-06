@@ -502,32 +502,34 @@ class KeyManager {
 	
 	//ons
 	static onLockRightClick(pDocument, pInfos) {
-		if (!game.user.isGM) {//CLIENT: use key
-			if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
-				switch (game.settings.get(cModuleName, "ControlSceme")) {
-					case "ControlSceme-rightKeys" :
-						if (pInfos.shiftKey) {
-							KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
-						}
-						else {
-							if (pInfos.altKey) {
-								KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
+		if (LnKFlags.isLockable(pDocument)) {
+			if (!game.user.isGM) {//CLIENT: use key
+				if (!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {//use on pause check
+					switch (game.settings.get(cModuleName, "ControlSceme")) {
+						case "ControlSceme-rightKeys" :
+							if (pInfos.shiftKey) {
+								KeyManager.onatemptedLockuse(pDocument, cLUpickLock);
 							}
 							else {
-								KeyManager.onatemptedLockuse(pDocument, cLUuseKey, true);
+								if (pInfos.altKey) {
+									KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
+								}
+								else {
+									KeyManager.onatemptedLockuse(pDocument, cLUuseKey, true);
+								}
 							}
-						}
-						break;
-					case "ControlSceme-rightPopups" :
-					default:
-						if (!pInfos.shiftKey && !pInfos.altKey && !pInfos.ctrlKey) {
-							KeyManager.createLockuseDialog(pDocument);
-						}
-						break;
+							break;
+						case "ControlSceme-rightPopups" :
+						default:
+							if (!pInfos.shiftKey && !pInfos.altKey && !pInfos.ctrlKey) {
+								KeyManager.createLockuseDialog(pDocument);
+							}
+							break;
+					}
 				}
-			}
-			else {
-				LnKPopups.TextPopUpID(pDocument, "GamePaused"); //MESSAGE POPUP
+				else {
+					LnKPopups.TextPopUpID(pDocument, "GamePaused"); //MESSAGE POPUP
+				}
 			}
 		}
 	}
