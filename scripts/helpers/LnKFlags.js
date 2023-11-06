@@ -231,7 +231,7 @@ class LnKFlags {
 			}
 		}
 		
-		return -1; //default if anything fails
+		return game.settings.get(cModuleName, "DefaultPickDC"); //default if anything fails
 	} 
 	
 	static #LPFormulaFlag (pObject) { 
@@ -296,7 +296,7 @@ class LnKFlags {
 			}
 		}
 		
-		return -1; //default if anything fails
+		return game.settings.get(cModuleName, "DefaultBreakDC"); //default if anything fails
 	}
 	
 	static #LBFormulaFlag (pObject) { 
@@ -380,7 +380,7 @@ class LnKFlags {
 			}
 		}
 		
-		return "wood"; //default if anything fails
+		return game.settings.get(cModuleName, "DefaultTokenSound"); //default if anything fails
 	} 
 	
 	static #LockjammedFlag (pObject) { 

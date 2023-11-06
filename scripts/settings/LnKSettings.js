@@ -3,6 +3,7 @@ import { LnKSystemutils} from "../utils/LnKSystemutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock } from "../KeyManager.js";
 import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
+import { cSoundVariants } from "../helpers/LnKSound.js";
 
 
 Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
@@ -52,6 +53,26 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
+  game.settings.register(cModuleName, "DefaultTokenSound", {
+	name: Translate("Settings.DefaultTokenSound.name"),
+	hint: Translate("Settings.DefaultTokenSound.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultTokenSound.options." + vSound)}),{}),
+	default: "wood"
+  }); 
+  
+  game.settings.register(cModuleName, "DefaultDoorSound", {
+	name: Translate("Settings.DefaultDoorSound.name"),
+	hint: Translate("Settings.DefaultDoorSound.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultTokenSound.options." + vSound)}),{}),
+	default: "wood"
+  }); 
+  
   game.settings.register(cModuleName, "alwaysopenOwned", {
 	name: Translate("Settings.alwaysopenOwned.name"),
 	hint: Translate("Settings.alwaysopenOwned.descrp"),
@@ -99,15 +120,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.Systemdefaultitemtype()
   }); 
   
-  game.settings.register(cModuleName, "LnKSettingTypes", {
-	name: Translate("Settings.LnKSettingTypes.name"),
-	hint: Translate("Settings.LnKSettingTypes.descrp"),
-	scope: "world",
-	config: true,
-	type: String,
-	default: "all"
-  }); 
-  
   game.settings.register(cModuleName, "KeyitemCreationPopup", {
 	name: Translate("Settings.KeyitemCreationPopup.name"),
 	hint: Translate("Settings.KeyitemCreationPopup.descrp"),
@@ -124,6 +136,35 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: false
+  }); 
+  
+  game.settings.register(cModuleName, "DefaultKeyFolder", {
+	name: Translate("Settings.DefaultKeyFolder.name"),
+	hint: Translate("Settings.DefaultKeyFolder.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	//choices:
+	default: false
+  }); 
+  
+   game.settings.register(cModuleName, "LimitKeyFolders", {
+	name: Translate("Settings.LimitKeyFolders.name"),
+	hint: Translate("Settings.LimitKeyFolders.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	//choices:
+	default: false
+  }); 
+  
+  game.settings.register(cModuleName, "LnKSettingTypes", {
+	name: Translate("Settings.LnKSettingTypes.name"),
+	hint: Translate("Settings.LnKSettingTypes.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: "all"
   }); 
   
   game.settings.register(cModuleName, "usePf2eSystem", {
@@ -217,6 +258,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.SystemdefaultLPformula()
   }); 
   
+  game.settings.register(cModuleName, "DefaultPickDC", {
+	name: Translate("Settings.DefaultPickDC.name"),
+	hint: Translate("Settings.DefaultPickDC.descrp"),
+	scope: "world",
+	config: true, //replaced by Pf2e
+	type: Number,
+	default: -1
+  }); 
+  
   game.settings.register(cModuleName, "LockBreakFormula", {
 	name: Translate("Settings.LockBreakFormula.name"),
 	hint: Translate("Settings.LockBreakFormula.descrp"),
@@ -224,6 +274,42 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: !game.settings.get(cModuleName, "usePf2eSystem"), //replaced by Pf2e
 	type: String,
 	default: LnKSystemutils.SystemdefaultLBformula()
+  }); 
+  
+  game.settings.register(cModuleName, "DefaultBreakDC", {
+	name: Translate("Settings.DefaultBreakDC.name"),
+	hint: Translate("Settings.DefaultBreakDC.descrp"),
+	scope: "world",
+	config: true, //replaced by Pf2e
+	type: Number,
+	default: -1
+  }); 
+  
+  game.settings.register(cModuleName, "CustomCircumventName", {
+	name: Translate("Settings.CustomCircumventName.name"),
+	hint: Translate("Settings.CustomCircumventName.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  }); 
+  
+  game.settings.register(cModuleName, "CustomCircumventFormula", {
+	name: Translate("Settings.CustomCircumventFormula.name"),
+	hint: Translate("Settings.CustomCircumventFormula.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  }); 
+  
+  game.settings.register(cModuleName, "CustomCircumventDeafultDC", {
+	name: Translate("Settings.CustomCircumventDeafultDC.name"),
+	hint: Translate("Settings.CustomCircumventDeafultDC.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
   }); 
   
   game.settings.register(cModuleName, "LockBreakunlockable", {
