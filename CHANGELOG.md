@@ -1,3 +1,9 @@
+## v1.12.6
+- Fixed bug, so that only Lock & Key compatible can be locked with alt+right-click
+
+## v1.12.5
+- Fixed bug that caused the lock interaction to pop up for not lock objects
+
 ## v1.12.4
 - Added missing translation string
 

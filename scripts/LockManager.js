@@ -559,17 +559,19 @@ Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {
 	}
 });
 
-Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
-	if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
-		LockManager.newLockKey(pTokenDocument);
-	}
-	
-	if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
-		LockManager.copyLock(pTokenDocument);
-	}
-	
-	if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
-		LockManager.ToggleLock(pTokenDocument, cLUisGM);
+Hooks.on(cModuleName + "." + "TokenRClick", async (pTokenDocument, pInfos) => {
+	if (await LnKutils.isLockCompatible(pTokenDocument)) {
+		if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
+			LockManager.newLockKey(pTokenDocument);
+		}
+		
+		if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
+			LockManager.copyLock(pTokenDocument);
+		}
+		
+		if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
+			LockManager.ToggleLock(pTokenDocument, cLUisGM);
+		}
 	}
 });
 
