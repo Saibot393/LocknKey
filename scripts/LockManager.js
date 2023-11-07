@@ -568,7 +568,7 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {
 		LockManager.copyLock(pTokenDocument);
 	}
 	
-	if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys") && LnKFlags.isLockable(pDocument)) {//GM ALT: toggle lock state
+	if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
 		LockManager.ToggleLock(pTokenDocument, cLUisGM);
 	}
 });
