@@ -560,7 +560,7 @@ Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {
 });
 
 Hooks.on(cModuleName + "." + "TokenRClick", async (pTokenDocument, pInfos) => {
-	if (await LnKutils.isLockCompatible(pApp.token)) {
+	if (await LnKutils.isLockCompatible(pTokenDocument)) {
 		if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
 			LockManager.newLockKey(pTokenDocument);
 		}
