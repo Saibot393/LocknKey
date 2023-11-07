@@ -53,24 +53,14 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
-  game.settings.register(cModuleName, "DefaultTokenSound", {
-	name: Translate("Settings.DefaultTokenSound.name"),
-	hint: Translate("Settings.DefaultTokenSound.descrp"),
+  game.settings.register(cModuleName, "DefaultLockSound", {
+	name: Translate("Settings.DefaultLockSound.name"),
+	hint: Translate("Settings.DefaultLockSound.descrp"),
 	scope: "world",
 	config: true,
 	type: String,
-	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultTokenSound.options." + vSound)}),{}),
-	default: "wood"
-  }); 
-  
-  game.settings.register(cModuleName, "DefaultDoorSound", {
-	name: Translate("Settings.DefaultDoorSound.name"),
-	hint: Translate("Settings.DefaultDoorSound.descrp"),
-	scope: "world",
-	config: true,
-	type: String,
-	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultTokenSound.options." + vSound)}),{}),
-	default: "wood"
+	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultSound.options." + vSound)}),{}),
+	default: "off"
   }); 
   
   game.settings.register(cModuleName, "alwaysopenOwned", {

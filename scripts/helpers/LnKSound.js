@@ -9,7 +9,7 @@ const cLockedSound = "/test.ogg";
 
 const cFallbackSound = "sounds/lock.wav";
 
-const cSoundVariants = ["futuristic", "industrial", "jail", "metal", "shutter", "sliding", "stone", "wood"];
+const cSoundVariants = ["off", "futuristic", "industrial", "jail", "metal", "shutter", "sliding", "stone", "wood"];
 
 const cDiceSound = "sounds/dice.wav";
 
@@ -57,19 +57,25 @@ class LnKSound {
 	//specifics
 	static async PlayLockSound(pLock) {
 		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
-			LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockSound, FCore.sceneof(pLock).id);
+			if (LnKFlags.SoundVariant(pLock) != "off") {
+				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockSound, FCore.sceneof(pLock).id);
+			}
 		}
 	}
 	
 	static async PlayunLockSound(pLock) {
 		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
-			LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cunLockSound, FCore.sceneof(pLock).id);
+			if (LnKFlags.SoundVariant(pLock) != "off") {
+				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cunLockSound, FCore.sceneof(pLock).id);
+			}
 		}
 	}
 	
 	static async PlayLockedSound(pLock) {
 		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
-			LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockedSound, FCore.sceneof(pLock).id);
+			if (LnKFlags.SoundVariant(pLock) != "off") {
+				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockedSound, FCore.sceneof(pLock).id);
+			}
 		}		
 	} 
 	

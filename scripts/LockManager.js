@@ -591,6 +591,14 @@ Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
 	LockManager.LockuseRequest(pData);
 });
 
+Hooks.on("preCreateWall", (pWall, pSettings, pInfos, pUserID) => {
+	if (pSettings.door == 0) {
+		if (game.settings.get(cModuleName, "DefaultLockSound") != "off") {
+			pSettings.doorSound = game.settings.get(cModuleName, "DefaultLockSound");
+		}
+	}
+});
+
 //wrap and export functions
 function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }
 

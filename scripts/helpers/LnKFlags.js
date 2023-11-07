@@ -380,7 +380,7 @@ class LnKFlags {
 			}
 		}
 		
-		return game.settings.get(cModuleName, "DefaultTokenSound"); //default if anything fails
+		return game.settings.get(cModuleName, "DefaultLockSound"); //default if anything fails
 	} 
 	
 	static #LockjammedFlag (pObject) { 
