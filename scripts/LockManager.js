@@ -593,10 +593,12 @@ Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
 	LockManager.LockuseRequest(pData);
 });
 
-Hooks.on("preCreateWall", (pWall, pSettings, pInfos, pUserID) => {
-	if (pSettings.door == 0) {
-		if (game.settings.get(cModuleName, "DefaultLockSound") != "off") {
-			pSettings.doorSound = game.settings.get(cModuleName, "DefaultLockSound");
+Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be removed if foundry includes a core setting
+	if (game.user.isGM) {
+		if (pSettings.door != 0) {
+			if (game.settings.get(cModuleName, "DefaultLockSound") != "off") {
+				pWall.update({doorSound : game.settings.get(cModuleName, "DefaultLockSound")}) ;
+			}
 		}
 	}
 });

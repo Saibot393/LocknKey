@@ -30,6 +30,7 @@ const cLUuseKey = "LockuseKey"; //if a Key is used on a lock
 const cLUusePasskey = "LockusePasskey"; //if a Passkey (paasword or PIN) is used on lock
 const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
 const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
+const cLUCustomCheck = "LockuseCustom"; //if a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //if a lock gets circumvented via e.g. a knock spell
 
 export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent}

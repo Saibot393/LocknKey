@@ -45,7 +45,7 @@ const cRollOptionDefault = {
 	}
 }
 
-const cRollTypes = ["LockusePick", "LockuseBreak"]; //same as cLUpickLock, cLUbreakLock !
+const cRollTypes = ["LockusePick", "LockuseBreak", "LockuseCustom"]; //same as cLUpickLock, cLUbreakLock !
 
 const cCritRollOptions = {
 	"CritMethod-d10poolCoD2e" : ["d10CritLimit"]
