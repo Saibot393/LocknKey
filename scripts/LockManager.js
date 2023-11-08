@@ -593,6 +593,7 @@ Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
 	LockManager.LockuseRequest(pData);
 });
 
+/*
 Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be removed if foundry includes a core setting
 	if (game.user.isGM) {
 		if (pSettings.door != 0) {
@@ -602,6 +603,7 @@ Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be remove
 		}
 	}
 });
+*/
 
 //wrap and export functions
 function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }

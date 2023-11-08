@@ -53,6 +53,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
+  /*
   game.settings.register(cModuleName, "DefaultLockSound", {
 	name: Translate("Settings.DefaultLockSound.name"),
 	hint: Translate("Settings.DefaultLockSound.descrp"),
@@ -62,6 +63,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultSound.options." + vSound)}),{}),
 	default: "off"
   }); 
+  */
   
   game.settings.register(cModuleName, "alwaysopenOwned", {
 	name: Translate("Settings.alwaysopenOwned.name"),
@@ -128,6 +130,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
+  /*
   game.settings.register(cModuleName, "DefaultKeyFolder", {
 	name: Translate("Settings.DefaultKeyFolder.name"),
 	hint: Translate("Settings.DefaultKeyFolder.descrp"),
@@ -147,6 +150,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	//choices:
 	default: false
   }); 
+  */
   
   game.settings.register(cModuleName, "LnKSettingTypes", {
 	name: Translate("Settings.LnKSettingTypes.name"),
@@ -248,6 +252,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.SystemdefaultLPformula()
   }); 
   
+  /*
   game.settings.register(cModuleName, "DefaultPickDC", {
 	name: Translate("Settings.DefaultPickDC.name"),
 	hint: Translate("Settings.DefaultPickDC.descrp"),
@@ -256,6 +261,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Number,
 	default: -1
   }); 
+  */
   
   game.settings.register(cModuleName, "LockBreakFormula", {
 	name: Translate("Settings.LockBreakFormula.name"),
@@ -266,6 +272,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.SystemdefaultLBformula()
   }); 
   
+  /*
   game.settings.register(cModuleName, "DefaultBreakDC", {
 	name: Translate("Settings.DefaultBreakDC.name"),
 	hint: Translate("Settings.DefaultBreakDC.descrp"),
@@ -274,7 +281,9 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Number,
 	default: -1
   }); 
+  */
   
+  /* 
   game.settings.register(cModuleName, "CustomCircumventName", {
 	name: Translate("Settings.CustomCircumventName.name"),
 	hint: Translate("Settings.CustomCircumventName.descrp"),
@@ -301,6 +310,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Number,
 	default: -1
   }); 
+  */
   
   game.settings.register(cModuleName, "LockBreakunlockable", {
 	name: Translate("Settings.LockBreakunlockable.name"),
