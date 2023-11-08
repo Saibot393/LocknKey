@@ -487,7 +487,7 @@ class LnKutils {
 			
 			if (LnKutils.isToken(pDocument)) {
 				if (LnKSystemutils.isPf2e()) {
-					if (pDocument.actor.type == cPf2eLoottype) {
+					if (pDocument.actor?.type == cPf2eLoottype) {
 						return cLockTypeLootPf2e;
 					}
 				}
