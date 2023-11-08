@@ -1,3 +1,6 @@
+## v1.12.8
+- Removed some things accidentally released in the last version
+
 ## v1.12.7
 - Fixed error that showed up when opening the wrold default token menu
 
