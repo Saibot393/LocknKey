@@ -33,7 +33,7 @@ const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
 const cLUCustomCheck = "LockuseCustom"; //if a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //if a lock gets circumvented via e.g. a knock spell
 
-export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent}
+export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
@@ -131,6 +131,8 @@ class LnKutils {
 	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
 	
 	static LBformulaWorld() {} //returns the worlds formula used for Lock breaking rolls
+	
+	static CCformulaWorld() {} //returns the worlds formula used for Custom check rolls
 	
 	static formulaWorld(pType) {} //returns the worlds formula used for pType [cLUpickLock, cLUbreakLock]
 	
@@ -718,6 +720,15 @@ class LnKutils {
 		}		
 	}
 	
+	static CCformulaWorld() {
+		if (game.settings.get(cModuleName, "CustomCircumventFormula").length) {
+			return game.settings.get(cModuleName, "CustomCircumventFormula");
+		}
+		else {
+			return "0";
+		}			
+	}
+	
 	static formulaWorld(pType) {
 		switch (pType) {
 			case cLUpickLock:
@@ -725,6 +736,9 @@ class LnKutils {
 				break;
 			case cLUbreakLock:
 				return LnKutils.LBformulaWorld();
+				break;
+			case cLUCustomCheck:
+				return LnKutils.CCformulaWorld();
 				break;
 			default:
 				return "";

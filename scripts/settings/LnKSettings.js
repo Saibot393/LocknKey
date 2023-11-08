@@ -1,7 +1,7 @@
 import { cModuleName, Translate, LnKutils} from "../utils/LnKutils.js";
 import { LnKSystemutils} from "../utils/LnKSystemutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
-import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock } from "../KeyManager.js";
+import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock } from "../KeyManager.js";
 import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 
@@ -277,13 +277,13 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: -1
   }); 
   
-  /* 
   game.settings.register(cModuleName, "CustomCircumventName", {
 	name: Translate("Settings.CustomCircumventName.name"),
 	hint: Translate("Settings.CustomCircumventName.descrp"),
 	scope: "world",
 	config: true,
 	type: String,
+	onChange: pvalue => game.settings.set(cModuleName, "CustomCircumventActive", pvalue.length > 0),
 	default: ""
   }); 
   
@@ -296,15 +296,23 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: ""
   }); 
   
-  game.settings.register(cModuleName, "CustomCircumventDeafultDC", {
-	name: Translate("Settings.CustomCircumventDeafultDC.name"),
-	hint: Translate("Settings.CustomCircumventDeafultDC.descrp"),
+  game.settings.register(cModuleName, "CustomCircumventDefaultDC", {
+	name: Translate("Settings.CustomCircumventDefaultDC.name"),
+	hint: Translate("Settings.CustomCircumventDefaultDC.descrp"),
 	scope: "world",
 	config: true,
 	type: Number,
 	default: -1
   }); 
-  */
+  
+  game.settings.register(cModuleName, "CustomCircumventActive", {
+	name: Translate("Settings.CustomCircumventActive.name"),
+	hint: Translate("Settings.CustomCircumventActive.descrp"),
+	scope: "world",
+	config: false,
+	type: Number,
+	default: false
+  }); 
   
   game.settings.register(cModuleName, "LockBreakunlockable", {
 	name: Translate("Settings.LockBreakunlockable.name"),
@@ -441,6 +449,13 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
       }
     ],
     onDown: () => { BreakHoveredLock(); },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "CustomCheck", {
+    name: Translate("Keys.CustomCheck.name"),
+    onDown: () => { CustomCheckHoveredLock(); },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });

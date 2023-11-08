@@ -1,5 +1,5 @@
 import { cModuleName } from "../utils/LnKutils.js";
-import { LnKutils, cLUpickLock, cLUbreakLock } from "../utils/LnKutils.js";
+import { LnKutils, cLUpickLock, cLUbreakLock, cLUCustomCheck } from "../utils/LnKutils.js";
 
 const cDelimiter = ";";
 
@@ -12,9 +12,12 @@ const cLPFormulaF = "LPFormulaFlag"; //the Formula the token/item adds to LockPi
 const cLPFormulaOverrideF = "LPFormulaOverrideFlag"; //if this objects LPFormulaFlag overrides the global formula (instead of being added)
 const crequiredLPsuccessF = "requiredLPsuccessFlag"; //successes required to pick this lock
 const ccurrentLPsuccessF = "currentLPsuccessFlag"; //successes alraedy put into picking this lock
-const cLockBreakDCF = "LockBreakDCFlag"; //the dc of the lock (for lock picking)
+const cLockBreakDCF = "LockBreakDCFlag"; //the dc of the lock (for lock breaking)
 const cLBFormulaF = "LBFormulaFlag"; //the Formula the token/item adds to LockBreak rolls
 const cLBFormulaOverrideF = "LBFormulaOverrideFlag"; //if this objects LBFormulaFlag overrides the global formula (instead of being added)
+const cLockCCDCF = "LockCCDCFlag"; //the dc of the lock (for custom check)
+const cCCFormulaF = "CCFormulaFlag"; //the Formula the token/item adds to custom check rolls
+const cCCFormulaOverrideF = "CCFormulaOverrideFlag"; //if this objects CCFormulaFlag overrides the global formula (instead of being added)
 const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
 const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
 const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
@@ -27,13 +30,18 @@ const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how ma
 const ccanbeCircumventedFreeF = "canbeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
 const cRollOptionsF = "RollOptionsFlag"; //Flag to store roll options
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF }
+const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
+const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
+const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
+
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
 	LocknotPickable : 1,
 	LocknotBreakable : 2,
-	LockPasskeyTitle : 3
+	LockPasskeyTitle : 3,
+	LocknotCustom : 4
 };
 
 const cRollOptionDefault = {
@@ -42,10 +50,16 @@ const cRollOptionDefault = {
 	},
 	LockuseBreak: {
 		d10CritLimit : 10
+	},
+	LockuseCustom: {
+		d10CritLimit : 10
+	},
+	PickPocket: {
+		d10CritLimit : 10
 	}
 }
 
-const cRollTypes = ["LockusePick", "LockuseBreak", "LockuseCustom"]; //same as cLUpickLock, cLUbreakLock !
+const cRollTypes = ["LockusePick", "LockuseBreak", "LockuseCustom", "PickPocket"]; //same as cLUpickLock, cLUbreakLock, cLUCustomCheck !
 
 const cCritRollOptions = {
 	"CritMethod-d10poolCoD2e" : ["d10CritLimit"]
@@ -102,11 +116,15 @@ class LnKFlags {
 	
 	static LockBreakDC(pLock, praw = false) {} //returns the LockBreakDC of pLock (return Infinity should DC<0 if not praw)
 	
-	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock] (return Infinity should DC<0 if not praw)
+	static LockCCDC(pLock, praw = false) {} //returns the LockCCDC of pLock (return Infinity should DC<0 if not praw)
+	
+	static LockDCtype(pLock, pType, praw = false) {} //returns the DC of pLock of pType [cLUpickLock, cLUbreakLock, cLUCustomCheck] (return Infinity should DC<0 if not praw)
 	
 	static canbePicked(pLock) {} //returns if this lock can be picked
 	
 	static canbeBroken(pLock) {} //returns if this lock can be broken
+	
+	static canbeCustomChecked(pLock) {} //returns if this lock can custom checked
 	
 	static JamLock(pLock) {} //sets pLock Lockpick DC to unpickable value (-1)
 	
@@ -150,13 +168,30 @@ class LnKFlags {
 	
 	static LBFormulaOverride(pObject) {} //if this objects LB formula overrides the global formula
 	
-	static Formula(pObject, pType) {} //returns the Tokens/Items Formula for pTpye [cLUpickLock, cLUbreakLock]
+	static CCFormula(pObject) {} //returns the Tokens/Items Custom Check Formula
 	
-	static HasFormula(pObject, pType) {} //returns if the Token/Item has a Formula for pTpye [cLUpickLock, cLUbreakLock]
+	static HasCCFormula(pObject) {} //returns if the Token/Item has a Custom Check Formula
 	
-	static FormulaOverride(pObject, pType) {} //if this objects Formula for pTpye [cLUpickLock, cLUbreakLock] overrides the global formula
+	static CCFormulaOverride(pObject) {} //if this objects CC formula overrides the global formula
+	
+	static Formula(pObject, pType) {} //returns the Tokens/Items Formula for pTpye [cLUpickLock, cLUbreakLock, cLUCustomCheck]
+	
+	static HasFormula(pObject, pType) {} //returns if the Token/Item has a Formula for pTpye [cLUpickLock, cLUbreakLock, cLUCustomCheck]
+	
+	static FormulaOverride(pObject, pType) {} //if this objects Formula for pTpye [cLUpickLock, cLUbreakLock, cLUCustomCheck] overrides the global formula
 	
 	static RollOptions(pObject, pRollType, pRollOption, pFallbackValue = undefined) {} //returns the pRollOption of pRollType belonging to pObject (returns cRollOptionDefault otherwise)
+	
+	//PickPocket
+	static PickPocketDC(pToken, pRAW = false) {} //returns the PickPocketDC of pToken
+	
+	static Canbepickpocketed(pToken) {} //returns wether pToken can be pick pocketed
+	
+	static HasPickPocketFormula(pObject) {} //returns wether this pToken has a pick pocket formula
+	
+	static PickPocketFormula(pObject) {} //returns the pick pocket formula of pObject
+	
+	static PickPocketFormulaOverrides(pObject) {} //returns wether this object Pick pocket formula overrides
 	
 	//popups
 	static setCustomPopups(pObject, pPopups) {} //set the custom popups of pObject to pPopups
@@ -325,6 +360,45 @@ class LnKFlags {
 		return false; //default if anything fails
 	} 
 	
+	static #LockCCDCFlag (pObject) { 
+	//returns content of LockCCDC of pObject (if any) (Number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLockCCDCF)) {
+				return vFlag.LockCCDCFlag;
+			}
+		}
+		
+		return game.settings.get(cModuleName, "CustomCircumventDefaultDC"); //default if anything fails
+	}
+	
+	static #CCFormulaFlag (pObject) { 
+	//returns content of CCFormula of pObject (if any) (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cCCFormulaF)) {
+				return vFlag.CCFormulaFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
+	} 
+	
+	static #CCFormulaOverrideFlag (pObject) { 
+	//returns content of CCFormulaOverrideFlag of pObject (if any) (Boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cCCFormulaOverrideF)) {
+				return vFlag.CCFormulaOverrideFlag;
+			}
+		}
+		
+		return false; //default if anything fails
+	} 
+	
 	static #RemoveKeyonUseFlag (pObject) { 
 	//returns content of RemoveKeyonUseFlag (Boolean)
 		let vFlag = this.#LnKFlags(pObject);
@@ -446,6 +520,45 @@ class LnKFlags {
 		}
 		
 		return 0; //default if anything fails				
+	}
+	
+	static #PickPocketDCFlag (pToken) {
+	//returns content of PickPocketDC pToken (number)
+		let vFlag = this.#LnKFlags(pToken);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cPickPocketDCF)) {
+				return vFlag.PickPocketDCFlag;
+			}
+		}
+		
+		return -1; //default if anything fails				
+	}
+	
+	static #PickPocketFormulaFlag (pObject) { 
+	//returns content of PickPocketFormula of pObject (if any) (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cPickPocketFormulaF)) {
+				return vFlag.PickPocketFormulaFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
+	} 
+	
+	static #PickPocketFormulaOverrideFlag (pObject) { 
+	//returns content of PickPocketFormulaOverrideFlag of pObject (if any) (Boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cPickPocketFormulaOverrideF)) {
+				return vFlag.PickPocketFormulaOverrideFlag;
+			}
+		}
+		
+		return false; //default if anything fails
 	}
 	
 	static #canbeCircumventedFreeFlag (pObject) {
@@ -713,6 +826,16 @@ class LnKFlags {
 		return vDC;
 	}
 	
+	static LockCCDC(pLock, praw = false) {
+		let vDC = this.#LockCCDCFlag(pLock);
+		
+		if (vDC == -1 && !praw) {
+			vDC = Infinity;
+		}
+		
+		return vDC;		
+	}
+	
 	static LockDCtype(pLock, pType, praw = false) {
 		switch (pType) {
 			case cLUpickLock:		
@@ -721,6 +844,9 @@ class LnKFlags {
 			case cLUbreakLock:
 				return LnKFlags.LockBreakDC(pLock, praw);
 				break;
+			case cLUCustomCheck:
+				return LnKFlags.LockCCDC(pLock, praw);
+				break;
 			default:
 				return false;
 				break;
@@ -728,12 +854,16 @@ class LnKFlags {
 	}
 	
 	static canbePicked(pLock) {
-		return LnKFlags.LockDC(pLock) < Infinity && (!LnKFlags.Lockisjammed(pLock)) && LnKFlags.hasLPAttemptsLeft(pLock);
+		return (LnKFlags.LockDC(pLock) < Infinity) && (!LnKFlags.Lockisjammed(pLock)) && LnKFlags.hasLPAttemptsLeft(pLock);
 	}
 	
 	static canbeBroken(pLock) {
 		return LnKFlags.LockBreakDC(pLock) < Infinity;
 	}
+	
+	static canbeCustomChecked(pLock) {
+		return (LnKFlags.LockCCDC(pLock) < Infinity) && game.settings.get(cModuleName, "CustomCircumventActive");
+	} 
 	
 	static JamLock(pLock) {
 		this.#setLockjammedFlag(pLock, true);
@@ -849,6 +979,18 @@ class LnKFlags {
 		return this.#LBFormulaOverrideFlag(pObject);
 	}
 	
+	static CCFormula(pObject) {
+		return this.#CCFormulaFlag(pObject);
+	}
+	
+	static HasCCFormula(pObject) {
+		return Boolean(this.#CCFormulaFlag(pObject).length)
+	}
+	
+	static CCFormulaOverride(pObject) {
+		return this.#CCFormulaOverrideFlag(pObject);
+	}
+	
 	static Formula(pObject, pType) {
 		switch (pType) {
 			case cLUpickLock:		
@@ -856,6 +998,9 @@ class LnKFlags {
 				break;
 			case cLUbreakLock:
 				return LnKFlags.LBFormula(pObject);
+				break;
+			case cLUCustomCheck:
+				return LnKFlags.CCFormula(pObject);
 				break;
 			default:
 				return "";
@@ -871,6 +1016,9 @@ class LnKFlags {
 			case cLUbreakLock:
 				return LnKFlags.HasLBFormula(pObject);
 				break;
+			case cLUCustomCheck:
+				return LnKFlags.HasCCFormula(pObject);
+				break;
 			default:
 				return false;
 				break;
@@ -884,6 +1032,9 @@ class LnKFlags {
 				break;
 			case cLUbreakLock:
 				return LnKFlags.LBFormulaOverride(pObject);
+				break;
+			case cLUbreakLock:
+				return LnKFlags.CCFormulaOverride(pObject);
 				break;
 			default:
 				return false;
@@ -907,6 +1058,33 @@ class LnKFlags {
 		}
 		
 		return pFallbackValue; //something failed, panic, let everything go, run, scream, start praying, the apocalypse is near!
+	}
+	
+	//PickPocket
+	static PickPocketDC(pToken, pRAW = false) {
+		let vDC = this.#PickPocketDCFlag(pToken);
+		
+		if (vDC == -1 && !praw) {
+			vDC = Infinity;
+		}
+		
+		return vDC;
+	}
+	
+	static Canbepickpocketed(pToken) {
+		return LnKFlags.PickPocketDC(pToken) < Infinity;
+	}
+	
+	static HasPickPocketFormula(pObject) {
+		return (this.#PickPocketFormulaFlag(pObject).length > 0)
+	}
+	
+	static PickPocketFormula(pObject) {
+		return this.#PickPocketFormulaFlag(pObject);
+	}
+	
+	static PickPocketFormulaOverrides(pObject) {
+		return this.#PickPocketFormulaOverrideFlag(pObject);
 	}
 	
 	//popups

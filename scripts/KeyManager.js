@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
@@ -13,6 +13,7 @@ const cLnKPickLockIcon = "fa-solid fa-toolbox";
 const cLnKBreakLockIcon = "fa-solid fa-hammer";
 const cLnKCancelIcon = "fa-solid fa-xmark";
 const cLnKFreeCircumventIcon = "fa-solid fa-wand-magic-sparkles";
+const cLnKCustomCheckIcon = "";
 
 //does everything Key related (including lock picks, they are basically keys, right?)
 class KeyManager {
@@ -21,7 +22,7 @@ class KeyManager {
 	
 	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter, pFallBack = true) {} //called if a player tries to usa a key on pLockObject 
 	
-	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {} //called if a player tries to circumvent pLockObject using pUsetype [cLUpickLock, cLUbreakLock]
+	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {} //called if a player tries to circumvent pLockObject using pUsetype [cLUpickLock, cLUbreakLock, cLUCustomCheck]
 	
 	static onKeyContext(pHTML, pButtons) {} //adds buttons to item context
 	
@@ -61,6 +62,9 @@ class KeyManager {
 					case cLUbreakLock:
 						vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotBreakable);
 						break;
+					case cLUCustomCheck:
+						vProblemPopup = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LocknotCustom);
+						break;					
 				}
 			}
 			
@@ -81,6 +85,7 @@ class KeyManager {
 								break;
 							case cLUpickLock:
 							case cLUbreakLock:
+							case cLUCustomCheck:
 								KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
 								break;
 						}
@@ -171,7 +176,7 @@ class KeyManager {
 			vCircumvent = await KeyManager.cancircumventLock(pCharacter, pLockObject, pUseType); //will save if circumvention possible and the item
 			if (vCircumvent) {
 				
-				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
+				if (!game.settings.get(cModuleName, "usePf2eSystem") || (pUseType == cLUCustomCheck)) {
 					//get rollformula and used item (for roll formula)
 					[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType, vRollData);
 					
@@ -196,6 +201,9 @@ class KeyManager {
 							break;
 						case cLUbreakLock:
 							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+							break;
+						case cLUCustomCheck:
+							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.CustomCheck", {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
 							break;
 					}
 					
@@ -323,7 +331,10 @@ class KeyManager {
 				break;
 			case cLUbreakLock:
 				return true; //no item required
-				break;			
+				break;		
+			case cLUCustomCheck:
+				return game.settings.get(cModuleName, "CustomCircumventActive");
+				break;
 			default:
 				return false;
 				break;
@@ -410,6 +421,7 @@ class KeyManager {
 			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowFreeCircumvent = (LnKFlags.hasFreeLockCircumvent(vCharacter) && LnKFlags.canbeCircumventedFree(pLockObject)) || game.settings.get(cModuleName, "showallLockInteractions");
+			vshowCustomCheck = LnK.canbeCustomChecked(pLockObject) || (game.settings.get(cModuleName, "showallLockInteractions") && game.settings.get(cModuleName, "CustomCircumventActive"));
 				
 			if (vshowFreeCircumvent) {
 				vButtons[cLUFreeCircumvent] = {
@@ -448,6 +460,14 @@ class KeyManager {
 					label: Translate("Titles." + cLUbreakLock),
 					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
 					icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
+				}
+			}
+			
+			if (vshowCustomCheck) {
+				vButtons[cLUCustomCheck] = {
+					label: Translate("Titles." + cLUCustomCheck),
+					callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUCustomCheck);},
+					icon: `<i class="fas ${cLnKCustomCheckIcon}"></i>`
 				}
 			}
 			
@@ -571,4 +591,6 @@ function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hovere
 
 function BreakHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUbreakLock); };
 
-export { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock }
+function CustomCheckHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUCustomCheck); }
+
+export { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock }

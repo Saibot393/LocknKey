@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -358,6 +358,15 @@ class LnKSheetSettings {
 												vflagname : cLockBreakDCF
 												}, pto);
 												
+		if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+			//setting lock CC dc									
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockCCDCF +".name"), 
+													vhint : Translate("SheetSettings."+ cLockCCDCF +".descrp"), 
+													vtype : "number", 
+													vvalue : LnKFlags.LockCCDC(pApp.object, true),
+													vflagname : cLockCCDCF
+													}, pto);			
+		}										
 		
 		//setting for current of required successes
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
@@ -423,6 +432,25 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.LBFormulaOverride(pApp.object),
 												vflagname : cLBFormulaOverrideF
 												}, pto);
+												
+		if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+			//Additional CC roll formula
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaF +".name"), 
+													vhint : Translate("SheetSettings."+ cCCFormulaF +".descrp."+pType), 
+													vtype : "text", 
+													vwide : true,
+													vvalue : LnKFlags.CCFormula(pApp.object),
+													vflagname : cCCFormulaF
+													}, pto);	
+													
+			//If this items CC roll formula overrides other formulas
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaOverrideF +".name"), 
+													vhint : Translate("SheetSettings."+ cCCFormulaOverrideF +".descrp."+pType), 
+													vtype : "checkbox", 
+													vvalue : LnKFlags.CCFormulaOverride(pApp.object),
+													vflagname : cCCFormulaOverrideF
+													}, pto);			
+		}
 	}
 	
 	static AddRollOptions(pApp, pHTML, pData, pto) {

@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -15,7 +15,7 @@ class LockManager {
 	
 	static async useLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {} //handels pLock use of pCharacter with Passkey pPasskey
 	
-	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock] and result pRollresults
+	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock, cLUCustomCheck] and result pRollresults
 	
 	static async oncircumventLockresult(pLock, pCharacter, pUsedItemID, pResultDegree, pMethodtype, pChatMessages = false, puseData = {}) {} //called when pCharacter tries to circumvent pLock using pMethodtype with pResultDegree
 	
@@ -151,6 +151,14 @@ class LockManager {
 								}
 								
 								break;
+							case cLUCustomCheck:
+								LockManager.ToggleLock(pLock, pMethodtype);
+								
+								if (pChatMessages) {
+									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.CustomChecksuccess"+vCritMessagesuffix, {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")})}); //CHAT MESSAGE
+								}		
+								
+								break;
 				}
 			}
 			else {
@@ -211,6 +219,14 @@ class LockManager {
 									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								}
 								break;
+							case cLUCustomCheck:
+								LnKPopups.TextPopUpID(pLock, "checkfailed", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}); //MESSAGE POPUP
+								
+								if (pChatMessages) {
+									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.CustomCheckFail"+vCritMessagesuffix, {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")})}); //CHAT MESSAGE
+								}
+								break;
+								
 				}
 			}
 			
@@ -255,7 +271,8 @@ class LockManager {
 							break;
 						case cLUpickLock:
 						case cLUbreakLock:
-							if (!puseData.usePf2eRoll) {
+						case cLUCustomCheck:
+							if (!puseData.usePf2eRoll || (puseData.useType == cLUCustomCheck)) {
 								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType, puseData);
 							}
 							else {
@@ -373,6 +390,7 @@ class LockManager {
 					vValidToggle = !(await LockManager.isUnlocked(pLock)) && LnKFlags.canbeCircumventedFree(pLock);
 					break;
 				case cLUpickLock:
+				case cLUCustomCheck:
 				case cLUuseKey:
 				default:
 					vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
@@ -423,6 +441,7 @@ class LockManager {
 								LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
 							}
 						case cLUpickLock:
+						case cLUCustomCheck:
 						case cLUuseKey:
 							LnKPopups.TextPopUpID(pLock, "cantLock.default"); //MESSAGE POPUP
 							break;
