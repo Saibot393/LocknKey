@@ -9,6 +9,9 @@
 - Added world setting Default custom check DC to set the custom check dc of newly created locks
 - New feature: Pickpocketing
 
+## v1.12.9
+- Fixed bug that prevented sheet settings from loading
+
 ## v1.12.8
 - Removed some things accidentally released in the last version
 
