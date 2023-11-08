@@ -1,3 +1,17 @@
+## v2.0.0 (unreleased)
+- Added world setting Default lock sound to set the default sound used for Doors and lockable Tokens
+- Added world setting Default key folder to set the default folder the key creation menu selects
+- Added world setting Limit key folders to only show the chosen default key folder and its sub folders in the key creation menu
+- Added world setting Default lock dc to set the lock dc of nely created locks
+- Added world setting Default lock break dc to set the lock break dc of newly created locks
+- Added world setting Custom check name to set the name of a third custom check type for circumbenting locks
+- Added world setting Custom check formula to set the formula of the custom check
+- Added world setting Default custom check DC to set the custom check dc of newly created locks
+- New feature: Pickpocketing
+
+## v1.12.8
+- Removed some things accidentally released in the last version
+
 ## v1.12.7
 - Fixed error that showed up when opening the wrold default token menu
 
