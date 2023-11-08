@@ -1,3 +1,6 @@
+## v1.12.7
+- Fixed error that showed up when opening the wrold default token menu
+
 ## v1.12.6
 - Fixed bug, so that only Lock & Key compatible can be locked with alt+right-click
 
