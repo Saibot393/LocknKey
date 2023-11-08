@@ -372,6 +372,7 @@
 				"name"					: "Son de verou",
 				"descrp"				: "Règle le son des interactions de ce verrou",
 				"options" : {
+					"off"				: "off",
 					"futuristic"		: "Futuriste",
 					"industrial"		: "Industriel",
 					"jail"				: "Prison",

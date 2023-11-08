@@ -372,6 +372,7 @@
 				"name"					: "Schloss Geräusche",
 				"descrp"				: "Das Geräuschset welches für Interaktionen mit diesem Schloss verwendet wird",
 				"options" : {
+					"off"				: "aus",
 					"futuristic"		: "Futuristisch",
 					"industrial"		: "Industriel",
 					"jail"				: "Gefängnis",

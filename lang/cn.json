@@ -327,6 +327,7 @@
         "name": "锁的声音",
         "descrp": "设置与这扇门互动时的声音集",
         "options": {
+		  "off": "off",
           "futuristic": "未来",
           "industrial": "工业",
           "jail": "监狱",

@@ -53,17 +53,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
-  /*
   game.settings.register(cModuleName, "DefaultLockSound", {
 	name: Translate("Settings.DefaultLockSound.name"),
 	hint: Translate("Settings.DefaultLockSound.descrp"),
 	scope: "world",
-	config: true,
+	config: false,
 	type: String,
 	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultSound.options." + vSound)}),{}),
 	default: "off"
   }); 
-  */
   
   game.settings.register(cModuleName, "alwaysopenOwned", {
 	name: Translate("Settings.alwaysopenOwned.name"),
@@ -252,16 +250,14 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.SystemdefaultLPformula()
   }); 
   
-  /*
   game.settings.register(cModuleName, "DefaultPickDC", {
 	name: Translate("Settings.DefaultPickDC.name"),
 	hint: Translate("Settings.DefaultPickDC.descrp"),
 	scope: "world",
-	config: true, //replaced by Pf2e
+	config: false,
 	type: Number,
 	default: -1
   }); 
-  */
   
   game.settings.register(cModuleName, "LockBreakFormula", {
 	name: Translate("Settings.LockBreakFormula.name"),
@@ -272,16 +268,14 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.SystemdefaultLBformula()
   }); 
   
-  /*
   game.settings.register(cModuleName, "DefaultBreakDC", {
 	name: Translate("Settings.DefaultBreakDC.name"),
 	hint: Translate("Settings.DefaultBreakDC.descrp"),
 	scope: "world",
-	config: true, //replaced by Pf2e
+	config: false, //replaced by Pf2e
 	type: Number,
 	default: -1
   }); 
-  */
   
   /* 
   game.settings.register(cModuleName, "CustomCircumventName", {
