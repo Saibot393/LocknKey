@@ -4,6 +4,7 @@ import { PopUpRequest } from "./LnKPopups.js";
 import { PlaySoundRequest } from "./LnKSound.js";
 import { TriggerTilerequest } from "../compatibility/LnKCompatibility.js";
 import { ItemTransferRequest, TIWindowRequest } from "./LnKTakeInventory.js";
+import { PickPocketRequest } from "../PickPocketManager.js";
 
 //execute functions with pData depending on pFunction
 function organiseSocketEvents({pFunction, pData} = {}) {
@@ -21,12 +22,13 @@ function organiseSocketEvents({pFunction, pData} = {}) {
 			TriggerTilerequest(pData);
 			break;
 		case "TIWindowRequest":
-			console.log(pData);
 			TIWindowRequest(pData);
 			break;
 		case "ItemTransferRequest":
-			console.log(pData);
 			ItemTransferRequest(pData);
+			break;
+		case "PickPocketRequest":
+			PickPocketRequest(pData);
 			break;
 	}
 }

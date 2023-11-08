@@ -311,15 +311,28 @@ class LockManager {
 	}
 	
 	static createKeycreationDialog(pLock) {
+		let vFilter = "";
+		
+		if (game.settings.get(cModuleName, "LimitKeyFolders")) {
+			//filter by ancestor name
+			vFilter = game.settings.get(cModuleName, "DefaultKeyFolder");
+		}
+		
+		let vFolders = LnKutils.getItemFolders(vFilter);
+		
 		let vHTML = `<label>${Translate("Titles.Keyname")}</label>
 					<input type="text" id="Keyname" name="Keyname" value="${Translate("Words.Key")}">
 					<label>${Translate("Titles.Keyfolder")}</label>
 					<select name="Folder">`;
-					
-		let vFolder = LnKutils.getItemFolders();
 		
-		for (let i = 0; i < vFolder.length; i++) {
-			vHTML = vHTML + `<option value="${vFolder[i][1]}">${vFolder[i][0]}</option>`;
+		for (let i = 0; i < vFolders.length; i++) {
+			if (vFolders[i][0] == game.settings.get(cModuleName, "DefaultKeyFolder")) {
+				//default select
+				vHTML = vHTML + `<option value="${vFolders[i][1]}" selected>${vFolders[i][0]}</option>`;
+			}
+			else {
+				vHTML = vHTML + `<option value="${vFolders[i][1]}">${vFolders[i][0]}</option>`;
+			}
 		}
 		
 		vHTML = vHTML + `</select>`;
@@ -612,17 +625,38 @@ Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
 	LockManager.LockuseRequest(pData);
 });
 
-/*
+
 Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be removed if foundry includes a core setting
 	if (game.user.isGM) {
 		if (pSettings.door != 0) {
 			if (game.settings.get(cModuleName, "DefaultLockSound") != "off") {
+				let vSound = game.settings.get(cModuleName, "DefaultLockSound");
+				
+				//some sounds have to be filtered
+				switch (vSound) {
+					case "futuristic":
+						vSound = "futuristicFast";
+						break;
+					case "shutter":
+						vSound = ""; //find pendant
+						break;
+					case "sliding":
+						vSound = "slidingWood";
+						break;
+					case "stone":
+						vSound = "stoneBasic";
+						break;
+					case "wood":
+						vSound = "woodBasicThe";
+						break;
+				}
+				
 				pWall.update({doorSound : game.settings.get(cModuleName, "DefaultLockSound")}) ;
 			}
 		}
 	}
 });
-*/
+
 
 //wrap and export functions
 function LockuseRequest(puseData = {}) {return LockManager.LockuseRequest(puseData); }

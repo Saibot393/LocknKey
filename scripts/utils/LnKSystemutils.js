@@ -40,6 +40,8 @@ class LnKSystemutils {
 	
 	static SystemdefaultLBformula() {} //returns the default formula for Lock breaking in the current system	
 	
+	static SystemdefaultPickPocketformula() {} //returns the default formula for pick pocketing in the current system
+	
 	static SystemInventory(pToken) {} //returns the inventory of pToken in the current system
 	
 	static SystemFreeCircumventdefaultKeyword() {} //returns the default key word for Free Circumvents
@@ -189,6 +191,28 @@ class LnKSystemutils {
 		}		
 	}
 	
+	static SystemdefaultPickPocketformula() {
+		switch (game.system.id) {
+			case cPf2eName:
+				return "1d20 + @actor.skills.thievery.mod";
+				break;
+			case cDnD5e:
+				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.skills.slt.prof.flat";
+				break;
+			case cDnD35e:
+				return "1d20 + @actor.system.skills.slt.mod";
+				break;
+			case cStarFinderName:
+				return "1d20 + @actor.system.skills.sle.mod";
+				break;
+			case cPf1eName:
+				return "1d20 + @actor.system.skills.slt.mod";
+				break;
+			default:
+				return "";
+		}		
+	}
+	
 	static SystemInventory(pToken) {
 		switch (game.system.id) {
 			case cSandbox:
@@ -216,7 +240,7 @@ class LnKSystemutils {
 		}
 	}
 	
-	static async ResettoStandardFormulas(pResets = {pLP : true, pLB : true}) {
+	static async ResettoStandardFormulas(pResets = {pLP : true, pLB : true, pPP : true}) {
 		if (pResets.pLP) {
 			await game.settings.set(cModuleName, "LockPickFormula", LnKSystemutils.SystemdefaultLPformula());
 		}
@@ -224,9 +248,13 @@ class LnKSystemutils {
 		if (pResets.pLB) {
 			await game.settings.set(cModuleName, "LockBreakFormula", LnKSystemutils.SystemdefaultLBformula());
 		}
+		
+		if (pResets.pPP) {
+			await game.settings.set(cModuleName, "PickPocketFormula", LnKSystemutils.SystemdefaultPickPocketformula());
+		}
 	}
 }
 
-export function ResettoStandardFormulas(pResets = {pLP : true, pLB : true}) {LnKSystemutils.ResettoStandardFormulas(pResets)};
+export function ResettoStandardFormulas(pResets = {pLP : true, pLB : true, pPP : true}) {LnKSystemutils.ResettoStandardFormulas(pResets)};
 
 export { LnKSystemutils }

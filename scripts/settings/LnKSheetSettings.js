@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -23,7 +23,7 @@ class LnKSheetSettings {
 	//standard setting groups
 	static AddLockstandardsettings(pApp, pHTML, pData, pto) {} //adds the Lock standard settings (IDs, LPDC, LBDC)
 	
-	static AddFormulastandardsettings(pApp, pHTML, pData, pType, pto) {} //adds the character and item standard settings (LP formula, LP override, LB formula, LB override) (pType is either token or item)
+	static AddCharacterstandardsettings(pApp, pHTML, pData, pType, pto) {} //adds the character and item standard settings (LP formula, LP override, LB formula, LB override) (pType is either token or item)
 	
 	static AddRollOptions(pApp, pHTML, pData, pto) {} //adds the crit settings roll options to pHTML
 	
@@ -112,7 +112,7 @@ class LnKSheetSettings {
 				
 			if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
 				//formulas
-				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
+				LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
 			}
 			
 			//setting replacement item
@@ -260,7 +260,7 @@ class LnKSheetSettings {
 			
 			//formulas
 			if (vLockFormulaSettings) { //replaced by Pf2e
-				LnKSheetSettings.AddFormulastandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
+				LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
 				
 				LnKSheetSettings.AddRollOptions(pApp, pHTML, pData,`div[data-tab="${cModuleName}"]` );
 			}
@@ -398,7 +398,7 @@ class LnKSheetSettings {
 		pHTML.find(`button[id="${cModuleName}.CustomPopupsButton"]`).click(function() {LnKSheetSettings.OpenCustomPopups(pApp)});
 	} 
 	
-	static AddFormulastandardsettings(pApp, pHTML, pData, pType, pto) {
+	static AddCharacterstandardsettings(pApp, pHTML, pData, pType, pto) {
 		//Additional LP roll formula
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaF +".name"), 
 												vhint : Translate("SheetSettings."+ cLPFormulaF +".descrp."+pType), 
@@ -451,6 +451,35 @@ class LnKSheetSettings {
 													vflagname : cCCFormulaOverrideF
 													}, pto);			
 		}
+		
+		if (pType == "token") {
+			//Additional PickPocket roll formula
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketFormulaF +".name"), 
+													vhint : Translate("SheetSettings."+ cPickPocketFormulaF +".descrp"), 
+													vtype : "text", 
+													vwide : true,
+													vvalue : LnKFlags.PickPocketFormula(pApp.object),
+													vflagname : cPickPocketFormulaF
+													}, pto);	
+												
+			//If this tokens PickPocket roll formula overrides other formulas
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".name"), 
+													vhint : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".descrp"), 
+													vtype : "checkbox", 
+													vvalue : LnKFlags.PickPocketFormulaOverrides(pApp.object),
+													vflagname : cPickPocketFormulaOverrideF
+													}, pto);
+												
+			//setting PickPocket dc									
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF +".name"), 
+													vhint : Translate("SheetSettings."+ cPickPocketDCF +".descrp"), 
+													vtype : "number", 
+													vvalue : LnKFlags.PickPocketDC(pApp.object, true),
+													vflagname : cPickPocketDCF
+													}, pto);
+												
+		}												
+		
 	}
 	
 	static AddRollOptions(pApp, pHTML, pData, pto) {

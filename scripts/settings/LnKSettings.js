@@ -3,6 +3,7 @@ import { LnKSystemutils} from "../utils/LnKSystemutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
 import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock } from "../KeyManager.js";
 import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
+import { PickPocketHovered } from "../PickPocketManager.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 
 
@@ -57,7 +58,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.DefaultLockSound.name"),
 	hint: Translate("Settings.DefaultLockSound.descrp"),
 	scope: "world",
-	config: false,
+	config: true,
 	type: String,
 	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultSound.options." + vSound)}),{}),
 	default: "off"
@@ -119,16 +120,6 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   });
   
-  game.settings.register(cModuleName, "UseKeynameasID", {
-	name: Translate("Settings.UseKeynameasID.name"),
-	hint: Translate("Settings.UseKeynameasID.descrp"),
-	scope: "world",
-	config: true,
-	type: Boolean,
-	default: false
-  }); 
-  
-  /*
   game.settings.register(cModuleName, "DefaultKeyFolder", {
 	name: Translate("Settings.DefaultKeyFolder.name"),
 	hint: Translate("Settings.DefaultKeyFolder.descrp"),
@@ -136,7 +127,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	//choices:
-	default: false
+	default: ""
   }); 
   
    game.settings.register(cModuleName, "LimitKeyFolders", {
@@ -148,7 +139,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	//choices:
 	default: false
   }); 
-  */
+  
+  game.settings.register(cModuleName, "UseKeynameasID", {
+	name: Translate("Settings.UseKeynameasID.name"),
+	hint: Translate("Settings.UseKeynameasID.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  }); 
   
   game.settings.register(cModuleName, "LnKSettingTypes", {
 	name: Translate("Settings.LnKSettingTypes.name"),
@@ -254,7 +253,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.DefaultPickDC.name"),
 	hint: Translate("Settings.DefaultPickDC.descrp"),
 	scope: "world",
-	config: false,
+	config: true,
 	type: Number,
 	default: -1
   }); 
@@ -272,7 +271,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.DefaultBreakDC.name"),
 	hint: Translate("Settings.DefaultBreakDC.descrp"),
 	scope: "world",
-	config: false, //replaced by Pf2e
+	config: true,
 	type: Number,
 	default: -1
   }); 
@@ -340,6 +339,24 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: String,
 	default: LnKSystemutils.SystemFreeCircumventdefaultKeyword()
   });    
+  
+  game.settings.register(cModuleName, "PickPocketFormula", {
+	name: Translate("Settings.PickPocketFormula.name"),
+	hint: Translate("Settings.PickPocketFormula.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKSystemutils.SystemdefaultPickPocketformula()
+  }); 
+  
+  game.settings.register(cModuleName, "PickPocketDefaultDC", {
+	name: Translate("Settings.PickPocketDefaultDC.name"),
+	hint: Translate("Settings.PickPocketDefaultDC.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  });   
   
   //client
   game.settings.register(cModuleName, "ControlSceme", {
@@ -456,6 +473,13 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   game.keybindings.register(cModuleName, "CustomCheck", {
     name: Translate("Keys.CustomCheck.name"),
     onDown: () => { CustomCheckHoveredLock(); },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "PickPocket", {
+    name: Translate("Keys.PickPocket.name"),
+    onDown: () => { PickPocketHovered(); },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });

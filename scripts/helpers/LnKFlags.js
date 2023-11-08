@@ -1,5 +1,5 @@
 import { cModuleName } from "../utils/LnKutils.js";
-import { LnKutils, cLUpickLock, cLUbreakLock, cLUCustomCheck } from "../utils/LnKutils.js";
+import { LnKutils, cLUpickLock, cLUbreakLock, cLUCustomCheck, cUPickPocket } from "../utils/LnKutils.js";
 
 const cDelimiter = ";";
 
@@ -34,14 +34,15 @@ const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
 const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
 const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
 	LocknotPickable : 1,
 	LocknotBreakable : 2,
 	LockPasskeyTitle : 3,
-	LocknotCustom : 4
+	LocknotCustom : 4,
+	CharacternotPickpocketable: 5,
 };
 
 const cRollOptionDefault = {
@@ -54,12 +55,12 @@ const cRollOptionDefault = {
 	LockuseCustom: {
 		d10CritLimit : 10
 	},
-	PickPocket: {
+	UsePickPocket: {
 		d10CritLimit : 10
 	}
 }
 
-const cRollTypes = ["LockusePick", "LockuseBreak", "LockuseCustom", "PickPocket"]; //same as cLUpickLock, cLUbreakLock, cLUCustomCheck !
+const cRollTypes = ["LockusePick", "LockuseBreak", "LockuseCustom", "UsePickPocket"]; //same as cLUpickLock, cLUbreakLock, cLUCustomCheck !
 
 const cCritRollOptions = {
 	"CritMethod-d10poolCoD2e" : ["d10CritLimit"]
@@ -183,7 +184,7 @@ class LnKFlags {
 	static RollOptions(pObject, pRollType, pRollOption, pFallbackValue = undefined) {} //returns the pRollOption of pRollType belonging to pObject (returns cRollOptionDefault otherwise)
 	
 	//PickPocket
-	static PickPocketDC(pToken, pRAW = false) {} //returns the PickPocketDC of pToken
+	static PickPocketDC(pToken, praw = false) {} //returns the PickPocketDC of pToken
 	
 	static Canbepickpocketed(pToken) {} //returns wether pToken can be pick pocketed
 	
@@ -532,7 +533,7 @@ class LnKFlags {
 			}
 		}
 		
-		return -1; //default if anything fails				
+		return game.settings.get(cModuleName, "PickPocketDefaultDC"); //default if anything fails				
 	}
 	
 	static #PickPocketFormulaFlag (pObject) { 
@@ -1061,7 +1062,7 @@ class LnKFlags {
 	}
 	
 	//PickPocket
-	static PickPocketDC(pToken, pRAW = false) {
+	static PickPocketDC(pToken, praw = false) {
 		let vDC = this.#PickPocketDCFlag(pToken);
 		
 		if (vDC == -1 && !praw) {

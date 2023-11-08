@@ -32,8 +32,9 @@ const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
 const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
 const cLUCustomCheck = "LockuseCustom"; //if a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //if a lock gets circumvented via e.g. a knock spell
+const cUPickPocket = "UsePickPocket"; //if a character is pickpocketed
 
-export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent}
+export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
@@ -101,7 +102,7 @@ class LnKutils {
 	
 	static async removeoneItem(pItem, pCharacter) {} //trys to reduce quantity by one, if not possible, deletes item
 	
-	static getItemFolders() {} //returns an array of all Folders, including array with the name and the ID
+	static getItemFolders(pFilterDirectory = "") {} //returns an array of all Folders, including array with the name and the ID
 	
 	//locks
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
@@ -137,6 +138,9 @@ class LnKutils {
 	static formulaWorld(pType) {} //returns the worlds formula used for pType [cLUpickLock, cLUbreakLock]
 	
 	static useMultiSuccess(pObject) {} //returns of MultiSuccess is active for pObject
+	
+	//pick pocket
+	static PickPocketformulaWorld() {} //returns the worlds formula used Pick Pocket check rolls
 	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
@@ -471,8 +475,14 @@ class LnKutils {
 		}
 	}
 	
-	static getItemFolders() {
-		return [["",""]].concat(game.items.directory.folders.map(vFolder => [vFolder.name, vFolder.id]));
+	static getItemFolders(pFilterDirectory = "") {
+		let vFolders = game.items.directory.folders;
+		 
+		if (pFilterDirectory.length > 0) {
+			vFolders = vFolders.filter(vFolder => (vFolder.name == pFilterDirectory) || vFolder.ancestors.find(vAncestor => vAncestor.name == pFilterDirectory));
+		}
+		
+		return [["",""]].concat(vFolders.map(vFolder => [vFolder.name, vFolder.id]));
 	}
 	
 	//locks
@@ -755,6 +765,16 @@ class LnKutils {
 		}
 		
 		return true;
+	}
+	
+	//pick pocket
+	static PickPocketformulaWorld() {
+		if (game.settings.get(cModuleName, "PickPocketFormula").length) {
+			return game.settings.get(cModuleName, "PickPocketFormula");
+		}
+		else {
+			return "0";
+		}			
 	}
 	
 	//arrays

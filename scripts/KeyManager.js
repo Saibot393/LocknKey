@@ -421,7 +421,7 @@ class KeyManager {
 			vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 			vshowFreeCircumvent = (LnKFlags.hasFreeLockCircumvent(vCharacter) && LnKFlags.canbeCircumventedFree(pLockObject)) || game.settings.get(cModuleName, "showallLockInteractions");
-			vshowCustomCheck = LnK.canbeCustomChecked(pLockObject) || (game.settings.get(cModuleName, "showallLockInteractions") && game.settings.get(cModuleName, "CustomCircumventActive"));
+			vshowCustomCheck = LnKFlags.canbeCustomChecked(pLockObject) || (game.settings.get(cModuleName, "showallLockInteractions") && game.settings.get(cModuleName, "CustomCircumventActive"));
 				
 			if (vshowFreeCircumvent) {
 				vButtons[cLUFreeCircumvent] = {

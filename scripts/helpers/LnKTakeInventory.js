@@ -35,15 +35,12 @@ class LnKTakeInventory {
 	
 	static RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {
 		if (game.user.isGM) {
-			console.log(pInventoryOwner);
 			game.socket.emit("module."+cModuleName, {pFunction : "TIWindowRequest", pData : {pUserID : pUserID, pSceneID : pInventoryOwner.parent?.id, pInventoryOwnerID : pInventoryOwner?.id, pInventoryInfo : LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions : pOptions}});
 		}
 	}
 	
 	static TIWindowRequest(pUserID, pSceneID, pInventoryOwnerID, pInventoryInfo, pOptions = {}) {
 		if (pUserID == game.user.id) {
-			console.log(game.scenes.get(pSceneID));
-			console.log(game.scenes.get(pSceneID)?.tokens.get(pInventoryOwnerID));
 			LnKTakeInventory.openTIWindowself(game.scenes.get(pSceneID)?.tokens.get(pInventoryOwnerID), pInventoryInfo, pOptions);
 		}
 	}
@@ -62,7 +59,7 @@ class LnKTakeInventory {
 	
 	//support
 	static TokenInventory(pToken) {
-		const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tootl", "treasure", "weapon"];
+		const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tool", "treasure", "weapon"];
 		
 		if (pToken.actor?.items) {
 			return pToken.actor.items.filter(vItem => cITypeWhiteList.includes(vItem.type));
@@ -90,20 +87,14 @@ class LnKTakeInventory {
 
 	static TransferItems(pSource, pTarget, pItemInfos) {
 		if (game.user.isGM) {
-			console.log(1);
 			if ((pSource instanceof TokenDocument) && (pTarget instanceof TokenDocument)) {
 				if (pSource.actor && pTarget.actor) {
-					console.log(2);
-					console.log(pSource);
-					console.log(pTarget);
 					let vItem;
 					
 					let vTransferQuantity;
 					
 					for (let i = 0; i < pItemInfos.length; i++) {
 						vItem = pSource.actor.items.get(pItemInfos[i].itemid);
-						console.log(pItemInfos[i].itemid);
-						console.log(vItem);
 						
 						vTransferQuantity = Math.min(vItem?.system?.quantity, pItemInfos[i].quantity); //make sure not to transfer too many items
 						
@@ -179,8 +170,6 @@ class TakeInventoryWindow extends Application {
 	}
 	
 	getHTML(pOptions={}) {
-		console.log(this);
-		
 		let vTokenID = this.vInventoryOwner?.id;
 		
 		let vInventory = this.vInventoryInfo;
@@ -239,11 +228,10 @@ class TakeInventoryWindow extends Application {
 		
 		let vConfirmButton = pHTML.find(`button[name="${cWindowID}.take-confirm"]`);
 		
-		vConfirmButton.on("click", () => {this.RequestItemTransfer()});
+		vConfirmButton.on("click", () => {this.RequestItemTransfer(); this.close()});
 	}
 	
 	async _updateObject(pEvent, pData) {
-		console.log(pEvent, pData);
 	}	
 	
 	//DECLARATIONs
@@ -277,8 +265,4 @@ export function ItemTransferRequest({pTaker, pInventoryOwner, pTransferInfo, pOp
 
 export function TIWindowRequest({pUserID, pSceneID, pInventoryOwnerID, pInventoryInfo, pOptions} = {}) {LnKTakeInventory.TIWindowRequest(pUserID, pSceneID, pInventoryOwnerID, pInventoryInfo, pOptions)}
 
-Hooks.once("init", () => {
-	game.modules.get(cModuleName).test = {
-		LnKTakeInventory
-	}
-});
+export { LnKTakeInventory }
