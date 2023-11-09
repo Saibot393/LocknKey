@@ -17,6 +17,7 @@
 			"LockusePick"				: "Crocheter",
 			"LockuseBreak"				: "Casser le verrou",
 			"LockuseFree"				: "Déverrouillage gratuit",
+			"LockuseCustom"				: "{pCheckName}",
 			"Close"						: "Fermer",
 			"Keycreation"				: "Création de clé",
 			"Keyname"					: "Nom de la clé",
@@ -24,13 +25,15 @@
 			"ConfirmKeycreation"		: "Créer",
 			"Basic"						: "Basique",
 			"Triggers"					: "Déclencheurs",
-			"FreeCircumventHUD"			: "Ce jeton peut contourner le prochain verrou, cliquez pour annuler"
+			"FreeCircumventHUD"			: "Ce jeton peut contourner le prochain verrou, cliquez pour annuler",
+			"PickPocket"				: "Pick pocket"
 		},
 		
 		"Popup" : {
 			"TokenisLocked"				: "{pLockName} est verrouillé",
 			"DoorisLocked"				: "Cette porte est verrouillée",
 			"Lockoutofreach"			: "Ce verrou est trop loin",
+			"Tokenoutofreach"			: "{pTokenName} is out of reach",
 			"lockedDoor"				: "Porte verrouillée",
 			"lockedToken"				: "{pLockName} verrouillé",
 			"unlockedDoor"				: "Porte déverrouillée",
@@ -49,7 +52,9 @@
 			"Lockisjammed"				: "Verrou bloqué",
 			"Lockpickbroke"				: "Outil détruit",
 			"jammedLock"				: "Blocage du verrou",
-			"cantcircumventFree"		: "Verrou incontournable"
+			"cantcircumventFree"		: "Verrou incontournable",
+			"CantbePickpocketed"		: "Can't be pick pocketed",
+			"PickPocketfailed"			: "Pick pocket failed"
 		},	
 		
 		"ChatMessage" : {
@@ -82,6 +87,26 @@
 			"LockBreakfail" : {
 				"crit"					: "{pName} a obtenu un échec critique en essayant de casser un verrou",
 				"default" 				: "{pName} a échoué à casser un verrou"
+			},
+			
+			"CustomCheck"				: "{pName} used {pCheckName}:",
+			"CustomChecksuccess" : {
+				"crit"					: "{pName} critically succeeded at {pCheckName}",
+				"default" 				: "{pName} succeeded at {pCheckName}"			
+			},
+			"CustomCheckFail" : {
+				"crit"					: "{pName} critically failed at {pCheckName}",
+				"default" 				: "{pName} failed at {pCheckName}"
+			},
+			
+			"PickPocket"				: "{pName} tried to pick pocket:",
+			"PickPocketSuccess" : {
+				"crit"					: "{pName} critically succeeded at pick pocketing",
+				"default" 				: "{pName} succeeded at pick pocketing"			
+			},
+			"PickPocketFail" : {
+				"crit"					: "{pName} critically failed at pick pocketing",
+				"default" 				: "{pName} failed at pick pocketing"
 			}
 		},
 		
@@ -104,6 +129,11 @@
 			"LockDistance" : {
 				"name" 					: "Distance d'interaction avec les verrous",
 				"descrp"				: "Distance à laquelle les joueurs peuvent intéragir avec les verrous (unité de jeu)"		
+			},
+			
+			"DefaultLockSound" : {
+				"name"					: "Default lock sound",
+				"descrp"				: "The default sound applied to new doors a lock tokens"
 			},
 			
 			"UseArmReachDistance": {
@@ -146,6 +176,16 @@
 				"descrp"				: "Si un menu doit être affiché pour la clé nouvellement générée pour changer son nom et son dossier"		
 			},		
 
+			"DefaultKeyFolder" : {
+				"name"					: "Default key folder",
+				"descrp"				: "The name of the default folders used in the key creation menu"
+			},
+			
+			"LimitKeyFolders" : {
+				"name"					: "Filter key folders",
+				"descrp"				: "If only the default key folder and its subfolders should be shown in the key creation menu"
+			},
+			
 			"UseKeynameasID" : {
 				"name" 					: "Nom de clé comme ID",
 				"descrp"				: "Si le nom d'une clé doit être considéré comme un identifiant supplémentaire pour ouvrir les verrous"		
@@ -205,9 +245,34 @@
 				"descrp"				: "La formule utilisée pour les lancers de dés lors du crochetage d'une serrure (e.g. \"1d20 + @actor.skills.thievery.mod\", aide sur la page Github de ce module)"				
 			},
 			
+			"DefaultPickDC" : {
+				"name" 					: "Default lock DC",
+				"descrp"				: "The default value for lock DCs"				
+			},
+			
 			"LockBreakFormula" : {
 				"name" 					: "Formule de cassage de verrou",
 				"descrp"				: "La formule utilisée pour les lancers de dés lors du cassage d'un verrou (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", aide sur la page Github de ce module)"				
+			},
+			
+			"DefaultBreakDC" : {
+				"name" 					: "Default lock break DC",
+				"descrp"				: "The default value for lock break DCs"				
+			},
+			
+			"CustomCircumventName" : {
+				"name" 					: "Custom check name",
+				"descrp"				: "The name of the third optional custom check to circumvent locks (e.g. \"Hacking\" or \"Magic rune\", leave empty to deactivate)"				
+			},
+			
+			"CustomCircumventFormula" : {
+				"name" 					: "Custom check formula",
+				"descrp"				: "The formula which is used for dice rolls when using the custom check above"				
+			},
+			
+			"CustomCircumventDefaultDC" : {
+				"name" 					: "Custom check default DC",
+				"descrp"				: "The default value for custom check DCs"				
 			},
 			
 			"LockBreakunlockable" : {
@@ -223,6 +288,16 @@
 			"LockCircumventName" : {
 				"name" 					: "Mots clés de contournement des verrous",
 				"descrp"				: "Mots clés pour identifier les effets (e.g. le sort \"Knock\") qui permettent aux joueurs de controuner les verrous (séparés avec \";\")"				
+			},
+			
+			"PickPocketFormula" : {
+				"name" 					: "Pick pocket formula",
+				"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+			},
+			
+			"PickPocketDefaultDC" : {
+				"name" 					: "Pick pocket default DC",
+				"descrp"				: "The default value for pick pocket DCs"				
 			},
 			
 			"ControlSceme" : {
@@ -282,6 +357,14 @@
 			
 			"BreakLock" : {
 				"name"					: "Casser le verrou"
+			},
+			
+			"CustomCheck" : {
+				"name"					: "Custom Check (ask GM (unless you are the GM))"
+			},
+			
+			"PickPocket" : {
+				"name"					: "Pick pocket"
 			}
 		},
 		
@@ -332,6 +415,11 @@
 			"LockBreakDCFlag" : {
 				"name" 					: "Difficulté de cassage",
 				"descrp"				: "La difficulté du verrou, utilisée pour le cassage (-1 pour rendre impossible à casser)"					
+			},		
+			
+			"LockCCDCFlag" : {
+				"name" 					: "{pCheckName} DC",
+				"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent breaking)"					
 			},
 			
 			"requiredLPsuccessFlag" : {
@@ -364,6 +452,12 @@
 				},
 				"LockPasskeyTitle" : {
 					"name"					: "Dialogue du mot de passe:"
+				},
+				"LocknotCustom" : {
+					"name"					: "Lock can't be used with custom check:"
+				},
+				"CharacternotPickpocketable" : {
+					"name"					: "Character can't be pick pocketed:"
 				},
 				"confirmButtonname"        	: "Confirmer les popups"
 			},
@@ -414,6 +508,43 @@
 					"token" 			: "Si la formule cassage de ces jetons remplace la formule du monde",
 					"item"				: "Si la formule cassage de cet élément remplace la formule des jetons/du monde"
 				}				
+			},
+			
+			"CCFormulaFlag" : {
+				"name" 					: "{pCheckName} formula",
+				"descrp" : {
+					"token" 			: "The formula added to {pCheckName} rolls this token makes",
+					"item"				: "The formula added to {pCheckName} rolls the owner of this item makes (only best in inventory used)"
+				}					
+			},
+			
+			"CCFormulaOverrideFlag" : {
+				"name" 					: "Override {pCheckName} lock formula",
+				"descrp" : {
+					"token" 			: "If this tokens {pCheckName} formula overrides the world formula",
+					"item"				: "If this items {pCheckName} formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"PickPocketFormulaFlag" : {
+				"name" 					: "Pick pocket formula",
+				"descrp" : {
+					"token" 			: "The formula added to Pick pocket rolls this token makes",
+					"item"				: "The formula added to Pick pocket rolls the owner of this item makes (only best in inventory used)"
+				}					
+			},
+			
+			"PickPocketFormulaOverrideFlag" : {
+				"name" 					: "Override Pick pocket lock formula",
+				"descrp" : {
+					"token" 			: "If this tokens Pick pocket formula overrides the world formula",
+					"item"				: "If this items Pick pocket formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"PickPocketDCFlag" : {
+				"name" 					: "Pick pocket DC",
+				"descrp"  				: "The difficulty class to use Pick pocket this character"			
 			},
 			
 			"ReplacementItemFlag" : {
@@ -480,6 +611,20 @@
 				"line1" 				: "•right-click pour utiliser la clé d'un verrou",
 				"line2" 				: "•shift+right-click pour essayer de crocheter un verrou",
 				"line3" 				: "•alt+right-click pour essayer de casser un verrou"
+			}
+		},
+		
+		"take-inventory-window" : {
+			"titles" : {
+				"inventory"				: "Inventory"
+			},
+			"header" : {
+				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
+			},
+			"buttons" : {
+				"take" : {
+					"name"				: "Take selected"
+				}
 			}
 		},
 		

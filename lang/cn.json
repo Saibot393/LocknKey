@@ -17,6 +17,7 @@
 	  "LockusePick"					: "撬锁",
 	  "LockuseBreak"				: "砸锁",
 	"LockuseFree"				: "Free lock use",
+	"LockuseCustom"				: "{pCheckName}",
 	  "Close"						: "关闭",
 		"Keycreation"				: "创建钥匙",
 		"Keyname"					: "钥匙名字",
@@ -24,12 +25,14 @@
 		"ConfirmKeycreation"			: "创建",
 		"Basic"						: "基本",
 		"Triggers"					: "Triggers",
-		"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove"
+		"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove",
+		"PickPocket"				: "Pick pocket"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
       "DoorisLocked": "这扇门上锁了",
       "Lockoutofreach": "够不到这把锁~",
+	  "Tokenoutofreach"	: "{pTokenName} is out of reach",
       "lockedDoor": "门现已上锁",
       "lockedToken": "{pLockName}现已上锁",
       "unlockedDoor": "门现已解锁",
@@ -48,7 +51,9 @@
       "Lockisjammed": "锁被堵住了",
       "Lockpickbroke": "撬锁器损坏了",
       "jammedLock": "堵住了锁",
-	  "cantcircumventFree": "Lock can't be circumvented"
+	  "cantcircumventFree": "Lock can't be circumvented",
+	  "CantbePickpocketed"		: "Can't be pick pocketed",
+	  "PickPocketfailed"			: "Pick pocket failed"
     },
     "ChatMessage": {
       "LockPick": "{pName}尝试撬锁:",
@@ -80,7 +85,26 @@
       "LockBreakfail": {
         "crit": "{pName}砸锁大失败",
         "default": "{pName}砸锁失败"
-      }
+      },		
+			"CustomCheck"				: "{pName} used {pCheckName}:",
+			"CustomChecksuccess" : {
+				"crit"					: "{pName} critically succeeded at {pCheckName}",
+				"default" 				: "{pName} succeeded at {pCheckName}"			
+			},
+			"CustomCheckFail" : {
+				"crit"					: "{pName} critically failed at {pCheckName}",
+				"default" 				: "{pName} failed at {pCheckName}"
+			},
+			
+			"PickPocket"				: "{pName} tried to pick pocket:",
+			"PickPocketSuccess" : {
+				"crit"					: "{pName} critically succeeded at pick pocketing",
+				"default" 				: "{pName} succeeded at pick pocketing"			
+			},
+			"PickPocketFail" : {
+				"crit"					: "{pName} critically failed at pick pocketing",
+				"default" 				: "{pName} failed at pick pocketing"
+			}
     },
     "Settings": {
       "useGMquickKeys": {
@@ -99,6 +123,10 @@
         "name": "锁的距离",
         "descrp": "可以与锁互动的距离（使用游戏内单位）"
       },
+		"DefaultLockSound" : {
+			"name"					: "Default lock sound",
+			"descrp"				: "The default sound applied to new doors a lock tokens"
+		},
       "UseArmReachDistance": {
         "name": "使用 \"Arms Reach\" 距离",
         "descrp": "使用模组 \"Arms Reach\" 内的距离来设置与锁互动的距离"
@@ -131,7 +159,15 @@
 			"name" 					: "钥匙创建菜单",
 			"descrp"				: "创建钥匙时是否让设置菜单弹出"		
 		},		
-
+		"DefaultKeyFolder" : {
+			"name"					: "Default key folder",
+			"descrp"				: "The name of the default folders used in the key creation menu"
+		},
+		
+		"LimitKeyFolders" : {
+			"name"					: "Filter key folders",
+			"descrp"				: "If only the default key folder and its subfolders should be shown in the key creation menu"
+		},
 		"UseKeynameasID" : {
 			"name" 					: "钥匙名则是ID",
 			"descrp"				: "在开锁时，是否应将钥匙名称视为ID"		
@@ -181,10 +217,33 @@
         "name": "撬锁掷骰公式",
         "descrp": "撬锁时的掷骰公式(例：\"1d20 + @actor.skills.thievery.mod\", 本模组的Github页面上有帮助页)"
       },
+		"DefaultPickDC" : {
+			"name" 					: "Default lock DC",
+			"descrp"				: "The default value for lock DCs"				
+		},
       "LockBreakFormula": {
         "name": "砸锁掷骰公式",
         "descrp": "砸锁时的掷骰公式(例：\"1d20 + @actor.skills.athletics.mod - 2\", 本模组的Github页面上有帮助页)"
       },
+		"DefaultBreakDC" : {
+			"name" 					: "Default lock break DC",
+			"descrp"				: "The default value for lock break DCs"				
+		},
+		
+		"CustomCircumventName" : {
+			"name" 					: "Custom check formula",
+			"descrp"				: "The name of the third optional custom check to circumvent locks (e.g. \"Hacking\" or \"Magic rune\", leave empty to deactivate)"				
+		},
+		
+		"CustomCircumventFormula" : {
+			"name" 					: "Custom check name",
+			"descrp"				: "The formula which is used for dice rolls when using the custom check above"				
+		},
+		
+		"CustomCircumventDefaultDC" : {
+			"name" 					: "Custom check default DC",
+			"descrp"				: "The default value for custom check DCs"				
+		},
       "LockBreakunlockable": {
         "name": "损坏的锁可被解锁",
         "descrp": "让已经损坏的锁可以被解锁"
@@ -196,6 +255,14 @@
 	"LockCircumventName" : {
 		"name" 					: "Lock circumvention keywords",
 		"descrp"				: "Keywords to identify effects (e.g. the \"Knock\" spell)  that allow players to circumvent locks (seperated with \";\")"				
+	},
+	"PickPocketFormula" : {
+		"name" 					: "Pick pocket formula",
+		"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+	},
+	"PickPocketDefaultDC" : {
+		"name" 					: "Pick pocket default DC",
+		"descrp"				: "The default value for pick pocket DCs"				
 	},
 	"ControlSceme" : {
 		"name" 					: "控制方案",
@@ -251,6 +318,14 @@
 		
 		"BreakLock" : {
 			"name"					: "砸锁"
+		},
+			
+		"CustomCheck" : {
+			"name"					: "Custom Check (ask GM (unless you are the GM))"
+		},
+		
+		"PickPocket" : {
+			"name"					: "Pick pocket"
 		}
 	},
     "SheetSettings": {
@@ -293,6 +368,10 @@
         "name": "砸锁DC",
         "descrp": "开锁的DC, 适用于砸锁 (-1 则不可砸锁)"
       },
+	"LockCCDCFlag" : {
+		"name" 					: "{pCheckName} DC",
+		"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent breaking)"					
+	},
       "requiredLPsuccessFlag": {
         "name": "需要的撬锁成功次数",
         "descrp": "需要多少次成功的撬锁才能开锁 (以及目前成功了多少次) (大成功视为两次)"
@@ -321,6 +400,12 @@
         "LockPasskeyTitle": {
           "name": "密码框文本:"
         },
+		"LocknotCustom" : {
+			"name"					: "Lock can't be used with custom check:"
+		},
+		"CharacternotPickpocketable" : {
+			"name"					: "Character can't be pick pocketed:"
+		},
         "confirmButtonname": "确定弹出消息"
       },
       "SoundVariantFlag": {
@@ -365,7 +450,43 @@
           "token": "这个token的砸锁公式是否覆盖世界设定",
           "item": "这个物品的砸锁公式是否覆盖token/世界设定"
         }
-      },			
+      },	
+		"CCFormulaFlag" : {
+			"name" 					: "{pCheckName} formula",
+			"descrp" : {
+				"token" 			: "The formula added to {pCheckName} rolls this token makes",
+				"item"				: "The formula added to {pCheckName} rolls the owner of this item makes (only best in inventory used)"
+			}					
+		},
+		
+		"CCFormulaOverrideFlag" : {
+			"name" 					: "Override {pCheckName} lock formula",
+			"descrp" : {
+				"token" 			: "If this tokens {pCheckName} formula overrides the world formula",
+				"item"				: "If this items {pCheckName} formula overrides the tokens/worlds formula"
+			}				
+		},
+		
+		"PickPocketFormulaFlag" : {
+			"name" 					: "Pick pocket formula",
+			"descrp" : {
+				"token" 			: "The formula added to Pick pocket rolls this token makes",
+				"item"				: "The formula added to Pick pocket rolls the owner of this item makes (only best in inventory used)"
+			}					
+		},
+		
+		"PickPocketFormulaOverrideFlag" : {
+			"name" 					: "Override Pick pocket lock formula",
+			"descrp" : {
+				"token" 			: "If this tokens Pick pocket formula overrides the world formula",
+				"item"				: "If this items Pick pocket formula overrides the tokens/worlds formula"
+			}				
+		},
+		
+		"PickPocketDCFlag" : {
+			"name" 					: "Pick pocket DC",
+			"descrp"  				: "The difficulty class to use Pick pocket this character"			
+		},	  
 		"ReplacementItemFlag" : {
 			"name" 					: "Replacement Items",
 			"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
@@ -427,6 +548,20 @@
         "line3": "•alt+右键   尝试砸锁"
       }
     },
+	
+		"take-inventory-window" : {
+			"titles" : {
+				"inventory"				: "Inventory"
+			},
+			"header" : {
+				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
+			},
+			"buttons" : {
+				"take" : {
+					"name"				: "Take selected"
+				}
+			}
+		},
 		
 		"monks-active-tiles" : {
 			"filters" : {

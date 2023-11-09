@@ -244,7 +244,7 @@
 				"name" 					: "Lockpick roll formula",
 				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
 			},
-			
+					
 			"DefaultPickDC" : {
 				"name" 					: "Default lock DC",
 				"descrp"				: "The default value for lock DCs"				
@@ -266,7 +266,7 @@
 			},
 			
 			"CustomCircumventFormula" : {
-				"name" 					: "Custom check name",
+				"name" 					: "Custom check formula",
 				"descrp"				: "The formula which is used for dice rolls when using the custom check above"				
 			},
 			
@@ -419,7 +419,7 @@
 			
 			"LockCCDCFlag" : {
 				"name" 					: "{pCheckName} DC",
-				"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent breaking)"					
+				"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent)"					
 			},
 			
 			"requiredLPsuccessFlag" : {
@@ -519,7 +519,7 @@
 			},
 			
 			"CCFormulaOverrideFlag" : {
-				"name" 					: "Override {pCheckName} lock formula",
+				"name" 					: "Override {pCheckName} formula",
 				"descrp" : {
 					"token" 			: "If this tokens {pCheckName} formula overrides the world formula",
 					"item"				: "If this items {pCheckName} formula overrides the tokens/worlds formula"

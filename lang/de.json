@@ -17,6 +17,7 @@
 			"LockusePick"				: "Knacke Schloss",
 			"LockuseBreak"				: "Zerbreche Schloss",
 			"LockuseFree"				: "Freie Schlossnutzung",
+			"LockuseCustom"				: "{pCheckName}",
 			"Close"						: "Schließen",
 			"Keycreation"				: "Schlüssel generieren",
 			"Keyname"					: "Schlüsselname",
@@ -24,13 +25,15 @@
 			"ConfirmKeycreation"		: "Erschaffen",
 			"Basic"						: "Basis",
 			"Triggers"					: "Triggers",
-			"FreeCircumventHUD"			: "Diese Figur kann das nächste Schloss umgehen, zum entfernen Klicken"
+			"FreeCircumventHUD"			: "Diese Figur kann das nächste Schloss umgehen, zum entfernen Klicken",
+			"PickPocket"				: "Taschendiebstahl"
 		},
 		
 		"Popup" : {
 			"TokenisLocked"				: "{pLockName} ist verschlossen",
 			"DoorisLocked"				: "Diese Tür ist verschlossen",
 			"Lockoutofreach"			: "Dieses Schloss ist außer Reichweite",
+			"Tokenoutofreach"			: "{pTokenName} ist außer Reichweite",
 			"lockedDoor"				: "Die Tür ist nun verschlossen",
 			"lockedToken"				: "{pLockName} ist nun verschlossen",
 			"unlockedDoor"				: "Die Tür ist nun unverschlossen",
@@ -49,7 +52,9 @@
 			"Lockisjammed"				: "Schloss ist verklemmt",
 			"Lockpickbroke"				: "Dietrich ist zerbrochen",
 			"jammedLock"				: "Schloss verklemmt",
-			"cantcircumventFree"		: "Schloss kann nicht umgangen werden"
+			"cantcircumventFree"		: "Schloss kann nicht umgangen werden",
+			"CantbePickpocketed"		: "Kann nicht bestohlen werden"
+			"PickPocketfailed"			: "Taschendiebstahl fehlgeschlagen"
 		},	
 		
 		"ChatMessage" : {
@@ -82,6 +87,26 @@
 			"LockBreakfail" : {
 				"crit"					: "{pName} ist beim Schloss aufbrechen kritisch gescheitert",
 				"default" 				: "{pName} hat das Schloss nicht aufbrechen können"
+			},
+			
+			"CustomCheck"				: "{pName} nutze {pCheckName}:",
+			"CustomChecksuccess" : {
+				"crit"					: "{pName} hatte bei {pCheckName} kritischen Erfolg",
+				"default" 				: "{pName} hatte {pCheckName} Erfolg"			
+			},
+			"CustomCheckFail" : {
+				"crit"					: "{pName} ist bei {pCheckName} kritisch Gescheitert",
+				"default" 				: "{pName} ist bei {pCheckName} Gescheitert"
+			},
+			
+			"PickPocket"				: "{pName} hat einen Taschendiebstahl versucht:",
+			"PickPocketSuccess" : {
+				"crit"					: "{pName} hatte beim Taschendiebstahl kritischen Erfolg",
+				"default" 				: "{pName} hat erfolgreich Taschendiebstahl begangen"			
+			},
+			"PickPocketFail" : {
+				"crit"					: "{pName} ist beim Schloss Taschendiebstahl kritisch gescheitert",
+				"default" 				: "{pName} ist beim Taschendiebstahl gescheitert"
 			}
 		},
 		
@@ -104,6 +129,11 @@
 			"LockDistance" : {
 				"name" 					: "Schloss Distanz",
 				"descrp"				: "Distanz in welcher Schlösser genutzt werden können (in Spiel Einheiten)"		
+			},
+			
+			"DefaultLockSound" : {
+				"name"					: "Standard Schloss Geräusche",
+				"descrp"				: "Die standard Geräusche für neu Schlösser"
 			},
 			
 			"UseArmReachDistance": {
@@ -139,6 +169,16 @@
 			"LnKSettingTypes" : {
 				"name" 					: "Einstellungs Gegenstandstypen",
 				"descrp"				: "Die Gegenstandstypen für welche die Lock & Key Einstellungen angezeigt werden (getrennt mit \";\", \"all\" für alle typen)"		
+			},
+			
+			"DefaultKeyFolder" : {
+				"name"					: "Standard Schlüssel Ordner",
+				"descrp"				: "Der Name des Ordners welcher Standarmäßig beim Schlüssel Erschaffungsmenu benutzt wird"
+			},
+			
+			"LimitKeyFolders" : {
+				"name"					: "Filtere Schlüssel Ordner",
+				"descrp"				: "Ob nur der Standard Schlüssel Ordner und seine Unterordner im Schlüssel Erschaffungsmenu angezeigt werden sollen"
 			},
 			
 			"KeyitemCreationPopup" : {
@@ -205,9 +245,34 @@
 				"descrp"				: "Die Würfelformel welche für Schlossknack-Würfe verwendet wird (z.B. \"1d20 + @actor.skills.thievery.mod\", hilfe auf der Github-Seite des Moduls zu finden)"				
 			},
 			
+			"DefaultPickDC" : {
+				"name" 					: "Standard Schloss SG",
+				"descrp"				: "Der Standardwert für Schloss SGs"				
+			},
+			
 			"LockBreakFormula" : {
 				"name" 					: "Schlossaufbrechen Wurfformel",
 				"descrp"				: "Die Würfelformel welche für Schloss-aufbrechen-Würfe verwendet wird (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", hilfe auf der Github-Seite des Moduls zu finden)"				
+			},
+		
+			"DefaultBreakDC" : {
+				"name" 					: "Standard Schlossaufbrechen SG",
+				"descrp"				: "Der Standardwert für Schlossaufbrechen SGs"				
+			},
+			
+			"CustomCircumventName" : {
+				"name" 					: "Eigener Wurfname",
+				"descrp"				: "Der Name des dritten einstelbaren Wurfs um Schlösser zu überwinden (z.B. \"Hacken\" oder \"Magische Runde\", leer lassen um auszuschalten)"				
+			},
+			
+			"CustomCircumventFormula" : {
+				"name" 					: "Eigene Wurfformel",
+				"descrp"				: "Die Würfelformel welche für Würfe mit dem oben genannten eigenen Wurf genutzt wird"				
+			},
+			
+			"CustomCircumventDefaultDC" : {
+				"name" 					: "Eigener Wurf standard SG",
+				"descrp"				: "Der Standardwert für eigene Wurf SGs"				
 			},
 			
 			"LockBreakunlockable" : {
@@ -223,6 +288,16 @@
 			"LockCircumventName" : {
 				"name" 					: "Schloss umgehen Schlagwörter",
 				"descrp"				: "Schlagwörter um Effekte (z.B. der \"Knock\" Zauber) zu identifizieren welche es Spielern erlauben Schlösser zu umgehen (mit \";\" getrennt)"				
+			},
+			
+			"PickPocketFormula" : {
+				"name" 					: "Taschendiebstahl formel",
+				"descrp"				: "Die Würfelformel welche für Taschendiebstahl Würfe verwendet wird (z.B. \"1d20 + @actor.skills.thievery.mod\", hilfe auf der Github-Seite des Moduls zu finden)"				
+			},
+			
+			"PickPocketDefaultDC" : {
+				"name" 					: "Taschendiebstahl standard SG",
+				"descrp"				: "Der Standardwert für Taschendiebstahl SGs"				
 			},
 			
 			"ControlSceme" : {
@@ -282,7 +357,15 @@
 			
 			"BreakLock" : {
 				"name"					: "Schloss aufbrechen"
-			}
+			},
+			
+			"CustomCheck" : {
+				"name"					: "Eigener Wurf (frage die SL (außer du bist die SL))"
+			},
+			
+			"PickPocket" : {
+				"name"					: "Taschendiebstahl"
+			}			
 		},
 		
 		"SheetSettings" : {
@@ -334,6 +417,11 @@
 				"descrp"				: "Der Schwierigkeitsgrad um dieses Schloss aufzubrechen (-1 um aufbrechen zu verhindern)"					
 			},
 			
+			"LockCCDCFlag" : {
+				"name" 					: "{pCheckName} SG",
+				"descrp"				: "Der Schwierigkeitsgrad um {pCheckName} an diesem Schloss zu benutzen (-1 um nutzung zu verhindern)"					
+			},
+			
 			"requiredLPsuccessFlag" : {
 				"name" 					: "Benötigte Schlossknack Erfolge",
 				"descrp"				: "Wie viele Erfolge notwendig sind um dieses Schloss zu knacken (und wie viele bereits erzielt wurden) (Krits zählen als 2)"				
@@ -364,6 +452,12 @@
 				},
 				"LockPasskeyTitle" : {
 					"name"					: "Passwort Eingabe:"
+				},
+				"LocknotCustom" : {
+					"name"					: "Schloss kann nicht mit eigenem Wurf benutzt werden:"
+				},
+				"CharacternotPickpocketable" : {
+					"name"					: "Charakter kann nicht bestohlen werden:"
 				},
 				"confirmButtonname"        	: "Popups bestätigen"
 			},
@@ -414,6 +508,43 @@
 					"token" 			: "Ob die Schloss aufbrechen Wurfformel dieser Figur die Weltformel überschreibt",
 					"item"				: "Ob die Schloss aufbrechen Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
 				}				
+			},
+			
+			"CCFormulaFlag" : {
+				"name" 					: "{pCheckName} Formel",
+				"descrp" : {
+					"token" 			: "Die Formel welche {pCheckName} Würfen dieser Figur hinzugefügt wird",
+					"item"				: "Die Formel welche {pCheckName} Würfen des Besitzers dieses Gegenstandes hinzugefügt wird (nur das beste im Inventar wird genutzt)"
+				}					
+			},
+			
+			"CCFormulaOverrideFlag" : {
+				"name" 					: "Überschreibe {pCheckName} Formel",
+				"descrp" : {
+					"token" 			: "Ob die {pCheckName} Wurfformel dieser Figur die Weltformel überschreibt",
+					"item"				: "Ob die {pCheckName} dieses Gegenstandes die Welt-/Figurformel überschreibt"
+				}				
+			},
+			
+			"PickPocketFormulaFlag" : {
+				"name" 					: "Taschendiebstahl Formel",
+				"descrp" : {
+					"token" 			: "Die Formel welche Taschendiebstahl Würfen dieser Figur hinzugefügt wird",
+					"item"				: "Die Formel welche Taschendiebstahl Würfen des Besitzers dieses Gegenstandes hinzugefügt wird (nur das beste im Inventar wird genutzt)"
+				}					
+			},
+			
+			"PickPocketFormulaOverrideFlag" : {
+				"name" 					: "Überschreibe Taschendiebstahl Wurfformel",
+				"descrp" : {
+					"token" 			: "Ob die Taschendiebstahl Wurfformel dieser Figur die Weltformel überschreibt",
+					"item"				: "Ob die Taschendiebstahl Wurfformel dieses Gegenstandes die Welt-/Figurformel überschreibt"
+				}				
+			},
+			
+			"PickPocketDCFlag" : {
+				"name" 					: "Taschendiebstahl SG",
+				"descrp"  				: "Der Schwierigkeitsgrad um diesen Charakter zu bestehlen"			
 			},
 			
 			"ReplacementItemFlag" : {
@@ -480,6 +611,20 @@
 				"line1" 				: "•Rechtsklick um zu versuchen einen Schlüssel mit einem Schloss zu benutzen",
 				"line2" 				: "•Shift+Rechtsklick um zu versuchen ein Schloss zu knacken",
 				"line3" 				: "•Alt+Rechtsklick um zu versuchen ein Schloss aufzubrechen"
+			}
+		},
+		
+		"take-inventory-window" : {
+			"titles" : {
+				"inventory"				: "Inventar"
+			},
+			"header" : {
+				"title"					: "<h> Nehme von <b>{pOwnerName}s</b> Inventar (landet in <b>{pTakerName}s</b> Inventar): </h>"
+			},
+			"buttons" : {
+				"take" : {
+					"name"				: "Nehme ausgewähltes"
+				}
 			}
 		},
 		
