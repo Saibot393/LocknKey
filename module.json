@@ -51,7 +51,8 @@
 	"scripts/settings/LnKSheetSettings.js",
 	"scripts/settings/LnKSettings.js",
 	"scripts/compatibility/LnKCompatibility.js",
-	"scripts/helpers/MacroHooks.js"
+	"scripts/helpers/MacroHooks.js",
+	"scripts/compatibility/APIHandler.js"
   ],
   "packs": [
 	{

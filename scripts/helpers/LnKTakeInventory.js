@@ -377,6 +377,7 @@ export function ItemTransferRequest({pTaker, pInventoryOwner, pTransferInfo, pOp
 
 export function TIWindowRequest({pUserID, pSceneID, pInventoryOwnerID, pInventoryInfo, pOptions} = {}) {LnKTakeInventory.TIWindowRequest(pUserID, pSceneID, pInventoryOwnerID, pInventoryInfo, pOptions)}
 
+//api
 export function openTIWindowfor(pUserID, pInventoryOwner, pOptions = {customHeader : "", TakerID : ""}) {LnKTakeInventory.openTIWindowfor(pUserID, pInventoryOwner, pOptions)};
 
 export { LnKTakeInventory }
