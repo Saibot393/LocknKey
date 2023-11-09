@@ -91,6 +91,7 @@ class KeyManager {
 						}
 					}
 					else {
+						console.log(1);
 						LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 					}
 				}
@@ -498,7 +499,9 @@ class KeyManager {
 			}
 		}
 		else {
-			LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			if (LnKFlags.isLockable(pLockObject)) {
+				LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@ import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.
 const cWindowID = "take-inventory-window";
 
 const cTakeIcon = "fa-solid fa-hand";
+const cTransferItemsIcon = "fa-solid fa-box";
 
 class LnKTakeInventory {
 	//DECLARATIONS
@@ -104,19 +105,23 @@ class LnKTakeInventory {
 				let vIMG;
 				switch(vCurrencyKeys[i]) {
 					case "cp":
-						vIMG = "icons/commodities/currency/coins-wheat-stack-copper.webp";
+						//vIMG = "icons/commodities/currency/coins-wheat-stack-copper.webp";
+						vIMG = "icons/commodities/currency/coin-engraved-slot-one-copper.webp";
 						break;
 					case "ep":
 						vIMG = "icons/commodities/currency/coin-engraved-oval-steel.webp";
 						break;
 					case "gp":
-						vIMG = "icons/commodities/currency/coins-crown-stack-gold.webp";
+						//vIMG = "icons/commodities/currency/coins-crown-stack-gold.webp";
+						vIMG = "icons/commodities/currency/coin-embossed-gold-stag.webp";
 						break;
 					case "pp":
-						vIMG = "icons/commodities/currency/coins-assorted-mix-platinum.webp";
+						//vIMG = "icons/commodities/currency/coins-assorted-mix-platinum.webp";
+						vIMG = "icons/commodities/currency/coins-engraved-face-silver.webp";
 						break;
 					case "sp":
-						vIMG = "icons/commodities/currency/coins-assorted-mix-silver.webp";
+						//vIMG = "icons/commodities/currency/coins-assorted-mix-silver.webp";
+						vIMG = "icons/commodities/currency/coin-embossed-unicorn-silver.webp";
 						break;
 					case "credit":
 						vIMG = "icons/svg/target.svg"; //find better?
@@ -283,7 +288,7 @@ class TakeInventoryWindow extends Application {
 		for (let i = 0; i < vInventory.length; i++) {
 			vInventoryHTML = vInventoryHTML + 	`
 												<div class="form-group item-entry" itemid="${vInventory[i].id}" style="display:flex;flex-direction:row;align-items:center;gap:1em;border: 1px solid">
-													<img src="${vInventory[i].img}" style = "height: 2em;">
+													<img src="${vInventory[i].img}" style = "height: 2.6em;">
 													<p style="width:fit-content">${vInventory[i].name}</p>
 													<div style="flex-grow:1"></div>
 													<div style="display:flex;flex-direction:row;align-items:center;gap:0.2em;width:fit-content">
@@ -300,7 +305,7 @@ class TakeInventoryWindow extends Application {
 		
 		//buttons	
 		let vButtonsHTML = 				`<div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:1em;margin-top:1em">
-											<button type="button" name="${cWindowID}.take-confirm"> ${Translate(cWindowID + ".buttons.take.name")} </button>
+											<button type="button" name="${cWindowID}.take-confirm"> <i class="${cTransferItemsIcon}"></i> ${Translate(cWindowID + ".buttons.take.name")} </button>
 											<button type="button" style="width:fit-content" name="${cWindowID}.take-all.everything"> <i class="${cTakeIcon}"></i> </button>
 										</div>`;
 		

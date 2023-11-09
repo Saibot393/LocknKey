@@ -17,6 +17,7 @@
 			"LockusePick"				: "Pick lock",
 			"LockuseBreak"				: "Break lock",
 			"LockuseFree"				: "Free lock use",
+			"LockuseCustom"				: "{pCheckName}",
 			"Close"						: "Close",
 			"Keycreation"				: "Key creation",
 			"Keyname"					: "Key name",
@@ -32,6 +33,7 @@
 			"TokenisLocked"				: "{pLockName} is locked",
 			"DoorisLocked"				: "This door is locked",
 			"Lockoutofreach"			: "This lock is out of reach",
+			"Tokenoutofreach"			: "{pTokenName} is out of reach",
 			"lockedDoor"				: "Door is now locked",
 			"lockedToken"				: "{pLockName} is now locked",
 			"unlockedDoor"				: "Door is now unlocked",
@@ -51,7 +53,8 @@
 			"Lockpickbroke"				: "Lockpick broke",
 			"jammedLock"				: "Jammed the lock",
 			"cantcircumventFree"		: "Lock can't be circumvented",
-			"CantbePickpocketed"		: "Can't be pick pocketed"
+			"CantbePickpocketed"		: "Can't be pick pocketed",
+			"PickPocketfailed"			: "Pick pocket failed"
 		},	
 		
 		"ChatMessage" : {

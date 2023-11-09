@@ -192,7 +192,7 @@ class PickPocketManager {
 	
 	//ui
 	static addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall) {
-		if (LnKFlags.Canbepickpocketed(pObject)) {
+		if (LnKFlags.Canbepickpocketed(pObject) && !pObject.isOwner) {
 			pButtons["PickPocket"] = {
 				label: Translate("Titles.PickPocket"),
 				callback: () => {PickPocketManager.PickPocketToken(pObject, pCharacter)},
