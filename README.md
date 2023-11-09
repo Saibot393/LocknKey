@@ -8,7 +8,7 @@ A GM can shift+right-click doors and loot containers (PF2e or Item Piles) to cre
 
 A tutorial for some of the features can be found [here](https://youtu.be/HO_-sb4wSHQ).
 
-Since v2.0.0 Lock & Key can also handle **Pick pocketing!**
+Since v2.0.0 Lock & Key can also handle **Pickpocketing!**
  
 #### GM controls
 
