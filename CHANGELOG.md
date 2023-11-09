@@ -7,7 +7,19 @@
 - Added world setting Custom check name to set the name of a third custom check type for circumbenting locks
 - Added world setting Custom check formula to set the formula of the custom check
 - Added world setting Default custom check DC to set the custom check dc of newly created locks
-- New feature: Pickpocketing
+- Added Key Custom Check to trigger the custom check
+- Added Token setting for custom check DC
+- Added Token setting for additional Custom Check formula
+- Added Token setting to override world Custom Check formula
+- **New feature**: Pickpocketing
+    - Added world setting Pick pocket formula to set the formula used for pick pocketing
+    - Added world setting Pick pocket default DC to set the default DC for pick pocketing
+    - Added Key to trigger Pick pocketing
+    - Added Token setting Pick pocket formula to add to the world pick pocketing formula
+    - Added Token setting Override Pick pocket lock formula to verride world pick pocket formula
+    - Added Token setting Pick pocket DC to set the DC of pick pocket checks against this token
+- Added new API (`game.modules.get("LocknKey").api`)
+- Added a few example macros
 
 ## v1.12.9
 - Fixed bug that prevented sheet settings from loading
