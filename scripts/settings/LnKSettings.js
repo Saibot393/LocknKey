@@ -60,7 +60,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: String,
-	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("Settings.DefaultSound.options." + vSound)}),{}),
+	choices : cSoundVariants.reduce((vprev, vSound) => ({...vprev, [vSound] : Translate("SheetSettings.SoundVariantFlag.options." + vSound)}),{}),
 	default: "off"
   }); 
   

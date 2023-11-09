@@ -551,7 +551,7 @@ class LnKutils {
 		if ((LnKCompUtils.isactiveModule(cArmReach) || LnKCompUtils.isactiveModule(cArmReachold)) && game.settings.get(cModuleName, "UseArmReachDistance")) {
 			return LnKCompUtils.ARWithinLockingDistance(pCharacter, pLock);
 		}
-						
+			
 		return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKutils.LockuseDistance();
 	}
 	

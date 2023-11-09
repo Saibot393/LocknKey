@@ -1,8 +1,10 @@
 import { cModuleName, Translate, LnKutils, cUPickPocket } from "./utils/LnKutils.js";
-import { LnKFlags } from "./helpers/LnKFlags.js";
+import { LnKFlags, cCustomPopup } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { LnKTakeInventory } from "./helpers/LnKTakeInventory.js";
+
+const cPickPocketIcon = "fa-solid fa-hand";
 
 class PickPocketManager {
 	//DECLARATIONS
@@ -15,6 +17,9 @@ class PickPocketManager {
 	static PickPocketRequest(pData) {} //to answer a pick pocket request on pTarget
 	
 	static async EvaluatePickPocket(pTarget, pCharacter, pData, pChatMessages = true) {} //evaluates if the pick pocket was succesfull and starts it if
+	
+	//ui
+	static addPickPocketButton(pButtons, pLockObject, pLockType, pCharacter, pShowall) {} //adds a pick pocket button to interface popup
 	
 	//IMPLEMENTATIONS
 	static onAtemptedPickPocket(pTarget) {
@@ -30,7 +35,7 @@ class PickPocketManager {
 				}	
 			}
 			else {
-				LnKPopups.TextPopUpID(pDocument, "GamePaused"); //MESSAGE POPUP
+				LnKPopups.TextPopUpID(pTarget, "GamePaused"); //MESSAGE POPUP
 			}
 		}
 	}
@@ -67,7 +72,7 @@ class PickPocketManager {
 			}
 			else {	
 				//no roll neccessary, handled by Pf2e system
-				vCallback = async (proll) => {
+				let vCallback = async (proll) => {
 					let vResult;
 					
 					switch (proll.outcome) {
@@ -88,7 +93,7 @@ class PickPocketManager {
 							break;
 					}
 					
-					let vData = {SceneID : pLockObject.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, usePf2eRoll : true, Pf2eresult : vResult};
+					let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, usePf2eRoll : true, Pf2eresult : vResult};
 				
 					PickPocketManager.RequestPickPocket(vData);
 				};
@@ -96,13 +101,20 @@ class PickPocketManager {
 				game.pf2e.actions.steal({
 					actors: pCharacter.actor,
 					callback: vCallback,
-					difficultyClass: {value : LnKFlags.PickPocketDCFlag(pTarget)}
+					difficultyClass: {value : LnKFlags.PickPocketDC(pTarget)}
 				});
 			}
 		}
 		else {
 			if (pPopUps) {
-				LnKPopups.TextPopUpID(pTarget, "CantbePickpocketed"); //MESSAGE POPUP
+				let vMessage = LnKFlags.getCustomPopups(pTarget, cCustomPopup.CharacternotPickpocketable);
+		
+				if (vMessage.length) {
+					LnKPopups.TextPopUp(pTarget, vMessage); //MESSAGE POPUP
+				}
+				else {
+					LnKPopups.TextPopUpID(pTarget, "CantbePickpocketed"); //MESSAGE POPUP
+				}
 			}
 		}
 	}
@@ -177,7 +189,22 @@ class PickPocketManager {
 			Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : vSuccessDegree, Data : pData});
 		}
 	}
+	
+	//ui
+	static addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall) {
+		if (LnKFlags.Canbepickpocketed(pObject)) {
+			pButtons["PickPocket"] = {
+				label: Translate("Titles.PickPocket"),
+				callback: () => {PickPocketManager.PickPocketToken(pObject, pCharacter)},
+				icon: `<i class="fas ${cPickPocketIcon}"></i>`
+			}	
+		}
+	};
 }
+
+Hooks.on(cModuleName +  ".ObjectInteractionMenu", (pButtons, pObject, pLockType, pCharacter, pShowall) => {
+	PickPocketManager.addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall);
+});
 
 //sockets
 export function PickPocketRequest(pData) {PickPocketManager.PickPocketRequest(pData)};

@@ -360,8 +360,8 @@ class LnKSheetSettings {
 												
 		if (game.settings.get(cModuleName, "CustomCircumventActive")) {
 			//setting lock CC dc									
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockCCDCF +".name"), 
-													vhint : Translate("SheetSettings."+ cLockCCDCF +".descrp"), 
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockCCDCF +".name", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
+													vhint : Translate("SheetSettings."+ cLockCCDCF +".descrp", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vtype : "number", 
 													vvalue : LnKFlags.LockCCDC(pApp.object, true),
 													vflagname : cLockCCDCF
@@ -435,8 +435,8 @@ class LnKSheetSettings {
 												
 		if (game.settings.get(cModuleName, "CustomCircumventActive")) {
 			//Additional CC roll formula
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaF +".name"), 
-													vhint : Translate("SheetSettings."+ cCCFormulaF +".descrp."+pType), 
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaF +".name", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
+													vhint : Translate("SheetSettings."+ cCCFormulaF +".descrp."+pType, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vtype : "text", 
 													vwide : true,
 													vvalue : LnKFlags.CCFormula(pApp.object),
@@ -444,8 +444,8 @@ class LnKSheetSettings {
 													}, pto);	
 													
 			//If this items CC roll formula overrides other formulas
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaOverrideF +".name"), 
-													vhint : Translate("SheetSettings."+ cCCFormulaOverrideF +".descrp."+pType), 
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaOverrideF +".name", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
+													vhint : Translate("SheetSettings."+ cCCFormulaOverrideF +".descrp."+pType, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vtype : "checkbox", 
 													vvalue : LnKFlags.CCFormulaOverride(pApp.object),
 													vflagname : cCCFormulaOverrideF
