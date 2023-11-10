@@ -1,3 +1,6 @@
+## v2.0.1
+- Added missing translation for custom check interaction button
+
 ## v2.0.0
 - Added world setting Default lock sound to set the default sound used for Doors and lockable Tokens
 - Added world setting Default key folder to set the default folder the key creation menu selects
