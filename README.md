@@ -122,6 +122,7 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
     - Action Lock to lock a Door/Token
     - Action Unlock to unlock Door/Token
     - Action Toggle lock to toggle a Door/Token
+    - Action Loot inventory to offer the Inventory of a token to a player
     - Filter Filter by lock state to filter by the lock state (locked/unlocked)
 
 ### Languages:
