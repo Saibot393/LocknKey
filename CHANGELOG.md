@@ -1,3 +1,7 @@
+## v2.0.3
+- Updated French translation (thanks to [MastaGooz](https://github.com/MastaGooz))
+- Added Pick pocketing support for Custom System Builder (maybe?)
+
 ## v2.0.2
 - Improved MATT actions
 - Added Matt action to offer the Inventory of a token to a player
