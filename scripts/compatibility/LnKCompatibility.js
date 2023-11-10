@@ -191,6 +191,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 						type: "select",
 						subtype: "entity",
 						options: { show: ['within', 'previous', 'tagger'] },
+						required: true,
 						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
 					}
 				],
@@ -221,6 +222,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 						type: "select",
 						subtype: "entity",
 						options: { show: ['within', 'previous', 'tagger'] },
+						required: true,
 						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
 					}
 				],
@@ -251,6 +253,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 						type: "select",
 						subtype: "entity",
 						options: { show: ['within', 'previous', 'tagger'] },
+						required: true,
 						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
 					}
 				],
@@ -270,6 +273,65 @@ Hooks.once("setupTileActions", (pMATT) => {
 				}
 			});
 			
+			//unlock
+			pMATT.registerTileAction(cModuleName, 'loot-inventory', {
+				name: Translate(cMATT + ".actions." + "loot-inventory" + ".name"),
+				requiresGM: true,
+				ctrls: [
+					{
+						id: "entity",
+						name: "MonksActiveTiles.ctrl.select-entity",
+						type: "select",
+						subtype: "entity",
+						options: { show: ['tile', 'token', 'within', 'players', 'previous', 'tagger'] },
+						required: true,
+						restrict: (entity) => { return (entity instanceof Token); }
+					},
+					{
+                        id: "offerto",
+                        name: Translate(cMATT + ".actions." + "loot-inventory" + ".settings." + "offerto" + ".name"),
+                        list: "offerto",
+                        type: "list",
+                        subtype: "for",
+                        defvalue: "trigger"
+                    }
+				],
+				values: {
+				    "offerto" : {
+                        "everyone": "MonksActiveTiles.for.all",
+                        "players": "MonksActiveTiles.for.players",
+                        "gm": "MonksActiveTiles.for.gm",
+                        "trigger": "MonksActiveTiles.for.triggering",
+                        "token": "MonksActiveTiles.for.token",
+                        "owner": "MonksActiveTiles.for.owner",
+                        "previous": "MonksActiveTiles.for.current"
+                    }
+				},
+				group: cModuleName,
+				fn: async (args = {}) => {
+					let { action } = args;
+					
+					let vOfferto = action.data.showto ?? "trigger";
+                    let vOffertoUser = pMATT.getForPlayers(vOfferto, args);
+					
+					let vInventoryToken = await pMATT.getEntities(args);
+					
+					console.log(vInventoryToken);
+					
+					if (vInventoryToken.length) {
+						vInventoryToken = vInventoryToken[0];
+					}
+					
+					if (vOffertoUser?.length && vInventoryToken) {
+						game.modules.get("LocknKey").api.openTIWindowfor(vOffertoUser, vInventoryToken);
+					}
+				},
+				content: async (trigger, action) => {
+					let entityName = await pMATT.entityName(action.data?.entity);
+					return Translate(cMATT + ".actions." + "loot-inventory" + ".descrp", {pname : Translate(cMATT + ".actions." + "loot-inventory" + ".name"), pEntities : entityName, pOfferto : pMATT.forPlayersName(action.data?.offerto || "trigger")});
+				}
+			});
+			
 			//filter lock state
 			pMATT.registerTileAction(cModuleName, 'filter-by-lock-state', {
 				name: Translate(cMATT + ".filters." + "filter-by-lock-state" + ".name"),
@@ -280,6 +342,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 						type: "select",
 						subtype: "entity",
 						options: { show: ['token', 'within', 'players', 'previous', 'tagger'] },
+						required: true,
 						restrict: (entity) => {
 							return ((entity instanceof Token) || (entity instanceof Wall));
 						}

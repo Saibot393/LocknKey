@@ -222,7 +222,7 @@ class LnKTakeInventory {
 		
 		let vPlaced = canvas.tokens.placeables.map(vToken => vToken.document);
 		
-		if (vPlaces.find(vToken => vToken.actor = game.user.character)) { //return a present token that matches default actor
+		if (vPlaced.find(vToken => vToken.actor == game.user.character)) { //return a present token that matches default actor
 			return vPlaced.find(vToken => vToken.actor = game.user.character);
 		}
 		

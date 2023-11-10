@@ -657,6 +657,16 @@
 				
 				"toggle-lock" : {
 					"name"					: "Toggle lock"
+				},
+				
+				"loot-inventory" : {
+					"name"					: "Loot inventory",
+					"descrp"				: "<span class=\"logic-style\">{pname}</span> of <span class=\"entity-style\">{pEntities}</span>, offer to <span class=\"details-style\">{pOfferto}</span>",
+					"settings" : {
+						"offerto" : {
+							"name"			: "Offer to"
+						}
+					}	
 				}
 			}
 		}
