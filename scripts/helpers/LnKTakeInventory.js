@@ -26,6 +26,10 @@ class LnKTakeInventory {
 	
 	static CurrentToken() {} //returns the token of first controlled token or the default token or the first owned token
 	
+	static GetQuantity(pItem) {} //gets the quantity of pItem
+	
+	static SetQuantity(pItem, pQuantity, pUpdate = true) {} //sets the quantity of pItem
+	
 	//IMPLEMENTATIONS
 	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {}) {
 		if (pUserID.includes(game.user.id)) {
@@ -71,7 +75,7 @@ class LnKTakeInventory {
 	
 	//support
 	static TokenInventory(pToken) {
-		const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tool", "treasure", "weapon"];
+		const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tool", "treasure", "weapon", "equippableItem"];
 		
 		if (pToken.actor?.items) {
 			return pToken.actor.items.filter(vItem => cITypeWhiteList.includes(vItem.type));
@@ -146,13 +150,19 @@ class LnKTakeInventory {
 			}
 		}
 		
+		let vQuantity;
+		
 		for (let i = 0; i < vInventory.length; i++) {
-			vInventoryInfos.push({
-									name : vInventory[i].name,
-									img : vInventory[i].img,
-									id : vInventory[i].id,
-									quantity : vInventory[i].system?.quantity
-								});
+			vQuantity = LnKTakeInventory.GetQuantity(vInventory[i]);//vInventory[i].system?.quantity
+			
+			if (vQuantity != undefined) {
+				vInventoryInfos.push({
+										name : vInventory[i].name,
+										img : vInventory[i].img,
+										id : vInventory[i].id,
+										quantity : LnKTakeInventory.GetQuantity(vInventory[i])
+									});
+			}
 		}
 		
 		return vInventoryInfos;
@@ -182,7 +192,7 @@ class LnKTakeInventory {
 						else {
 							vItem = pSource.actor.items.get(pItemInfos[i].itemid);
 							
-							vTransferQuantity = Math.min(vItem?.system?.quantity, pItemInfos[i].quantity); //make sure not to transfer too many items
+							vTransferQuantity = Math.min(LnKTakeInventory.GetQuantity(vItem)/*vItem?.system?.quantity*/, pItemInfos[i].quantity); //make sure not to transfer too many items
 						}
 						
 						if (!isNaN(vTransferQuantity) && vTransferQuantity > 0) {
@@ -194,11 +204,13 @@ class LnKTakeInventory {
 								}
 							}
 							else {
-								vItem.update({system : {quantity : vItem.system.quantity - vTransferQuantity}}); //update source item
+								//vItem.update({system : {quantity : vItem.system.quantity - vTransferQuantity}}); //update source item
+								LnKTakeInventory.SetQuantity(vItem, LnKTakeInventory.GetQuantity(vItem) - vTransferQuantity);
 								
 								vItem = duplicate(vItem); //copy item
 								
-								vItem.system.quantity = vTransferQuantity; //set new quantity
+								//vItem.system.quantity = vTransferQuantity; //set new quantity
+								LnKTakeInventory.SetQuantity(vItem, vTransferQuantity, false);
 								
 								pTarget.actor.createEmbeddedDocuments("Item", [vItem]); //create new item
 							}
@@ -227,6 +239,40 @@ class LnKTakeInventory {
 		}
 		
 		return vPlaced.find(vToken => vToken.isOwner); //return any owned token (desperation)
+	}
+	
+	static GetQuantity(pItem) {
+		if (pItem.system) {
+			if (pItem?.system.hasOwnProperty("quantity")) {
+				return pItem.system.quantity;
+			}
+			
+			if (pItem.system.props?.hasOwnProperty("Quantity")) {
+				return pItem.system.props.Quantity;
+			}
+		}
+	}
+	
+	static SetQuantity(pItem, pQuantity, pUpdate = true) {
+		if (pItem.system) {
+			if (pItem?.system.hasOwnProperty("quantity")) {
+				if (pUpdate) {
+					pItem.update({system : {quantity : pQuantity}});
+				}
+				else {
+					pItem.system.quantity = pQuantity;
+				}
+			}
+			
+			if (pItem.system.props?.hasOwnProperty("Quantity")) {
+				if (pUpdate) {
+					pItem.update({system : {props : {Quantity : pQuantity}}});
+				}
+				else {
+					pItem.system.props.Quantity = pQuantity;
+				}
+			}
+		}
 	}
 }
 

@@ -26,14 +26,14 @@
 			"Basic"						: "Basique",
 			"Triggers"					: "Déclencheurs",
 			"FreeCircumventHUD"			: "Ce jeton peut contourner le prochain verrou, cliquez pour annuler",
-			"PickPocket"				: "Pick pocket"
+			"PickPocket"				: "Vol à la tire"
 		},
 		
 		"Popup" : {
 			"TokenisLocked"				: "{pLockName} est verrouillé",
 			"DoorisLocked"				: "Cette porte est verrouillée",
 			"Lockoutofreach"			: "Ce verrou est trop loin",
-			"Tokenoutofreach"			: "{pTokenName} is out of reach",
+			"Tokenoutofreach"			: "{pTokenName} est trop loin",
 			"lockedDoor"				: "Porte verrouillée",
 			"lockedToken"				: "{pLockName} verrouillé",
 			"unlockedDoor"				: "Porte déverrouillée",
@@ -53,8 +53,8 @@
 			"Lockpickbroke"				: "Outil détruit",
 			"jammedLock"				: "Blocage du verrou",
 			"cantcircumventFree"		: "Verrou incontournable",
-			"CantbePickpocketed"		: "Can't be pick pocketed",
-			"PickPocketfailed"			: "Pick pocket failed"
+			"CantbePickpocketed"		: "Ne peut pas être volé",
+			"PickPocketfailed"			: "Echec du vol à la tire"
 		},	
 		
 		"ChatMessage" : {
@@ -89,24 +89,24 @@
 				"default" 				: "{pName} a échoué à casser un verrou"
 			},
 			
-			"CustomCheck"				: "{pName} used {pCheckName}:",
+			"CustomCheck"				: "{pName} a utilisé {pCheckName}:",
 			"CustomChecksuccess" : {
-				"crit"					: "{pName} critically succeeded at {pCheckName}",
-				"default" 				: "{pName} succeeded at {pCheckName}"			
+				"crit"					: "{pName} a obtenu une réussite critique avec {pCheckName}",
+				"default" 				: "{pName} a obtenu une réussie avec {pCheckName}"			
 			},
 			"CustomCheckFail" : {
-				"crit"					: "{pName} critically failed at {pCheckName}",
-				"default" 				: "{pName} failed at {pCheckName}"
+				"crit"					: "{pName} a obtenu un échec critique avec {pCheckName}",
+				"default" 				: "{pName} a obtenu un échec avec {pCheckName}"
 			},
 			
-			"PickPocket"				: "{pName} tried to pick pocket:",
+			"PickPocket"				: "{pName} a essayé de voler à la tire:",
 			"PickPocketSuccess" : {
-				"crit"					: "{pName} critically succeeded at pick pocketing",
-				"default" 				: "{pName} succeeded at pick pocketing"			
+				"crit"					: "{pName} a obtenu une réussite critique en vol à la tire",
+				"default" 				: "{pName} a obtenu une réussite en vol à la tire"			
 			},
 			"PickPocketFail" : {
-				"crit"					: "{pName} critically failed at pick pocketing",
-				"default" 				: "{pName} failed at pick pocketing"
+				"crit"					: "{pName} a obtenu un échec critique en vol à la tire",
+				"default" 				: "{pName} a obtenu un échec en vol à la tire"
 			}
 		},
 		
@@ -177,12 +177,12 @@
 			},		
 
 			"DefaultKeyFolder" : {
-				"name"					: "Default key folder",
-				"descrp"				: "The name of the default folders used in the key creation menu"
+				"name"					: "Dossier de clés par défaut",
+				"descrp"				: "Le nom du dossier par défaut utilisé pour la création de clés"
 			},
 			
 			"LimitKeyFolders" : {
-				"name"					: "Filter key folders",
+				"name"					: "Filtrer les dossier de clés",
 				"descrp"				: "If only the default key folder and its subfolders should be shown in the key creation menu"
 			},
 			
@@ -246,8 +246,8 @@
 			},
 			
 			"DefaultPickDC" : {
-				"name" 					: "Default lock DC",
-				"descrp"				: "The default value for lock DCs"				
+				"name" 					: "Difficulté de crochetage par défaut",
+				"descrp"				: "La valeur par défaut de la difficulté de crochetage des verrous"				
 			},
 			
 			"LockBreakFormula" : {
@@ -256,23 +256,23 @@
 			},
 			
 			"DefaultBreakDC" : {
-				"name" 					: "Default lock break DC",
-				"descrp"				: "The default value for lock break DCs"				
+				"name" 					: "Difficulté de cassage par défaut",
+				"descrp"				: "La valeur par défaut de la difficulté de cassage des verrous"				
 			},
 			
 			"CustomCircumventName" : {
-				"name" 					: "Custom check name",
-				"descrp"				: "The name of the third optional custom check to circumvent locks (e.g. \"Hacking\" or \"Magic rune\", leave empty to deactivate)"				
+				"name" 					: "Action personnalisée",
+				"descrp"				: "Le nom de la troisième option de contournement des verrous (e.g. \"Hacker\" ou \"Rune magique\", leave empty to deactivate)"				
 			},
 			
 			"CustomCircumventFormula" : {
-				"name" 					: "Custom check formula",
-				"descrp"				: "The formula which is used for dice rolls when using the custom check above"				
+				"name" 					: "Formule d'action personnalisée",
+				"descrp"				: "La formule utilisée pour les lancers de dés de l'action personnalisée d'au dessus"				
 			},
 			
 			"CustomCircumventDefaultDC" : {
-				"name" 					: "Custom check default DC",
-				"descrp"				: "The default value for custom check DCs"				
+				"name" 					: "Difficulté par défaut de l'action personnalisée",
+				"descrp"				: "La valeur par défaut de la difficulté des actions personnalisées"				
 			},
 			
 			"LockBreakunlockable" : {
@@ -291,20 +291,20 @@
 			},
 			
 			"PickPocketFormula" : {
-				"name" 					: "Pick pocket formula",
-				"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+				"name" 					: "Formule de vol à la tire",
+				"descrp"				: "La formule utilisée pour les lancer de dés des vols à la tire (e.g. \"1d20 + @actor.skills.thievery.mod\", de l'aide peut être trouvée sur la page Github de ce module)"				
 			},
 			
 			"PickPocketDefaultDC" : {
-				"name" 					: "Pick pocket default DC",
-				"descrp"				: "The default value for pick pocket DCs"				
+				"name" 					: "Difficulté par défaut du vol à la tire",
+				"descrp"				: "La valeur par défaut de la difficulté des vols à la tire"				
 			},
 			
 			"ControlSceme" : {
 				"name" 					: "Schéma de contrôle",
 				"descrp"				: "Schéma de contrôle des verrous (right-click+keys est expliqué plus en détail sous \"Player controls\"",	
 				"options" : {
-					"rightKeys"			: "right-click + key",
+					"rightKeys"			: "right-click + raccourci",
 					"rightPopups"		: "right-click popup-menu"
 				}
 			},			
@@ -360,11 +360,11 @@
 			},
 			
 			"CustomCheck" : {
-				"name"					: "Custom Check (ask GM (unless you are the GM))"
+				"name"					: "Action personnalisée (demandez au MJ (à moins que vous soyez le MJ))"
 			},
 			
 			"PickPocket" : {
-				"name"					: "Pick pocket"
+				"name"					: "Vol à la tire"
 			}
 		},
 		
@@ -418,8 +418,8 @@
 			},		
 			
 			"LockCCDCFlag" : {
-				"name" 					: "{pCheckName} DC",
-				"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent breaking)"					
+				"name" 					: "{pCheckName} difficulté",
+				"descrp"				: "La difficlté d'utilisation de {pCheckName} sur ce verrou (-1 pour empêcher le cassage)"					
 			},
 			
 			"requiredLPsuccessFlag" : {
@@ -454,10 +454,10 @@
 					"name"					: "Dialogue du mot de passe:"
 				},
 				"LocknotCustom" : {
-					"name"					: "Lock can't be used with custom check:"
+					"name"					: "Impossible sur ce verrou:"
 				},
 				"CharacternotPickpocketable" : {
-					"name"					: "Character can't be pick pocketed:"
+					"name"					: "Ce personnage ne peut pas être volé:"
 				},
 				"confirmButtonname"        	: "Confirmer les popups"
 			},
@@ -511,40 +511,40 @@
 			},
 			
 			"CCFormulaFlag" : {
-				"name" 					: "{pCheckName} formula",
+				"name" 					: "Formule de {pCheckName}",
 				"descrp" : {
-					"token" 			: "The formula added to {pCheckName} rolls this token makes",
-					"item"				: "The formula added to {pCheckName} rolls the owner of this item makes (only best in inventory used)"
+					"token" 			: "Formule ajoutée aux lancers {pCheckName} de ce token",
+					"item"				: "Formule ajoutée aux lancers {pCheckName} du propriétaire de cet objet (utilise le meilleur objet de l'inventaire uniquement)"
 				}					
 			},
 			
 			"CCFormulaOverrideFlag" : {
-				"name" 					: "Override {pCheckName} lock formula",
+				"name" 					: "Outrepasser la formule de verrou de {pCheckName}",
 				"descrp" : {
-					"token" 			: "If this tokens {pCheckName} formula overrides the world formula",
-					"item"				: "If this items {pCheckName} formula overrides the tokens/worlds formula"
+					"token" 			: "Si la formule de {pCheckName} outrepasse la formule du monde",
+					"item"				: "Si la formule de l'objet {pCheckName} outrepasse la formule du monde/token"
 				}				
 			},
 			
 			"PickPocketFormulaFlag" : {
-				"name" 					: "Pick pocket formula",
+				"name" 					: "Formle de vol à la tire",
 				"descrp" : {
-					"token" 			: "The formula added to Pick pocket rolls this token makes",
-					"item"				: "The formula added to Pick pocket rolls the owner of this item makes (only best in inventory used)"
+					"token" 			: "La formule ajoutée aux lancers de vol à la tire de ce token",
+					"item"				: "La formule ajoutée aux lancers de vol à la tire du propriétaire de cet objet (utilise le meilleur objet de l'inventaire uniquement)"
 				}					
 			},
 			
 			"PickPocketFormulaOverrideFlag" : {
-				"name" 					: "Override Pick pocket lock formula",
+				"name" 					: "Outrepasser la formule de vol à la tire",
 				"descrp" : {
-					"token" 			: "If this tokens Pick pocket formula overrides the world formula",
-					"item"				: "If this items Pick pocket formula overrides the tokens/worlds formula"
+					"token" 			: "Si la formule de vol à la tire de ce token outrepasse la formule du monde",
+					"item"				: "Si la formule de vol à la tire de cet objet outrepasse la formule du monde/token"
 				}				
 			},
 			
 			"PickPocketDCFlag" : {
-				"name" 					: "Pick pocket DC",
-				"descrp"  				: "The difficulty class to use Pick pocket this character"			
+				"name" 					: "Difficulté de vol à la tire",
+				"descrp"  				: "La difficulté de vol à la tire sur ce personnage"			
 			},
 			
 			"ReplacementItemFlag" : {
@@ -616,14 +616,14 @@
 		
 		"take-inventory-window" : {
 			"titles" : {
-				"inventory"				: "Inventory"
+				"inventory"				: "Inventaire"
 			},
 			"header" : {
-				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
+				"title"					: "<h> Prendre dans l'inventaire de <b>{pOwnerName}s</b> (vers l'inventaire de <b>{pTakerName}s</b>): </h>"
 			},
 			"buttons" : {
 				"take" : {
-					"name"				: "Take selected"
+					"name"				: "Prendre la sélection"
 				}
 			}
 		},
@@ -660,11 +660,11 @@
 				},
 				
 				"loot-inventory" : {
-					"name"					: "Erbeute Inventar",
-					"descrp"				: "<span class=\"logic-style\">{pname}</span> von <span class=\"entity-style\">{pEntities}</span> Angebot an <span class=\"details-style\">{pOfferto}</span>",
+					"name"					: "Loot inventory",
+					"descrp"				: "<span class=\"logic-style\">{pname}</span> of <span class=\"entity-style\">{pEntities}</span>, offer to <span class=\"details-style\">{pOfferto}</span>",
 					"settings" : {
 						"offerto" : {
-							"name"			: "Angebot an"
+							"name"			: "Offer to"
 						}
 					}	
 				}
