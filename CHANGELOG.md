@@ -1,6 +1,6 @@
 ## v2.0.2
 - Improved MATT actions
-- Added Matt action to offer the Inventory of a token a loot to a player
+- Added Matt action to offer the Inventory of a token to a player
 
 ## v2.0.1
 - Added missing translation for custom check interaction button
