@@ -1,4 +1,4 @@
-## v2.0.0 (unreleased)
+## v2.0.0
 - Added world setting Default lock sound to set the default sound used for Doors and lockable Tokens
 - Added world setting Default key folder to set the default folder the key creation menu selects
 - Added world setting Limit key folders to only show the chosen default key folder and its sub folders in the key creation menu

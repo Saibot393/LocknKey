@@ -7,6 +7,8 @@
 A GM can shift+right-click doors and loot containers (PF2e or Item Piles) to create a new key for them in the item sections. Every player that has a key in their inventory can lock or unlock matching doors and tokens with a right-click. If a lock has a password, an appropriate prompt to enter said password can be triggered by right-clicking the lock. Locked tokens can not be looted. Players can attempt to pick a lock by shift+right-clicking a lock and try to break a lock by alt+right-clicking it.
 
 A tutorial for some of the features can be found [here](https://youtu.be/HO_-sb4wSHQ).
+
+Since v2.0.0 Lock & Key can also handle **Pickpocketing!**
  
 #### GM controls
 
@@ -30,12 +32,15 @@ All player and GM controls also have corresponding key binds.
 - Allow player locking: to allow players to also lock doors/tokens for which they have a matching key
 - Start as locked: if new lockable objects should start as locked
 - Lock distance: the maximum distance from which a lock can be used
+- Default lock sound: to set the default sound used for Doors and lockable Tokens
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
 - Setting item types: to set forwhich item types the settings tab should be displayed
 - Key creation menu: to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
+- Default key folder: to set the default folder the key creation menu selects
+- Limit key folders: to only show the chosen default key folder and its sub folders in the key creation menu
 - Key name as ID: to use the keys name as an additional ID when interacting with locks
 - Use Pf2e roll system: to use the Pf2e system instead of the Lock & Key roll and crit settings
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
@@ -46,10 +51,17 @@ All player and GM controls also have corresponding key binds.
 - Keys can't be used on jammed locks: to prevent matching keys from being used on jammed locks
 - Default Lock pick attempts to set with how many lock pick attempts a lock normally starts
 - Lockpick roll formula: the dice formula used for lockpick rolls
+- Default lock dc: to set the lock dc of nely created locks
 - Break lock roll formula: the dice formula used for break lock rolls
+- Default lock break dc: to set the lock break dc of newly created locks
+- Custom check name: to set the name of a third custom check type for circumventing locks
+- Custom check formula: to set the formula of the custom check
+- Default custom check DC: to set the custom check dc of newly created locks
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
 - Multi-success during combat only: to disable required multi success outside of combat
 - Lock circumvention keywords to set keywords used to identify effects that allow players to circumvent locks (e.g. the spell "Knock")
+- Pick pocket formula to set the formula used for pick pocketing
+- Pick pocket default DC to set the default DC for pick pocketing
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
 - Message popups: to activate some popups on certain actions
@@ -67,6 +79,7 @@ All player and GM controls also have corresponding key binds.
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Special lockpick: to set a special lockpick required to pick this lock
 - Lock break DC: the difficulty class to break a lock
+- Setting for custom check DC
 - Required Lockpicking successes: to set how many successes are necessary to pick this lock (crits count as 2)
 - Custom Popups: to set custom Popup messages for certain player actions
 - Lock Sound [Token only]:to set the sound set used for interactions with this lock
@@ -77,7 +90,12 @@ All player and GM controls also have corresponding key binds.
 - Override Lockpick formula: to override the standard formula for this token/the owner
 - Break lock formula: an additional formula added to break lock rolls (for items only the best formula in the inventory is used)
 - Override Break lock formula: to override the standard formula for this token/the owner
+- Setting for additional Custom Check formula
+- Setting to override world Custom Check formula
+- Pick pocket formula to add to the world pick pocketing formula
+- Override Pick pocket lock formula to verride world pick pocket formula
 - Replacement items[Items only]: to set items that get consumed instead of this item when a roll fails
+- Pick pocket DC[Tokens only]: to set the DC of pick pocket checks against this token
 
 ### Compatibility:
 
