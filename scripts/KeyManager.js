@@ -469,7 +469,7 @@ class KeyManager {
 				
 				if (vshowCustomCheck) {
 					vButtons[cLUCustomCheck] = {
-						label: Translate("Titles." + cLUCustomCheck),
+						label: Translate("Titles." + cLUCustomCheck, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}),
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUCustomCheck);},
 						icon: `<i class="fas ${cLnKCustomCheckIcon}"></i>`
 					}

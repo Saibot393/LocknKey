@@ -1,6 +1,7 @@
 import {cModuleName} from "../utils/LnKutils.js";
 import {LnKFlags} from "../helpers/LnKFlags.js";
 import {openTIWindowfor as openTIWindowforRAW} from "../helpers/LnKTakeInventory.js";
+import {TransferItems} from "../helpers/LnKTakeInventory.js";
 
 function openTIWindowfor (pUserID, pInventoryOwner, pOptions = {customHeader : "", TakerID : ""}) {
 	let vInventoryOwner = pInventoryOwner;
@@ -15,6 +16,7 @@ function openTIWindowfor (pUserID, pInventoryOwner, pOptions = {customHeader : "
 Hooks.once("init", () => {
 	game.modules.get(cModuleName).api = {
 		LnKFlags,
-		openTIWindowfor
+		openTIWindowfor,
+		TransferItems
 	}
 });
