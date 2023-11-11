@@ -55,7 +55,7 @@
 			"cantcircumventFree"		: "Verrou incontournable",
 			"CantbePickpocketed"		: "Ne peut pas être volé",
 			"PickPocketfailed"			: "Echec du vol à la tire",
-			"customcheckfailed"			: "{pCheckName} failed"
+			"customcheckfailed"			: "{pCheckName} a échoué"
 		},	
 		
 		"ChatMessage" : {
