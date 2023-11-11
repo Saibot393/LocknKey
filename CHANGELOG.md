@@ -1,3 +1,6 @@
+## v2.0.7
+- Updated French translation (thanks to [MastaGooz](https://github.com/MastaGooz))
+
 ## v2.0.6
 - Added missing translation for custom check fail popup
 
