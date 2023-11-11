@@ -30,6 +30,12 @@ class LnKTakeInventory {
 	
 	static SetQuantity(pItem, pQuantity, pUpdate = true) {} //sets the quantity of pItem
 	
+	static GetCurrencies(pActor, pCurrency = "") {} //gets the currency object of pActor
+	
+	static SetCurrency(pActor, pCurrency, pQuantity) {} //sets the currency object of pActor
+	
+	static GetCurrencyName(pKey, pActor = undefined) {} //returns the name of the currency belonging to pKey
+	
 	//IMPLEMENTATIONS
 	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {}) {
 		if (pUserID.includes(game.user.id)) {
@@ -89,22 +95,13 @@ class LnKTakeInventory {
 		
 		let vInventoryInfos = [];
 		
-		if (pToken?.actor?.system?.currency) {
+		let vCurrency = LnKTakeInventory.GetCurrencies(pToken.actor)//.system.currency;
+		if (vCurrency) {
 			//currencies
-			let vCurrency = pToken.actor.system.currency;
-			
-			let vCurrencyTranslator = CONFIG[game.system.id.toUpperCase()];
-			if (vCurrencyTranslator) {
-				vCurrencyTranslator = vCurrencyTranslator.currencies;
-			}
-			
+						
 			let vCurrencyKeys = Object.keys(vCurrency);
 			
 			for (let i = 0; i < vCurrencyKeys.length; i++) {
-				let vName = vCurrencyKeys[i];
-				if (vCurrencyTranslator && vCurrencyTranslator[vCurrencyKeys[i]] && vCurrencyTranslator[vCurrencyKeys[i]].label) {
-					vName = vCurrencyTranslator[vCurrencyKeys[i]].label;
-				}
 				
 				let vIMG;
 				switch(vCurrencyKeys[i]) {
@@ -140,11 +137,11 @@ class LnKTakeInventory {
 				
 				if (vCurrency[vCurrencyKeys[i]] > 0) {
 					vInventoryInfos.push({
-						name : vName,
+						name : LnKTakeInventory.GetCurrencyName(vCurrencyKeys[i], pToken.actor),
 						img : vIMG,
 						id : vCurrencyKeys[i],
 						quantity : vCurrency[vCurrencyKeys[i]],
-						currency : true
+						iscurrency : true
 					});
 				}
 			}
@@ -155,12 +152,12 @@ class LnKTakeInventory {
 		for (let i = 0; i < vInventory.length; i++) {
 			vQuantity = LnKTakeInventory.GetQuantity(vInventory[i]);//vInventory[i].system?.quantity
 			
-			if (vQuantity != undefined) {
+			if (vQuantity != undefined && vQuantity > 0) {
 				vInventoryInfos.push({
 										name : vInventory[i].name,
 										img : vInventory[i].img,
 										id : vInventory[i].id,
-										quantity : LnKTakeInventory.GetQuantity(vInventory[i])
+										quantity : vQuantity
 									});
 			}
 		}
@@ -177,17 +174,17 @@ class LnKTakeInventory {
 					let vTransferQuantity;
 					
 					let visCurrency;
+					let vSourceCurrency;
+					let vTargetCurrency;
 					
 					for (let i = 0; i < pItemInfos.length; i++) {
 						vTransferQuantity = 0;
-						visCurrency = pItemInfos[i].currency;
+						visCurrency = pItemInfos[i].iscurrency;
 						
 						if (visCurrency) {
-							vTransferQuantity = 0;
-							
-							if (pSource.actor.system?.currency && pSource.actor.system.currency[pItemInfos[i].itemid]) {
-								vTransferQuantity = Math.min(pSource.actor.system?.currency[pItemInfos[i].itemid], pItemInfos[i].quantity);
-							}
+							//vTransferQuantity = Math.min(pSource.actor.system?.currency[pItemInfos[i].itemid], pItemInfos[i].quantity);
+							vSourceCurrency = Number(LnKTakeInventory.GetCurrencies(pSource.actor, pItemInfos[i].itemid));
+							vTransferQuantity = Math.min(vSourceCurrency, pItemInfos[i].quantity);
 						}
 						else {
 							vItem = pSource.actor.items.get(pItemInfos[i].itemid);
@@ -197,10 +194,14 @@ class LnKTakeInventory {
 						
 						if (!isNaN(vTransferQuantity) && vTransferQuantity > 0) {
 							if (visCurrency) {
-								if (pTarget.actor.system?.currency && !isNaN(pTarget.actor.system.currency[pItemInfos[i].itemid])) {
-									pSource.actor.update({system : {currency : {[pItemInfos[i].itemid] : pSource.actor.system?.currency[pItemInfos[i].itemid] - vTransferQuantity}}});
+								vTargetCurrency = Number(LnKTakeInventory.GetCurrencies(pTarget.actor, pItemInfos[i].itemid));
+								
+								if (!isNaN(vTargetCurrency)) {
+									//pSource.actor.update({system : {currency : {[pItemInfos[i].itemid] : pSource.actor.system?.currency[pItemInfos[i].itemid] - vTransferQuantity}}});
+									LnKTakeInventory.SetCurrency(pSource.actor, pItemInfos[i].itemid, vSourceCurrency - vTransferQuantity);
 									
-									pTarget.actor.update({system : {currency : {[pItemInfos[i].itemid] : pTarget.actor.system.currency[pItemInfos[i].itemid] + vTransferQuantity}}});
+									//pTarget.actor.update({system : {currency : {[pItemInfos[i].itemid] : pTarget.actor.system.currency[pItemInfos[i].itemid] + vTransferQuantity}}});
+									LnKTakeInventory.SetCurrency(pTarget.actor, pItemInfos[i].itemid, vTargetCurrency + vTransferQuantity);
 								}
 							}
 							else {
@@ -286,6 +287,87 @@ class LnKTakeInventory {
 				}
 			}
 		}
+	}	
+	
+	static GetCurrencies(pActor, pCurrency = "") {
+		const cKeyWordFilter = "money";
+		
+		let vCurrencyObject;
+		
+		if (pActor) {
+			if (pActor.system?.currency) {
+				vCurrencyObject = pActor.system.currency;
+			}
+			
+			if (!vCurrencyObject) {
+				if (pActor.system.props) {
+					let vKeys = Object.keys(pActor.system.props);
+					
+					vKeys = vKeys.filter(vKey => vKey.includes(cKeyWordFilter));
+					
+					if (vKeys.length > 0) {
+						vCurrencyObject = {};
+						
+						for (let i = 0; i < vKeys.length; i++) {
+							vCurrencyObject[vKeys[i]] = pActor.system.props[vKeys[i]];
+						}
+					}
+				}
+			}
+		}
+		
+		if (pCurrency.length && vCurrencyObject) {
+			return vCurrencyObject[pCurrency];
+		}
+		
+		return vCurrencyObject;
+	}
+	
+	static SetCurrency(pActor, pCurrency, pQuantity) {
+		if (pActor) {
+			if (pActor.system?.currency) {
+				pActor.update({system : {currency : {[pCurrency] : pQuantity}}});
+				
+				return true;
+			}
+			
+			if (pActor.system?.props) {
+				if (pActor.system.props.hasOwnProperty(pCurrency)) {
+					pActor.update({system : {props : {[pCurrency] : pQuantity}}});
+					
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	static GetCurrencyName(pKey, pActor = undefined) {
+		let vCurrencyTranslator = CONFIG[game.system.id.toUpperCase()];
+		
+		if (vCurrencyTranslator) {
+			vCurrencyTranslator = vCurrencyTranslator.currencies;
+		}
+		
+		if (vCurrencyTranslator && vCurrencyTranslator[pKey] && vCurrencyTranslator[pKey].label) {
+			return vCurrencyTranslator[pKey].label;
+		}
+		
+		console.log(vCurrencyTranslator);
+		if (!vCurrencyTranslator && pActor) {
+			vCurrencyTranslator = {};
+			
+			if (pActor.system?.header?.contents) {
+				let vKeyItem = pActor.system.header.contents.find(vItem => vItem.key == pKey);
+				
+				if (vKeyItem && vKeyItem.label) {
+					return vKeyItem.label;
+				}
+			}
+		}
+		
+		return pKey;
 	}
 }
 
@@ -424,7 +506,7 @@ class TakeInventoryWindow extends Application {
 		});
 		
 		for (let i = 0; i < vInfo.length; i++) {
-			vInfo[i].currency = this.vInventoryInfo.find(vItem => vItem.id == vInfo[i].itemid)?.currency;
+			vInfo[i].iscurrency = this.vInventoryInfo.find(vItem => vItem.id == vInfo[i].itemid)?.iscurrency;
 		}
 		
 		return vInfo;
