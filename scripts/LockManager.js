@@ -220,7 +220,7 @@ class LockManager {
 								}
 								break;
 							case cLUCustomCheck:
-								LnKPopups.TextPopUpID(pLock, "checkfailed", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}); //MESSAGE POPUP
+								LnKPopups.TextPopUpID(pLock, "customcheckfailed", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}); //MESSAGE POPUP
 								
 								if (pChatMessages) {
 									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.CustomCheckFail"+vCritMessagesuffix, {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")})}); //CHAT MESSAGE

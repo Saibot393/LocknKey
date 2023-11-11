@@ -54,7 +54,8 @@
 			"jammedLock"				: "Jammed the lock",
 			"cantcircumventFree"		: "Lock can't be circumvented",
 			"CantbePickpocketed"		: "Can't be pick pocketed",
-			"PickPocketfailed"			: "Pick pocket failed"
+			"PickPocketfailed"			: "Pick pocket failed",
+			"customcheckfailed"			: "{pCheckName} failed"
 		},	
 		
 		"ChatMessage" : {
