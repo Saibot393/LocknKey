@@ -1,3 +1,6 @@
+## v2.0.6
+- Added missing translation for custom check fail popup
+
 ## v2.0.5
 - Improvements for the take inventory/transfer items window and api
 
