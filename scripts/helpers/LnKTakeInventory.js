@@ -250,6 +250,10 @@ class LnKTakeInventory {
 			if (pItem.system.props?.hasOwnProperty("Quantity")) {
 				return pItem.system.props.Quantity;
 			}
+			
+			if (pItem.system.props?.hasOwnProperty("quantity")) {
+				return pItem.system.props.quantity;
+			}
 		}
 	}
 	
@@ -270,6 +274,15 @@ class LnKTakeInventory {
 				}
 				else {
 					pItem.system.props.Quantity = pQuantity;
+				}
+			}
+			
+			if (pItem.system.props?.hasOwnProperty("quantity")) {
+				if (pUpdate) {
+					pItem.update({system : {props : {quantity : pQuantity}}});
+				}
+				else {
+					pItem.system.props.quantity = pQuantity;
 				}
 			}
 		}
