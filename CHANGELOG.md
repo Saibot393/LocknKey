@@ -1,3 +1,6 @@
+## v2.0.4
+- Improved Pick pocketing support for Custom System Builder
+
 ## v2.0.3
 - Updated French translation (thanks to [MastaGooz](https://github.com/MastaGooz))
 - Added Pick pocketing support for Custom System Builder (maybe?)
