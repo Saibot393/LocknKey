@@ -1,3 +1,6 @@
+## v2.0.5
+- Improvements for the take inventory/transfer items window and api
+
 ## v2.0.4
 - Improved Pick pocketing support for Custom System Builder
 
