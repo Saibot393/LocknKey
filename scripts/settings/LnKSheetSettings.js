@@ -182,8 +182,6 @@ class LnKSheetSettings {
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.token);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
-		console.log(vLockSettings, vLockFormulaSettings);
-		
 		let vTitle;
 		
 		let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
