@@ -545,7 +545,7 @@
 			
 			"PickPocketDCFlag" : {
 				"name" 					: "Taschendiebstahl SG",
-				"descrp"  				: "Der Schwierigkeitsgrad um diesen Charakter zu bestehlen"			
+				"descrp"  				: "Der Schwierigkeitsgrad um diesen Charakter zu bestehlen (-1 für unmöglich)"			
 			},
 			
 			"ReplacementItemFlag" : {

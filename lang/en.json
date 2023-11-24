@@ -545,7 +545,7 @@
 			
 			"PickPocketDCFlag" : {
 				"name" 					: "Pick pocket DC",
-				"descrp"  				: "The difficulty class to use Pick pocket this character"			
+				"descrp"  				: "The difficulty class to use Pick pocket this character (-1 for impossible)"			
 			},
 			
 			"ReplacementItemFlag" : {

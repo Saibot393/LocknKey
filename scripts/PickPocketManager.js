@@ -179,7 +179,7 @@ class PickPocketManager {
 			}
 			else {
 				//failure
-				LnKPopups.TextPopUpID(pTarget, "PickPocketfailed", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}); //MESSAGE POPUP
+				LnKPopups.TextPopUpID(pTarget, "PickPocketfailed"); //MESSAGE POPUP
 				
 				if (pChatMessages) {
 					await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.PickPocketFail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE

@@ -545,7 +545,7 @@
 			
 			"PickPocketDCFlag" : {
 				"name" 					: "Difficulté de vol à la tire",
-				"descrp"  				: "La difficulté de vol à la tire sur ce personnage"			
+				"descrp"  				: "La difficulté de vol à la tire sur ce personnage (-1 for impossible)"			
 			},
 			
 			"ReplacementItemFlag" : {

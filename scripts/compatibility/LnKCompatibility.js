@@ -273,7 +273,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 				}
 			});
 			
-			//unlock
+			//loot inventory
 			pMATT.registerTileAction(cModuleName, 'loot-inventory', {
 				name: Translate(cMATT + ".actions." + "loot-inventory" + ".name"),
 				requiresGM: true,
@@ -283,7 +283,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['tile', 'token', 'within', 'players', 'previous', 'tagger'] },
+						options: { show: ['token', 'within', 'players', 'previous', 'tagger'] },
 						required: true,
 						restrict: (entity) => { return (entity instanceof Token); }
 					},
