@@ -330,7 +330,11 @@ class LnKutils {
 			vLockpickItems = pSpecialLockpicks;
 		}
 		
-		return (LnKutils.includesone(pItem.name, vLockpickItems) || (pItem.flags.core?.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, vLockpickItems)) || LnKutils.includesone(pItem.id, vLockpickItems) || (pItem.ciKey && LnKutils.includesone(pItem.ciKey, vLockpickItems)));
+		return (LnKutils.includesone(pItem.name, vLockpickItems) 
+			|| (pItem.flags.core?.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, vLockpickItems)) 
+			|| LnKutils.includesone(pItem.id, vLockpickItems) 
+			|| (pItem.ciKey && LnKutils.includesone(pItem.ciKey, vLockpickItems))
+			|| (pItem.flags.ddbimporter?.id && LnKutils.includesone(pItem.flags.ddbimporter?.id?.toString(), vLockpickItems)));
 	}
 	
 	static hasLockPickItem(pInventory, pSpecialLockpicks = []) {
