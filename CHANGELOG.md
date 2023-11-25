@@ -1,3 +1,6 @@
+## v2.0.10
+- Error fix for previous update
+
 ## v2.0.9
 - Improved compatibility with DDB Importer items
 
