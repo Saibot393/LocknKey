@@ -1,3 +1,6 @@
+## v2.0.8
+- Some small ui improvements and a bit of debug macro code
+
 ## v2.0.7
 - Updated French translation (thanks to [MastaGooz](https://github.com/MastaGooz))
 
