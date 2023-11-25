@@ -1,3 +1,6 @@
+## v2.0.9
+- Improved compatibility with DDB Importer items
+
 ## v2.0.8
 - Some small ui improvements and a bit of debug macro code
 
