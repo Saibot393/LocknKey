@@ -1,3 +1,6 @@
+## v2.0.11
+- Added icons for some macros
+
 ## v2.0.10
 - Error fix for previous update
 
