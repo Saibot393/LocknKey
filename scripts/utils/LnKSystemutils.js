@@ -16,6 +16,7 @@ const cCyberpunkRED = "cyberpunk-red-core"; //name of the cyberpunk red core sys
 const cSandbox = "sandbox"; //name of the sandbox system
 const cWarhammerFRP4e = "wfrp4e"; //name of the warhammer fantasy roleplaying 4e system
 const cCoC7e = "CoC7"; //name of the Call of Cthulhu system 7th edition
+const cDSA5 = "dsa5"; //name of the Das schwarze Auge system (5e)
 
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
@@ -160,6 +161,9 @@ class LnKSystemutils {
 				break;
 			case cCoC7e:
 				return "1d100/@actor.system.skills.Locksmith.value";
+				break;
+			case cDSA5:
+				return "1d20 @actor.system.characteristics.in + 1d20 @actor.system.characteristics.ff + 1d20 @actor.system.characteristics.ff";
 				break;
 			default:
 				return "";

@@ -73,7 +73,7 @@ class LnKSheetSettings {
 			let vTabButtonHTML = 	`
 							<a class="item list-row" data-tab="${cModuleName}">
 								<i class="fas ${cLnKKeyIcon}"></i>
-								${Translate("Titles."+cModuleName)}
+								${Translate("Titles."+cModuleName+"abbr")}
 							</a>
 							`; //tab button HTML
 			let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
@@ -156,7 +156,7 @@ class LnKSheetSettings {
 		let vTabButtonHTML = 	`
 						<a class="item" data-tab="${cModuleName}">
 							<i class="fas ${cLnKLockIcon}"></i>
-							${Translate("Titles."+cModuleName)}
+							${Translate("Titles."+cModuleName+"abbr")}
 						</a>
 						`; //tab button HTML
 		let vTabContentHTML = `<div class="tab" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
@@ -199,7 +199,7 @@ class LnKSheetSettings {
 		let vTabButtonHTML = 	`
 						<a class="item" data-tab="${cModuleName}">
 							<i class="fas ${vTabIcon}"></i>
-							${Translate("Titles."+cModuleName)}
+							${Translate("Titles."+cModuleName+"abbr")}
 						</a>
 						`; //tab button HTML
 		let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML

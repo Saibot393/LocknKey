@@ -2,6 +2,7 @@
 	"LocknKey" : {
 		"Titles" : {
 			"LocknKey"					: "Lock & Key",
+			"LocknKeyabbr"				: "L&K",
 			"WorldSettings"				: "Paramètre du monde (MJ seulement)",
 			"ClientSettings"			: "Paramètres des joueurs",
 			"GMonly"					: "MJ seulement",

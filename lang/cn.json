@@ -2,6 +2,7 @@
   "LocknKey": {
     "Titles": {
       "LocknKey": "Lock & Key",
+	  "LocknKeyabbr" : "L&K",
       "WorldSettings": "世界设置 (仅限GM)",
       "ClientSettings": "用户设置",
       "GMonly": "仅限GM",
