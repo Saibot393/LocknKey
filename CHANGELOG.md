@@ -1,3 +1,6 @@
+## v2.0.12
+- Replaced "Lock & Key" in tabs with abreviated version "L&K" to improve gui
+
 ## v2.0.11
 - Added icons for some macros
 
