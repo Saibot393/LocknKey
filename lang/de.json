@@ -302,6 +302,21 @@
 				"descrp"				: "Der Standardwert für Taschendiebstahl SGs"				
 			},
 			
+			"PickPocketDefaultDCFormula" : {
+				"name" 					: "Taschendiebstahl standard SG Formel",
+				"descrp"				: "Die standard formel welche für Taschendiebstahl standard SGs benutzt wird (überschreibt andere Standards)"				
+			},
+			
+			"AutoUpdatePickPocketDC" : {
+				"name" 					: "Taschendiebstahl SG automatisch aktualisieren",
+				"descrp"				: "Ob der Taschendiebstahl SG automatisch aktualisiert werden soll wenn Wahrnehmung gewürfelt wird"				
+			},
+			
+			"PerceptionKeyWord" : {
+				"name"					: "Wahrnehmungs Stichwort",
+				"descrp"				: "Stichwort welches benutzt wird um Wahrnehmungswürfe zu identifizieren (ein String/Wort welches im Text des Wahrnehmungswurf vorhanden ist)"	
+			},
+			
 			"ControlSceme" : {
 				"name" 					: "Kontrollschema",
 				"descrp"				: "Schema welches für die Spiele Ssteuerung benutzt wird (rechts-click + taste ist unten unter \"Spieler Steuerung\" beschrieben",	

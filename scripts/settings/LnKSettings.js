@@ -358,6 +358,33 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: -1
   });   
   
+  game.settings.register(cModuleName, "PickPocketDefaultDCFormula", {
+	name: Translate("Settings.PickPocketDefaultDCFormula.name"),
+	hint: Translate("Settings.PickPocketDefaultDCFormula.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: ""
+  });  
+  
+  game.settings.register(cModuleName, "AutoUpdatePickPocketDC", {
+	name: Translate("Settings.AutoUpdatePickPocketDC.name"),
+	hint: Translate("Settings.AutoUpdatePickPocketDC.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });  
+  
+  game.settings.register(cModuleName, "PerceptionKeyWord", {
+	name: Translate("Settings.PerceptionKeyWord.name"),
+	hint: Translate("Settings.PerceptionKeyWord.descrp"),
+	scope: "world",
+	config: !LnKSystemutils.canAutodetectSystemPerceptionRoll(),
+	type: String,
+	default: "Perception"
+  }); 
+  
   //client
   game.settings.register(cModuleName, "ControlSceme", {
 	name: Translate("Settings.ControlSceme.name"),

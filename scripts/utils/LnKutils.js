@@ -142,6 +142,8 @@ class LnKutils {
 	//pick pocket
 	static PickPocketformulaWorld() {} //returns the worlds formula used Pick Pocket check rolls
 	
+	static async CalculatePPDefaultDC(pToken) {} //returns the calculated PickPocket DC (if formula available), else returns default dc value
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
 	
@@ -779,6 +781,20 @@ class LnKutils {
 		else {
 			return "0";
 		}			
+	}
+	
+	static async CalculatePPDefaultDC(pToken) {
+		let vFormula = game.settings.get(cModuleName, "PickPocketDefaultDCFormula");
+		
+		if (vFormula && pToken.actor) {
+			let vRoll = new Roll(vFormula, {actor : pToken.actor});
+			
+			await vRoll.evaluate();
+			
+			return vRoll.total;
+		}
+		
+		return game.settings.get(cModuleName, "PickPocketDefaultDC");
 	}
 	
 	//arrays

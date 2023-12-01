@@ -51,6 +51,9 @@ class LnKSystemutils {
 	
 	static ResettoStandardFormulas(pResets = {pLP : true, pLB : true}) {} //resets the formulas to the standard formulas
 	
+	//rolls
+	static isSystemPerceptionRoll(pMessage, pInfos) {} //returns if the message belongs to a perception roll
+	
 	//IMPLEMENTATIONS
 	//Identification	
 	static isPf2e() {
@@ -256,6 +259,49 @@ class LnKSystemutils {
 		if (pResets.pPP) {
 			await game.settings.set(cModuleName, "PickPocketFormula", LnKSystemutils.SystemdefaultPickPocketformula());
 		}
+	}
+	
+	//rolls
+	static isSystemPerceptionRoll(pMessage, pInfos) {
+		if (pMessage.isRoll) {
+			let vSystemInfo = pMessage.flags?.[game.system.id];
+			
+			let vSkill = "";
+			
+			if (vSystemInfo) {
+				switch (game.system.id) {
+					case cPf2eName:
+						vSkill = Object.keys(Pf2eSkillDictionary).find(vKey => Pf2eSkillDictionary[vKey] == vSystemInfo?.modifierName);
+						
+						pInfos["skill"] = vSkill;
+						
+						return vSystemInfo.context?.type == "perception-check";
+						break;
+					case cDnD5e:
+						pInfos["skill"] = vSystemInfo.roll.skillId;
+					
+						return vSystemInfo.roll.skillId == "prc";
+						break;
+					case cPf1eName:
+						pInfos["skill"] = vSystemInfo.subject?.skill;
+					
+						return vSystemInfo.subject?.skill == "per";
+						break;
+					default : 
+						return pMessage.flavor.includes(game.settings.get(cModuleName, "PerceptionKeyWord"));
+						break;
+				}
+			}
+		}
+		else {
+			//key word recognition
+		}
+		
+		return false;
+	}
+	
+	static canAutodetectSystemPerceptionRoll() {
+		return [cPf2eName, cDnD5e, cPf1eName].includes(game.system.id);
 	}
 }
 

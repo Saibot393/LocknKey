@@ -268,11 +268,11 @@ class LnKSheetSettings {
 			}
 		}
 		
-		//setting PickPocket dc									
+		//setting PickPocket dc			
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF +".name"), 
 												vhint : Translate("SheetSettings."+ cPickPocketDCF +".descrp"), 
 												vtype : "number", 
-												vvalue : LnKFlags.PickPocketDC(pApp.object, true),
+												vvalue : await LnKFlags.PickPocketDC(pApp.object, true),
 												vflagname : cPickPocketDCF
 												}, `div[data-tab="${cModuleName}"]`);
 												

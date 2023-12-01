@@ -194,6 +194,10 @@ class LnKFlags {
 	
 	static PickPocketFormulaOverrides(pObject) {} //returns wether this object Pick pocket formula overrides
 	
+	static ResetPickPocketDC(pObject) {} //resets the pick pocket DC to the default value
+	
+	static SetPickPocketDC(pObject, pDC) {} //sets the PickPocket DC of pObject
+	
 	//popups
 	static setCustomPopups(pObject, pPopups) {} //set the custom popups of pObject to pPopups
 	
@@ -523,7 +527,7 @@ class LnKFlags {
 		return 0; //default if anything fails				
 	}
 	
-	static #PickPocketDCFlag (pToken) {
+	static async #PickPocketDCFlag (pToken) {
 	//returns content of PickPocketDC pToken (number)
 		let vFlag = this.#LnKFlags(pToken);
 		
@@ -533,7 +537,7 @@ class LnKFlags {
 			}
 		}
 		
-		return game.settings.get(cModuleName, "PickPocketDefaultDC"); //default if anything fails				
+		return await LnKutils.CalculatePPDefaultDC(pToken);//game.settings.get(cModuleName, "PickPocketDefaultDC"); //default if anything fails				
 	}
 	
 	static #PickPocketFormulaFlag (pObject) { 
@@ -693,6 +697,26 @@ class LnKFlags {
 	//sets content of FreeLockCircumventsFlag (must be number)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cFreeLockCircumventsF, Number(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #setPickPocketDCFlag(pObject, pContent) {
+	//sets content of PickPocketDCFlag (must be number)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cPickPocketDCF, Number(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #unsetPickPocketDCFlag(pObject) {
+	//unsets content of PickPocketDCFlag (must be number)
+		if (pObject) {
+			await pObject.unsetFlag(cModuleName, cPickPocketDCF);
 			
 			return true;
 		}
@@ -1062,8 +1086,8 @@ class LnKFlags {
 	}
 	
 	//PickPocket
-	static PickPocketDC(pToken, praw = false) {
-		let vDC = this.#PickPocketDCFlag(pToken);
+	static async PickPocketDC(pToken, praw = false) {
+		let vDC = await this.#PickPocketDCFlag(pToken);
 		
 		if (vDC == -1 && !praw) {
 			vDC = Infinity;
@@ -1086,6 +1110,14 @@ class LnKFlags {
 	
 	static PickPocketFormulaOverrides(pObject) {
 		return this.#PickPocketFormulaOverrideFlag(pObject);
+	}
+	
+	static ResetPickPocketDC(pObject) {
+		return this.#unsetPickPocketDCFlag(pObject);
+	}
+	
+	static SetPickPocketDC(pObject, pDC) {
+		return this.#setPickPocketDCFlag(pObject, pDC);
 	}
 	
 	//popups

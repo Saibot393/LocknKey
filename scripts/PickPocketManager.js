@@ -21,6 +21,9 @@ class PickPocketManager {
 	//ui
 	static addPickPocketButton(pButtons, pLockObject, pLockType, pCharacter, pShowall) {} //adds a pick pocket button to interface popup
 	
+	//ons
+	static onPerceptionRoll(pActorID, pRoll, pSenderID) {} //called when a perception roll is registered
+	
 	//IMPLEMENTATIONS
 	static onAtemptedPickPocket(pTarget) {
 		let vCharacter = LnKutils.PrimaryCharacter();
@@ -101,7 +104,7 @@ class PickPocketManager {
 				game.pf2e.actions.steal({
 					actors: pCharacter.actor,
 					callback: vCallback,
-					difficultyClass: {value : LnKFlags.PickPocketDC(pTarget)}
+					difficultyClass: {value : await LnKFlags.PickPocketDC(pTarget)}
 				});
 			}
 		}
@@ -156,7 +159,7 @@ class PickPocketManager {
 		let vSuccessDegree;
 		
 		if (!pData.usePf2eRoll) {
-			vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, LnKFlags.PickPocketDC(pTarget), pCharacter, {RollType : cUPickPocket});
+			vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, await LnKFlags.PickPocketDC(pTarget), pCharacter, {RollType : cUPickPocket});
 		}
 		else {
 			vSuccessDegree = pData.Pf2eresult;
@@ -200,11 +203,23 @@ class PickPocketManager {
 			}	
 		}
 	};
+	
+	//ons
+	static onPerceptionRoll(pActorID, pRoll, pSenderID) {
+		if (game.settings.get(cModuleName, "AutoUpdatePickPocketDC")) {
+			let vRelevantTokens = LnKutils.selectedTokens().filter(vToken => vToken.actorId == pActorID);
+			
+			
+			for (let i = 0; i < vRelevantTokens.length; i++) {
+				LnKFlags.SetPickPocketDC(vRelevantTokens[i], pRoll.total);
+			}
+		}
+	}
 }
 
-Hooks.on(cModuleName +  ".ObjectInteractionMenu", (pButtons, pObject, pLockType, pCharacter, pShowall) => {
-	PickPocketManager.addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall);
-});
+Hooks.on(cModuleName +  ".ObjectInteractionMenu", (pButtons, pObject, pLockType, pCharacter, pShowall) => {PickPocketManager.addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall);});
+
+Hooks.on(cModuleName + ".PerceptionRoll", (pActorID, pRoll, pUserID, pReplaceSkill = "") => {PickPocketManager.onPerceptionRoll(pActorID, pRoll, pUserID, pReplaceSkill)});
 
 //sockets
 export function PickPocketRequest(pData) {PickPocketManager.PickPocketRequest(pData)};
