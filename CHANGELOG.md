@@ -1,3 +1,9 @@
+## v2.1.0
+- Added world setting Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
+- Added world setting Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
+- Added world setting Perception key-word: to set they key-word used to recognise perception rolls
+- Added macro to reset Pick Pocket DCs to default
+
 ## v2.0.12
 - Replaced "Lock & Key" in tabs with abreviated version "L&K" to improve gui
 
