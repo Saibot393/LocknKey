@@ -21,6 +21,25 @@ const cDSA5 = "dsa5"; //name of the Das schwarze Auge system (5e)
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 
+const Pf2eSkillDictionary = {
+    acr: "acrobatics",
+    arc: "arcana",
+    ath: "athletics",
+    cra: "crafting",
+    dec: "deception",
+    dip: "diplomacy",
+    itm: "intimidation",
+    med: "medicine",
+    nat: "nature",
+    occ: "occultism",
+    prf: "performance",
+    rel: "religion",
+    soc: "society",
+    ste: "stealth",
+    sur: "survival",
+    thi: "thievery"
+}
+
 //Lock Types
 const cLockTypeLootPf2e = "LTLootPf2e"; //type for Token
 
