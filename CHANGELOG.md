@@ -1,3 +1,6 @@
+## v2.1.1
+- Fixed bug that allowed GMs to accidentally lock incompatible tokens
+
 ## v2.1.0
 - Added world setting Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
 - Added world setting Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
