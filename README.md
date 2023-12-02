@@ -62,6 +62,9 @@ All player and GM controls also have corresponding key binds.
 - Lock circumvention keywords to set keywords used to identify effects that allow players to circumvent locks (e.g. the spell "Knock")
 - Pick pocket formula to set the formula used for pick pocketing
 - Pick pocket default DC to set the default DC for pick pocketing
+- Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
+- Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
+- Perception key-word: to set they key-word used to recognise perception rolls
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
 - Message popups: to activate some popups on certain actions
