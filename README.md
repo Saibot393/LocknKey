@@ -78,6 +78,8 @@ All player and GM controls also have corresponding key binds.
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
+- Password changeable: to allow players to change this locks password if they have a valid password (only useable with the popup-menu control sceme)
+- Identities: to use identities (IDs and Names of Tokens/Actors/User) to unlock this lock
 - Jammed: to set this lock as jammed preventing it from being picked
 - Lock DC: the difficulty class of a lock, used for lockpicking
 - Special lockpick: to set a special lockpick required to pick this lock
