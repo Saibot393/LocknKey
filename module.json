@@ -64,11 +64,7 @@
 	}
   ],
   "url": "https://github.com/Saibot393/LocknKey",
-<<<<<<< Updated upstream
-  "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v2.2.0.zip",
-=======
   "download": "https://github.com/Saibot393/LocknKey/archive/refs/tags/v2.2.1.zip",
->>>>>>> Stashed changes
   "manifest": "https://github.com/Saibot393/LocknKey/releases/latest/download/module.json",
   "readme": "https://github.com/Saibot393/LocknKey/blob/main/README.md",
   "changelog": "https://github.com/Saibot393/LocknKey/blob/main/CHANGELOG.md",
