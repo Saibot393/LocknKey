@@ -759,7 +759,7 @@ class LnKFlags {
 	}
 	
 	static isLocked(pObject) {		
-		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject))
+		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject)) && LnKutils.isLockCompatible(pObject);
 	}
 	
 	static linkKeyLock(pKey, pLock) {

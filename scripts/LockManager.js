@@ -21,7 +21,7 @@ class LockManager {
 	
 	static useFreeCircumvent(pLock, pCharacter, puseData = {}) {} //handels use of free lock circumvents (e.g. knock spell)
 	
-	static LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
+	static async LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
 	//LockKeys
 	static async newLockKey(pLock) {} //create a new item key for pLock
@@ -247,7 +247,7 @@ class LockManager {
 		}
 	}
 	
-	static LockuseRequest(puseData) {
+	static async LockuseRequest(puseData) {
 		if (game.user.isGM) {
 			//only relevant for GMs
 			
@@ -258,7 +258,7 @@ class LockManager {
 			if (vScene) {
 				vLock = LnKutils.LockfromID(puseData.LockID, puseData.Locktype, vScene);
 				
-				if ((LnKutils.isLockCompatible(vLock) || puseData.useType == cLUisGM)) {
+				if ((await LnKutils.isLockCompatible(vLock) || puseData.useType == cLUisGM)) {
 					vCharacter = LnKutils.TokenfromID(puseData.CharacterID, vScene);
 					
 					switch (puseData.useType) {
@@ -291,7 +291,7 @@ class LockManager {
 	
 	//LockKeys
 	static async newLockKey(pLock) {
-		if (pLock && LnKutils.isLockCompatible(pLock)) {
+		if (pLock && await LnKutils.isLockCompatible(pLock)) {
 			//make sure pLock is actually a Lock
 			
 			if (LnKutils.isTokenLock(pLock)) {
@@ -414,7 +414,7 @@ class LockManager {
 				//if setting is set to false, only GM can lock locks
 				let vLocktype = await LnKutils.Locktype(pLock);
 				
-				if (pLockusetype == cLUisGM) {
+				if (pLockusetype == cLUisGM && await LnKutils.isLockCompatible(pLock)) {
 					await LnKFlags.makeLockable(pLock);
 				}
 				
@@ -557,7 +557,7 @@ class LockManager {
 	}
 	
 	static async pasteLock(pLock) {
-		if (pLock && LnKutils.isLockCompatible(pLock)) {
+		if (pLock && await LnKutils.isLockCompatible(pLock)) {
 			//make sure pLock is actually a Lock
 			
 			if (LnKutils.isTokenLock(pLock)) {
