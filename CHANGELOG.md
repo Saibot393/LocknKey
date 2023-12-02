@@ -1,3 +1,7 @@
+## v2.2.0
+- Added lock setting Identities to use identities (IDs and Names of Tokens/Actors/User) to unlock this lock
+- Added lock setting Password changeable to allow players to change this locks password if they have a valid password (only useable with the popup-menu control sceme)
+
 ## v2.1.1
 - Fixed bug that allowed GMs to accidentally lock incompatible tokens
 
