@@ -11,6 +11,7 @@
 			"KeyItems"					: "Key settings",
 			"LPItems"					: "Lock manipulations settings",
 			"LockusePasskey"			: "Password",
+			"Passkey"					: "Password",
 			"EnterPasskey"				: "Enter the password:",
 			"ConfirmPasskey"			: "Confirm",
 			"Lockuse"					: "Lock use",
@@ -27,7 +28,10 @@
 			"Basic"						: "Basic",
 			"Triggers"					: "Triggers",
 			"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove",
-			"PickPocket"				: "Pick pocket"
+			"PickPocket"				: "Pick pocket",
+			"LockchangePasskey"			: "Change password",
+			"LockuseIdentity"			: "Identity",
+			"newPasskey"				: "New password:"
 		},
 		
 		"Popup" : {
@@ -56,7 +60,9 @@
 			"cantcircumventFree"		: "Lock can't be circumvented",
 			"CantbePickpocketed"		: "Can't be pick pocketed",
 			"PickPocketfailed"			: "Pick pocket failed",
-			"customcheckfailed"			: "{pCheckName} failed"
+			"customcheckfailed"			: "{pCheckName} failed",
+			"WrongIdentity"				: "Wrong identity",
+			"PasswordChanged"			: "Password changed"
 		},	
 		
 		"ChatMessage" : {
@@ -407,6 +413,16 @@
 			"PasskeysFlag" : {
 				"name"					: "Passwords",
 				"descrp"				: "Passwords that can unlock this lock (seperated with \";\")"
+			},
+			
+			"PasskeyChangeableFlag" : {
+				"name"					: "Password changeable",
+				"descrp"				: "If the password can be changed by players (requires correct password)"
+			},
+			
+			"IdentityKeyFlag" : {
+				"name"					: "Identities",
+				"descrp"				: "Identities that can unlock this lock (seperated with \";\", IDs/Names of Token/Actor/User)"
 			},
 			
 			"LockjammedFlag" : {

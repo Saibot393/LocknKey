@@ -28,13 +28,15 @@ const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 const cLUisGM = "LockuseGM"; //if a Lock is used by a GM
 const cLUuseKey = "LockuseKey"; //if a Key is used on a lock
 const cLUusePasskey = "LockusePasskey"; //if a Passkey (paasword or PIN) is used on lock
+const cLUchangePasskey = "LockchangePasskey"; //if a Passkey (paasword or PIN) is used on lock
+const cLUIdentity = "LockuseIdentity"; //if the identity (token, actor, player) is used on lock
 const cLUpickLock = "LockusePick"; //if a Lock pick is used on a lock
 const cLUbreakLock = "LockuseBreak"; //if a Lock is broken
 const cLUCustomCheck = "LockuseCustom"; //if a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //if a lock gets circumvented via e.g. a knock spell
 const cUPickPocket = "UsePickPocket"; //if a character is pickpocketed
 
-export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
+export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);

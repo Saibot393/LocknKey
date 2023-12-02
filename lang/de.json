@@ -11,6 +11,7 @@
 			"KeyItems"					: "Schlüsseleinstellungen",
 			"LPItems"					: "Schlossmanipulationseinstellungen",
 			"LockusePasskey"			: "Passwort",
+			"Passkey"					: "Passwort",
 			"EnterPasskey"				: "Passwort eingeben:",
 			"ConfirmPasskey"			: "Bestätigen",
 			"Lockuse"					: "Schloss benutzen",
@@ -27,7 +28,10 @@
 			"Basic"						: "Basis",
 			"Triggers"					: "Triggers",
 			"FreeCircumventHUD"			: "Diese Figur kann das nächste Schloss umgehen, zum entfernen Klicken",
-			"PickPocket"				: "Taschendiebstahl"
+			"PickPocket"				: "Taschendiebstahl",
+			"LockchangePasskey"			: "Passwort ändern",
+			"LockuseIdentity"			: "Identität",
+			"newPasskey"				: "Neues Passwort:"
 		},
 		
 		"Popup" : {
@@ -56,7 +60,9 @@
 			"cantcircumventFree"		: "Schloss kann nicht umgangen werden",
 			"CantbePickpocketed"		: "Kann nicht bestohlen werden",
 			"PickPocketfailed"			: "Taschendiebstahl fehlgeschlagen",
-			"customcheckfailed"			: "{pCheckName} fehlgeschlagen"
+			"customcheckfailed"			: "{pCheckName} fehlgeschlagen",
+			"WrongIdentity"				: "Falsche Identität",
+			"PasswordChanged"			: "Passwort geändert"
 		},	
 		
 		"ChatMessage" : {
@@ -407,6 +413,16 @@
 			"PasskeysFlag" : {
 				"name"					: "Passwörter",
 				"descrp"				: "Passwörter welche dieses Schloss aufschließen können (mit \";\" getrennt)"
+			},
+			
+			"PasskeyChangeableFlag" : {
+				"name"					: "Passwörter änderbar",
+				"descrp"				: "Ob die Passwörter von Spielern geändert werden können (benötigt das Korrekte Passwort)"
+			},
+			
+			"IdentityKeyFlag" : {
+				"name"					: "Identitäten",
+				"descrp"				: "Identitäten welche dieses Schloss aufschließen können (mit \";\" getrennt, IDs/Namens von Figuren/Akteuren/Nutzern)"
 			},
 			
 			"LockjammedFlag" : {

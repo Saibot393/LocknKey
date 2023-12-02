@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -14,6 +14,10 @@ class LockManager {
 	static async useLockKey(pLock, pCharacter, pKeyItemID, puseData = {}) {} //handels pLock use of pCharacter with item of pItemID
 	
 	static async useLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {} //handels pLock use of pCharacter with Passkey pPasskey
+	
+	static async changeLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {} //handels pLock use of pCharacter with Passkey pPasskey to change passkey
+	
+	static async useLockIdentity(pLock, pCharacter, pIdentityMatch, puseData = {}) {} //handels pLock use of pCharacter with Identity pIdentityMatch
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock, cLUCustomCheck] and result pRollresults
 	
@@ -97,6 +101,40 @@ class LockManager {
 		}
 		
 		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUusePasskey, Outcome : vOutcome, useData : puseData});
+	}
+	
+	static async changeLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {
+		let vOutcome = 0;
+		
+		if (LnKFlags.PasskeyChangeable(pLock) && LnKFlags.MatchingPasskey(pLock, pPasskey)) {
+			//Passkey matches
+			LnKFlags.setPassKey(pLock, puseData.NewPasskey);
+			
+			LnKPopups.TextPopUpID(pLock, "PasswordChanged"); //MESSAGE POPUP
+			
+			vOutcome = 1;
+		}	
+		else {
+			LnKPopups.TextPopUpID(pLock, "WrongPassword"); //MESSAGE POPUP
+		}
+		
+		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUusePasskey, Outcome : vOutcome, useData : puseData});
+	}
+	
+	static async useLockIdentity(pLock, pCharacter, pIdentityMatch, puseData = {}) {
+		let vOutcome = 0;
+		
+		if (LnKFlags.MatchingIdentityKeys(pLock, [pIdentityMatch])) {
+			//Passkey matches
+			LockManager.ToggleLock(pLock, cLUIdentity);
+			
+			vOutcome = 1;
+		}	
+		else {
+			LnKPopups.TextPopUpID(pLock, "WrongIdentity"); //MESSAGE POPUP
+		}
+		
+		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUIdentity, Outcome : vOutcome, useData : puseData});
 	}
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {
@@ -269,6 +307,12 @@ class LockManager {
 						case cLUusePasskey:
 							LockManager.useLockPasskey(vLock, vCharacter, puseData.EnteredPasskey, puseData);
 							break;
+						case cLUchangePasskey:
+							LockManager.changeLockPasskey(vLock, vCharacter, puseData.OldPasskey, puseData);
+							break;
+						case cLUIdentity:
+							LockManager.useLockIdentity(vLock, vCharacter, puseData.IdentityMatch, puseData);
+							break;
 						case cLUpickLock:
 						case cLUbreakLock:
 						case cLUCustomCheck:
@@ -405,6 +449,7 @@ class LockManager {
 				case cLUpickLock:
 				case cLUCustomCheck:
 				case cLUuseKey:
+				case cLUIdentity:
 				default:
 					vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
 					break;

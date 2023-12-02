@@ -11,6 +11,7 @@
       "KeyItems": "钥匙设置",
       "LPItems": "锁的操控设置",
       "LockusePasskey": "密码",
+	  "Passkey"	: "密码",
       "EnterPasskey": "输入密码:",
       "ConfirmPasskey": "确定",
 	  "Lockuse"					: "上锁",
@@ -27,7 +28,10 @@
 		"Basic"						: "基本",
 		"Triggers"					: "Triggers",
 		"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove",
-		"PickPocket"				: "Pick pocket"
+		"PickPocket"				: "Pick pocket",
+		"LockchangePasskey"			: "Change password",
+		"LockuseIdentity"			: "Identity",
+		"newPasskey"				: "New password:"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",
@@ -55,7 +59,9 @@
 	  "cantcircumventFree": "Lock can't be circumvented",
 	  "CantbePickpocketed"		: "Can't be pick pocketed",
 	  "PickPocketfailed"			: "Pick pocket failed",
-	  "customcheckfailed"			: "{pCheckName} failed"
+	  "customcheckfailed"			: "{pCheckName} failed",
+		"WrongIdentity"				: "Wrong identity",
+		"PasswordChanged"			: "Password changed"
     },
     "ChatMessage": {
       "LockPick": "{pName}尝试撬锁:",
@@ -364,6 +370,15 @@
         "name": "密码",
         "descrp": "解锁这把锁的密码 (多个时以\";\"分隔)"
       },
+		"PasskeyChangeableFlag" : {
+			"name"					: "Password changeable",
+			"descrp"				: "If the password can be changed by players (requires correct password)"
+		},
+		
+		"IdentityKeyFlag" : {
+			"name"					: "Identities",
+			"descrp"				: "Identities that can unlock this lock (seperated with \";\", IDs/Names of Token/Actor/User)"
+		},
       "LockjammedFlag": {
         "name": "Jammed",
         "descrp": "If this lock is jammed (see world settings)"

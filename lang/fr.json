@@ -11,6 +11,7 @@
 			"KeyItems"					: "Paramètres des clés",
 			"LPItems"					: "Paramètres de manipulation des verrous",
 			"LockusePasskey"			: "Mot de passe",
+			"Passkey"					: "Mot de passe",
 			"EnterPasskey"				: "Entrez le mot de passe:",
 			"ConfirmPasskey"			: "Confirmer",
 			"Lockuse"					: "Utilisation du verrou",
@@ -27,7 +28,10 @@
 			"Basic"						: "Basique",
 			"Triggers"					: "Déclencheurs",
 			"FreeCircumventHUD"			: "Ce jeton peut contourner le prochain verrou, cliquez pour annuler",
-			"PickPocket"				: "Vol à la tire"
+			"PickPocket"				: "Vol à la tire",
+			"LockchangePasskey"			: "Change password",
+			"LockuseIdentity"			: "Identity",
+			"newPasskey"				: "New password:"
 		},
 		
 		"Popup" : {
@@ -56,7 +60,9 @@
 			"cantcircumventFree"		: "Verrou incontournable",
 			"CantbePickpocketed"		: "Ne peut pas être volé",
 			"PickPocketfailed"			: "Echec du vol à la tire",
-			"customcheckfailed"			: "{pCheckName} a échoué"
+			"customcheckfailed"			: "{pCheckName} a échoué",
+			"WrongIdentity"				: "Wrong identity",
+			"PasswordChanged"			: "Password changed"
 		},	
 		
 		"ChatMessage" : {
@@ -407,6 +413,16 @@
 			"PasskeysFlag" : {
 				"name"					: "Mots de passe",
 				"descrp"				: "Mots de passe qui peuvent déverrouiller ce verrou (séparés avec \";\")"
+			},
+			
+			"PasskeyChangeableFlag" : {
+				"name"					: "Password changeable",
+				"descrp"				: "If the password can be changed by players (requires correct password)"
+			},
+			
+			"IdentityKeyFlag" : {
+				"name"					: "Identities",
+				"descrp"				: "Identities that can unlock this lock (seperated with \";\", IDs/Names of Token/Actor/User)"
 			},
 			
 			"LockjammedFlag" : {

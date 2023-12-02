@@ -20,6 +20,8 @@ const cCCFormulaF = "CCFormulaFlag"; //the Formula the token/item adds to custom
 const cCCFormulaOverrideF = "CCFormulaOverrideFlag"; //if this objects CCFormulaFlag overrides the global formula (instead of being added)
 const cRemoveKeyonUseF = "RemoveKeyonUseFlag"; //if this key is removed on use
 const cPasskeysF = "PasskeysFlag"; //the passkeys compatible with this lock
+const cPasskeyChangeableF = "PasskeyChangeableFlag"; //flag to store if this password can be changed by players
+const cIdentityKeyF = "IdentityKeyFlag"; //Flag that stores identities (tokens, actors, players) that can use this lock
 const cCustomPopupsF = "CustomPopupsFlag"; //Flag to store the custom popups
 const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should play for locking
 const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
@@ -34,7 +36,7 @@ const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
 const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
 const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -103,9 +105,22 @@ class LnKFlags {
 	//Passkeys
 	static PassKeys(pObject) {} //returns string of Passkeys of pObject
 	
+	static setPassKey(pObject, pPassKey) {} //sets passkey of pObject to pPassKey
+	
 	static HasPasskey(pObject) {} //if pObject has a Passkey
 	
+	static PasskeyChangeable(pObject) {} //if this pObjects passkey can be changed by players
+	
 	static MatchingPasskey(pObject, Passkey) {} //if Passkey matches pObject
+	
+	//IdentityKey
+	static IdentityKeys(pObject) {} //returns all Identity keys of pObject
+	
+	static HasIdentityKey(pObject) {} //returns wether pObject can be used by Identity
+	
+	static MatchingIdentity(pObject, pToken, pPlayer) {} //return wether pObject can be opened by either token (token actor) or player through identity
+	
+	static MatchingIdentityKeys(pObject, pIDKeys) {} //return wether pObject can be opened by either of the pIDKeys
 	
 	//copy paste
 	static copyIDKeys(pObject) {} //copies the ID keys of pObject and saves them
@@ -430,6 +445,32 @@ class LnKFlags {
 		return ""; //default if anything fails
 	} 
 	
+	static #PasskeyChangeableFlag (pObject) { 
+	//returns content of PasskeyChangeable flag of pObject (if any) (collection of IDs)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cPasskeyChangeableF)) {
+				return vFlag.PasskeyChangeableFlag;
+			}
+		}
+		
+		return false; //default if anything fails
+	} 
+	
+	static #IdentityKeyFlag (pObject) { 
+	//returns content of Identtiy Key flag of pObject (if any) (collection of IDs)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cIdentityKeyF)) {
+				return vFlag.IdentityKeyFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
+	} 
+	
 	static #CustomPopupsFlag (pObject) { 
 	//returns content of CustomPopups Flag of pObject (if any) (array of srtings)
 		let vFlag = this.#LnKFlags(pObject);
@@ -693,6 +734,16 @@ class LnKFlags {
 		return false;		
 	}
 	
+	static async #setPassKeyFlag(pObject, pContent) {
+	//sets content of PassKey flag (must be number)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cPasskeysF, pContent);
+			
+			return true;
+		}
+		return false;		
+	}
+	
 	static async #setFreeLockCircumventsFlag(pObject, pContent) {
 	//sets content of FreeLockCircumventsFlag (must be number)
 		if (pObject) {
@@ -804,14 +855,62 @@ class LnKFlags {
 		return this.#PasskeysFlag(pObject);
 	}
 	
+	static setPassKey(pObject, pPassKey) {
+		return this.#setPassKeyFlag(pObject, pPassKey);
+	}
+	
 	static HasPasskey(pObject) {
 		return (this.#PasskeysFlag(pObject).length > 0);
+	}
+	
+	static PasskeyChangeable(pObject) {
+		return this.#PasskeyChangeableFlag(pObject);
 	}
 	
 	static MatchingPasskey(pObject, Passkey) {
 		if (Passkey.length > 0) {
 			//empty Passkey not allowed
 			return this.#PasskeysFlag(pObject).split(cDelimiter).includes(Passkey);
+		}
+		
+		return false;
+	}
+	
+	//IdentityKey
+	static IdentityKeys(pObject) {
+		return this.#IdentityKeyFlag(pObject);
+	}
+	
+	static HasIdentityKey(pObject) {
+		return (this.#IdentityKeyFlag(pObject).length > 0);
+	}
+	
+	static MatchingIdentity(pObject, pToken, pPlayer) {
+		let vIDKeys = [];
+		
+		if (pToken) {
+			vIDKeys.push(pToken.name);
+			vIDKeys.push(pToken.id);
+		}
+
+		if (pToken.actor) {
+			vIDKeys.push(pToken.actor.name);
+			vIDKeys.push(pToken.actor.id);
+		}
+		
+		if (pPlayer) {
+			vIDKeys.push(pPlayer.name);
+			vIDKeys.push(pPlayer.id);
+		}	
+
+		return LnKFlags.MatchingIdentityKeys(pObject, vIDKeys);
+	}
+	
+	static MatchingIdentityKeys(pObject, pIDKeys) {
+		let vIDLocks = LnKFlags.IdentityKeys(pObject).split(cDelimiter);
+		
+		if (vIDLocks.length) {
+			return pIDKeys.find(vKey => vIDLocks.includes(vKey));
 		}
 		
 		return false;

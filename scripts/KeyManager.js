@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
@@ -9,6 +9,8 @@ import { LnKSystemutils} from "./utils/LnKSystemutils.js";
 
 const cLnKKeyIcon = "fa-key";
 const cLnKPasswordIcon = "fa-regular fa-pen-to-square";
+const cLnKChangePasswordIcon = "fa-solid fa-pen";
+const cLnKIdentityIcon = "fa-solid fa-address-card";
 const cLnKPickLockIcon = "fa-solid fa-toolbox";
 const cLnKBreakLockIcon = "fa-solid fa-hammer";
 const cLnKCancelIcon = "fa-solid fa-xmark";
@@ -24,10 +26,6 @@ class KeyManager {
 	
 	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {} //called if a player tries to circumvent pLockObject using pUsetype [cLUpickLock, cLUbreakLock, cLUCustomCheck]
 	
-	static onKeyContext(pHTML, pButtons) {} //adds buttons to item context
-	
-	static KeyItems(pInventory) {} //returns all Key items in pInventory
-	
 	static requestLockuse(puseData) {} //send a request to use Lock acording to pData
 	
 	//support
@@ -35,12 +33,16 @@ class KeyManager {
 	
 	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {} //the (best) roll used to circumvent pLock using puseMethod
 	
+	static KeyItems(pInventory) {} //returns all Key items in pInventory
+	
 	//ui
-	static createPasskeyDialog(pLockObject, pLockType, pCharacter) {} //used to creat the passkey dialog
+	static createPasskeyDialog(pLockObject, pLockType, pCharacter, pPasswordChange = false) {} //used to creat the passkey dialog
 	
 	static async createLockuseDialog(pLockObject) {} //used to create a popup with use options
 
 	static addKeyHUD() {} //called to add Key icon to token HUD 
+	
+	static onKeyContext(pHTML, pButtons) {} //adds buttons to item context
 	
 	//ons
 	static onLockRightClick(pDocument, pInfos) {} //called when a lock is RightClicked
@@ -80,6 +82,7 @@ class KeyManager {
 						switch (pUseType) {
 							case cLUuseKey:
 							case cLUusePasskey:
+							case cLUIdentity:
 							case cLUFreeCircumvent:
 								KeyManager.onatemptedKeyuse(pLockObject, pUseType, vCharacter, pFallBack);
 								break;
@@ -110,6 +113,29 @@ class KeyManager {
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		
 		switch (pUseType) {
+			case cLUIdentity:
+				if (pLockObject && pCharacter) {
+					let vUser = game.user;
+					
+					let vMatchingIdentity = LnKFlags.MatchingIdentity(pLockObject, pCharacter, vUser);
+					
+					if (vMatchingIdentity) {
+						let vData = {useType : cLUIdentity, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, IdentityMatch : vMatchingIdentity};
+						KeyManager.requestLockuse(vData);
+					}
+					else {
+						if (pFallBack) {
+							KeyManager.onatemptedKeyuse(pLockObject, cLUuseKey, pCharacter);
+						}
+						else {
+							LnKPopups.TextPopUpID(pLockObject, "WrongIdentity"); //MESSAGE POPUP
+						}
+					}
+					
+					console.log(vMatchingIdentity);
+					console.log(pFallBack);
+				}
+				break;
 			case cLUuseKey:
 				if (pLockObject && pCharacter) {
 					//vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
@@ -153,11 +179,12 @@ class KeyManager {
 					let vData = {useType : cLUFreeCircumvent, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id};
 					KeyManager.requestLockuse(vData);					
 				}
+				break;
 			case cLUusePasskey:
 				if (LnKFlags.HasPasskey(pLockObject)) {
 					KeyManager.createPasskeyDialog(pLockObject, vLockType, pCharacter);
 				}
-			break;
+				break;
 		}
 	}
 	
@@ -268,44 +295,6 @@ class KeyManager {
 		}
 	}
 	
-	static onKeyContext(pHTML, pButtons) {
-		pButtons.push({
-			name: Translate("Context.KeyCopy"),
-			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
-			condition: (pElement) => {
-				let vID = pElement.data('document-id');
-				let vItem = game.items.find(vItem => vItem.id == vID);
-				//handle only key items
-				return vItem.flags.hasOwnProperty(cModuleName);
-			},
-			callback: async (pElement) => {
-				let vID = pElement.data('document-id');
-				let vItem = game.items.find(vItem => vItem.id == vID);
-				LnKFlags.copyIDKeys(vItem);
-			}
-		});
-		
-		pButtons.push({
-			name: Translate("Context.KeyPaste"),
-			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
-			condition: (pElement) => {
-				let vID = pElement.data('document-id');
-				let vItem = game.items.find(vItem => vItem.id == vID);
-				//handle only key items
-				return vItem.flags.hasOwnProperty(cModuleName);
-			},
-			callback: async (pElement) => {
-				let vID = pElement.data('document-id');
-				let vItem = game.items.find(vItem => vItem.id == vID);
-				LnKFlags.pasteIDKeys(vItem);
-			}
-		});
-	} 
-	
-	static KeyItems(pInventory) {
-		return pInventory.filter(vItem => vItem.flags.hasOwnProperty(cModuleName));
-	}
-	
 	static requestLockuse(puseData) {
 		let vuseData = puseData;
 		
@@ -380,8 +369,12 @@ class KeyManager {
 		return [vRollFormula, vBestItemID];
 	}
 	
+	static KeyItems(pInventory) {
+		return pInventory.filter(vItem => vItem.flags.hasOwnProperty(cModuleName));
+	}
+	
 	//ui
-	static async createPasskeyDialog(pLockObject, pLockType, pCharacter) {
+	static async createPasskeyDialog(pLockObject, pLockType, pCharacter, pPasswordChange = false) {
 		let vTitle = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LockPasskeyTitle);
 		
 		if (!vTitle.length) {
@@ -389,19 +382,42 @@ class KeyManager {
 			vTitle = Translate("Titles.EnterPasskey");
 		}
 		
-		new Dialog({
-			title: Translate("Titles.Passkey"),
-			content: `<label>${vTitle}</label>
-					<input type="text" id="Passkey" name="Passkey">`,
-			buttons: {
-				button1: {
-					label: Translate("Titles.ConfirmPasskey"),
-					callback: (html) => {let vData = {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}; KeyManager.requestLockuse(vData)},
-					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
-				}
-			},
-			default: Translate("Titles.ConfirmPasskey")
-		}).render(true);
+		if (!pPasswordChange) {
+			new Dialog({
+				title: Translate("Titles.Passkey"),
+				content: `<label>${vTitle}</label>
+						<input type="text" id="Passkey" name="Passkey">`,
+				buttons: {
+					button1: {
+						label: Translate("Titles.ConfirmPasskey"),
+						callback: (html) => {let vData = {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}; 
+											KeyManager.requestLockuse(vData)},
+						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+					}
+				},
+				default: Translate("Titles.ConfirmPasskey")
+			}).render(true);
+		}
+		else {
+			let vnewPasswordTitle = Translate("Titles.newPasskey");
+			
+			new Dialog({
+				title: Translate("Titles.Passkey"),
+				content: `<label>${vTitle}</label>
+						<input type="text" id="Passkey" name="Passkey">
+						<label>${vnewPasswordTitle}</label>
+						<input type="text" id="newPasskey" name="newPasskey">`,
+				buttons: {
+					button1: {
+						label: Translate("Titles.ConfirmPasskey"),
+						callback: (html) => {let vData = {useType : cLUchangePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, OldPasskey : html.find("input#Passkey").val(), NewPasskey : html.find("input#newPasskey").val()}; 
+											KeyManager.requestLockuse(vData)},
+						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+					}
+				},
+				default: Translate("Titles.ConfirmPasskey")
+			}).render(true);
+		}
 	}
 	
 	static async createLockuseDialog(pLockObject) {
@@ -410,6 +426,8 @@ class KeyManager {
 		
 		let vshowKey;
 		let vshowPassKey;
+		let vshowChangePassKey;
+		let vshowIdentityKey;
 		let vshowPicklock;
 		let vshowBreaklock;
 		let vshowFreeCircumvent;
@@ -421,6 +439,8 @@ class KeyManager {
 			if (LnKFlags.isLockable(pLockObject)) {
 				vshowKey =  LnKFlags.HasKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowPassKey = LnKFlags.HasPasskey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
+				vshowChangePassKey = LnKFlags.PasskeyChangeable(pLockObject);
+				vshowIdentityKey = LnKFlags.HasIdentityKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowFreeCircumvent = (LnKFlags.hasFreeLockCircumvent(vCharacter) && LnKFlags.canbeCircumventedFree(pLockObject)) || game.settings.get(cModuleName, "showallLockInteractions");
@@ -448,6 +468,25 @@ class KeyManager {
 						label: Translate("Titles." + cLUusePasskey),
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUusePasskey);},
 						icon: `<i class="fas ${cLnKPasswordIcon}"></i>`
+					}
+				}
+				
+				if (vshowChangePassKey) {
+					vButtons[cLUchangePasskey] = {
+						label: Translate("Titles." + cLUchangePasskey),
+						callback: () => {
+							let vCharacter = LnKutils.PrimaryCharacter();
+							KeyManager.createPasskeyDialog(pLockObject, vLockType, vCharacter, true);
+						},
+						icon: `<i class="fas ${cLnKChangePasswordIcon}"></i>`
+					}
+				}
+				
+				if (vshowIdentityKey) {
+					vButtons[cLUIdentity] = {
+						label: Translate("Titles." + cLUIdentity),
+						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUIdentity, false);},
+						icon: `<i class="fas ${cLnKIdentityIcon}"></i>`
 					}
 				}
 				
@@ -527,6 +566,40 @@ class KeyManager {
 		}
 	}
 	
+	static onKeyContext(pHTML, pButtons) {
+		pButtons.push({
+			name: Translate("Context.KeyCopy"),
+			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
+			condition: (pElement) => {
+				let vID = pElement.data('document-id');
+				let vItem = game.items.find(vItem => vItem.id == vID);
+				//handle only key items
+				return vItem.flags.hasOwnProperty(cModuleName);
+			},
+			callback: async (pElement) => {
+				let vID = pElement.data('document-id');
+				let vItem = game.items.find(vItem => vItem.id == vID);
+				LnKFlags.copyIDKeys(vItem);
+			}
+		});
+		
+		pButtons.push({
+			name: Translate("Context.KeyPaste"),
+			icon: `<i class="fas ${cLnKKeyIcon}"></i>`,
+			condition: (pElement) => {
+				let vID = pElement.data('document-id');
+				let vItem = game.items.find(vItem => vItem.id == vID);
+				//handle only key items
+				return vItem.flags.hasOwnProperty(cModuleName);
+			},
+			callback: async (pElement) => {
+				let vID = pElement.data('document-id');
+				let vItem = game.items.find(vItem => vItem.id == vID);
+				LnKFlags.pasteIDKeys(vItem);
+			}
+		});
+	} 
+	
 	//ons
 	static onLockRightClick(pDocument, pInfos) {	
 		if (!game.user.isGM) {//CLIENT: use key
@@ -542,7 +615,7 @@ class KeyManager {
 									KeyManager.onatemptedLockuse(pDocument, cLUbreakLock);
 								}
 								else {
-									KeyManager.onatemptedLockuse(pDocument, cLUuseKey, true);
+									KeyManager.onatemptedLockuse(pDocument, cLUIdentity, true);
 								}
 							}
 						}
