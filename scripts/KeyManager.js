@@ -28,6 +28,8 @@ class KeyManager {
 	
 	static requestLockuse(puseData) {} //send a request to use Lock acording to pData
 	
+	static async ChangePasswordHoveredLock() {} //opens change password dialog for hovered lock
+	
 	//support
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {} //if pCharacter can circumvent pLock using puseMethod
 	
@@ -94,7 +96,6 @@ class KeyManager {
 						}
 					}
 					else {
-						console.log(1);
 						LnKPopups.TextPopUpID(pLockObject, "Lockoutofreach", {pLockName : pLockObject.name}); //MESSAGE POPUP
 					}
 				}
@@ -308,6 +309,27 @@ class KeyManager {
 		}		
 	}
 	
+	static async ChangePasswordHoveredLock() {
+		let vLock = LnKutils.hoveredObject();
+		
+		if (vLock && LnKFlags.isLockable(vLock)) {
+			let vCharacter = LnKutils.PrimaryCharacter();
+			let vLockType = await LnKutils.Locktype(vLock);
+			
+			if (LnKutils.WithinLockingDistance(vCharacter, vLock)) {
+				if (LnKFlags.PasskeyChangeable(vLock) && LnKFlags.HasPasskey(vLock)) {
+					KeyManager.createPasskeyDialog(vLock, vLockType, vCharacter, true);
+				}
+				else {
+					LnKPopups.TextPopUpID(vLock, "CantChangePassword"); //MESSAGE POPUP
+				}
+			}
+			else {
+				LnKPopups.TextPopUpID(vLock, "Lockoutofreach", {pLockName : vLock.name}); //MESSAGE POPUP
+			}
+		}
+	} 
+	
 	//support
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {
 		switch (puseMethod) {
@@ -375,6 +397,10 @@ class KeyManager {
 	
 	//ui
 	static async createPasskeyDialog(pLockObject, pLockType, pCharacter, pPasswordChange = false) {
+		console.log(pLockObject);
+		console.log(pLockType);
+		console.log(pCharacter);
+		
 		let vTitle = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LockPasskeyTitle);
 		
 		if (!vTitle.length) {
@@ -439,7 +465,7 @@ class KeyManager {
 			if (LnKFlags.isLockable(pLockObject)) {
 				vshowKey =  LnKFlags.HasKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowPassKey = LnKFlags.HasPasskey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
-				vshowChangePassKey = LnKFlags.PasskeyChangeable(pLockObject);
+				vshowChangePassKey = LnKFlags.PasskeyChangeable(pLockObject) && LnKFlags.HasPasskey(pLockObject);
 				vshowIdentityKey = LnKFlags.HasIdentityKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowPicklock = LnKFlags.canbePicked(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
 				vshowBreaklock = LnKFlags.canbeBroken(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");
@@ -667,10 +693,12 @@ Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Ke
 //wrap export macro functions
 function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUuseKey, true); };
 
+function ChangePasswordHoveredLock() { return KeyManager.ChangePasswordHoveredLock(); };
+
 function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUpickLock); };
 
 function BreakHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUbreakLock); };
 
 function CustomCheckHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUCustomCheck); }
 
-export { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock }
+export { UseKeyonHoveredLock, ChangePasswordHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock }

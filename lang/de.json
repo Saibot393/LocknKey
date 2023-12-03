@@ -62,7 +62,9 @@
 			"PickPocketfailed"			: "Taschendiebstahl fehlgeschlagen",
 			"customcheckfailed"			: "{pCheckName} fehlgeschlagen",
 			"WrongIdentity"				: "Falsche Identität",
-			"PasswordChanged"			: "Passwort geändert"
+			"PasswordChanged"			: "Passwort geändert",
+			"NoPasswordLength"			: "Neues Passwort zu kurz",
+			"CantChangePassword"		: "Kann Passwort nicht ändern"
 		},	
 		
 		"ChatMessage" : {
@@ -388,7 +390,11 @@
 			
 			"PickPocket" : {
 				"name"					: "Taschendiebstahl"
-			}			
+			},
+		
+			"ChangePassword" : {
+				"name"					: "Passwort ändern"
+			}		
 		},
 		
 		"SheetSettings" : {

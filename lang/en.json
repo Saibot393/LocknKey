@@ -62,7 +62,9 @@
 			"PickPocketfailed"			: "Pick pocket failed",
 			"customcheckfailed"			: "{pCheckName} failed",
 			"WrongIdentity"				: "Wrong identity",
-			"PasswordChanged"			: "Password changed"
+			"PasswordChanged"			: "Password changed",
+			"NoPasswordLength"			: "New password too short",
+			"CantChangePassword"		: "Can't change password"
 		},	
 		
 		"ChatMessage" : {
@@ -388,6 +390,10 @@
 			
 			"PickPocket" : {
 				"name"					: "Pick pocket"
+			},
+		
+			"ChangePassword" : {
+				"name"					: "Change password"
 			}
 		},
 		

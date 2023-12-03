@@ -62,7 +62,9 @@
 			"PickPocketfailed"			: "Echec du vol à la tire",
 			"customcheckfailed"			: "{pCheckName} a échoué",
 			"WrongIdentity"				: "Wrong identity",
-			"PasswordChanged"			: "Password changed"
+			"PasswordChanged"			: "Password changed",
+			"NoPasswordLength"			: "New password too short",
+			"CantChangePassword"		: "Can't change password"
 		},	
 		
 		"ChatMessage" : {
@@ -388,6 +390,10 @@
 			
 			"PickPocket" : {
 				"name"					: "Vol à la tire"
+			},
+		
+			"ChangePassword" : {
+				"name"					: "Change password"
 			}
 		},
 		

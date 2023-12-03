@@ -107,12 +107,17 @@ class LockManager {
 		let vOutcome = 0;
 		
 		if (LnKFlags.PasskeyChangeable(pLock) && LnKFlags.MatchingPasskey(pLock, pPasskey)) {
-			//Passkey matches
-			LnKFlags.setPassKey(pLock, puseData.NewPasskey);
-			
-			LnKPopups.TextPopUpID(pLock, "PasswordChanged"); //MESSAGE POPUP
-			
-			vOutcome = 1;
+			if (puseData.NewPasskey.length > 0) {
+				//Passkey matches
+				LnKFlags.setPassKey(pLock, puseData.NewPasskey);
+				
+				LnKPopups.TextPopUpID(pLock, "PasswordChanged"); //MESSAGE POPUP
+				
+				vOutcome = 1;
+			}
+			else {
+				LnKPopups.TextPopUpID(pLock, "NoPasswordLength"); //MESSAGE POPUP
+			}
 		}	
 		else {
 			LnKPopups.TextPopUpID(pLock, "WrongPassword"); //MESSAGE POPUP

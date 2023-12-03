@@ -1,7 +1,7 @@
 import { cModuleName, Translate, LnKutils} from "../utils/LnKutils.js";
 import { LnKSystemutils} from "../utils/LnKSystemutils.js";
 import { LnKCompUtils, cArmReach, cArmReachold } from "../compatibility/LnKCompUtils.js";
-import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock } from "../KeyManager.js";
+import { UseKeyonHoveredLock, ChangePasswordHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock } from "../KeyManager.js";
 import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
 import { PickPocketHovered } from "../PickPocketManager.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
@@ -500,6 +500,13 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   game.keybindings.register(cModuleName, "CustomCheck", {
     name: Translate("Keys.CustomCheck.name"),
     onDown: () => { CustomCheckHoveredLock(); },
+    restricted: false,
+    precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
+  });
+  
+  game.keybindings.register(cModuleName, "ChangePassword", {
+    name: Translate("Keys.ChangePassword.name"),
+    onDown: () => { ChangePasswordHoveredLock(); },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
   });
