@@ -1,3 +1,7 @@
+## v2.2.2
+- Improved validation checks for change password
+- Add key binding for change password (of hovered lock)
+
 ## v2.2.1
 - Fixed Pf2e specific roll bug
 
