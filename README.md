@@ -25,6 +25,10 @@ All of these controlls can also be achieved through the included macros.
 
 All player and GM controls also have corresponding key binds.
 
+### API
+
+The module come with some api method you can check out here [API](./wiki/api.md)
+
 ### Settings:
 
 #### World:
