@@ -506,6 +506,11 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "ChangePassword", {
     name: Translate("Keys.ChangePassword.name"),
+    editable: [
+      {
+        key: "KeyU"
+      }
+    ],
     onDown: () => { ChangePasswordHoveredLock(); },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
@@ -513,6 +518,11 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
   
   game.keybindings.register(cModuleName, "PickPocket", {
     name: Translate("Keys.PickPocket.name"),
+    editable: [
+      {
+        key: "KeyI"
+      }
+    ],
     onDown: () => { PickPocketHovered(); },
     restricted: false,
     precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
