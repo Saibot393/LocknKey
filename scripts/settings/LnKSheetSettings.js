@@ -483,7 +483,7 @@ class LnKSheetSettings {
 		if (pType == "token") {
 			//Additional PickPocket roll formula
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketFormulaF +".name"), 
-													vhint : Translate("SheetSettings."+ cPickPocketFormulaF +".descrp"), 
+													vhint : Translate("SheetSettings."+ cPickPocketFormulaF +".descrp.token"), 
 													vtype : "text", 
 													vwide : true,
 													vvalue : LnKFlags.PickPocketFormula(pApp.object),
@@ -492,7 +492,7 @@ class LnKSheetSettings {
 												
 			//If this tokens PickPocket roll formula overrides other formulas
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".name"), 
-													vhint : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".descrp"), 
+													vhint : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".descrp.token"), 
 													vtype : "checkbox", 
 													vvalue : LnKFlags.PickPocketFormulaOverrides(pApp.object),
 													vflagname : cPickPocketFormulaOverrideF

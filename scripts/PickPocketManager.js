@@ -44,7 +44,7 @@ class PickPocketManager {
 	}
 	
 	static async PickPocketToken(pTarget, pCharacter, pPopUps = true) {
-		if (LnKFlags.Canbepickpocketed(pTarget)) {
+		if (await LnKFlags.Canbepickpocketed(pTarget)) {
 			if (!game.settings.get(cModuleName, "usePf2eSystem")) {
 				let vRollData = {actor : pCharacter.actor};
 				
@@ -135,7 +135,7 @@ class PickPocketManager {
 		}	
 	}
 	
-	static PickPocketRequest(pData) {
+	static async PickPocketRequest(pData) {
 		if (game.user.isGM) {
 			//only relevant for GMs
 			
@@ -146,7 +146,7 @@ class PickPocketManager {
 			if (vScene) {
 				vTarget = LnKutils.TokenfromID(pData.TargetID, vScene);
 				
-				if (LnKFlags.Canbepickpocketed(vTarget)) {
+				if (await LnKFlags.Canbepickpocketed(vTarget)) {
 					vCharacter = LnKutils.TokenfromID(pData.CharacterID, vScene);
 					
 					PickPocketManager.EvaluatePickPocket(vTarget, vCharacter, pData);
@@ -167,7 +167,7 @@ class PickPocketManager {
 		
 		let vCritMessagesuffix = ".default";	
 		
-		if (LnKFlags.Canbepickpocketed(pTarget)) {
+		if (await LnKFlags.Canbepickpocketed(pTarget)) {
 			if ((vSuccessDegree > 1) || (vSuccessDegree < 0)) {
 				vCritMessagesuffix = ".crit";
 			}
@@ -194,8 +194,8 @@ class PickPocketManager {
 	}
 	
 	//ui
-	static addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall) {
-		if (LnKFlags.Canbepickpocketed(pObject) && !pObject.isOwner) {
+	static async addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall) {
+		if (await LnKFlags.Canbepickpocketed(pObject) && !pObject.isOwner) {
 			pButtons["PickPocket"] = {
 				label: Translate("Titles.PickPocket"),
 				callback: () => {PickPocketManager.PickPocketToken(pObject, pCharacter)},

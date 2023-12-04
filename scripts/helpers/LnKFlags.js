@@ -201,7 +201,7 @@ class LnKFlags {
 	//PickPocket
 	static PickPocketDC(pToken, praw = false) {} //returns the PickPocketDC of pToken
 	
-	static Canbepickpocketed(pToken) {} //returns wether pToken can be pick pocketed
+	static async Canbepickpocketed(pToken) {} //returns wether pToken can be pick pocketed
 	
 	static HasPickPocketFormula(pObject) {} //returns wether this pToken has a pick pocket formula
 	
@@ -1195,8 +1195,8 @@ class LnKFlags {
 		return vDC;
 	}
 	
-	static Canbepickpocketed(pToken) {
-		return LnKFlags.PickPocketDC(pToken) < Infinity;
+	static async Canbepickpocketed(pToken) {
+		return await LnKFlags.PickPocketDC(pToken) < Infinity;
 	}
 	
 	static HasPickPocketFormula(pObject) {
