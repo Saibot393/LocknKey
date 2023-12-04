@@ -1,3 +1,6 @@
+## v2.2.4
+- Fixed bug that prevented the GM controls from appearing in the settings
+
 ## v2.2.3
 - Added default keys for Pick pocket and Change password
 
