@@ -547,7 +547,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('select[name="' + cModuleName + '.LockCircumventName"]').closest(".form-group").after(vnewHTML);
+		pHTML.find('input[name="' + cModuleName + '.PerceptionKeyWord"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `
