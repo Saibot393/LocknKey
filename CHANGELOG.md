@@ -1,3 +1,6 @@
+## v2.2.5
+- Fixed bug that prevented pick pocketing from trigering correctly under some circumstances
+
 ## v2.2.4
 - Fixed bug that prevented the GM controls from appearing in the settings
 
