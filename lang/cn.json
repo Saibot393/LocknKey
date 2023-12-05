@@ -1,6 +1,8 @@
 {
   "LocknKey": {
     "Titles": {
+	"confirm"					: "confirm",
+	"abbort"					: "abbort",
       "LocknKey": "Lock & Key",
 	  "LocknKeyabbr" : "L&K",
       "WorldSettings": "世界设置 (仅限GM)",
@@ -31,7 +33,9 @@
 		"PickPocket"				: "Pick pocket",
 		"LockchangePasskey"			: "Change password",
 		"LockuseIdentity"			: "Identity",
-		"newPasskey"				: "New password:"
+		"newPasskey"				: "New password:",
+		"addIdentityMessage"		: "Player {pPlayerName} wants to add these identities to a lock:{pIdentities}",
+		"IdentifierofType"			: " {pIdentifier} of {pType} {pName}"
     },
     "Popup": {
       "TokenisLocked": "{pLockName}上锁了",

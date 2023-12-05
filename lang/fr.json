@@ -1,6 +1,8 @@
 {
 	"LocknKey" : {
 		"Titles" : {
+			"confirm"					: "confirm",
+			"abbort"					: "abbort",
 			"LocknKey"					: "Lock & Key",
 			"LocknKeyabbr"				: "L&K",
 			"WorldSettings"				: "Paramètre du monde (MJ seulement)",
@@ -31,7 +33,9 @@
 			"PickPocket"				: "Vol à la tire",
 			"LockchangePasskey"			: "Change password",
 			"LockuseIdentity"			: "Identity",
-			"newPasskey"				: "New password:"
+			"newPasskey"				: "New password:",
+			"addIdentityMessage"		: "Player {pPlayerName} wants to add these identities to a lock:{pIdentities}",
+			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}"
 		},
 		
 		"Popup" : {

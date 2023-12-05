@@ -1,4 +1,4 @@
-import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock } from "../KeyManager.js";
+import { UseKeyonHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock, AddIdentitytoHoveredLock, AddIdentitytoLock } from "../KeyManager.js";
 import { TogglehoveredLockGM, CopyhoveredLockGM, PastehoveredLockGM, CreateNewKeyhoveredGM } from "../LockManager.js";
 import { ResettoStandardFormulas } from "../utils/LnKSystemutils.js";
 import { PickPocketHovered } from "../PickPocketManager.js";
@@ -10,6 +10,8 @@ Hooks.on("init",() => {
 		PickHoveredLock,
 		BreakHoveredLock,
 		CustomCheckHoveredLock,
+		AddIdentitytoHoveredLock, 
+		AddIdentitytoLock,
 		TogglehoveredLockGM,
 		CopyhoveredLockGM,
 		PastehoveredLockGM,

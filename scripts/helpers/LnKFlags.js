@@ -116,6 +116,8 @@ class LnKFlags {
 	//IdentityKey
 	static IdentityKeys(pObject) {} //returns all Identity keys of pObject
 	
+	static addIdentityKeys(pObject, pIdentities) {} //adds the pIdentities to pObject
+	
 	static HasIdentityKey(pObject) {} //returns wether pObject can be used by Identity
 	
 	static MatchingIdentity(pObject, pToken, pPlayer) {} //return wether pObject can be opened by either token (token actor) or player through identity
@@ -744,6 +746,16 @@ class LnKFlags {
 		return false;		
 	}
 	
+	static async #setIdentityKeyFlag(pObject, pContent) {
+	//sets content of IdentityKey flag (string)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cIdentityKeyF, pContent);
+			
+			return true;
+		}
+		return false;		
+	}
+	
 	static async #setFreeLockCircumventsFlag(pObject, pContent) {
 	//sets content of FreeLockCircumventsFlag (must be number)
 		if (pObject) {
@@ -879,6 +891,16 @@ class LnKFlags {
 	//IdentityKey
 	static IdentityKeys(pObject) {
 		return this.#IdentityKeyFlag(pObject);
+	}
+	
+	static addIdentityKeys(pObject, pIdentities) {
+		let vIdentities = this.#IdentityKeyFlag(pObject).split(cDelimiter);
+		
+		vIdentities = vIdentities.concat(pIdentities);
+		
+		vIdentities = vIdentities.join(cDelimiter);
+		
+		this.#setIdentityKeyFlag(pObject, vIdentities);
 	}
 	
 	static HasIdentityKey(pObject) {

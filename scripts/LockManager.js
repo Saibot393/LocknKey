@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -6,6 +6,8 @@ import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
 
 const cLnKKeyIcon = "fa-key";
+const cLnKcheck = "fa-solid fa-check";
+const cLnKcross = "fa-solid fa-xmark";
 
 //does everything Lock related
 class LockManager {
@@ -18,6 +20,8 @@ class LockManager {
 	static async changeLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {} //handels pLock use of pCharacter with Passkey pPasskey to change passkey
 	
 	static async useLockIdentity(pLock, pCharacter, pIdentityMatch, puseData = {}) {} //handels pLock use of pCharacter with Identity pIdentityMatch
+	
+	static async addLockIdentity(pLock, pCharacter, pUser, pIdentityTypes, puseData = {}) {} //handels the addtition of new Identity to a lock
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {} //handels pLock use of pCharacter with a pMethodtype [cLUpickLock, cLUbreakLock, cLUCustomCheck] and result pRollresults
 	
@@ -140,6 +144,58 @@ class LockManager {
 		}
 		
 		Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUIdentity, Outcome : vOutcome, useData : puseData});
+	}
+	
+	static async addLockIdentity(pLock, pCharacter, pUser, pIdentityTypes, puseData = {}) {
+		if (pCharacter && pUser) {
+			let vDisplayContent = [];
+			
+			let vIdentities = [];
+			
+			for (let vtype of pIdentityTypes) {
+				let vObjectType, vIdentifier;
+				[vObjectType, vIdentifier] = vtype.split(".");
+				
+				let vObject;
+				
+				switch (vObjectType) {
+					case "token":
+						vObject = pCharacter;
+						break;
+					case "actor":
+						vObject = pCharacter.actor;
+						break;
+					case "user":
+						vObject = pUser;
+						break;
+				}
+				
+				if (vObject && vObject[vIdentifier]) {
+					vIdentities.push(vObject[vIdentifier]);
+					
+					vDisplayContent.push(Translate("Titles.IdentifierofType", {pIdentifier : vIdentifier, pType : vObjectType, pName : vObject.name}));
+				}
+			}
+			
+			new Dialog({
+				title: Translate("Titles.addIdentity"),
+				content: `<label>${Translate("Titles.addIdentityMessage", {pPlayerName : pUser.name, pIdentities : vDisplayContent.join(",")})}</label>`,
+				buttons: {
+					confirmButton: {
+						label: Translate("Titles.confirm"),
+						callback: (html) => {LnKFlags.addIdentityKeys(pLock, vIdentities); 
+											Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUaddIdentity, Outcome : 1, useData : puseData});},
+						icon: `<i class="${cLnKcheck}"></i>`
+					},
+					abbortButtom: {
+						label: Translate("Titles.abbort"),
+						callback: (html) => {Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUaddIdentity, Outcome : 0, useData : puseData});},
+						icon: `<i class="${cLnKcross}"></i>`
+					}
+				},
+				default: Translate("Titles.confirm")
+			}).render(true);
+		}
 	}
 	
 	static async circumventLock(pLock, pCharacter, pUsedItemID, pRollresult, pDiceresult, pMethodtype, puseData = {}) {
@@ -317,6 +373,9 @@ class LockManager {
 							break;
 						case cLUIdentity:
 							LockManager.useLockIdentity(vLock, vCharacter, puseData.IdentityMatch, puseData);
+							break;
+						case cLUaddIdentity:
+							LockManager.addLockIdentity(vLock, vCharacter, game.users.get(puseData.userID), puseData.IdentityTypes, puseData);
 							break;
 						case cLUpickLock:
 						case cLUbreakLock:

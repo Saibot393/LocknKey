@@ -1,6 +1,8 @@
 {
 	"LocknKey" : {
 		"Titles" : {
+			"confirm"					: "bestätigen",
+			"abbort"					: "abbrechen",
 			"LocknKey"					: "Lock & Key",
 			"LocknKeyabbr"				: "L&K",
 			"WorldSettings"				: "Welteinstellungen (nur SL)",
@@ -31,7 +33,9 @@
 			"PickPocket"				: "Taschendiebstahl",
 			"LockchangePasskey"			: "Passwort ändern",
 			"LockuseIdentity"			: "Identität",
-			"newPasskey"				: "Neues Passwort:"
+			"newPasskey"				: "Neues Passwort:",
+			"addIdentityMessage"		: "Spieler {pPlayerName} will folgende Indetitäten zu einem Schloss hinzufügen:{pIdentities}",
+			"IdentifierofType"			: " {pIdentifier} von {pType} {pName}"
 		},
 		
 		"Popup" : {

@@ -1,4 +1,4 @@
-import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { cModuleName, Translate, LnKutils, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
 import { Geometricutils } from "./utils/Geometricutils.js";
 import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
@@ -28,7 +28,9 @@ class KeyManager {
 	
 	static requestLockuse(puseData) {} //send a request to use Lock acording to pData
 	
-	static async ChangePasswordHoveredLock() {} //opens change password dialog for hovered lock
+	static async ChangePasswordofLock(pLock) {} //opens change password dialog for hovered lock
+	
+	static async AddIdentitytoLock(pLock, pIdentityTypes = []) {} //requests identity addition to pLock
 	
 	//support
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {} //if pCharacter can circumvent pLock using puseMethod
@@ -132,9 +134,6 @@ class KeyManager {
 							LnKPopups.TextPopUpID(pLockObject, "WrongIdentity"); //MESSAGE POPUP
 						}
 					}
-					
-					console.log(vMatchingIdentity);
-					console.log(pFallBack);
 				}
 				break;
 			case cLUuseKey:
@@ -309,26 +308,46 @@ class KeyManager {
 		}		
 	}
 	
-	static async ChangePasswordHoveredLock() {
-		let vLock = LnKutils.hoveredObject();
-		
-		if (vLock && LnKFlags.isLockable(vLock)) {
+	static async ChangePasswordofLock(pLock) {
+		if (pLock && LnKFlags.isLockable(pLock)) {
 			let vCharacter = LnKutils.PrimaryCharacter();
-			let vLockType = await LnKutils.Locktype(vLock);
+			let vLockType = await LnKutils.Locktype(pLock);
 			
-			if (LnKutils.WithinLockingDistance(vCharacter, vLock)) {
-				if (LnKFlags.PasskeyChangeable(vLock) && LnKFlags.HasPasskey(vLock)) {
-					KeyManager.createPasskeyDialog(vLock, vLockType, vCharacter, true);
+			if (LnKutils.WithinLockingDistance(vCharacter, pLock)) {
+				if (LnKFlags.PasskeyChangeable(pLock) && LnKFlags.HasPasskey(pLock)) {
+					KeyManager.createPasskeyDialog(pLock, vLockType, vCharacter, true);
 				}
 				else {
-					LnKPopups.TextPopUpID(vLock, "CantChangePassword"); //MESSAGE POPUP
+					LnKPopups.TextPopUpID(pLock, "CantChangePassword"); //MESSAGE POPUP
 				}
 			}
 			else {
-				LnKPopups.TextPopUpID(vLock, "Lockoutofreach", {pLockName : vLock.name}); //MESSAGE POPUP
+				LnKPopups.TextPopUpID(pLock, "Lockoutofreach", {pLockName : pLock.name}); //MESSAGE POPUP
 			}
 		}
 	} 
+	
+	static async AddIdentitytoLock(pLock, pIdentityTypes = []) {
+		let vIdentities = pIdentityTypes;
+		
+		if (!(vIdentities instanceof Array)) {
+			vIdentities = [vIdentities];
+		}
+		
+		if (pLock && vIdentities.length > 0) {
+			let vCharacter = LnKutils.PrimaryCharacter();
+			let vLockType = await LnKutils.Locktype(pLock);
+			
+			if (LnKutils.WithinLockingDistance(vCharacter, pLock)) {
+				let vData = {useType : cLUaddIdentity, SceneID : pLock.object.scene.id, Locktype : vLockType, LockID : pLock.id, CharacterID : vCharacter.id, IdentityTypes : vIdentities}; 
+				
+				KeyManager.requestLockuse(vData);
+			}
+			else {
+				LnKPopups.TextPopUpID(pLock, "Lockoutofreach", {pLockName : pLock.name}); //MESSAGE POPUP
+			}
+		}
+	}
 	
 	//support
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {
@@ -397,10 +416,6 @@ class KeyManager {
 	
 	//ui
 	static async createPasskeyDialog(pLockObject, pLockType, pCharacter, pPasswordChange = false) {
-		console.log(pLockObject);
-		console.log(pLockType);
-		console.log(pCharacter);
-		
 		let vTitle = LnKFlags.getCustomPopups(pLockObject, cCustomPopup.LockPasskeyTitle);
 		
 		if (!vTitle.length) {
@@ -693,7 +708,11 @@ Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Ke
 //wrap export macro functions
 function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUuseKey, true); };
 
-function ChangePasswordHoveredLock() { return KeyManager.ChangePasswordHoveredLock(); };
+function ChangePasswordHoveredLock() { return KeyManager.ChangePasswordofLock(LnKutils.hoveredObject()); };
+
+function AddIdentitytoHoveredLock(pTypes) { return KeyManager.AddIdentitytoLock(LnKutils.hoveredObject(), pTypes);};
+
+function AddIdentitytoLock(pLock, pTypes) { return KeyManager.AddIdentitytoLock(pLock, pTypes);}
 
 function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUpickLock); };
 
@@ -701,4 +720,4 @@ function BreakHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hover
 
 function CustomCheckHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUCustomCheck); }
 
-export { UseKeyonHoveredLock, ChangePasswordHoveredLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock }
+export { UseKeyonHoveredLock, ChangePasswordHoveredLock, AddIdentitytoHoveredLock, AddIdentitytoLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock }
