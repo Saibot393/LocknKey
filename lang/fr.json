@@ -304,6 +304,11 @@
 				"descrp"				: "Mots clés pour identifier les effets (e.g. le sort \"Knock\") qui permettent aux joueurs de controuner les verrous (séparés avec \";\")"				
 			},
 			
+			"AutoAcceptIdentityAddition" : {
+				"name" 					: "Automatically accept identity additions",
+				"descrp"				: "If identity addtions should be accepted automatically (not recommended)"				
+			},
+			
 			"PickPocketFormula" : {
 				"name" 					: "Formule de vol à la tire",
 				"descrp"				: "La formule utilisée pour les lancer de dés des vols à la tire (e.g. \"1d20 + @actor.skills.thievery.mod\", de l'aide peut être trouvée sur la page Github de ce module)"				

@@ -338,7 +338,16 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	default: LnKSystemutils.SystemFreeCircumventdefaultKeyword()
-  });    
+  });   
+
+  game.settings.register(cModuleName, "AutoAcceptIdentityAddition", {
+	name: Translate("Settings.AutoAcceptIdentityAddition.name"),
+	hint: Translate("Settings.AutoAcceptIdentityAddition.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });     
   
   game.settings.register(cModuleName, "PickPocketFormula", {
 	name: Translate("Settings.PickPocketFormula.name"),

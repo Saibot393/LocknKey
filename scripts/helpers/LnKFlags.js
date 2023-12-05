@@ -76,7 +76,7 @@ var cIDKeyBuffer; //saves the coppied IDkeys
 class LnKFlags {
 	//DECLARATIONS
 	//basic
-	static async makeLockable(pObject) {} //makes pObject Lockable (starts in unlocked state except for doors)
+	static async makeLockable(pObject, pStartasLocked = undefined) {} //makes pObject Lockable (starts in unlocked state except for doors)
 	
 	static async disableLock(pObject) {} //makes pObject not Lockable
 	
@@ -678,11 +678,18 @@ class LnKFlags {
 	
 	static async #setLockedFlag(pObject, pContent) {
 	//sets content of LockedFlag (must be boolean)
+
 		if (pObject) {
-			await pObject.setFlag(cModuleName, cLockedF, Boolean(pContent));
-			
-			return true;
+			if (pObject.documentName == "Wall") {
+				await pObject.update({ds : pContent? 2 : 0});
+			}
+			else {
+				await pObject.setFlag(cModuleName, cLockedF, Boolean(pContent));
+				
+				return true;
+			}
 		}
+		
 		return false;		
 	}
 	
@@ -787,12 +794,17 @@ class LnKFlags {
 	}
 	
 	//basic
-	static async makeLockable(pObject) {
+	static async makeLockable(pObject, pStartasLocked = undefined) {
 		if (!this.#LockableFlag(pObject)) {
 			//only change anything if not already lockable
 			await this.#setLockableFlag(pObject, true);
 			
-			await this.#setLockedFlag(pObject, game.settings.get(cModuleName, "startasLocked"));
+			if (pStartasLocked == undefined) {
+				await this.#setLockedFlag(pObject, game.settings.get(cModuleName, "startasLocked"));
+			}
+			else {
+				await this.#setLockedFlag(pObject, pStartasLocked);
+			}
 		}
 	}
 	

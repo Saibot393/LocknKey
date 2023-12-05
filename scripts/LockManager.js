@@ -177,24 +177,36 @@ class LockManager {
 				}
 			}
 			
-			new Dialog({
-				title: Translate("Titles.addIdentity"),
-				content: `<label>${Translate("Titles.addIdentityMessage", {pPlayerName : pUser.name, pIdentities : vDisplayContent.join(",")})}</label>`,
-				buttons: {
-					confirmButton: {
-						label: Translate("Titles.confirm"),
-						callback: (html) => {LnKFlags.addIdentityKeys(pLock, vIdentities); 
-											Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUaddIdentity, Outcome : 1, useData : puseData});},
-						icon: `<i class="${cLnKcheck}"></i>`
+			function confirmAction() {
+				LnKFlags.addIdentityKeys(pLock, vIdentities); 
+				if (puseData.options?.makeLockable) {
+					LnKFlags.makeLockable(pLock, puseData.options.startasLocked);
+				}
+				Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUaddIdentity, Outcome : 1, useData : puseData});
+			}
+			
+			if (game.settings.get(cModuleName, "AutoAcceptIdentityAddition")) {
+				confirmAction();
+			}
+			else {
+				new Dialog({
+					title: Translate("Titles.addIdentity"),
+					content: `<label>${Translate("Titles.addIdentityMessage", {pPlayerName : pUser.name, pIdentities : vDisplayContent.join(",")})}</label>`,
+					buttons: {
+						confirmButton: {
+							label: Translate("Titles.confirm"),
+							callback: (html) => {confirmAction()},
+							icon: `<i class="${cLnKcheck}"></i>`
+						},
+						abbortButtom: {
+							label: Translate("Titles.abbort"),
+							callback: (html) => {Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUaddIdentity, Outcome : 0, useData : puseData});},
+							icon: `<i class="${cLnKcross}"></i>`
+						}
 					},
-					abbortButtom: {
-						label: Translate("Titles.abbort"),
-						callback: (html) => {Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : cLUaddIdentity, Outcome : 0, useData : puseData});},
-						icon: `<i class="${cLnKcross}"></i>`
-					}
-				},
-				default: Translate("Titles.confirm")
-			}).render(true);
+					default: Translate("Titles.confirm")
+				}).render(true);
+			}
 		}
 	}
 	

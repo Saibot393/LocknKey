@@ -304,6 +304,11 @@
 				"descrp"				: "Schlagwörter um Effekte (z.B. der \"Knock\" Zauber) zu identifizieren welche es Spielern erlauben Schlösser zu umgehen (mit \";\" getrennt)"				
 			},
 			
+			"AutoAcceptIdentityAddition" : {
+				"name" 					: "Identitäs hinzufügung automatisch bestätigen",
+				"descrp"				: "Ob Identitäts hinzufügungen für Schlösser automatisch bestätigt werden sollen (nicht empfohlen)"				
+			},
+			
 			"PickPocketFormula" : {
 				"name" 					: "Taschendiebstahl formel",
 				"descrp"				: "Die Würfelformel welche für Taschendiebstahl Würfe verwendet wird (z.B. \"1d20 + @actor.skills.thievery.mod\", hilfe auf der Github-Seite des Moduls zu finden)"				

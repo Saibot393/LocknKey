@@ -30,7 +30,7 @@ class KeyManager {
 	
 	static async ChangePasswordofLock(pLock) {} //opens change password dialog for hovered lock
 	
-	static async AddIdentitytoLock(pLock, pIdentityTypes = []) {} //requests identity addition to pLock
+	static async AddIdentitytoLock(pLock, pIdentityTypes = [], pOptions = {}) {} //requests identity addition to pLock
 	
 	//support
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {} //if pCharacter can circumvent pLock using puseMethod
@@ -327,7 +327,7 @@ class KeyManager {
 		}
 	} 
 	
-	static async AddIdentitytoLock(pLock, pIdentityTypes = []) {
+	static async AddIdentitytoLock(pLock, pIdentityTypes = [], pOptions = {}) {
 		let vIdentities = pIdentityTypes;
 		
 		if (!(vIdentities instanceof Array)) {
@@ -338,13 +338,15 @@ class KeyManager {
 			let vCharacter = LnKutils.PrimaryCharacter();
 			let vLockType = await LnKutils.Locktype(pLock);
 			
-			if (LnKutils.WithinLockingDistance(vCharacter, pLock)) {
-				let vData = {useType : cLUaddIdentity, SceneID : pLock.object.scene.id, Locktype : vLockType, LockID : pLock.id, CharacterID : vCharacter.id, IdentityTypes : vIdentities}; 
-				
-				KeyManager.requestLockuse(vData);
-			}
-			else {
-				LnKPopups.TextPopUpID(pLock, "Lockoutofreach", {pLockName : pLock.name}); //MESSAGE POPUP
+			if (vLockType) {
+				if (LnKutils.WithinLockingDistance(vCharacter, pLock)) {
+					let vData = {useType : cLUaddIdentity, SceneID : pLock.object.scene.id, Locktype : vLockType, LockID : pLock.id, CharacterID : vCharacter.id, IdentityTypes : vIdentities, options : pOptions}; 
+					
+					KeyManager.requestLockuse(vData);
+				}
+				else {
+					LnKPopups.TextPopUpID(pLock, "Lockoutofreach", {pLockName : pLock.name}); //MESSAGE POPUP
+				}
 			}
 		}
 	}
@@ -710,9 +712,9 @@ function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.ho
 
 function ChangePasswordHoveredLock() { return KeyManager.ChangePasswordofLock(LnKutils.hoveredObject()); };
 
-function AddIdentitytoHoveredLock(pTypes) { return KeyManager.AddIdentitytoLock(LnKutils.hoveredObject(), pTypes);};
+function AddIdentitytoHoveredLock(pTypes, pOptions = {}) { return KeyManager.AddIdentitytoLock(LnKutils.hoveredObject(), pTypes, pOptions);};
 
-function AddIdentitytoLock(pLock, pTypes) { return KeyManager.AddIdentitytoLock(pLock, pTypes);}
+function AddIdentitytoLock(pLock, pTypes, pOptions = {}) { return KeyManager.AddIdentitytoLock(pLock, pTypes, pOptions = {});}
 
 function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUpickLock); };
 

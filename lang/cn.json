@@ -270,6 +270,10 @@
 		"name" 					: "Lock circumvention keywords",
 		"descrp"				: "Keywords to identify effects (e.g. the \"Knock\" spell)  that allow players to circumvent locks (seperated with \";\")"				
 	},
+	"AutoAcceptIdentityAddition" : {
+		"name" 					: "Automatically accept identity additions",
+		"descrp"				: "If identity addtions should be accepted automatically (not recommended)"				
+	},
 	"PickPocketFormula" : {
 		"name" 					: "Pick pocket formula",
 		"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
