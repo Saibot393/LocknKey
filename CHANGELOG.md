@@ -1,3 +1,6 @@
+## v2.2.6
+- Added api to allow players to enter their identity (name/id of token/actor/user)
+
 ## v2.2.5
 - Fixed bug that prevented pick pocketing from trigering correctly under some circumstances
 
