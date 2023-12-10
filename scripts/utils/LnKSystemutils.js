@@ -134,6 +134,9 @@ class LnKSystemutils {
 					if (game.items.documentClass.TYPES.includes("equipment")) {
 						return "equipment"
 					}
+					if (game.items.documentClass.TYPES.includes("gear")) {
+						return "gear"
+					}
 					return game.items.documentClass.TYPES[0];
 				}
 				break;

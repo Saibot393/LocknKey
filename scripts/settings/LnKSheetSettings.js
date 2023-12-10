@@ -45,6 +45,9 @@ class LnKSheetSettings {
 			if (!vTabbar.length) {
 				//if tab bar was not found, try other search
 				vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
+				if (!vTabbar.length) {
+					vTabbar = pHTML.find(`[data-group="main"].tabs`);
+				}
 			}	
 			
 			let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
