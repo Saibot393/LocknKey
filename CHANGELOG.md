@@ -1,3 +1,6 @@
+## v2.2.8
+- Improved general system compatibility
+
 ## v2.2.7
 - Added options to the identity addition api
 
