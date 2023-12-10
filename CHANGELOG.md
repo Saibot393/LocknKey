@@ -1,3 +1,6 @@
+## v2.2.7
+- Added options to the identity addition api
+
 ## v2.2.6
 - Added api to allow players to enter their identity (name/id of token/actor/user)
 
