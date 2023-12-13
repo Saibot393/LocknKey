@@ -43,6 +43,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Type of key items: to change the item type of newly created keys
 - Setting item types: to set forwhich item types the settings tab should be displayed
 - Key creation menu: to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
+- Key creation id option: to show an option for the keys id in the key creation menu
 - Default key folder: to set the default folder the key creation menu selects
 - Limit key folders: to only show the chosen default key folder and its sub folders in the key creation menu
 - Key name as ID: to use the keys name as an additional ID when interacting with locks
@@ -79,6 +80,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Remove key on use: to remove the key once it has been used (or reduce the stack by one)
 #### Walls/Lockable Tokens(separate tab):
 - Lockable: if this token can be locked
+- Lock on close[Wall only]: to lock this door when it is closed
 - [Token only] Locked: if this token is locked
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
