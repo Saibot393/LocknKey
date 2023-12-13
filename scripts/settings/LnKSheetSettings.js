@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -174,7 +174,15 @@ class LnKSheetSettings {
 												vvalue : LnKFlags.isLockable(pApp.object),
 												vflagname : cLockableF
 												}, `div[data-tab="${cModuleName}"]`);
-						
+												
+		//setting wall is locked on close
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockonCloseF +".name"), 
+												vhint : Translate("SheetSettings."+ cLockonCloseF +".descrp"), 
+												vtype : "checkbox", 
+												vvalue : LnKFlags.isLockonClose(pApp.object),
+												vflagname : cLockonCloseF
+												}, `div[data-tab="${cModuleName}"]`);
+												
 		//Lock standard settings
 		LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, `div[data-tab="${cModuleName}"]`);
 		

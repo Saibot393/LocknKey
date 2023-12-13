@@ -25,6 +25,7 @@
 			"Close"						: "Schließen",
 			"Keycreation"				: "Schlüssel generieren",
 			"Keyname"					: "Schlüsselname",
+			"KeyID"						: "Schlüssel ID (!NICHT \";\" IN DER ID BENUTZEN!)",
 			"Keyfolder"					: "Schlüssel Zielordner",
 			"ConfirmKeycreation"		: "Erschaffen",
 			"Basic"						: "Basis",
@@ -198,7 +199,12 @@
 			"KeyitemCreationPopup" : {
 				"name" 					: "Schlüssel-Erschaffungsmenu",
 				"descrp"				: "Ob beim generieren eines neuen Schlüssels ein Menu für die Eingabe des Namens und des Ordners angezeigt werden soll"		
-			},		
+			},	
+			
+			"KeyitemCreationIDOption" : {
+				"name" 					: "Schlüssel-Erschaffungs ID Option",
+				"descrp"				: "Ob eine Option für eine eigene Schlüssel ID im Schlüssel-Erschaffungsmenu angezeigt werden soll"		
+			},	
 
 			"UseKeynameasID" : {
 				"name" 					: "Schlüsselname als ID",
@@ -410,6 +416,11 @@
 			"LockableFlag" : {
 				"name" 					: "Abschließbar",
 				"descrp"				: "Ob dieses Objekt abgeschlossen werden kann"					
+			},
+			
+			"LockonCloseFlag" : {
+				"name" 					: "Verschließen bei schließen",
+				"descrp"				: "Ob diese Tür abgeschlossen werden soll, sobald sie geschlossen wird"					
 			},
 			
 			"LockedFlag" : {

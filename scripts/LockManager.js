@@ -61,6 +61,9 @@ class LockManager {
 	
 	static async pasteLock(pLockType, pLock) {} //paste the Key IDs to the Lock 
 	
+	//ons
+	static onpreupdateWall(pWall, pChanges, pInfos, pUser) {} //called when a wall preupdates
+	
 	//IMPLEMENTATIONS
 	//basics
 	static async useLockKey(pLock, pCharacter, pKeyItemID, puseData = {}) {
@@ -441,9 +444,15 @@ class LockManager {
 		let vFolders = LnKutils.getItemFolders(vFilter);
 		
 		let vHTML = `<label>${Translate("Titles.Keyname")}</label>
-					<input type="text" id="Keyname" name="Keyname" value="${Translate("Words.Key")}">
-					<label>${Translate("Titles.Keyfolder")}</label>
-					<select name="Folder">`;
+					<input type="text" id="Keyname" name="Keyname" value="${Translate("Words.Key")}">`;
+		
+		if (game.settings.get(cModuleName, "KeyitemCreationIDOption")) {
+			vHTML = vHTML + `<label>${Translate("Titles.KeyID")}</label>
+							<input type="text" id="KeyID" name="Keyname" value="">`;
+		}		
+					
+		vHTML = vHTML + `<label>${Translate("Titles.Keyfolder")}</label>
+						<select name="Folder">`;
 		
 		for (let i = 0; i < vFolders.length; i++) {
 			if (vFolders[i][0] == game.settings.get(cModuleName, "DefaultKeyFolder")) {
@@ -464,8 +473,14 @@ class LockManager {
 				button1: {
 					label: Translate("Titles.ConfirmKeycreation"),
 					callback: async (html) => {
+						let vID = html.find("input#KeyID")?.val();
+						
+						if (!vID) {
+							vID = "";
+						}
+						
 						let vItem = await LnKutils.createKeyItem(html.find("input#Keyname").val(), html.find("[name=Folder]").find("option:selected").val());
-						LnKFlags.linkKeyLock(vItem, pLock);
+						LnKFlags.linkKeyLock(vItem, pLock, vID);
 					},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
@@ -689,6 +704,19 @@ class LockManager {
 			LnKFlags.pasteIDKeys(pLock);
 		}
 	}
+	
+	//ons
+	static onpreupdateWall(pWall, pChanges, pInfos, pUser) {
+		if (game.user.isGM) {
+			if (pWall.door > 0) {
+				if (pChanges.ds == 0 && pWall.ds == 1) {
+					if (LnKFlags.isLockonClose(pWall)) {
+						LockManager.ToggleLock(pWall, cLUisGM)
+					}
+				}
+			}
+		}
+	}
 }
 
 //Hooks
@@ -776,6 +804,10 @@ Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be remove
 			}
 		}
 	}
+});
+
+Hooks.on("preUpdateWall", (pWall, pChanges, pInfos, pUser) => {
+	LockManager.onpreupdateWall(pWall, pChanges, pInfos, pUser);
 });
 
 

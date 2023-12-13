@@ -120,6 +120,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   });
   
+  game.settings.register(cModuleName, "KeyitemCreationIDOption", {
+	name: Translate("Settings.KeyitemCreationIDOption.name"),
+	hint: Translate("Settings.KeyitemCreationIDOption.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });
+  
   game.settings.register(cModuleName, "DefaultKeyFolder", {
 	name: Translate("Settings.DefaultKeyFolder.name"),
 	hint: Translate("Settings.DefaultKeyFolder.descrp"),

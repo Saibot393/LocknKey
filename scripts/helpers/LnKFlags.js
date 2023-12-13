@@ -31,12 +31,13 @@ const cLPAttemptsF = "LPAttemptsFlag"; //FLag to store the ammount of Lock Pick 
 const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how many FreeLockCircumvents this token has
 const ccanbeCircumventedFreeF = "canbeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
 const cRollOptionsF = "RollOptionsFlag"; //Flag to store roll options
+const cLockonCloseF = "LockonCloseFlag"; //Flag to set that this door should be locked when closed
 
 const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
 const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
 const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -88,7 +89,7 @@ class LnKFlags {
 		
 	static isLocked(pObject) {} //returns if pObject is locked (false if not Lockable)
 	
-	static linkKeyLock(pKey, pLock) {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
+	static linkKeyLock(pKey, pLock, pID = "") {} //gives pKey(item) and pLock(wall or token) both the same new Key ID
 	
 	static matchingIDKeys(pObject1, pObject2, pConsiderName1 = false) {} //returns if pObject1 and pObject2 have at least one matching key (excluding "") (pConsiderName1 if name of pObject should be considerd as an ID)
 	
@@ -199,6 +200,9 @@ class LnKFlags {
 	static FormulaOverride(pObject, pType) {} //if this objects Formula for pTpye [cLUpickLock, cLUbreakLock, cLUCustomCheck] overrides the global formula
 	
 	static RollOptions(pObject, pRollType, pRollOption, pFallbackValue = undefined) {} //returns the pRollOption of pRollType belonging to pObject (returns cRollOptionDefault otherwise)
+	
+	//Automation
+	static isLockonClose(pObject) {} //returns of pObject should be locked when closed
 	
 	//PickPocket
 	static PickPocketDC(pToken, praw = false) {} //returns the PickPocketDC of pToken
@@ -570,6 +574,19 @@ class LnKFlags {
 		return 0; //default if anything fails				
 	}
 	
+	static #LockonCloseFlag (pObject) {
+	//returns content of LockonCloseFlag ofpObject (boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLockonCloseF)) {
+				return vFlag.LockonCloseFlag;
+			}
+		}
+		
+		return false; //default if anything fails	
+	}
+	
 	static async #PickPocketDCFlag (pToken) {
 	//returns content of PickPocketDC pToken (number)
 		let vFlag = this.#LnKFlags(pToken);
@@ -837,8 +854,15 @@ class LnKFlags {
 		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject)) && LnKutils.isLockCompatible(pObject);
 	}
 	
-	static linkKeyLock(pKey, pLock) {
-		let vnewID = randomID();
+	static linkKeyLock(pKey, pLock, pID = "") {
+		let vnewID;
+
+		if (pID) {
+			vnewID = pID;
+		}
+		else {
+			vnewID = randomID();
+		}
 		
 		this.#addIDKeysFlag(pKey, vnewID);
 		
@@ -1216,6 +1240,11 @@ class LnKFlags {
 		}
 		
 		return pFallbackValue; //something failed, panic, let everything go, run, scream, start praying, the apocalypse is near!
+	}
+	
+	//Automation
+	static isLockonClose(pObject) {
+		return LnKFlags.#LockonCloseFlag(pObject);
 	}
 	
 	//PickPocket

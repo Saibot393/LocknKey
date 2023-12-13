@@ -1,10 +1,19 @@
-2023/12/01-11:07:07.871 2410 Recovering log #1949
-2023/12/01-11:07:07.871 2410 Recovering log #4130
-2023/12/01-11:07:07.876 2410 Delete type=0 #1949
-2023/12/01-11:07:07.876 2410 Delete type=0 #4130
-2023/12/01-11:07:07.876 2410 Delete type=3 #1947
-2023/12/01-11:12:27.028 4a78 Level-0 table #4133: started
-2023/12/01-11:12:27.039 4a78 Level-0 table #4133: 857 bytes OK
-2023/12/01-11:12:27.041 4a78 Delete type=0 #4131
-2023/12/01-11:12:27.050 4a78 Manual compaction at level-0 from '!folders!Gp4ZiYpD3JWPntja' @ 72057594037927935 : 1 .. '!macros!vXI7d7cgerQII8rh' @ 0 : 0; will stop at (end)
-2023/12/01-11:12:27.050 4a78 Manual compaction at level-1 from '!folders!Gp4ZiYpD3JWPntja' @ 72057594037927935 : 1 .. '!macros!vXI7d7cgerQII8rh' @ 0 : 0; will stop at (end)
+2023/12/13-21:24:03.854 1b80 Recovering log #5674
+2023/12/13-21:24:03.855 1b80 Recovering log #5681
+2023/12/13-21:24:03.859 1b80 Delete type=0 #5674
+2023/12/13-21:24:03.859 1b80 Delete type=0 #5681
+2023/12/13-21:24:03.859 1b80 Delete type=2 #5683
+2023/12/13-21:24:03.859 1b80 Delete type=3 #4134
+2023/12/13-21:24:03.859 1b80 Delete type=3 #5660
+2023/12/13-21:24:58.629 39d8 Level-0 table #5684: started
+2023/12/13-21:24:58.640 39d8 Level-0 table #5684: 1064 bytes OK
+2023/12/13-21:24:58.641 39d8 Delete type=0 #5682
+2023/12/13-21:24:58.642 39d8 Manual compaction at level-0 from '!folders!Gp4ZiYpD3JWPntja' @ 72057594037927935 : 1 .. '!macros!vXI7d7cgerQII8rh' @ 0 : 0; will stop at (end)
+2023/12/13-21:24:58.642 39d8 Manual compaction at level-1 from '!folders!Gp4ZiYpD3JWPntja' @ 72057594037927935 : 1 .. '!macros!vXI7d7cgerQII8rh' @ 0 : 0; will stop at '!macros!h6Q5ZB2FLaKVPxbk' @ 44 : 1
+2023/12/13-21:24:58.642 39d8 Compacting 1@1 + 1@2 files
+2023/12/13-21:24:58.646 39d8 Generated table #5685@1: 17 keys, 4622 bytes
+2023/12/13-21:24:58.646 39d8 Compacted 1@1 + 1@2 files => 4622 bytes
+2023/12/13-21:24:58.649 39d8 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/12/13-21:24:58.649 39d8 Delete type=2 #5676
+2023/12/13-21:24:58.650 39d8 Delete type=2 #5684
+2023/12/13-21:24:58.657 39d8 Manual compaction at level-1 from '!macros!h6Q5ZB2FLaKVPxbk' @ 44 : 1 .. '!macros!vXI7d7cgerQII8rh' @ 0 : 0; will stop at (end)

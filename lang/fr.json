@@ -25,6 +25,7 @@
 			"Close"						: "Fermer",
 			"Keycreation"				: "Création de clé",
 			"Keyname"					: "Nom de la clé",
+			"KeyID"						: "Key ID (!DO NOT USE \";\" IN ID)",
 			"Keyfolder"					: "Dossier de création",
 			"ConfirmKeycreation"		: "Créer",
 			"Basic"						: "Basique",
@@ -188,7 +189,12 @@
 			"KeyitemCreationPopup" : {
 				"name" 					: "Menu de création de clé",
 				"descrp"				: "Si un menu doit être affiché pour la clé nouvellement générée pour changer son nom et son dossier"		
-			},		
+			},	
+			
+			"KeyitemCreationIDOption" : {
+				"name" 					: "Key creation id option",
+				"descrp"				: "If an option to enter a custom key id should be displayed in the key creation menu"		
+			},	
 
 			"DefaultKeyFolder" : {
 				"name"					: "Dossier de clés par défaut",
@@ -410,6 +416,11 @@
 			"LockableFlag" : {
 				"name" 					: "Verrouillable",
 				"descrp"				: "Cet objet est verrouillable"					
+			},
+			
+			"LockonCloseFlag" : {
+				"name" 					: "Lock on close",
+				"descrp"				: "If this door should be locked once it is closed"					
 			},
 			
 			"LockedFlag" : {

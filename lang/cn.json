@@ -25,6 +25,7 @@
 	  "Close"						: "关闭",
 		"Keycreation"				: "创建钥匙",
 		"Keyname"					: "钥匙名字",
+		"KeyID"						: "Key ID (!DO NOT USE \";\" IN ID)",
 		"Keyfolder"				: "目标文件夹",
 		"ConfirmKeycreation"			: "创建",
 		"Basic"						: "基本",
@@ -172,7 +173,11 @@
 		"KeyitemCreationPopup" : {
 			"name" 					: "钥匙创建菜单",
 			"descrp"				: "创建钥匙时是否让设置菜单弹出"		
-		},		
+		},	
+		"KeyitemCreationIDOption" : {
+			"name" 					: "Key creation id option",
+			"descrp"				: "If an option to enter a custom key id should be displayed in the key creation menu"		
+		},	
 		"DefaultKeyFolder" : {
 			"name"					: "Default key folder",
 			"descrp"				: "The name of the default folders used in the key creation menu"
@@ -369,6 +374,10 @@
         "name": "可被上锁",
         "descrp": "这个物体可否被上锁"
       },
+		"LockonCloseFlag" : {
+			"name" 					: "Lock on close",
+			"descrp"				: "If this door should be locked once it is closed"					
+		},
       "LockedFlag": {
         "name": "已上锁",
         "descrp": "这个物体是否被上锁"

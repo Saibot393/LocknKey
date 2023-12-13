@@ -81,7 +81,7 @@ class LnKutils {
 	static PrimaryCharacter() {} //returns the first selected token document if available or the default character document
 	
 	//items
-	static async createKeyItem(pName = Translate("Word.Key"), pFolder = "") {} // creates new key item and returns the document
+	static async createKeyItem(pName = Translate("Word.Key"), pFolder = "", pImage = "") {} // creates new key item and returns the document
 	
 	static Keyitemtype() {} //returns the used type of item for keys
 	
@@ -278,8 +278,14 @@ class LnKutils {
 	}
 	
 	//items
-	static async createKeyItem(pName = Translate("Words.Key"), pFolder = "") {
-		let vDocument = Item.create({name : pName, type : LnKutils.Keyitemtype(), img:"icons/sundries/misc/key-steel.webp", folder : pFolder});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
+	static async createKeyItem(pName = Translate("Words.Key"), pFolder = "", pImage = "") {
+		let vImage = "icons/sundries/misc/key-steel.webp";
+		
+		if (pImage) {
+			vImage = pImage;
+		}
+		
+		let vDocument = Item.create({name : pName, type : LnKutils.Keyitemtype(), img: vImage, folder : pFolder});//game.items.createDocument({name : pName, type : LnKutils.Systemitemtype(), img:"icons/sundries/misc/key-steel.webp"});	
 		
 		return vDocument;//await vDocument.constructor.create(vDocument);
 	}

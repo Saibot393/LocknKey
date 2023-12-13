@@ -2,7 +2,7 @@ import {cModuleName} from "../utils/LnKutils.js";
 import {LnKFlags} from "../helpers/LnKFlags.js";
 import {openTIWindowfor as openTIWindowforRAW} from "../helpers/LnKTakeInventory.js";
 import {TransferItems} from "../helpers/LnKTakeInventory.js";
-import { LnKutils } from "../utils/LnKutils.js";
+import { LnKutils, Translate } from "../utils/LnKutils.js";
 
 function openTIWindowfor (pUserID, pInventoryOwner, pOptions = {customHeader : "", TakerID : ""}) {
 	let vInventoryOwner = pInventoryOwner;
@@ -31,6 +31,33 @@ async function CheckActorPTokensCompatibility() { //checks the prototype tokens 
 			
 		}
 	}
+}
+
+async function HoveredLock() {
+	let vLock = LnKutils.hoveredObject();
+	
+	if (vLock) {
+		if (await LnKutils.isLockCompatible(vLock)) {
+			return vLock;
+		}
+	}
+	
+	return;
+}
+
+async function createNewcustomKey(pLock, pOptions = {KeyName : "", KeyID : "", KeyImage : "", KeyFolder : ""}) {
+	let vKeyData = {
+		KeyName : Translate("Words.Key"),
+		KeyID : "",
+		KeyImage : "",
+		KeyFolder : ""
+	};
+	
+	vKeyData = {...vKeyData, ...pOptions}
+	
+	let vItem = await LnKutils.createKeyItem(vKeyData.KeyName, vKeyData.KeyFolder, vKeyData.KeyImage);
+	
+	LnKFlags.linkKeyLock(vItem, pLock, vKeyData.KeyID);
 }
 
 export const API = {
@@ -73,6 +100,26 @@ export const API = {
 	 */
     async CheckActorPTokensCompatibility() {
 		return await CheckActorPTokensCompatibility();
+	},
+	
+	/**
+	 * Method to return the currently hovered Lock, or undefined if no lock is hovered
+	 * @returns {Promise<void>}
+	 */
+	async HoveredLock() {
+		return await HoveredLock();
+	},
+	
+	/**
+	 * Method to create a new Lock & Key Key item
+	 * @param {WallDocument/TokenDocument} pLock The Lock for which the key is createDocumentFragment
+     * @param {string} [options.KeyName=""]  Name of the created key (defaults to key without name)
+     * @param {string} [options.KeyID=""]  ID of the created key (defaults to random id) !DO NOT USE ";" IN THE ID!
+     * @param {string} [options.KeyImage=""]  Image of the created key (defaults to "icons/sundries/misc/key-steel.webp")
+     * @param {string} [options.KeyFolder=""]  ID of the folder in which the key is created (defaults main directory)
+	 */
+	async createNewcustomKey(pLock, pOptions = {KeyName : "", KeyID : "", KeyImage : "", KeyFolder : ""}) {
+		return await createNewcustomKey(pLock, pOptions);
 	},
 
 	/**
