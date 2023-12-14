@@ -1,0 +1,733 @@
+{
+	"LocknKey" : {
+		"Titles" : {
+			"confirm"					: "決定",
+			"abbort"					: "取り消し",
+			"LocknKey"					: "Lock & Key",
+			"LocknKeyabbr"				: "L&K",
+			"WorldSettings"				: "ワールド設定 (GMのみ)",
+			"ClientSettings"			: "クライアント設定",
+			"GMonly"					: "GMのみ",
+			"LockTokens"				: "錠の設定",
+			"CharacterTokens"			: "キャラクター設定",
+			"KeyItems"					: "鍵の設定",
+			"LPItems"					: "鍵の細工設定",
+			"LockusePasskey"			: "パスワード",
+			"Passkey"					: "パスワード",
+			"EnterPasskey"				: "パスワードを入力:",
+			"ConfirmPasskey"			: "決定",
+			"Lockuse"					: "錠の使用",
+			"LockuseKey"				: "鍵を使用",
+			"LockusePick"				: "開錠",
+			"LockuseBreak"				: "こじあける",
+			"LockuseFree"				: "Free lock use",
+			"LockuseCustom"				: "{pCheckName}",
+			"Close"						: "閉じる",
+			"Keycreation"				: "鍵を作成",
+			"Keyname"					: "鍵の名前",
+			"KeyID"						: "鍵のID (!IDに \";\" を使用しないでください)",
+			"Keyfolder"					: "Key target folder",
+			"ConfirmKeycreation"		: "作成",
+			"Basic"						: "基本",
+			"Triggers"					: "Triggers",
+			"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove",
+			"PickPocket"				: "スリ",
+			"LockchangePasskey"			: "パスワード変更",
+			"LockuseIdentity"			: "鑑定",
+			"newPasskey"				: "新しいパスワード:",
+			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」は wants to add these identities to a lock:{pIdentities}",
+			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}"
+		},
+		
+		"Popup" : {
+			"TokenisLocked"				: "{pLockName} は施錠されている",
+			"DoorisLocked"				: "この扉は施錠されている",
+			"Lockoutofreach"			: "この錠に届かない",
+			"Tokenoutofreach"			: "{pTokenName} に届かない",
+			"lockedDoor"				: "扉は施錠された",
+			"lockedToken"				: "{pLockName} は施錠された",
+			"unlockedDoor"				: "扉は開錠された",
+			"unlockedToken"				: "{pLockName} は開錠された",
+			"GamePaused"				: "ゲームが停止中",
+			"noLockPickItem"			: "ロックピックが所持品に無い",
+			"nomatchingKey"				: "合う鍵がない",
+			"pickLockfailed"			: "鍵開けに失敗",
+			"cantLock" : {
+				"default"				: "この錠は施錠できない",
+				"break"					: "この錠はすでに開いている"
+			},
+			"breakLockfailed"			: "こじあけに失敗",
+			"NotaLock"					: "錠ではない",
+			"WrongPassword"				: "パスワードが違う",
+			"Lockisjammed"				: "錠は詰まっている",
+			"Lockpickbroke"				: "ロックピックが壊れた",
+			"jammedLock"				: "錠を詰まらせた",
+			"cantcircumventFree"		: "錠を回せない",
+			"CantbePickpocketed"		: "スリできない",
+			"PickPocketfailed"			: "スリ失敗",
+			"customcheckfailed"			: "{pCheckName} 失敗",
+			"WrongIdentity"				: "Wrong identity",
+			"PasswordChanged"			: "パスワード変更",
+			"NoPasswordLength"			: "新しいパスワードは短かすぎる",
+			"CantChangePassword"		: "パスワードが変更できない"
+		},	
+		
+		"ChatMessage" : {
+			"LockPick"					: "{pName} は開錠を試みた:",
+			"LockPicksuccess" : {
+				"crit"					: "{pName} critically succeeded at picking the lock",
+				"default" 				: "{pName} succeeded at picking the lock"
+			},
+			"LockPickfail" : {
+				"crit"					: "{pName} critically failed at picking the lock",
+				"default" 				: "{pName} failed at picking the lock"
+			},
+			"LockPicksuccessLPName" : {
+				"crit"					: "{pName} critically succeeded at picking the lock with {pLPName}",
+				"default" 				: "{pName} succeeded at picking the lock with {pLPName}"
+			},
+			"LockPickfailLPName" : {
+				"crit"					: "{pName} critically failed at picking the lock with {pLPName}",
+				"default" 				: "{pName} failed at picking the lock with {pLPName}"
+			},
+			"LockPickfailLPNameremove" : {
+				"crit"					: "{pName} critically failed at picking the lock and broke {pLPName}"
+			},
+			
+			"LockBreak"					: "{pName} tried to break a lock:",
+			"LockBreaksuccess" : {
+				"crit"					: "{pName} critically succeeded at breaking the lock",
+				"default" 				: "{pName} succeeded at breaking the lock"
+			},
+			"LockBreakfail" : {
+				"crit"					: "{pName} critically failed to break the lock",
+				"default" 				: "{pName} failed to break the lock"
+			},
+			
+			"CustomCheck"				: "{pName} は {pCheckName}を使用した:",
+			"CustomChecksuccess" : {
+				"crit"					: "{pName} critically succeeded at {pCheckName}",
+				"default" 				: "{pName} succeeded at {pCheckName}"			
+			},
+			"CustomCheckFail" : {
+				"crit"					: "{pName} critically failed at {pCheckName}",
+				"default" 				: "{pName} failed at {pCheckName}"
+			},
+			
+			"PickPocket"				: "{pName} はスリを試みた:",
+			"PickPocketSuccess" : {
+				"crit"					: "{pName} critically succeeded at pick pocketing",
+				"default" 				: "{pName} succeeded at pick pocketing"			
+			},
+			"PickPocketFail" : {
+				"crit"					: "{pName} critically failed at pick pocketing",
+				"default" 				: "{pName} failed at pick pocketing"
+			}
+		},
+		
+		"Settings" : {
+			"useGMquickKeys" : {
+				"name" 					: "Use GM quick controls",
+				"descrp"				: "Allows the GM to use the special lock related controls listed at the bottom (affected marked with *)"
+			},
+			
+			"allowLocking" : {
+				"name" 					: "Allow player locking",
+				"descrp"				: "Allow players to lock locks if they have a matching key"
+			},
+			
+			"startasLocked" : {
+				"name" 					: "Start as locked",
+				"descrp"				: "If newly registered locks start locked"
+			},
+	
+			"LockDistance" : {
+				"name" 					: "Lock distance",
+				"descrp"				: "Distance over which a lock can be used (in in-game units)"		
+			},
+			
+			"DefaultLockSound" : {
+				"name"					: "デフォルトの錠の音声",
+				"descrp"				: "The default sound applied to new doors a lock tokens"
+			},
+			
+			"UseArmReachDistance": {
+				"name" 					: "Use \"Arms Reach\" distance",
+				"descrp"				: "Uses the distance set in the \"Arms Reach\" for the lock distance"	
+			},
+			
+			"alwaysopenOwned" : {
+				"name" 					: "Always open owned",
+				"descrp"				: "Players can always open owned tokens, even if they are locked"		
+			},
+			
+			"showallLockInteractions" : {
+				"name" 					: "Show all lock interactions",
+				"descrp"				: "Always show all interaction options for locks (for the evil GM in you)"					
+			},
+			
+			"preventUseinPause" : {
+				"name" 					: "Prevent key use while paused",
+				"descrp"				: "Prevent players from using keys while the game is paused"		
+			},
+	
+			"autoKeyuse" : {
+				"name" 					: "Automatic key use",
+				"descrp"				: "Players will automatically try to use a matching key if they interact with a locked object"		
+			},
+			
+			"KeyItemtype" : {
+				"name" 					: "鍵アイテムの種類",
+				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
+			},
+
+			"LnKSettingTypes" : {
+				"name" 					: "Setting item types",
+				"descrp"				: "The item types for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all types)"		
+			},
+			
+			"KeyitemCreationPopup" : {
+				"name" 					: "鍵の作成メニュー",
+				"descrp"				: "If a menu should be shown for newly generated key to change their name and folder"		
+			},	
+			
+			"KeyitemCreationIDOption" : {
+				"name" 					: "Key creation id option",
+				"descrp"				: "If an option to enter a custom key id should be displayed in the key creation menu"		
+			},	
+			
+			"DefaultKeyFolder" : {
+				"name"					: "Default key folder",
+				"descrp"				: "The name of the default folders used in the key creation menu"
+			},
+			
+			"LimitKeyFolders" : {
+				"name"					: "Filter key folders",
+				"descrp"				: "If only the default key folder and its subfolders should be shown in the key creation menu"
+			},
+
+			"UseKeynameasID" : {
+				"name" 					: "Key name as ID",
+				"descrp"				: "If a keys name should be considered as an additional ID for the purpose of opening locks"		
+			},	
+			
+			"usePf2eSystem" : {
+				"name" 					: "Use Pf2e roll system",
+				"descrp"				: "Use the Pf2e roll system (disables Lock & Key custom roll formulas and crit settings in favor of the Pf2e rules system)"						
+			},
+			
+			"CritMethod" : {
+				"name" 					: "Crit system",
+				"descrp"				: "The way critical rolls are determined",
+				"options" : {
+					"noCrit"			: "No crits",
+					"natCrit"			: "Nat 1/20",
+					"natCritpm10"		: "Nat 1/20 & +-10 of DC [e.g. Pf2e]",
+					"d100WFRP4"			: "d100 Nat1/100 [e.g. WFRP4e]",
+					"d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]",
+					"d100CoC7e"			: "d100 difficulty ranges [e.g. CoC7e]",
+					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]"
+				}
+			},
+			
+			"LockPickItem" : {
+				"name" 					: "ロックピックアイテム",
+				"descrp"				: "Names or compendium IDs (recommended) of a lockpicking items, \"-\" if no item is necessary (seperated with \";\")"		
+			},
+			
+			"MentionLockPickItem" : {
+				"name" 					: "Mention lockpick item",
+				"descrp"				: "If the used lockpick item should be mentioned in the chat"		
+			},
+			
+			"RemoveLPoncritFail" : {
+				"name" 					: "Remove Lockpick on critical fail",
+				"descrp"				: "If the used Lockpick is removed on a critical fail (or if the stack is reduced by 1)"		
+			},	
+			
+			"JamLockonLPcritFail" : {
+				"name" 					: "Jam lock on critical lockpick fail",
+				"descrp"				: "Doors are jammed on critical lockpick fails and cant be picked anymore"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "Keys can't be used on jammed locks",
+				"descrp"				: "Jammed locks will no longer accept matching keys"		
+			},
+			
+			"defaultLPAttempts" : {
+				"name"					: "Default Lock pick attempts",
+				"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
+			},
+			
+			"LockPickFormula" : {
+				"name" 					: "Lockpick roll formula",
+				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+			},
+					
+			"DefaultPickDC" : {
+				"name" 					: "Default lock DC",
+				"descrp"				: "The default value for lock DCs"				
+			},
+			
+			"LockBreakFormula" : {
+				"name" 					: "Break lock roll formula",
+				"descrp"				: "The formula which is used for dice rolls when breaking a lock (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", help can be found on the Github page of this module)"				
+			},
+			
+			"DefaultBreakDC" : {
+				"name" 					: "Default lock break DC",
+				"descrp"				: "The default value for lock break DCs"				
+			},
+			
+			"CustomCircumventName" : {
+				"name" 					: "Custom check name",
+				"descrp"				: "The name of the third optional custom check to circumvent locks (e.g. \"Hacking\" or \"Magic rune\", leave empty to deactivate)"				
+			},
+			
+			"CustomCircumventFormula" : {
+				"name" 					: "Custom check formula",
+				"descrp"				: "The formula which is used for dice rolls when using the custom check above"				
+			},
+			
+			"CustomCircumventDefaultDC" : {
+				"name" 					: "Custom check default DC",
+				"descrp"				: "The default value for custom check DCs"				
+			},
+			
+			"LockBreakunlockable" : {
+				"name" 					: "Make broken locks unlockable",
+				"descrp"				: "Makes lock that have been broken unlockable"				
+			},
+			
+			"onlyCombatMultiSuccess" : {
+				"name" 					: "Multi-success during combat only",
+				"descrp"				: "Ignores set required Lockpicking successes outside of combat"				
+			},
+			
+			"LockCircumventName" : {
+				"name" 					: "Lock circumvention keywords",
+				"descrp"				: "Keywords to identify effects (e.g. the \"Knock\" spell) that allow players to circumvent locks (seperated with \";\")"				
+			},
+			
+			"AutoAcceptIdentityAddition" : {
+				"name" 					: "Automatically accept identity additions",
+				"descrp"				: "If identity addtions should be accepted automatically (not recommended)"				
+			},
+			
+			"PickPocketFormula" : {
+				"name" 					: "Pick pocket formula",
+				"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+			},
+			
+			"PickPocketDefaultDC" : {
+				"name" 					: "Pick pocket default DC",
+				"descrp"				: "The default value for pick pocket DCs"				
+			},
+			
+			"PickPocketDefaultDCFormula" : {
+				"name" 					: "Pick pocket default DC formula",
+				"descrp"				: "The default formula used to calculate the Pick Pocket DC (overrides other defaults)"				
+			},
+			
+			"AutoUpdatePickPocketDC" : {
+				"name" 					: "Auto update Pick Pocket DC",
+				"descrp"				: "If the Pick Pocket DC should get automatically updated when a perception check is rolled"				
+			},
+			
+			"PerceptionKeyWord" : {
+				"name"					: "Perception key-word",
+				"descrp"				: "Key word to recognise perception rolls (a string present in the flavour text of perception rolls)"		
+			},
+			
+			"ControlSceme" : {
+				"name" 					: "Control sceme",
+				"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
+				"options" : {
+					"rightKeys"			: "right-click + key",
+					"rightPopups"		: "right-click popup-menu"
+				}
+			},			
+			
+			"MessagePopUps" : {
+				"name" 					: "Message popups",
+				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
+			},
+			
+			"PlayLockSounds" : {
+				"name" 					: "Play lock sounds",
+				"descrp"				: "Play a sound when a lock is locked/unlocked"		
+			},
+			
+			"FreeCircumventButtonPosition" : {
+				"name" 					: "Lock circumvention indicator position",
+				"descrp"				: "The position of the indicator that shows that a token can circumvent the next lock on the token HUD",
+				"options" : {
+					"none"				: "nowhere",
+					"left"				: "left",
+					"right"				: "right"
+				}
+			}
+		},
+		
+		"Keys" : {
+			"ToggleLock" : {
+				"name"					: "Toggle lock"
+			},
+			
+			"CopyLock" : {
+				"name"					: "Copy lock ids"
+			},
+			
+			"PasteLock" : {
+				"name"					: "Paste lock ids"
+			},
+			
+			"CreatenewKey" : {
+				"name"					: "Create new key"
+			},
+			
+			"UseKey" : {
+				"name"					: "鍵を使用"
+			},
+			
+			"PickLock" : {
+				"name"					: "鍵開け"
+			},
+			
+			"BreakLock" : {
+				"name"					: "こじ開ける"
+			},
+			
+			"CustomCheck" : {
+				"name"					: "Custom Check (ask GM (unless you are the GM))"
+			},
+			
+			"PickPocket" : {
+				"name"					: "スリ"
+			},
+		
+			"ChangePassword" : {
+				"name"					: "パスワード変更"
+			}
+		},
+		
+		"SheetSettings" : {
+			"LockableFlag" : {
+				"name" 					: "施錠可能",
+				"descrp"				: "もしこの物体が施錠可能ならIf this object is lockable"					
+			},
+			
+			"LockonCloseFlag" : {
+				"name" 					: "Lock on close",
+				"descrp"				: "If this door should be locked once it is closed"					
+			},
+			
+			"LockedFlag" : {
+				"name" 					: "Locked",
+				"descrp"				: "If this object is locked"					
+			},
+			
+			"IDKeysFlag" : {
+				"name" 					: "ID keys",
+				"descrp" : {
+					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\")",
+					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
+				}
+			},
+			
+			"PasskeysFlag" : {
+				"name"					: "Passwords",
+				"descrp"				: "Passwords that can unlock this lock (seperated with \";\")"
+			},
+			
+			"PasskeyChangeableFlag" : {
+				"name"					: "Password changeable",
+				"descrp"				: "If the password can be changed by players (requires correct password)"
+			},
+			
+			"IdentityKeyFlag" : {
+				"name"					: "Identities",
+				"descrp"				: "Identities that can unlock this lock (seperated with \";\", IDs/Names of Token/Actor/User)"
+			},
+			
+			"LockjammedFlag" : {
+				"name"					: "Jammed",
+				"descrp"				: "If this lock is jammed (see world settings)"				
+			},
+			
+			"RemoveKeyonUseFlag" : {
+				"name" 					: "Remove key on use",
+				"descrp"				: "If this key is removed on use (or the stack is reduced by one)"					
+			},			
+			
+			"LockDCFlag" : {
+				"name" 					: "Lock DC",
+				"descrp"				: "The difficulty class of this Lock, used for lockpicking (-1 to prevent lockpicking)"					
+			},
+			
+			"SpecialLPFlag" : {
+				"name" 					: "Special lockpick",
+				"descrp"				: "Special lockpick required to pick this lock (ID or name, multiple entries seperated with \";\")"					
+			},
+			
+			"LockBreakDCFlag" : {
+				"name" 					: "Lock break DC",
+				"descrp"				: "The difficulty class to break this lock (-1 to prevent breaking)"					
+			},
+			
+			"LockCCDCFlag" : {
+				"name" 					: "{pCheckName} DC",
+				"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent)"					
+			},
+			
+			"requiredLPsuccessFlag" : {
+				"name" 					: "Required Lockpicking successes",
+				"descrp"				: "How many Lockpicking successes are required for this lock (and how many have already been added) (crits count as 2)"				
+			},
+			
+			"LPAttemptsFlag" : {
+				"name" 					: "Lockpicking attempts left",
+				"descrp"				: "How many Lockpicking attempts are left (-1 for unlimited)"				
+			},
+			
+			"canbeCircumventedFreeFlag" : {
+				"name" 					: "Can be circumvented",
+				"descrp"				: "If this lock can be circumvented by effects (e.g. the spell \"Knock\")"				
+			},
+			
+			"CustomPopupsFlag" : {
+				"openButtonname"			: "Custom Popups",
+				"Title"						: "Custom Popups",
+				"name"						: "Set custom Popups for certain player interactions:",
+				"LockLocked" : {
+					"name"					: "Lock is locked:"
+				},
+				"LocknotPickable" : {
+					"name"					: "Lock can't be picked:"
+				},
+				"LocknotBreakable" : {
+					"name"					: "Lock can't be broken:"
+				},
+				"LockPasskeyTitle" : {
+					"name"					: "Password dialog prompt:"
+				},
+				"LocknotCustom" : {
+					"name"					: "Lock can't be used with custom check:"
+				},
+				"CharacternotPickpocketable" : {
+					"name"					: "Character can't be pick pocketed:"
+				},
+				"confirmButtonname"        	: "Confirm Popups"
+			},
+			
+			"SoundVariantFlag" : {
+				"name"					: "Lock Sound",
+				"descrp"				: "Set the sound set used for actions with this door",
+				"options" : {
+					"off"				: "off",
+					"futuristic"		: "Futuristic",
+					"industrial"		: "Industrial",
+					"jail"				: "Jail",
+					"metal"				: "Metal 🤘",
+					"shutter"			: "Shutter",
+					"sliding"			: "Sliding",
+					"stone"				: "Stone",
+					"wood"				: "Wood"
+				}
+			},
+			
+			"LPFormulaFlag" : {
+				"name" 					: "Lockpick formula",
+				"descrp" : {
+					"token" 			: "The formula added to Lockpick rolls this token makes",
+					"item"				: "The formula added to Lockpick rolls the owner of this item makes (only best in inventory used)"
+				}			
+			},
+			
+			"LPFormulaOverrideFlag" : {
+				"name" 					: "Override Lockpick formula",
+				"descrp" : {
+					"token" 			: "If this tokens Lockpick formula overrides the world formula",
+					"item"				: "If this items Lockpick formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"LBFormulaFlag" : {
+				"name" 					: "Break lock formula",
+				"descrp" : {
+					"token" 			: "The formula added to Breack lock rolls this token makes",
+					"item"				: "The formula added to Breack lock rolls the owner of this item makes (only best in inventory used)"
+				}					
+			},
+			
+			"LBFormulaOverrideFlag" : {
+				"name" 					: "Override Break lock formula",
+				"descrp" : {
+					"token" 			: "If this tokens Break lock formula overrides the world formula",
+					"item"				: "If this items Break lock formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"CCFormulaFlag" : {
+				"name" 					: "{pCheckName} formula",
+				"descrp" : {
+					"token" 			: "The formula added to {pCheckName} rolls this token makes",
+					"item"				: "The formula added to {pCheckName} rolls the owner of this item makes (only best in inventory used)"
+				}					
+			},
+			
+			"CCFormulaOverrideFlag" : {
+				"name" 					: "Override {pCheckName} formula",
+				"descrp" : {
+					"token" 			: "If this tokens {pCheckName} formula overrides the world formula",
+					"item"				: "If this items {pCheckName} formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"PickPocketFormulaFlag" : {
+				"name" 					: "Pick pocket formula",
+				"descrp" : {
+					"token" 			: "The formula added to Pick pocket rolls this token makes",
+					"item"				: "The formula added to Pick pocket rolls the owner of this item makes (only best in inventory used)"
+				}					
+			},
+			
+			"PickPocketFormulaOverrideFlag" : {
+				"name" 					: "Override Pick pocket lock formula",
+				"descrp" : {
+					"token" 			: "If this tokens Pick pocket formula overrides the world formula",
+					"item"				: "If this items Pick pocket formula overrides the tokens/worlds formula"
+				}				
+			},
+			
+			"PickPocketDCFlag" : {
+				"name" 					: "Pick pocket DC",
+				"descrp"  				: "The difficulty class to use Pick pocket this character (-1 for impossible)"			
+			},
+			
+			"ReplacementItemFlag" : {
+				"name" 					: "Replacement Items",
+				"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
+			},
+
+			"MATTTriggerTileFlag" : {
+				"name" 					: "Triggered tile ID",
+				"descrp"				: "The ID of the tile triggered by the Lock & Key actions below (you may use different landings)"
+			},
+			
+			"MATTTriggerConditionsFlag" : {
+				"LockuseKey.name"		: "On Key use",
+				"LockusePasskey.name"	: "On Password use",
+				"LockusePick.name"		: "On pick Lock",
+				"LockuseBreak.name"		: "On break Lock",
+				"LockuseFree.name"		: "On lock circumvention",
+				"options" : {
+					"never"				: "never",
+					"always"			: "always",
+					"failure"			: "failure",
+					"critfailure"		: "critical failure",
+					"success"			: "success"
+				}
+			},
+			
+			"RollOptionsFlag" : {
+				"LockusePick" : {
+					"d10CritLimit" : {
+						"name"			: "Lockpick d10 crit limit",
+						"descrp"		: "The minimum crit value for d10 lockpick rolls"
+					}
+				},
+				"LockuseBreak" : {
+					"d10CritLimit" : {
+						"name"			: "Lock break d10 crit limit",
+						"descrp"		: "The minimum crit value for d10 lock break rolls"
+					}					
+				}
+			}
+		},
+		
+		"Context" : {
+			"KeyCopy"					: "鍵のIDをコピー",
+			"KeyPaste"					: "IDを鍵に貼り付け"
+		},
+		
+		"Words" : {
+			"Key"						: "鍵"
+		},
+		
+		"Text" : {
+			"GMControls" : {
+				"line0"					: "GM controls:",
+				"line1" 				: "•shift+right-click to create a new key for the lock",
+				"line2" 				: "•alt+right-click to toggle token lock (*)",
+				"line3" 				: "•ctrl+right-click to copy the locks key IDs (*)",
+				"line4" 				: "•ctrl+left-click to paste key IDs into the lock (*)"
+			},
+			
+			"PlayerControls" : {
+				"line0"					: "Player controls:",
+				"line1" 				: "•right-click to try to use a key on a lock",
+				"line2" 				: "•shift+right-click to try to pick a lock",
+				"line3" 				: "•alt+right-click to try to break a lock"
+			}
+		},
+		
+		"take-inventory-window" : {
+			"titles" : {
+				"inventory"				: "Inventory"
+			},
+			"header" : {
+				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
+			},
+			"buttons" : {
+				"take" : {
+					"name"				: "Take selected"
+				}
+			}
+		},
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "フィルター",
+				
+				"filter-by-lock-state" : {
+					"name"					: "Filter by lock state",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "Lock state condition",
+							"options" : {
+								"locked"	: "is locked",
+								"unlocked"	: "is unlocked"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "施錠"
+				},
+				
+				"unlock" : {
+					"name"					: "開錠"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "錠を切り替え"
+				},
+				
+				"loot-inventory" : {
+					"name"					: "Loot inventory",
+					"descrp"				: "<span class=\"logic-style\">{pname}</span> of <span class=\"entity-style\">{pEntities}</span>, offer to <span class=\"details-style\">{pOfferto}</span>",
+					"settings" : {
+						"offerto" : {
+							"name"			: "Offer to"
+						}
+					}	
+				}
+			}
+		}
+	}
+}
