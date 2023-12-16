@@ -82,8 +82,7 @@ class LnKSheetSettings {
 		
 			let vTabButtonHTML = 	`
 							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-tab="${cModuleName}">
-								<i class="fas ${cLnKKeyIcon}"></i>
-								${Translate("Titles."+cModuleName+"abbr")}
+								${Translate("Titles."+cModuleName)}
 							</a>
 							`; //tab button HTML
 			let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
