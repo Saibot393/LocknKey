@@ -1,3 +1,6 @@
+## v2.3.1
+- Fixed Pf2e ui bug in item tabs
+
 ## v2.3.0
 - Added world setting Key creation id option to show an option for the keys id in the key creation menu
 - Added door lock setting Lock on close to lock this door when it is closed
