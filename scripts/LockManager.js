@@ -417,15 +417,15 @@ class LockManager {
 		if (pLock && await LnKutils.isLockCompatible(pLock)) {
 			//make sure pLock is actually a Lock
 			
-			if (LnKutils.isTokenLock(pLock)) {
-				//tokens are not lockable by default
-				await LnKFlags.makeLockable(pLock)
-			}		
-			
 			if (game.settings.get(cModuleName, "KeyitemCreationPopup")) {
 				LockManager.createKeycreationDialog(pLock);
 			}
 			else {
+				if (LnKutils.isTokenLock(pLock)) {
+					//tokens are not lockable by default
+					await LnKFlags.makeLockable(pLock);
+				}	
+				
 				let vItem = await LnKutils.createKeyItem();
 			
 				LnKFlags.linkKeyLock(vItem, pLock);
@@ -470,7 +470,7 @@ class LockManager {
 			title: Translate("Titles.Keycreation"),
 			content: vHTML,
 			buttons: {
-				button1: {
+				confirmbutton: {
 					label: Translate("Titles.ConfirmKeycreation"),
 					callback: async (html) => {
 						let vID = html.find("input#KeyID")?.val();
@@ -478,6 +478,11 @@ class LockManager {
 						if (!vID) {
 							vID = "";
 						}
+						
+						if (LnKutils.isTokenLock(pLock)) {
+							//tokens are not lockable by default
+							await LnKFlags.makeLockable(pLock);
+						}	
 						
 						let vItem = await LnKutils.createKeyItem(html.find("input#Keyname").val(), html.find("[name=Folder]").find("option:selected").val());
 						LnKFlags.linkKeyLock(vItem, pLock, vID);

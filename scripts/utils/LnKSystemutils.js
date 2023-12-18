@@ -73,6 +73,8 @@ class LnKSystemutils {
 	//rolls
 	static isSystemPerceptionRoll(pMessage, pInfos) {} //returns if the message belongs to a perception roll
 	
+	static skillitems(pActor) {} //returns an object containing all items of type skill
+	
 	//IMPLEMENTATIONS
 	//Identification	
 	static isPf2e() {
@@ -320,6 +322,26 @@ class LnKSystemutils {
 		}
 		
 		return false;
+	}
+	
+	static skillitems(pActor) {
+		let vItems = pActor.items.filter(item => ["skill"].includes(item.type));
+		
+		let vItemset = {};
+		
+		for (let i = 0; i < vItems.length; i++) {
+			let vSkillName = vItems[i]?.name;
+			
+			if (!vSkillName) {
+				vItems[i]?.id;
+			}
+			
+			if (vSkillName) {
+				vItemset[vSkillName] = vItems[i];
+			}
+		}
+		
+		return vItemset;
 	}
 	
 	static canAutodetectSystemPerceptionRoll() {
