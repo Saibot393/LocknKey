@@ -1,3 +1,6 @@
+## v2.3.2
+- The Lock & Key tab in the item sheets will no longer have symbol but be titled with the full name to be more in line with the sheet design
+
 ## v2.3.1
 - Fixed Pf2e ui bug in item tabs
 
