@@ -1,3 +1,7 @@
+## v2.3.3
+- Fixed bug that caused item piles that were turned back into normal tokens to still be seen as item piles by Lock & Key
+- Fixed bug that caused the create key action to make tokens locked even if no key was created
+
 ## v2.3.2
 - The Lock & Key tab in the item sheets will no longer have symbol but be titled with the full name to be more in line with the sheet design
 
