@@ -1,3 +1,7 @@
+## v2.4.0
+- Added `@skills` to roll formulas, allowing formulas to reference skills in systems where skills a saved as items (e.g. Warhammer4e, DSA5e, Stars without Number...)
+- Added `@DC` to roll formulas, allowing formulas to reference the targets DC
+
 ## v2.3.3
 - Fixed bug that caused item piles that were turned back into normal tokens to still be seen as item piles by Lock & Key
 - Fixed bug that caused the create key action to make tokens locked even if no key was created
