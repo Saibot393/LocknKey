@@ -330,7 +330,7 @@ class LnKSystemutils {
 		let vItemset = {};
 		
 		for (let i = 0; i < vItems.length; i++) {
-			let vSkillName = vItems[i]?.name;
+			let vSkillName = vItems[i]?.name.replace(" ", "_");
 			
 			if (!vSkillName) {
 				vItems[i]?.id;

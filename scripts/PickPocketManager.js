@@ -3,6 +3,7 @@ import { LnKFlags, cCustomPopup } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { LnKTakeInventory } from "./helpers/LnKTakeInventory.js";
+import { LnKSystemutils} from "./utils/LnKSystemutils.js";
 
 const cPickPocketIcon = "fa-solid fa-hand";
 
@@ -46,8 +47,6 @@ class PickPocketManager {
 	static async PickPocketToken(pTarget, pCharacter, pPopUps = true) {
 		if (await LnKFlags.Canbepickpocketed(pTarget)) {
 			if (!game.settings.get(cModuleName, "usePf2eSystem")) {
-				let vRollData = {actor : pCharacter.actor};
-				
 				let vRollFormula = LnKFlags.PickPocketFormula(pCharacter);
 					
 				if (!LnKFlags.PickPocketFormulaOverrides(pCharacter)) {
@@ -59,17 +58,17 @@ class PickPocketManager {
 					vRollFormula = "0";
 				}
 			
-				let vRoll =  new Roll(vRollFormula, vRollData);
+				let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, await LnKFlags.PickPocketDC(pTarget));
 					
 				LnKSound.PlayDiceSound(pCharacter);
 					
-				Hooks.callAll(cModuleName+".DiceRoll", cUPickPocket, pCharacter);
-					
 				await vRoll.evaluate();
+				
+				Hooks.callAll(cModuleName+".DiceRoll", cUPickPocket, pCharacter, vRoll);
 					
 				await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocket", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
 					
-				let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : vRoll.dice[0].results.map(vDie => vDie.result)};
+				let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : vRoll.dice[0]?.results.map(vDie => vDie?.result)};
 					
 				PickPocketManager.RequestPickPocket(vData);
 			}
