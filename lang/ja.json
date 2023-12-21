@@ -75,8 +75,8 @@
 		"ChatMessage" : {
 			"LockPick"					: "{pName} は開錠を試みた:",
 			"LockPicksuccess" : {
-				"crit"					: "{pName} critically succeeded at picking the lock",
-				"default" 				: "{pName} succeeded at picking the lock"
+				"crit"					: "{pName} 開錠にクリティカル成功",
+				"default" 				: "{pName} 開錠に成功"
 			},
 			"LockPickfail" : {
 				"crit"					: "{pName} critically failed at picking the lock",
