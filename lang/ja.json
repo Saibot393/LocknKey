@@ -75,64 +75,64 @@
 		"ChatMessage" : {
 			"LockPick"					: "{pName} は開錠を試みた:",
 			"LockPicksuccess" : {
-				"crit"					: "{pName} は開錠にクリティカル成功した",
-				"default" 				: "{pName} は開錠に成功した"
+				"crit"					: "{pName} は開錠にクリティカル成功",
+				"default" 				: "{pName} は開錠に成功"
 			},
 			"LockPickfail" : {
-				"crit"					: "{pName} は開錠に致命的失敗した",
-				"default" 				: "{pName} は開錠に失敗した"
+				"crit"					: "{pName} は開錠に致命的に失敗",
+				"default" 				: "{pName} は開錠に失敗"
 			},
 			"LockPicksuccessLPName" : {
-				"crit"					: "{pName} は {pLPName} と協力して開錠にクリティカル成功した",
-				"default" 				: "{pName} は {pLPName} と協力して開錠に成功した"
+				"crit"					: "{pName} は {pLPName} を使って開錠にクリティカル成功",
+				"default" 				: "{pName} は {pLPName} を使って開錠に成功した"
 			},
 			"LockPickfailLPName" : {
-				"crit"					: "{pName} は {pLPName} と協力して開錠に致命的失敗した",
-				"default" 				: "{pName} は {pLPName} と協力して開錠に失敗した"
+				"crit"					: "{pName} は {pLPName} を使って開錠に致命的に失敗",
+				"default" 				: "{pName} は {pLPName} を使って開錠に失敗"
 			},
 			"LockPickfailLPNameremove" : {
-				"crit"					: "{pName} critically failed at picking the lock and broke {pLPName}"
+				"crit"					: "{pName} は開錠に致命的に失敗して {pLPName} を壊してしまった"
 			},
 			
-			"LockBreak"					: "{pName} tried to break a lock:",
+			"LockBreak"					: "{pName} は錠の破壊を試みた:",
 			"LockBreaksuccess" : {
-				"crit"					: "{pName} critically succeeded at breaking the lock",
-				"default" 				: "{pName} succeeded at breaking the lock"
+				"crit"					: "{pName} は錠の破壊にクリティカル成功した",
+				"default" 				: "{pName} は錠の破壊に成功した"
 			},
 			"LockBreakfail" : {
-				"crit"					: "{pName} critically failed to break the lock",
-				"default" 				: "{pName} failed to break the lock"
+				"crit"					: "{pName} は錠の破壊に致命的に失敗した",
+				"default" 				: "{pName} は錠の破壊に失敗した"
 			},
 			
 			"CustomCheck"				: "{pName} は {pCheckName}を使用した:",
 			"CustomChecksuccess" : {
-				"crit"					: "{pName} critically succeeded at {pCheckName}",
-				"default" 				: "{pName} succeeded at {pCheckName}"			
+				"crit"					: "{pName} は {pCheckName} にクリティカル成功",
+				"default" 				: "{pName} は {pCheckName} に成功"			
 			},
 			"CustomCheckFail" : {
-				"crit"					: "{pName} critically failed at {pCheckName}",
-				"default" 				: "{pName} failed at {pCheckName}"
+				"crit"					: "{pName} は {pCheckName} に致命的に失敗",
+				"default" 				: "{pName} は {pCheckName} に失敗"
 			},
 			
 			"PickPocket"				: "{pName} はスリを試みた:",
 			"PickPocketSuccess" : {
-				"crit"					: "{pName} critically succeeded at pick pocketing",
-				"default" 				: "{pName} succeeded at pick pocketing"			
+				"crit"					: "{pName} はスリにクリティカル成功",
+				"default" 				: "{pName} はスリに成功"			
 			},
 			"PickPocketFail" : {
-				"crit"					: "{pName} critically failed at pick pocketing",
-				"default" 				: "{pName} failed at pick pocketing"
+				"crit"					: "{pName} はスリに致命的に失敗",
+				"default" 				: "{pName} はスリに失敗"
 			}
 		},
 		
 		"Settings" : {
 			"useGMquickKeys" : {
-				"name" 					: "Use GM quick controls",
+				"name" 					: "GM クイック操作を使用",
 				"descrp"				: "Allows the GM to use the special lock related controls listed at the bottom (affected marked with *)"
 			},
 			
 			"allowLocking" : {
-				"name" 					: "Allow player locking",
+				"name" 					: "プレイヤーに施錠を許可",
 				"descrp"				: "Allow players to lock locks if they have a matching key"
 			},
 			
@@ -218,15 +218,15 @@
 			
 			"CritMethod" : {
 				"name" 					: "Crit system",
-				"descrp"				: "The way critical rolls are determined",
+				"descrp"				: "クリティカルが決まる方法",
 				"options" : {
-					"noCrit"			: "No crits",
-					"natCrit"			: "Nat 1/20",
-					"natCritpm10"		: "Nat 1/20 & +-10 of DC [e.g. Pf2e]",
-					"d100WFRP4"			: "d100 Nat1/100 [e.g. WFRP4e]",
-					"d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]",
-					"d100CoC7e"			: "d100 difficulty ranges [e.g. CoC7e]",
-					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]"
+					"noCrit"			: "クリティカルなし",
+					"natCrit"			: "出目 1/20",
+					"natCritpm10"		: "出目 1/20 及び 難易度から +-10 [例:Pf2e]",
+					"d100WFRP4"			: "d100 で出目1/100 [例:WFRP4e]",
+					"d100WFRP4Doubles"	: "d100 で出目1/100 及び ゾロ目 [例:WFRP4e]",
+					"d100CoC7e"			: "d100 難易度 [例:CoC7e]",
+					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [例:CoD2e]"
 				}
 			},
 			
@@ -355,8 +355,8 @@
 			},
 			
 			"PlayLockSounds" : {
-				"name" 					: "Play lock sounds",
-				"descrp"				: "Play a sound when a lock is locked/unlocked"		
+				"name" 					: "錠の音を鳴らす",
+				"descrp"				: "施錠・開錠時に音を鳴らすd"		
 			},
 			
 			"FreeCircumventButtonPosition" : {
