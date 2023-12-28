@@ -153,13 +153,15 @@ class LnKutils {
 	static includesone(pString, pIncludes) {} //returns if string contains a string included in pIncludes array
 	
 	//rolls
+	static createroll(pFormula, pActor, pDC) {} //returns a roll with actor and skills as possible @ values in the formual
+	
 	static StitchFormula(pFormulaA, pFormulaB) {} //stitches two roll formulsa together and returns the stitchedresult
 	
 	static StitchFormulas(pFormulas) {} //stitches an array of roll formulas together and returns the stitchedresult
 	
-	static async AverageResult(pFormula, pData = {}) {} //returns the average result of Roll formula pFormula
+	static async AverageResult(pFormula, pActor) {} //returns the average result of Roll formula pFormula
 	
-	static async HighestExpectedRollID(pRolls, pData = {}) {} //takes an array of rolls and returs the id of the highest expected roll result
+	static async HighestExpectedRollID(pRolls, pActor) {} //takes an array of rolls and returs the id of the highest expected roll result
 	
 	//keyboard
 	static KeyisDown(pKeyName, pnoKeyvalid = false) {} //returns if a key belonging to keybinding pKeyName is down (pnoKeyvalid if no key pressed is valid "input")
@@ -597,123 +599,125 @@ class LnKutils {
 		}
 		
 		//crit
-		switch (game.settings.get(cModuleName, "CritMethod")) {
-			case "CritMethod-natCrit":
-				//normal crit
-				if (pDiceDetails[0] == 20) {
-					vsuccessDegree = 2; //crit S
-				}
-				
-				if (pDiceDetails[0] == 1) {
-					vsuccessDegree = -1;//crit F
-				}
-				break;
-			case "CritMethod-natCritpm10":
-				//+-10 crit
-				if (vsuccessDegree == 1) {
-					if (pRollresult >= (pDC + 10)) {
-						vsuccessDegree = 2;//crit S
+		if (pDiceDetails) {
+			switch (game.settings.get(cModuleName, "CritMethod")) {
+				case "CritMethod-natCrit":
+					//normal crit
+					if (pDiceDetails[0] == 20) {
+						vsuccessDegree = 2; //crit S
 					}
-				}
-				
-				if (vsuccessDegree == 0) {
-					if (pRollresult <= (pDC - 10)) {
+					
+					if (pDiceDetails[0] == 1) {
 						vsuccessDegree = -1;//crit F
 					}
-				}	
-				
-				//normal crit
-				if (pDiceDetails[0] == 20) {
-					vsuccessDegree = vsuccessDegree + 1; //crit S
-				}
-				
-				if (pDiceDetails[0] == 1) {
-					vsuccessDegree = vsuccessDegree - 1;//crit F
-				}
-				break;
-			case "CritMethod-d100WFRP4":
-				if (pDiceDetails[0] == 1) {
-					vsuccessDegree = 2; //crit S
-				}
-				
-				if (pDiceDetails[0] == 100) {
-					vsuccessDegree = -1; //crit F
-				}
-				break;
-			case "CritMethod-d100WFRP4Doubles":
-				if (pDiceDetails[0] == 1 || (vsuccessDegree > 0 && pDiceDetails[0]%11 == 0)) {
-					vsuccessDegree = 2; //crit S
-				}
-				
-				if (pDiceDetails[0] == 100 || (vsuccessDegree <= 0 && pDiceDetails[0]%11 == 0)) {
-					vsuccessDegree = -1; //crit F
-				}
-				break;
-			case "CritMethod-d100CoC7e":
-				let vCritFailureValue = 100;
-				
-				if ((pDiceDetails[0] / pRollresult) < 50) {
-					vCritFailureValue = 96; //increase crit fail because of low skill value
-				}
-			
-				//normal results
-				switch (pDC) {
-					case 0: //failure required
-						vsuccessDegree = Number(pDiceDetails[0] < vCritFailureValue);
 					break;
-					default:
-					case 1: //success required
-						vsuccessDegree = Number(pRollresult <= 1);
+				case "CritMethod-natCritpm10":
+					//+-10 crit
+					if (vsuccessDegree == 1) {
+						if (pRollresult >= (pDC + 10)) {
+							vsuccessDegree = 2;//crit S
+						}
+					}
+					
+					if (vsuccessDegree == 0) {
+						if (pRollresult <= (pDC - 10)) {
+							vsuccessDegree = -1;//crit F
+						}
+					}	
+					
+					//normal crit
+					if (pDiceDetails[0] == 20) {
+						vsuccessDegree = vsuccessDegree + 1; //crit S
+					}
+					
+					if (pDiceDetails[0] == 1) {
+						vsuccessDegree = vsuccessDegree - 1;//crit F
+					}
 					break;
-					case 2: //difficult success required
-						vsuccessDegree = Number(pRollresult <= 0.5);
+				case "CritMethod-d100WFRP4":
+					if (pDiceDetails[0] == 1) {
+						vsuccessDegree = 2; //crit S
+					}
+					
+					if (pDiceDetails[0] == 100) {
+						vsuccessDegree = -1; //crit F
+					}
 					break;
-					case 3: //extreme success required
-						vsuccessDegree = Number(pRollresult <= 0.2);
+				case "CritMethod-d100WFRP4Doubles":
+					if (pDiceDetails[0] == 1 || (vsuccessDegree > 0 && pDiceDetails[0]%11 == 0)) {
+						vsuccessDegree = 2; //crit S
+					}
+					
+					if (pDiceDetails[0] == 100 || (vsuccessDegree <= 0 && pDiceDetails[0]%11 == 0)) {
+						vsuccessDegree = -1; //crit F
+					}
 					break;
-					case 4: //critical success required
-						vsuccessDegree = Number(pDiceDetails[0] == 1);
+				case "CritMethod-d100CoC7e":
+					let vCritFailureValue = 100;
+					
+					if ((pDiceDetails[0] / pRollresult) < 50) {
+						vCritFailureValue = 96; //increase crit fail because of low skill value
+					}
+				
+					//normal results
+					switch (pDC) {
+						case 0: //failure required
+							vsuccessDegree = Number(pDiceDetails[0] < vCritFailureValue);
+						break;
+						default:
+						case 1: //success required
+							vsuccessDegree = Number(pRollresult <= 1);
+						break;
+						case 2: //difficult success required
+							vsuccessDegree = Number(pRollresult <= 0.5);
+						break;
+						case 3: //extreme success required
+							vsuccessDegree = Number(pRollresult <= 0.2);
+						break;
+						case 4: //critical success required
+							vsuccessDegree = Number(pDiceDetails[0] == 1);
+						break;
+					}
+					
+					if (pDiceDetails[0] == 1) {
+						vsuccessDegree = 2; //crit S
+					}
+					
+					if (pDiceDetails[0] >= vCritFailureValue) {
+						vsuccessDegree = -1; //crit F
+					}
+					
 					break;
-				}
-				
-				if (pDiceDetails[0] == 1) {
-					vsuccessDegree = 2; //crit S
-				}
-				
-				if (pDiceDetails[0] >= vCritFailureValue) {
-					vsuccessDegree = -1; //crit F
-				}
-				
-				break;
-			case "CritMethod-d10poolCoD2e":
-				let vPoolSuccesses = pRollresult;
-				
-				let vRerollLimit = 10; //find way to alter
-				
-				if (pInfos.hasOwnProperty("RollType")) {
-					vRerollLimit = LnKFlags.RollOptions(pCharacter, pInfos.RollType, "d10CritLimit", vRerollLimit);
-				}
-				
-				let vRerollsCount = pDiceDetails.filter(vRollResult => vRollResult >= vRerollLimit).length;	
+				case "CritMethod-d10poolCoD2e":
+					let vPoolSuccesses = pRollresult;
+					
+					let vRerollLimit = 10; //find way to alter
+					
+					if (pInfos.hasOwnProperty("RollType")) {
+						vRerollLimit = LnKFlags.RollOptions(pCharacter, pInfos.RollType, "d10CritLimit", vRerollLimit);
+					}
+					
+					let vRerollsCount = pDiceDetails.filter(vRollResult => vRollResult >= vRerollLimit).length;	
 
-				let vReroll;
-				
-				let vDieRolls;
-				
-				do {
-					vReroll = new Roll(vRerollsCount+"d10cs>=8");
+					let vReroll;
 					
-					await vReroll.evaluate();
+					let vDieRolls;
 					
-					vPoolSuccesses = vPoolSuccesses + vReroll.total;
+					do {
+						vReroll = new Roll(vRerollsCount+"d10cs>=8");
+						
+						await vReroll.evaluate();
+						
+						vPoolSuccesses = vPoolSuccesses + vReroll.total;
+						
+						vDieRolls = vReroll.dice[0]?.results?.map(vDie => vDie.result);
+						
+						vRerollsCount = vDieRolls.filter(vRollResult => vRollResult >= vRerollLimit);
+					} while (vRerollsCount > 0);
 					
-					vDieRolls = vReroll.dice[0]?.results?.map(vDie => vDie.result);
-					
-					vRerollsCount = vDieRolls.filter(vRollResult => vRollResult >= vRerollLimit);
-				} while (vRerollsCount > 0);
-				
-				vsuccessDegree = Number(vPoolSuccesses >= pDC);
-				break;
+					vsuccessDegree = Number(vPoolSuccesses >= pDC);
+					break;
+			}
 		}
 		
 		vsuccessDegree = Math.min(2, Math.max(-1, vsuccessDegree)); //make sure vsuccessDegree is in [-1, 2]
@@ -816,6 +820,14 @@ class LnKutils {
 	}
 	
 	//rolls
+	static createroll(pFormula, pActor, pDC) {
+		let vSkills = LnKSystemutils.skillitems(pActor);
+		
+		let vRoll = new Roll(pFormula, {actor : pActor, skills : vSkills, DC : pDC});
+		
+		return vRoll;
+	}
+	
 	static StitchFormula(pFormulaA, pFormulaB) {
 		let vFormula = pFormulaA.trimEnd();
 		let cStitch = " ";
@@ -850,13 +862,13 @@ class LnKutils {
 		return vFormula;
 	} 
 	
-	static async AverageResult(pFormula, pData = {}) {
+	static async AverageResult(pFormula, pActor) {
 		if (pFormula == "") {
 			//catch empty formulas
 			return 0;
 		}
 		
-		let vFormula = Roll.replaceFormulaData(pFormula, pData);
+		let vFormula = Roll.replaceFormulaData(pFormula, {actor : pActor, skills : LnKSystemutils.skillitems(pActor)});
 		
 		if (vFormula.includes("d") || vFormula.includes("D")) {
 			//Dice are used, simulate multiple times
@@ -868,7 +880,7 @@ class LnKutils {
 		}
 	}
 	
-	static async HighestExpectedRollID(pRolls, pData = {}) {
+	static async HighestExpectedRollID(pRolls, pActor) {
 		if (pRolls.length = 1) {
 			//no comparison necessary
 			return 0;
@@ -880,7 +892,7 @@ class LnKutils {
 		
 		for (let i = 0; i < pRolls.length; i++) {
 			//simulate all rolls and save if highest yet
-			vCurrent = await LnKutils.AverageResult(pRolls[i], pData);
+			vCurrent = await LnKutils.AverageResult(pRolls[i], pActor);
 			
 			if (vCurrent > vHighest) {
 				vHighest = vCurrent;

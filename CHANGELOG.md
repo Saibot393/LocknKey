@@ -1,3 +1,17 @@
+## v2.4.0
+- Added `@skills` to roll formulas, allowing formulas to reference skills in systems where skills a saved as items (e.g. Warhammer4e, DSA5e, Stars without Number...)
+- Added `@DC` to roll formulas, allowing formulas to reference the targets DC
+
+## v2.3.3
+- Fixed bug that caused item piles that were turned back into normal tokens to still be seen as item piles by Lock & Key
+- Fixed bug that caused the create key action to make tokens locked even if no key was created
+
+## v2.3.2
+- The Lock & Key tab in the item sheets will no longer have symbol but be titled with the full name to be more in line with the sheet design
+
+## v2.3.1
+- Fixed Pf2e ui bug in item tabs
+
 ## v2.3.0
 - Added world setting Key creation id option to show an option for the keys id in the key creation menu
 - Added door lock setting Lock on close to lock this door when it is closed

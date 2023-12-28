@@ -190,7 +190,6 @@ class KeyManager {
 	
 	static async onatemptedcircumventLock(pLockObject, pUseType, pCharacter) {
 		let vRoll;
-		let vRollData;
 		let vRollFormula = "";
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		let vUsedItemID;
@@ -198,15 +197,13 @@ class KeyManager {
 		let vCallback;
 			
 		if (pCharacter) {
-			//set roll data
-			vRollData = {actor : pCharacter.actor};
 			
 			vCircumvent = await KeyManager.cancircumventLock(pCharacter, pLockObject, pUseType); //will save if circumvention possible and the item
 			if (vCircumvent) {
 				
 				if (!game.settings.get(cModuleName, "usePf2eSystem") || (pUseType == cLUCustomCheck)) {
 					//get rollformula and used item (for roll formula)
-					[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType, vRollData);
+					[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType);
 					
 					if (vUsedItemID.length <= 0 && vCircumvent.id) {
 						//no special item was found but vCircumvent is item with id, so fall back to vCircumvent
@@ -214,13 +211,13 @@ class KeyManager {
 					}
 					
 					//roll dice according to formula
-					vRoll =  new Roll(vRollFormula, vRollData);
+					vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, LnKFlags.LockDCtype(pLockObject, pUseType));
 					
 					LnKSound.PlayDiceSound(pCharacter);
 					
-					Hooks.callAll(cModuleName+".DiceRoll", pUseType, pCharacter);
-					
 					await vRoll.evaluate();
+					
+					Hooks.callAll(cModuleName+".DiceRoll", pUseType, pCharacter, vRoll);
 					
 					//ouput dice result in chat
 					switch (pUseType) {
@@ -235,7 +232,7 @@ class KeyManager {
 							break;
 					}
 					
-					let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice[0].results.map(vDie => vDie.result)};
+					let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : vRoll.dice[0]?.results.map(vDie => vDie?.result)};
 					
 					KeyManager.requestLockuse(vData);
 				}
@@ -374,7 +371,7 @@ class KeyManager {
 		}
 	}
 	
-	static async circumventLockroll(pCharacter, pLock, puseMethod, pRollData) {
+	static async circumventLockroll(pCharacter, pLock, puseMethod) {
 		let vValidItems;
 		let vBestItem;
 		let vBestItemID = "";
@@ -385,7 +382,7 @@ class KeyManager {
 		
 		if (vValidItems.length) {
 			//find best item		
-			vBestItem = vValidItems[await LnKutils.HighestExpectedRollID(vValidItems.map(vItem => LnKFlags.Formula(vItem, puseMethod)), pRollData)];
+			vBestItem = vValidItems[await LnKutils.HighestExpectedRollID(vValidItems.map(vItem => LnKFlags.Formula(vItem, puseMethod)), pCharacter.actor)];
 			
 			//create roll formula
 			vRollFormula = LnKFlags.Formula(vBestItem, puseMethod);

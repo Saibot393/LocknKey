@@ -5,6 +5,7 @@ import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF,
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
+import {LnKSystemutils} from "../utils/LnKSystemutils.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -41,14 +42,20 @@ class LnKSheetSettings {
 	static ItemSheetSettings(pApp, pHTML, pData) {
 		if (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)) {
 			//setup
-			let vTabbar = pHTML.find(`.sheet-tabs`);
+			let vTabbar = pHTML.find(`div.tabs[data-tab-container="primary"]`)
 			if (!vTabbar.length) {
-				//if tab bar was not found, try other search
-				vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
+				vTabbar = pHTML.find(`nav.sheet-tabs`);
 				if (!vTabbar.length) {
-					vTabbar = pHTML.find(`[data-group="main"].tabs`);
+					//if tab bar was not found, try other search
+					vTabbar = pHTML.find(`.sheet-tabs`);
+					if (!vTabbar.length) {
+						vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
+						if (!vTabbar.length) {
+							vTabbar = pHTML.find(`[data-group="main"].tabs`);
+						}
+					}
 				}
-			}	
+			}
 			
 			let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
 			if (!vprevTab.length) {
@@ -74,9 +81,8 @@ class LnKSheetSettings {
 
 		
 			let vTabButtonHTML = 	`
-							<a class="item list-row" data-tab="${cModuleName}">
-								<i class="fas ${cLnKKeyIcon}"></i>
-								${Translate("Titles."+cModuleName+"abbr")}
+							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-tab="${cModuleName}">
+								${Translate("Titles."+cModuleName)}
 							</a>
 							`; //tab button HTML
 			let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
