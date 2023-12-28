@@ -29,13 +29,13 @@
 			"Keyfolder"					: "Key target folder",
 			"ConfirmKeycreation"		: "作成",
 			"Basic"						: "基本",
-			"Triggers"					: "Triggers",
-			"FreeCircumventHUD"			: "This token can circumvent the next lock, click to remove",
+			"Triggers"					: "トリガー",
+			"FreeCircumventHUD"			: "このコマは次の錠を無視できる、クリックして取り除く",
 			"PickPocket"				: "スリ",
 			"LockchangePasskey"			: "パスワード変更",
 			"LockuseIdentity"			: "鑑定",
 			"newPasskey"				: "新しいパスワード:",
-			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」は wants to add these identities to a lock:{pIdentities}",
+			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」はこれらの要素を錠に追加を要求:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}"
 		},
 		
@@ -75,20 +75,20 @@
 		"ChatMessage" : {
 			"LockPick"					: "{pName} は開錠を試みた:",
 			"LockPicksuccess" : {
-				"crit"					: "{pName} 開錠にクリティカル成功",
-				"default" 				: "{pName} 開錠に成功"
+				"crit"					: "{pName} は開錠にクリティカル成功した",
+				"default" 				: "{pName} は開錠に成功した"
 			},
 			"LockPickfail" : {
-				"crit"					: "{pName} critically failed at picking the lock",
-				"default" 				: "{pName} failed at picking the lock"
+				"crit"					: "{pName} は開錠に致命的失敗した",
+				"default" 				: "{pName} は開錠に失敗した"
 			},
 			"LockPicksuccessLPName" : {
-				"crit"					: "{pName} critically succeeded at picking the lock with {pLPName}",
-				"default" 				: "{pName} succeeded at picking the lock with {pLPName}"
+				"crit"					: "{pName} は {pLPName} と協力して開錠にクリティカル成功した",
+				"default" 				: "{pName} は {pLPName} と協力して開錠に成功した"
 			},
 			"LockPickfailLPName" : {
-				"crit"					: "{pName} critically failed at picking the lock with {pLPName}",
-				"default" 				: "{pName} failed at picking the lock with {pLPName}"
+				"crit"					: "{pName} は {pLPName} と協力して開錠に致命的失敗した",
+				"default" 				: "{pName} は {pLPName} と協力して開錠に失敗した"
 			},
 			"LockPickfailLPNameremove" : {
 				"crit"					: "{pName} critically failed at picking the lock and broke {pLPName}"
