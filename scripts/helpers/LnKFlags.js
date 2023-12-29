@@ -991,7 +991,7 @@ class LnKFlags {
 	static LockDC(pLock, praw = false) {
 		let vDC = this.#LockDCFlag(pLock);
 		
-		if ((vDC == -1 || LnKFlags.Lockisjammed(pLock) || !LnKFlags.LPAttemptsLeft(pLock)) && !praw) {
+		if ((vDC == LnKutils.infinitythreshold() || LnKFlags.Lockisjammed(pLock) || !LnKFlags.LPAttemptsLeft(pLock)) && !praw) {
 			vDC = Infinity;
 		}
 		
@@ -1001,7 +1001,7 @@ class LnKFlags {
 	static LockBreakDC(pLock, praw = false) {
 		let vDC = this.#LockBreakDCFlag(pLock);
 		
-		if (vDC == -1 && !praw) {
+		if (vDC == LnKutils.infinitythreshold() && !praw) {
 			vDC = Infinity;
 		}
 		
@@ -1011,7 +1011,7 @@ class LnKFlags {
 	static LockCCDC(pLock, praw = false) {
 		let vDC = this.#LockCCDCFlag(pLock);
 		
-		if (vDC == -1 && !praw) {
+		if (vDC == LnKutils.infinitythreshold() && !praw) {
 			vDC = Infinity;
 		}
 		
@@ -1251,7 +1251,7 @@ class LnKFlags {
 	static async PickPocketDC(pToken, praw = false) {
 		let vDC = await this.#PickPocketDCFlag(pToken);
 		
-		if (vDC == -1 && !praw) {
+		if (vDC == LnKutils.infinitythreshold() && !praw) {
 			vDC = Infinity;
 		}
 		

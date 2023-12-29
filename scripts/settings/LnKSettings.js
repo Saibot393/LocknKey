@@ -192,7 +192,16 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 		"CritMethod-d100CoC7e" : Translate("Settings.CritMethod.options.d100CoC7e"),
 		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e")
 	},
-	default: "CritMethod-natCrit"
+	default: "CritMethod-natCrit",
+	onChange: pvalue => {
+		const cdefaultDCsettings = ["PickPocketDefaultDC", "CustomCircumventDefaultDC", "DefaultBreakDC", "DefaultPickDC"];
+		
+		for (let i = 0; i < cdefaultDCsettings.length; i++) {
+			if (game.settings.get(cModuleName, cdefaultDCsettings[i]) < 0) {
+				game.settings.set(cModuleName, cdefaultDCsettings[i], LnKutils.infinitythreshold());
+			}
+		}
+	},
   });
   
   game.settings.register(cModuleName, "LockPickItem", {

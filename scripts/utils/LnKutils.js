@@ -126,10 +126,6 @@ class LnKutils {
 	
 	static WithinLockingDistance(pCharacter, pLock) {} //returns if pLock is within the use Distanc of pUser
 	
-	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
-	
-	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
-	
 	static generateRollInfos(pToken) {} //returns roll infos based on pToken, used by successDegree()
 	
 	static LPformulaWorld() {} //returns the worlds formula used for Lock picking rolls
@@ -153,6 +149,12 @@ class LnKutils {
 	static includesone(pString, pIncludes) {} //returns if string contains a string included in pIncludes array
 	
 	//rolls
+	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
+	
+	static infinitythreshold() {} //returns the threshhold below which a number is interpreted as Infinity
+	
+	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
+	
 	static createroll(pFormula, pActor, pDC) {} //returns a roll with actor and skills as possible @ values in the formual
 	
 	static StitchFormula(pFormulaA, pFormulaB) {} //stitches two roll formulsa together and returns the stitchedresult
@@ -572,9 +574,112 @@ class LnKutils {
 		return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKutils.LockuseDistance();
 	}
 	
+	static generateRollInfos(pToken) {
+		let vInfos = {};
+		
+		return vInfos;
+	}
+	
+	static LPformulaWorld() {
+		if (game.settings.get(cModuleName, "LockPickFormula").length) {
+			return game.settings.get(cModuleName, "LockPickFormula");
+		}
+		else {
+			return LnKSystemutils.SystemdefaultLPformula();
+		}
+	}
+	
+	static LBformulaWorld() {
+		if (game.settings.get(cModuleName, "LockBreakFormula").length) {
+			return game.settings.get(cModuleName, "LockBreakFormula");
+		}
+		else {
+			return LnKSystemutils.SystemdefaultLBformula();
+		}		
+	}
+	
+	static CCformulaWorld() {
+		if (game.settings.get(cModuleName, "CustomCircumventFormula").length) {
+			return game.settings.get(cModuleName, "CustomCircumventFormula");
+		}
+		else {
+			return "0";
+		}			
+	}
+	
+	static formulaWorld(pType) {
+		switch (pType) {
+			case cLUpickLock:
+				return LnKutils.LPformulaWorld();
+				break;
+			case cLUbreakLock:
+				return LnKutils.LBformulaWorld();
+				break;
+			case cLUCustomCheck:
+				return LnKutils.CCformulaWorld();
+				break;
+			default:
+				return "";
+				break;
+		}
+	}
+	
+	static useMultiSuccess(pObject) {
+		let vScene = FCore.sceneof(pObject);
+		
+		if (vScene && game.settings.get(cModuleName, "onlyCombatMultiSuccess")) {
+			//lock if combat is active in scene of pObject
+			return game.combats.find(vCombat => vCombat.scene.id == vScene.id && vCombat.started)
+		}
+		
+		return true;
+	}
+	
+	//pick pocket
+	static PickPocketformulaWorld() {
+		if (game.settings.get(cModuleName, "PickPocketFormula").length) {
+			return game.settings.get(cModuleName, "PickPocketFormula");
+		}
+		else {
+			return "0";
+		}			
+	}
+	
+	static async CalculatePPDefaultDC(pToken) {
+		let vFormula = game.settings.get(cModuleName, "PickPocketDefaultDCFormula");
+		
+		if (vFormula && pToken.actor) {
+			let vRoll = new Roll(vFormula, {actor : pToken.actor});
+			
+			await vRoll.evaluate();
+			
+			return vRoll.total;
+		}
+		
+		return game.settings.get(cModuleName, "PickPocketDefaultDC");
+	}
+	
+	//arrays
+	static Intersection(pArray1, pArray2) {
+		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
+	}
+	
+	static includesone(pString, pIncludes) {
+		return pIncludes.find(vInclude => pString.includes(vInclude));
+	}
+	
+	//rolls
 	static beatsDC(pRollresult, pDC) {
 		return pRollresult >= pDC;
 	}
+	
+	static infinitythreshold() {
+		switch (game.settings.get(cModuleName, "CritMethod")) {
+			default:
+				return -1;
+				break;
+		}
+	} 
 	
 	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {
 		
@@ -725,101 +830,6 @@ class LnKutils {
 		return vsuccessDegree;
 	}
 	
-	static generateRollInfos(pToken) {
-		let vInfos = {};
-		
-		return vInfos;
-	}
-	
-	static LPformulaWorld() {
-		if (game.settings.get(cModuleName, "LockPickFormula").length) {
-			return game.settings.get(cModuleName, "LockPickFormula");
-		}
-		else {
-			return LnKSystemutils.SystemdefaultLPformula();
-		}
-	}
-	
-	static LBformulaWorld() {
-		if (game.settings.get(cModuleName, "LockBreakFormula").length) {
-			return game.settings.get(cModuleName, "LockBreakFormula");
-		}
-		else {
-			return LnKSystemutils.SystemdefaultLBformula();
-		}		
-	}
-	
-	static CCformulaWorld() {
-		if (game.settings.get(cModuleName, "CustomCircumventFormula").length) {
-			return game.settings.get(cModuleName, "CustomCircumventFormula");
-		}
-		else {
-			return "0";
-		}			
-	}
-	
-	static formulaWorld(pType) {
-		switch (pType) {
-			case cLUpickLock:
-				return LnKutils.LPformulaWorld();
-				break;
-			case cLUbreakLock:
-				return LnKutils.LBformulaWorld();
-				break;
-			case cLUCustomCheck:
-				return LnKutils.CCformulaWorld();
-				break;
-			default:
-				return "";
-				break;
-		}
-	}
-	
-	static useMultiSuccess(pObject) {
-		let vScene = FCore.sceneof(pObject);
-		
-		if (vScene && game.settings.get(cModuleName, "onlyCombatMultiSuccess")) {
-			//lock if combat is active in scene of pObject
-			return game.combats.find(vCombat => vCombat.scene.id == vScene.id && vCombat.started)
-		}
-		
-		return true;
-	}
-	
-	//pick pocket
-	static PickPocketformulaWorld() {
-		if (game.settings.get(cModuleName, "PickPocketFormula").length) {
-			return game.settings.get(cModuleName, "PickPocketFormula");
-		}
-		else {
-			return "0";
-		}			
-	}
-	
-	static async CalculatePPDefaultDC(pToken) {
-		let vFormula = game.settings.get(cModuleName, "PickPocketDefaultDCFormula");
-		
-		if (vFormula && pToken.actor) {
-			let vRoll = new Roll(vFormula, {actor : pToken.actor});
-			
-			await vRoll.evaluate();
-			
-			return vRoll.total;
-		}
-		
-		return game.settings.get(cModuleName, "PickPocketDefaultDC");
-	}
-	
-	//arrays
-	static Intersection(pArray1, pArray2) {
-		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
-	}
-	
-	static includesone(pString, pIncludes) {
-		return pIncludes.find(vInclude => pString.includes(vInclude));
-	}
-	
-	//rolls
 	static createroll(pFormula, pActor, pDC) {
 		let vSkills = LnKSystemutils.skillitems(pActor);
 		

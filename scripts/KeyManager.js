@@ -428,14 +428,14 @@ class KeyManager {
 				content: `<label>${vTitle}</label>
 						<input type="text" id="Passkey" name="Passkey">`,
 				buttons: {
-					button1: {
+					confirm: {
 						label: Translate("Titles.ConfirmPasskey"),
 						callback: (html) => {let vData = {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}; 
 											KeyManager.requestLockuse(vData)},
 						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 					}
 				},
-				default: Translate("Titles.ConfirmPasskey")
+				default: "confirm"
 			}).render(true);
 		}
 		else {
@@ -448,14 +448,14 @@ class KeyManager {
 						<label>${vnewPasswordTitle}</label>
 						<input type="text" id="newPasskey" name="newPasskey">`,
 				buttons: {
-					button1: {
+					confirm: {
 						label: Translate("Titles.ConfirmPasskey"),
 						callback: (html) => {let vData = {useType : cLUchangePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, OldPasskey : html.find("input#Passkey").val(), NewPasskey : html.find("input#newPasskey").val()}; 
 											KeyManager.requestLockuse(vData)},
 						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 					}
 				},
-				default: Translate("Titles.ConfirmPasskey")
+				default: "confirm"
 			}).render(true);
 		}
 	}
