@@ -31,6 +31,10 @@ class LockManager {
 	
 	static async LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
 	
+	static requestLockonClose(pLock) {} //request the GM to lock a lock on close door
+	
+	static LockonCloseRequest(pData) {} //called when a player requests a lock on close
+	
 	//LockKeys
 	static async newLockKey(pLock) {} //create a new item key for pLock
 	
@@ -412,6 +416,30 @@ class LockManager {
 		}
 	}
 	
+	static requestLockonClose(pLock) {
+		let vData = {sceneID : pLock.parent.id, lockID : pLock.id};
+		
+		if (game.user.isGM) {
+			LockManager.LockonCloseRequest(vData);
+		}
+		else {
+			game.socket.emit("module."+cModuleName, {pFunction : "LockonCloseRequest", pData : vData});
+		}
+	}
+	
+	static LockonCloseRequest(pData) {
+		let vScene = game.scenes.get(pData.sceneID);
+		
+		if (vScene) {
+			let vLock = vScene.walls.get(pData.lockID);
+			if (vLock.door > 0) {
+				if (LnKFlags.isLockonClose(vLock)) {
+					LockManager.ToggleLock(vLock, cLUisGM);
+				}
+			}
+		}
+	}
+	
 	//LockKeys
 	static async newLockKey(pLock) {
 		if (pLock && await LnKutils.isLockCompatible(pLock)) {
@@ -712,12 +740,10 @@ class LockManager {
 	
 	//ons
 	static onpreupdateWall(pWall, pChanges, pInfos, pUser) {
-		if (game.user.isGM) {
-			if (pWall.door > 0) {
-				if (pChanges.ds == 0 && pWall.ds == 1) {
-					if (LnKFlags.isLockonClose(pWall)) {
-						LockManager.ToggleLock(pWall, cLUisGM)
-					}
+		if (pWall.door > 0) {
+			if (pChanges.ds == 0 && pWall.ds == 1) {
+				if (LnKFlags.isLockonClose(pWall)) {
+					LockManager.requestLockonClose(pWall)
 				}
 			}
 		}
@@ -823,7 +849,9 @@ function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObj
 
 function UserCanopenToken(pToken, pPopup = false) {return LockManager.UserCanopenToken(pToken, pPopup)} //if the current user can open pToken
 
-export { LockuseRequest, isUnlocked, UserCanopenToken }
+function LockonCloseRequest(pData) {return LockManager.LockonCloseRequest(pData)};
+
+export { LockuseRequest, isUnlocked, UserCanopenToken, LockonCloseRequest }
 
 //wrap export macro functions, GM only
 function TogglehoveredLockGM() {if (game.user.isGM) { return LockManager.ToggleLock(LnKutils.hoveredObject(), cLUisGM)}};
