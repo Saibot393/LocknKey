@@ -1,3 +1,6 @@
+## v2.4.1
+- The enter key will now work in the password dialog
+
 ## v2.4.0
 - Added `@skills` to roll formulas, allowing formulas to reference skills in systems where skills a saved as items (e.g. Warhammer4e, DSA5e, Stars without Number...)
 - Added `@DC` to roll formulas, allowing formulas to reference the targets DC
