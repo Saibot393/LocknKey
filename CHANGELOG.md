@@ -1,3 +1,6 @@
+## v2.4.2
+- Fixed bug with lock on close feature
+
 ## v2.4.1
 - The enter key will now work in the password dialog
 
