@@ -167,6 +167,8 @@ class LnKutils {
 	
 	static validChars(pstring) {} //returns the part of pstring containing valid (ASCII) chars
 	
+	static diceResults(pRoll) {} //returns array of Dice results of pRoll
+	
 	//keyboard
 	static KeyisDown(pKeyName, pnoKeyvalid = false) {} //returns if a key belonging to keybinding pKeyName is down (pnoKeyvalid if no key pressed is valid "input")
 	
@@ -930,6 +932,16 @@ class LnKutils {
 	
 	static validChars(pstring) {
 		return pstring.replace(/[^\x00-\x7F]/g, "");
+	}
+	
+	static diceResults(pRoll) {
+		let vResults = [];
+		
+		for (let i = 0; i < pRoll.dice.length; i++) {
+			vResults = vResults.concat(pRoll.dice[i]?.results.map(vDie => vDie?.result));	
+		}
+		
+		return vResults.filter(vDie => vDie != undefined);
 	}
 	
 	//keyboard

@@ -68,7 +68,7 @@ class PickPocketManager {
 					
 				await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocket", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
 					
-				let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : vRoll.dice[0]?.results.map(vDie => vDie?.result)};
+				let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : LnKutils.diceResults(vRoll)};
 					
 				PickPocketManager.RequestPickPocket(vData);
 			}
