@@ -1,3 +1,7 @@
+## v2.4.3
+- Added support for DSA and SWADE
+- Added option to only show items settings for specific subtypes (currently only available for DSA, will be added to other systems based on requests)
+
 ## v2.4.2
 - Fixed bug with lock on close feature
 
