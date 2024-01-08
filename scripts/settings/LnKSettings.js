@@ -167,6 +167,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: "all"
   }); 
   
+  game.settings.register(cModuleName, "LnKSettingsubTypes", {
+	name: Translate("Settings.LnKSettingsubTypes.name"),
+	hint: Translate("Settings.LnKSettingsubTypes.descrp"),
+	scope: "world",
+	config: LnKSystemutils.candetectSystemSubtype(),
+	type: String,
+	default: "all"
+  }); 
+  
   game.settings.register(cModuleName, "usePf2eSystem", {
 	name: Translate("Settings.usePf2eSystem.name"),
 	hint: Translate("Settings.usePf2eSystem.descrp"),
@@ -190,7 +199,8 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 		"CritMethod-d100WFRP4": Translate("Settings.CritMethod.options.d100WFRP4"),
 		"CritMethod-d100WFRP4Doubles": Translate("Settings.CritMethod.options.d100WFRP4Doubles"),
 		"CritMethod-d100CoC7e" : Translate("Settings.CritMethod.options.d100CoC7e"),
-		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e")
+		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e"),
+		"CritMethod-3d20DSA" : Translate("Settings.CritMethod.options.3d20DSA")
 	},
 	default: "CritMethod-natCrit",
 	onChange: pvalue => {

@@ -40,7 +40,8 @@ class LnKSheetSettings {
 	//IMPLEMENTATIONS
 	
 	static ItemSheetSettings(pApp, pHTML, pData) {
-		if (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)) {
+		if (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)
+			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.object)))) {
 			//setup
 			let vTabbar = pHTML.find(`div.tabs[data-tab-container="primary"]`)
 			if (!vTabbar.length) {

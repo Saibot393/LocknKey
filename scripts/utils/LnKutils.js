@@ -165,6 +165,8 @@ class LnKutils {
 	
 	static async HighestExpectedRollID(pRolls, pActor) {} //takes an array of rolls and returs the id of the highest expected roll result
 	
+	static validChars(pstring) {} //returns the part of pstring containing valid (ASCII) chars
+	
 	//keyboard
 	static KeyisDown(pKeyName, pnoKeyvalid = false) {} //returns if a key belonging to keybinding pKeyName is down (pnoKeyvalid if no key pressed is valid "input")
 	
@@ -698,6 +700,9 @@ class LnKutils {
 			case "CritMethod-d100CoC7e":
 			case "CritMethod-d10poolCoD2e":
 				break;
+			case "CritMethod-3d20DSA":
+				vsuccessDegree = Number(pRollresult <= 0);
+				break;
 			default:
 				vsuccessDegree = Number(pRollresult >= pDC); //F || S
 				break;
@@ -822,6 +827,15 @@ class LnKutils {
 					
 					vsuccessDegree = Number(vPoolSuccesses >= pDC);
 					break;
+				case "CritMethod-3d20DSA":
+					if (pDiceDetails.filter(vdice => vdice == 1).length >= 2) {
+						vsuccessDegree = 2; //crit S
+					}
+					
+					if (pDiceDetails.filter(vdice => vdice == 20).length >= 2) {
+						vsuccessDegree = -1;//crit F
+					}
+					break;
 			}
 		}
 		
@@ -833,7 +847,7 @@ class LnKutils {
 	static createroll(pFormula, pActor, pDC) {
 		let vSkills = LnKSystemutils.skillitems(pActor);
 		
-		let vRoll = new Roll(pFormula, {actor : pActor, skills : vSkills, DC : pDC});
+		let vRoll = new Roll(LnKutils.validChars(pFormula), {actor : pActor, skills : vSkills, DC : pDC});
 		
 		return vRoll;
 	}
@@ -912,6 +926,10 @@ class LnKutils {
 		}
 		
 		return vID;
+	}
+	
+	static validChars(pstring) {
+		return pstring.replace(/[^\x00-\x7F]/g, "");
 	}
 	
 	//keyboard

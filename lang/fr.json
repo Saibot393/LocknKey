@@ -186,6 +186,11 @@
 				"descrp"				: "Les types d'objet pour lesquels les paramètres de verrouillage et de clé sont affichés (séparés avec \";\", \"all\" pour tous les types)"		
 			},
 			
+			"LnKSettingsubTypes" : {
+				"name" 					: "Setting item subtypes",
+				"descrp"				: "The item subtypes for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all subtypes)"		
+			},
+			
 			"KeyitemCreationPopup" : {
 				"name" 					: "Menu de création de clé",
 				"descrp"				: "Si un menu doit être affiché pour la clé nouvellement générée pour changer son nom et son dossier"		
@@ -226,7 +231,8 @@
 					"d100WFRP4"			: "d100 1/100 naturels [e.g. WFRP4e]",
 					"d100WFRP4Doubles"	: "d100 1/100 naturels & doubles [e.g. WFRP4e]",
 					"d100CoC7e"			: "d100 plages de difficultés [e.g. CoC7e]",
-					"d10poolCoD2e"		: "d10 pool >=8 et relance sur 10 [e.g. CoD2e]"
+					"d10poolCoD2e"		: "d10 pool >=8 et relance sur 10 [e.g. CoD2e]",
+					"3d20DSA": "3d20 DSA"
 				}
 			},
 			

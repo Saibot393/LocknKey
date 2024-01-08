@@ -186,6 +186,11 @@
 				"descrp"				: "Die Gegenstandstypen für welche die Lock & Key Einstellungen angezeigt werden (getrennt mit \";\", \"all\" für alle typen)"		
 			},
 			
+			"LnKSettingsubTypes" : {
+				"name" 					: "Einstellungs Gegenstandssubtypen",
+				"descrp"				: "Die Gegenstandssubtypen für welche die Lock & Key Einstellungen angezeigt werden (getrennt mit \";\", \"all\" für alle subtypen)"		
+			},
+			
 			"DefaultKeyFolder" : {
 				"name"					: "Standard Schlüssel Ordner",
 				"descrp"				: "Der Name des Ordners welcher Standarmäßig beim Schlüssel Erschaffungsmenu benutzt wird"
@@ -226,7 +231,8 @@
 					"d100WFRP4"			: "d100 Nat1/100 [z.B. WFRP4e]",
 					"d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [z.B. WFRP4e]",
 					"d100CoC7e"			: "d100 Schwierigkeits Bereiche [z.B. CoC7e]",
-					"d10poolCoD2e"		: "d10 Pool >=8 und 10 neu würfeln [z.B. CoD2e]"
+					"d10poolCoD2e"		: "d10 Pool >=8 und 10 neu würfeln [z.B. CoD2e]",
+					"3d20DSA": "3d20 DSA"
 				}
 			},
 			

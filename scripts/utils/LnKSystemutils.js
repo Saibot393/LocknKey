@@ -1,4 +1,4 @@
-import {cModuleName, cDelimiter} from "./LnKutils.js";
+import {cModuleName, LnKutils, cDelimiter} from "./LnKutils.js";
 
 //system names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
@@ -17,6 +17,7 @@ const cSandbox = "sandbox"; //name of the sandbox system
 const cWarhammerFRP4e = "wfrp4e"; //name of the warhammer fantasy roleplaying 4e system
 const cCoC7e = "CoC7"; //name of the Call of Cthulhu system 7th edition
 const cDSA5 = "dsa5"; //name of the Das schwarze Auge system (5e)
+const cSWADE = "swade"; //name of the SWADE system
 
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
@@ -74,6 +75,11 @@ class LnKSystemutils {
 	static isSystemPerceptionRoll(pMessage, pInfos) {} //returns if the message belongs to a perception roll
 	
 	static skillitems(pActor) {} //returns an object containing all items of type skill
+	
+	//subtypes
+	static candetectSystemSubtype() {} //returns if an item can be detected in this system
+	
+	static SystemSubtype(pItem) {} //returns system specific subtype of pItem
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -170,27 +176,23 @@ class LnKSystemutils {
 		switch (game.system.id) {
 			case cPf2eName:
 				return "1d20 + @actor.skills.thievery.mod";
-				break;
 			case cDnD5e:
 				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.prof.flat + @actor.system.tools.thief.bonus";
-				break;
 			case cDnD35e:
 				return "1d20 + @actor.system.skills.opl.mod";
-				break;
 			case cStarFinderName:
 				return "1d20 + @actor.system.skills.eng.mod";
-				break;
 			case cPf1eName:
 				return "1d20 + @actor.system.skills.dev.mod";
-				break;
 			case cWarhammer4e:
 				return "1d100 - @actor.characteristics.dex.value";
-				break;
 			case cCoC7e:
 				return "1d100/@actor.system.skills.Locksmith.value";
-				break;
 			case cDSA5:
-				return "1d20 @actor.system.characteristics.in + 1d20 @actor.system.characteristics.ff + 1d20 @actor.system.characteristics.ff";
+				return `(max(1d20 - (@actor.system.characteristics.in.value + min(@DC, 0)), 0) + max(1d20 - (@actor.system.characteristics.ff.value + min(@DC, 0)),0) + max(1d20 - (@actor.system.characteristics.ff.value + min(@DC, 0)),0)) - (@skills.Pick_Locks.system.talentValue.value + max(@DC, 0))`;
+				break;
+			case cSWADE:
+				return "{1d@skills.Thievery.system.die.sides,1d6}kh + @skills.Thievery.system.die.modifier";
 				break;
 			default:
 				return "";
@@ -216,6 +218,12 @@ class LnKSystemutils {
 				break;
 			case cCoC7e:
 				return "1d100/@actor.system.characteristics.str.value";
+				break;
+			case cDSA5:
+				return `(max(1d20 - (@actor.system.characteristics.ko.value + min(@DC, 0)), 0) + max(1d20 - (@actor.system.characteristics.kk.value + min(@DC, 0)),0) + max(1d20 - (@actor.system.characteristics.kk.value + min(@DC, 0)),0)) - (@skills.${game.i18n.localize("LocalizedIDs.featOfStrength")}.system.talentValue.value + max(@DC, 0))`;
+				break;
+			case cSWADE:
+				return "{1d@skills.Athletics.system.die.sides,1d6}kh + @skills.Athletics.system.die.modifier";
 				break;
 			default:
 				return "";
@@ -330,7 +338,7 @@ class LnKSystemutils {
 		let vItemset = {};
 		
 		for (let i = 0; i < vItems.length; i++) {
-			let vSkillName = vItems[i]?.name.replace(" ", "_");
+			let vSkillName = LnKutils.validChars(vItems[i]?.name.replace(" ", "_"));
 			
 			if (!vSkillName) {
 				vItems[i]?.id;
@@ -346,6 +354,21 @@ class LnKSystemutils {
 	
 	static canAutodetectSystemPerceptionRoll() {
 		return [cPf2eName, cDnD5e, cPf1eName].includes(game.system.id);
+	}
+	
+	//subtypes
+	static candetectSystemSubtype() {
+		return [cDSA5].includes(game.system.id);
+	} 
+	
+	static SystemSubtype(pItem) {
+		switch (game.system.id) {
+			case cDSA5:
+				return pItem?.system.equipmentType?.value;
+				break;
+		}
+		
+		return false;
 	}
 }
 
