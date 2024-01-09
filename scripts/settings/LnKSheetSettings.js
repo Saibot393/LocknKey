@@ -74,6 +74,10 @@ class LnKSheetSettings {
 							if (!vprevTab.length) {
 								//if tab bar was not found, try other search
 								vprevTab = pHTML.find(`section[tab="description"]`);
+								if (!vprevTab.length) {
+									//for tidy 5e sheets
+									vprevTab = pHTML.find(`div.tidy-tab`);
+								}
 							}
 						}
 					}
