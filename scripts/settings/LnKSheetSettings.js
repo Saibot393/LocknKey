@@ -76,7 +76,7 @@ class LnKSheetSettings {
 								vprevTab = pHTML.find(`section[tab="description"]`);
 								if (!vprevTab.length) {
 									//for tidy 5e sheets
-									vprevTab = pHTML.find(`div.tidy-tab`);
+									vprevTab = pHTML.find(`div.tidy-tab[data-tab-contents-for="description"]`);
 								}
 							}
 						}
@@ -90,17 +90,20 @@ class LnKSheetSettings {
 								${Translate("Titles."+cModuleName)}
 							</a>
 							`; //tab button HTML
-			let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+				
+			vTabbar.append(vTabButtonHTML);	
 			
-			vTabbar.append(vTabButtonHTML);
-			vprevTab.after(vTabContentHTML);	
+			if (!pHTML.find(`div.${cModuleName}`).length) {
+				let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+				vprevTab.after(vTabContentHTML);
+			}
 
 			//settings	
 			
 			//create title for key items
 			let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
 			
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			pHTML.find(`div.${cModuleName}`).append(vTitle);
 			
 			//setting item ids	
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
@@ -109,7 +112,7 @@ class LnKSheetSettings {
 													vwide : true,
 													vvalue : LnKFlags.KeyIDs(pApp.object),
 													vflagname : cIDKeysF
-													}, `div[data-tab="${cModuleName}"]`);	
+													}, `div.${cModuleName}`);	
 									
 			//setting remove key on use
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
@@ -117,16 +120,16 @@ class LnKSheetSettings {
 													vtype : "checkbox", 
 													vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
 													vflagname : cRemoveKeyonUseF
-													}, `div[data-tab="${cModuleName}"]`);
+													}, `div.${cModuleName}`);
 				
 			//create title for Lockpick/Break items
 			vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
 			
-			pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			pHTML.find(`div.${cModuleName}`).append(vTitle);
 				
 			if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
 				//formulas
-				LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", `div[data-tab="${cModuleName}"]`);	
+				LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", `div.${cModuleName}`);	
 			}
 			
 			//setting replacement item
@@ -136,7 +139,7 @@ class LnKSheetSettings {
 													vwide : true,												
 													vvalue : LnKFlags.ReplacementItems(pApp.object, true),
 													vflagname : cReplacementItemF
-													}, `div[data-tab="${cModuleName}"]`);
+													}, `div.${cModuleName}`);
 													
 			if (pApp.LnKTabactive) {
 				pApp.activateTab(cModuleName);

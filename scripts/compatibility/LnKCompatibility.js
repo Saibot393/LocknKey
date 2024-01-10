@@ -1,10 +1,11 @@
-import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
-import { LnKutils, cModuleName, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
+import { LnKutils, cModuleName, cDelimiter, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken, LockManager } from "../LockManager.js";
 import { LnKFlags, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
 import {LnKSheetSettings} from "../settings/LnKSheetSettings.js";
+import {LnKSystemutils} from "../utils/LnKSystemutils.js";
 
 //LnKCompatibility will take care of compatibility with other modules in regards to calls, currently supported:
 
@@ -172,6 +173,26 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName + ".TokenLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData, true));
 		
 		Hooks.on(cModuleName + ".LockUse", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
+	}
+	
+	if (LnKCompUtils.isactiveModule(cTidy5eNew)) {
+		Hooks.once('tidy5e-sheet.ready', (api) => {
+			api.registerItemTab(
+				new api.models.HandlebarsTab({
+				title: Translate("Titles."+cModuleName),
+				tabId: cModuleName,
+				path: `/modules/${cModuleName}/templates/default.html`,
+				enabled: (data) => {
+					let vitem = data.document;
+					
+					return (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(vitem.type)
+					&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(vitem))))
+				},
+				onRender(params) {
+					LnKSheetSettings.ItemSheetSettings(params.app, $(params.element), params.data);
+				},
+			}));
+		});
 	}
 });
 
