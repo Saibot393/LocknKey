@@ -135,6 +135,8 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
     - Action Toggle lock to toggle a Door/Token
     - Action Loot inventory to offer the Inventory of a token to a player
     - Filter Filter by lock state to filter by the lock state (locked/unlocked)
+ - [Tidy 5e rewrite](https://github.com/kgar/foundry-vtt-tidy-5e-sheets)
+  - The item settings will appear correctly
 
 ### Languages:
 
