@@ -47,7 +47,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Default key folder: to set the default folder the key creation menu selects
 - Limit key folders: to only show the chosen default key folder and its sub folders in the key creation menu
 - Key name as ID: to use the keys name as an additional ID when interacting with locks
-- Use Pf2e roll system: to use the Pf2e system instead of the Lock & Key roll and crit settings
+- Use system rolls[only Pf2e and DSA5e]: to use the systems roll rules instead of the Lock & Key roll and crit settings
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
 - Mention lockpick item: to give additional information in the chat regarding the used item when picking a lock
