@@ -1,5 +1,5 @@
 ## v2.5.0
-- replaced setting Use Pf2e roll system with Use system rolls. This system now works Pf2e and DSA5e (thanks to @Plushtoast)
+- replaced setting Use Pf2e roll system with Use system rolls. This system now works Pf2e and DSA5e (thanks to [Plushtoast](https://github.com/Plushtoast))
 
 ## v2.4.4
 - Added compatibility for [Tidy 5e rewrite](https://github.com/kgar/foundry-vtt-tidy-5e-sheets)
