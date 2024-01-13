@@ -217,8 +217,8 @@
 			},	
 			
 			"usePf2eSystem" : {
-				"name" 					: "Utiliser le système de lancer de Pf2e",
-				"descrp"				: "Utilisez le système de lancer Pf2e (désactive les formules de lancer personnalisées Lock & Key et les paramètres de critique en faveur du système de règles Pf2e)"						
+				"name" 					: "Use system rolls",
+				"descrp"				: "Use the systems roll rules (disables Lock & Key custom roll formulas and crit settings in favor of the systems rolls rules)"						
 			},
 			
 			"CritMethod" : {

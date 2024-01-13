@@ -195,10 +195,10 @@
 			"name" 					: "钥匙名则是ID",
 			"descrp"				: "在开锁时，是否应将钥匙名称视为ID"		
 		},	
-      "usePf2eSystem": {
-        "name": "使用PF2E掷骰系统",
-        "descrp": "使用PF2E掷骰系统 (关闭本模组的自定义掷骰公式与大成功系统，由PF2E系统取代)"
-      },
+		"usePf2eSystem" : {
+			"name" 					: "Use system rolls",
+			"descrp"				: "Use the systems roll rules (disables Lock & Key custom roll formulas and crit settings in favor of the systems rolls rules)"						
+		},
       "CritMethod": {
         "name": "大成功/大失败",
         "descrp": "如何界定大成功与大失败",

@@ -73,6 +73,14 @@ class PickPocketManager {
 				PickPocketManager.RequestPickPocket(vData);
 			}
 			else {	
+				vCallback = async (psuccessdegree) => {
+					let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, useSystemRoll : true, Systemresult : psuccessdegree};
+					
+					PickPocketManager.RequestPickPocket(vData);
+				};
+				
+				LnKSystemutils.systemRoll(cUPickPocket, pCharacter.actor, vCallback, {difficulty : await LnKFlags.PickPocketDC(pTarget)});
+				/*
 				//no roll neccessary, handled by Pf2e system
 				let vCallback = async (proll) => {
 					let vResult;
@@ -105,6 +113,7 @@ class PickPocketManager {
 					callback: vCallback,
 					difficultyClass: {value : await LnKFlags.PickPocketDC(pTarget)}
 				});
+				*/
 			}
 		}
 		else {
@@ -157,11 +166,11 @@ class PickPocketManager {
 	static async EvaluatePickPocket(pTarget, pCharacter, pData, pChatMessages = true) {
 		let vSuccessDegree;
 		
-		if (!pData.usePf2eRoll) {
+		if (!pData.useSystemRoll) {
 			vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, await LnKFlags.PickPocketDC(pTarget), pCharacter, {RollType : cUPickPocket});
 		}
 		else {
-			vSuccessDegree = pData.Pf2eresult;
+			vSuccessDegree = pData.Systemresult;
 		}
 		
 		let vCritMessagesuffix = ".default";	

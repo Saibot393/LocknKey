@@ -237,6 +237,14 @@ class KeyManager {
 					KeyManager.requestLockuse(vData);
 				}
 				else {
+					vCallback = async (psuccessdegree) => {
+						let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, useSystemRoll : true, Systemresult : psuccessdegree};
+					
+						KeyManager.requestLockuse(vData);
+					};
+					
+					LnKSystemutils.systemRoll(pUseType, pCharacter.actor, vCallback, {difficulty : LnKFlags.LockDCtype(pLockObject, pUseType)});
+					/*
 					//no roll neccessary, handled by Pf2e system
 					vUsedItemID = vCircumvent.id;
 					
@@ -282,6 +290,7 @@ class KeyManager {
 							});
 							break;
 					}
+					*/
 				}			
 			}
 			else {

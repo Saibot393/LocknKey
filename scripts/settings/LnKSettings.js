@@ -180,7 +180,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.usePf2eSystem.name"),
 	hint: Translate("Settings.usePf2eSystem.descrp"),
 	scope: "world",
-	config: LnKSystemutils.isPf2e(),
+	config: LnKSystemutils.hasSystemrolls(),
 	type: Boolean,
 	default: false,
 	requiresReload: true

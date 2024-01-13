@@ -1,4 +1,4 @@
-import {cModuleName, LnKutils, cDelimiter} from "./LnKutils.js";
+import {cModuleName, LnKutils, Translate, cDelimiter, cLUpickLock, cLUbreakLock, cUPickPocket} from "./LnKutils.js";
 
 //system names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
@@ -41,6 +41,19 @@ const Pf2eSkillDictionary = {
     thi: "thievery"
 }
 
+const DSAskills = {
+    de: {
+        LockusePick : "Schlösserknacken",
+        LockuseBreak : "Kraftakt",
+		UsePickPocket : "Taschendiebstahl"
+    },
+    en: {
+        LockusePick : "Pick Locks",
+        LockuseBreak : "Feat of Strength",
+		UsePickPocket : "Pickpocket"
+    }
+}
+
 //Lock Types
 const cLockTypeLootPf2e = "LTLootPf2e"; //type for Token
 
@@ -80,6 +93,13 @@ class LnKSystemutils {
 	static candetectSystemSubtype() {} //returns if an item can be detected in this system
 	
 	static SystemSubtype(pItem) {} //returns system specific subtype of pItem
+	
+	//system rolls
+	static hasSystemrolls() {} //returns if system rolls are available for this system
+	
+	static systemRoll(ptype, pactor, pcallback, pinfos = {difficulty : 0}) {} //called for system rolls
+	
+	static systemSuccesdegree(pData) {} //returns the succes degree based on system
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -369,6 +389,88 @@ class LnKSystemutils {
 		}
 		
 		return false;
+	}
+	
+	//system rolls
+	static hasSystemrolls() {
+		return [cPf2eName, cDSA5].includes(game.system.id);
+	}
+	
+	static systemRoll(ptype, pactor, pcallback, pinfos = {difficulty : 0}) {
+		switch (game.system.id) {
+			case cPf2eName:
+				switch(ptype) {
+					case cLUpickLock:
+						game.pf2e.actions.pickALock({
+							actors: pactor,
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
+							difficultyClass: {value : pinfos.difficulty}
+						});
+						break;
+					case cLUbreakLock:
+						game.pf2e.actions.forceOpen({
+							actors: pactor,
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
+							difficultyClass: {value : pinfos.difficulty}
+						});
+						break;
+					case cUPickPocket:
+						game.pf2e.actions.steal({
+							actors: pactor,
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
+							difficultyClass: {value : pinfos.difficulty}
+						});
+						break;
+				}
+				break;
+			case cDSA5:
+				let vSkill = pactor.items.find(x => x.type == "skill" && x.name == DSAskills[game.i18n.lang][ptype]);
+				
+				if (vSkill) {
+					pactor.setupSkill(vSkill, { modifier: pinfos.difficulty/*, subtitle: ` (${Translate("Titles." + ptype)})`*/}, pactor.sheet.getTokenId()).then(async(psetupData) => {
+							psetupData.testData.opposable = false
+							const cresultdata = await pactor.basicTest(psetupData);
+				
+							pcallback(LnKSystemutils.systemSuccesdegree(cresultdata));
+					});
+				}
+				break;
+		}
+	}
+	
+	static systemSuccesdegree(pData) {
+		switch (game.system.id) {
+			case cPf2eName:
+				switch (pData.roll.outcome) {
+					case 'criticalFailure':
+						return -1;
+						break;
+					case 'failure':
+						return 0;
+						break;
+					case 'success':
+						return 1;
+						break;
+					case 'criticalSuccess':
+						return 2;
+						break;
+					default:
+						return 0;
+						break;
+				}
+				break;
+			case cDSA5:
+				let vDSAresult = pData.result.successLevel;
+				
+				if (vDSAresult > 0) {
+					return vDSAresult;
+				}
+				
+				if (vDSAresult < 0) {
+					return vDSAresult + 1;
+				}
+				break;
+		}
 	}
 }
 

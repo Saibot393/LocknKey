@@ -217,8 +217,8 @@
 			},			
 			
 			"usePf2eSystem" : {
-				"name" 					: "Nutze Pf2e Würfelsystem",
-				"descrp"				: "Nutzt das Pf2e Würfelsystem (Deaktiviert Lock & Key Wurfformeln und Kritsystem um anstatt dessen das Pf2e rules-System zu nutzen)"						
+				"name" 					: "Nutze System Würfe",
+				"descrp"				: "Nutzt das Würfelsystem des jeweiligen Spielsystems(Deaktiviert Lock & Key Wurfformeln und Kritsystem um anstatt dessen System abhängige Regeln zu benutzen)"						
 			},
 			
 			"CritMethod" : {

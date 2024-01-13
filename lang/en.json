@@ -217,8 +217,8 @@
 			},	
 			
 			"usePf2eSystem" : {
-				"name" 					: "Use Pf2e roll system",
-				"descrp"				: "Use the Pf2e roll system (disables Lock & Key custom roll formulas and crit settings in favor of the Pf2e rules system)"						
+				"name" 					: "Use system rolls",
+				"descrp"				: "Use the systems roll rules (disables Lock & Key custom roll formulas and crit settings in favor of the systems rolls rules)"						
 			},
 			
 			"CritMethod" : {

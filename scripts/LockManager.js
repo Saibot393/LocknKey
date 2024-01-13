@@ -399,12 +399,12 @@ class LockManager {
 						case cLUpickLock:
 						case cLUbreakLock:
 						case cLUCustomCheck:
-							if (!puseData.usePf2eRoll || (puseData.useType == cLUCustomCheck)) {
+							if (!puseData.useSystemRoll || (puseData.useType == cLUCustomCheck)) {
 								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType, puseData);
 							}
 							else {
-								//use Pf2e systems result
-								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Pf2eresult, puseData.useType, false, puseData);
+								//use systems result
+								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Systemresult, puseData.useType, false, puseData);
 							}
 							break;
 						case cLUFreeCircumvent:
