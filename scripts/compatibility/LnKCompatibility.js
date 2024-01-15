@@ -64,7 +64,7 @@ class LnKCompatibility {
 		let vAddBasics = pAddBasics && !pHTML.find(`a[data-tab="triggers"]`).length;
 		
 		if (vAddBasics) {
-			let vTabbar = pHTML.find(`nav.sheet-tabs`);
+			let vTabbar = pHTML.find(`nav.sheet-tabs[data-group="main"]`);
 			
 			let vTabButtonHTML = 	`
 							<a class="item" data-tab="triggers">
