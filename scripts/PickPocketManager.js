@@ -32,7 +32,19 @@ class PickPocketManager {
 		if (pTarget && vCharacter) {
 			if(!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {
 				if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
-					PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
+					let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
+					
+					if (!vAllowCheck) {
+						vAllowCheck = LnKFlags.Canbepickpocketed(pTarget);
+						
+						if (!vAllowCheck) {
+							LnKPopups.TextPopUpID(pLockObject, "CantbePickpocketed"); //MESSAGE POPUP
+						}
+					}
+					
+					if (vAllowCheck) {
+						PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
+					}
 				}
 				else {
 					LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP

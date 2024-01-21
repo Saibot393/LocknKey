@@ -93,7 +93,37 @@ class KeyManager {
 							case cLUpickLock:
 							case cLUbreakLock:
 							case cLUCustomCheck:
-								KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
+								let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
+								
+								if (!vAllowCheck) {
+									switch (pUseType) {
+										case cLUpickLock:
+											vAllowCheck = LnKFlags.canbePicked(pLockObject);
+											
+											if (!vAllowCheck) {
+												LnKPopups.TextPopUpID(pLockObject, "CantbePicked"); //MESSAGE POPUP
+											}
+											break;
+										case cLUbreakLock:
+											vAllowCheck = LnKFlags.canbeBroken(pLockObject);
+											
+											if (!vAllowCheck) {
+												LnKPopups.TextPopUpID(pLockObject, "CantbeBroken"); //MESSAGE POPUP
+											}
+											break;
+										case cLUCustomCheck:
+											vAllowCheck = LnKFlags.canbeCustomChecked(pLockObject);
+											
+											if (!vAllowCheck) {
+												LnKPopups.TextPopUpID(pLockObject, "CantbeCustomChecked", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}); //MESSAGE POPUP
+											}
+											break;
+									}
+								}
+							
+								if (vAllowCheck) {
+									KeyManager.onatemptedcircumventLock(pLockObject, pUseType, vCharacter);
+								}
 								break;
 						}
 					}
@@ -244,53 +274,6 @@ class KeyManager {
 					};
 					
 					LnKSystemutils.systemRoll(pUseType, pCharacter.actor, vCallback, {difficulty : LnKFlags.LockDCtype(pLockObject, pUseType)});
-					/*
-					//no roll neccessary, handled by Pf2e system
-					vUsedItemID = vCircumvent.id;
-					
-					vCallback = async (proll) => {
-						let vResult;
-						
-						switch (proll.outcome) {
-							case 'criticalFailure':
-								vResult = -1;
-								break;
-							case 'failure':
-								vResult = 0;
-								break;
-							case 'success':
-								vResult = 1;
-								break;
-							case 'criticalSuccess':
-								vResult = 2;
-								break;
-							default:
-								vResult = 0;
-								break;
-						}
-						
-						let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, usePf2eRoll : true, Pf2eresult : vResult};
-					
-						KeyManager.requestLockuse(vData);
-					};
-		
-					switch (pUseType) {
-						case cLUpickLock:
-							game.pf2e.actions.pickALock({
-								actors: pCharacter.actor,
-								callback: vCallback,
-								difficultyClass: {value : LnKFlags.LockDCtype(pLockObject, pUseType)}
-							});
-							break;
-						case cLUbreakLock:
-							game.pf2e.actions.forceOpen({
-								actors: pCharacter.actor,
-								callback: vCallback,
-								difficultyClass: {value : LnKFlags.LockDCtype(pLockObject, pUseType)}
-							});
-							break;
-					}
-					*/
 				}			
 			}
 			else {

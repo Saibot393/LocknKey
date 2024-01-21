@@ -69,7 +69,12 @@
 			"WrongIdentity"				: "Wrong identity",
 			"PasswordChanged"			: "Password changed",
 			"NoPasswordLength"			: "New password too short",
-			"CantChangePassword"		: "Can't change password"
+			"CantChangePassword"		: "Can't change password",
+			
+			"CantbePicked"				: "Can't be picked",
+			"CantbeBroken"				: "Can't be broken",
+			"CantbeCustomChecked"		: "Can't use {pCheckName}",
+			"CantbePickpocketed"		: "Can't be pickpocketed"
 		},	
 		
 		"ChatMessage" : {
@@ -160,6 +165,11 @@
 				"name" 					: "Toujours ouvert au possesseur",
 				"descrp"				: "Les joueurs peuvent toujours ouvrirles jetons qu'ils possèdent, même si ils sont verouillés"		
 			},
+			
+			"allowallInteractions" : {
+				"name" 					: "Allow all interactions",
+				"descrp"				: "If all interactions (pick, break, custom, pickpocket) should be allows even for impossible DCs"					
+			},	
 			
 			"showallLockInteractions" : {
 				"name" 					: "Montrer toutes les interactions des verrous",

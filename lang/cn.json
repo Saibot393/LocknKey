@@ -68,7 +68,12 @@
 		"WrongIdentity"				: "Wrong identity",
 		"PasswordChanged"			: "Password changed",
 		"NoPasswordLength"			: "New password too short",
-		"CantChangePassword"		: "Can't change password"
+		"CantChangePassword"		: "Can't change password",
+			
+		"CantbePicked"				: "Can't be picked",
+		"CantbeBroken"				: "Can't be broken",
+		"CantbeCustomChecked"		: "Can't use {pCheckName}",
+		"CantbePickpocketed"		: "Can't be pickpocketed"
     },
     "ChatMessage": {
       "LockPick": "{pName}尝试撬锁:",
@@ -149,7 +154,11 @@
       "alwaysopenOwned": {
         "name": "打开自己拥有的锁",
         "descrp": "PL总是可以打开自己拥有的的token，不论是否上锁了"
-      },		
+      },	
+		"allowallInteractions" : {
+			"name" 					: "Allow all interactions",
+			"descrp"				: "If all interactions (pick, break, custom, pickpocket) should be allows even for impossible DCs"					
+		},		  
 		"showallLockInteractions" : {
 			"name" 					: "显示所有锁的交互功能",
 			"descrp"				: "永远显示所有锁的功能，无论这个功能用不用得了 (混乱邪恶GM推荐)"					

@@ -73,6 +73,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "allowallInteractions", {
+	name: Translate("Settings.allowallInteractions.name"),
+	hint: Translate("Settings.allowallInteractions.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  }); 
+  
   game.settings.register(cModuleName, "showallLockInteractions", {
 	name: Translate("Settings.showallLockInteractions.name"),
 	hint: Translate("Settings.showallLockInteractions.descrp"),

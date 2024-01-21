@@ -69,7 +69,12 @@
 			"WrongIdentity"				: "Falsche Identität",
 			"PasswordChanged"			: "Passwort geändert",
 			"NoPasswordLength"			: "Neues Passwort zu kurz",
-			"CantChangePassword"		: "Kann Passwort nicht ändern"
+			"CantChangePassword"		: "Kann Passwort nicht ändern",
+			
+			"CantbePicked"				: "Kann nicht geknack werden",
+			"CantbeBroken"				: "Kann nicht gebrochen werden",
+			"CantbeCustomChecked"		: "Kann {pCheckName} nicht nutzen",
+			"CantbePickpocketed"		: "Kann nicht bestohlen werden"
 		},	
 		
 		"ChatMessage" : {
@@ -160,6 +165,11 @@
 				"name" 					: "Eigene immer öffnen",
 				"descrp"				: "Erlaubt es spielern eigene Marken immer zu öffnen, auch wenn sie verschlossen sind"		
 			},
+			
+			"allowallInteractions" : {
+				"name" 					: "Alle Interaktionen erlauben",
+				"descrp"				: "Ob alle Interaktionen (knacken, brechen, eigene, Taschendiebstahl) erlaubt sein soll, auch bei unmöglichen SGs"					
+			},	
 			
 			"showallLockInteractions" : {
 				"name" 					: "Zeige alle Schloss Interaktionen",
