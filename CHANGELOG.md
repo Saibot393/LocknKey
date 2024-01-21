@@ -1,3 +1,7 @@
+## v2.5.2
+- Added world setting Allow all interactions to allow even impossible actions (pick, break, custom, pickpocket)
+- If only one Lock & Key setting is present it will now be displayed in Indentity tab instead of a separate tab
+
 ## v2.5.1
 - The trigger tab for MATT compatibility will no longer show up in subtabs
 
