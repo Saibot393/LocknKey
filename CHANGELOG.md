@@ -1,3 +1,6 @@
+## v2.5.1
+- The trigger tab for MATT compatibility will no longer show up in subtabs
+
 ## v2.5.0
 - replaced setting Use Pf2e roll system with Use system rolls. This system now works Pf2e and DSA5e (thanks to [Plushtoast](https://github.com/Plushtoast))
 
