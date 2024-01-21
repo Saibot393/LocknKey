@@ -38,6 +38,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Lock distance: the maximum distance from which a lock can be used
 - Default lock sound: to set the default sound used for Doors and lockable Tokens
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
+- Allow all interactions: to allow even impossible actions (pick, break, custom, pickpocket)
 - Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
