@@ -9,6 +9,7 @@ import {LnKSystemutils} from "../utils/LnKSystemutils.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
+const cLnKpickpocketIcon = "fa-user-ninja";
 
 class LnKSheetSettings {
 	//DECLARATIONS	
@@ -207,30 +208,34 @@ class LnKSheetSettings {
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.token);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
+		let vUseTab = (vLockSettings || vLockFormulaSettings);
+		
 		let vTitle;
 		
-		let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
-		let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
-		
-		let vTabIcon;
-		
-		if (await LnKutils.isLockCompatible(pApp.token)) {
-			vTabIcon = cLnKLockIcon;
+		if (vUseTab) {
+			let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
+			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
+			
+			let vTabIcon;
+			
+			if (await LnKutils.isLockCompatible(pApp.token)) {
+				vTabIcon = cLnKLockIcon;
+			}
+			else {
+				vTabIcon = cLnKKeyIcon;
+			}
+			
+			let vTabButtonHTML = 	`
+							<a class="item" data-tab="${cModuleName}">
+								<i class="fas ${vTabIcon}"></i>
+								${Translate("Titles."+cModuleName+"abbr")}
+							</a>
+							`; //tab button HTML
+			let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+			
+			vTabbar.append(vTabButtonHTML);
+			vprevTab.after(vTabContentHTML);	
 		}
-		else {
-			vTabIcon = cLnKKeyIcon;
-		}
-		
-		let vTabButtonHTML = 	`
-						<a class="item" data-tab="${cModuleName}">
-							<i class="fas ${vTabIcon}"></i>
-							${Translate("Titles."+cModuleName+"abbr")}
-						</a>
-						`; //tab button HTML
-		let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
-		
-		vTabbar.append(vTabButtonHTML);
-		vprevTab.after(vTabContentHTML);	
 		
 		//setup
 		if (vLockSettings || vLockFormulaSettings) {
@@ -293,13 +298,23 @@ class LnKSheetSettings {
 			}
 		}
 		
+		let vTargetHTML = `div[data-tab="${cModuleName}"]`;
+		
+		if (!vUseTab) {
+			let vTitleHTML = `<fieldset data-group="${cModuleName}" name="PickPocket"><legend><p><i class="fas ${cLnKLockIcon}"></i>  ${Translate("Titles.LocknKey")}</p> </legend></fieldset>`;
+			
+			pHTML.find('div.tab[data-group="main"][data-tab="character"]').append(vTitleHTML);
+			
+			vTargetHTML = `fieldset[data-group="${cModuleName}"]`;
+		}
+		
 		//setting PickPocket dc			
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF +".name"), 
 												vhint : Translate("SheetSettings."+ cPickPocketDCF +".descrp"), 
 												vtype : "number", 
 												vvalue : await LnKFlags.PickPocketDC(pApp.object, true),
 												vflagname : cPickPocketDCF
-												}, `div[data-tab="${cModuleName}"]`);
+												}, vTargetHTML);
 												
 		Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 		
