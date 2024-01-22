@@ -728,6 +728,6 @@ Hooks.once("ready", () => {
 	}
 });
 
-Hooks.on("init", function() {
+Hooks.once("init", function() {
 	LnKSheetSettings.RegisterItemSheetTabChange();
 });
