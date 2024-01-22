@@ -1,3 +1,6 @@
+## v2.5.3
+- Small bug fix
+
 ## v2.5.2
 - Added world setting Allow all interactions to allow even impossible actions (pick, break, custom, pickpocket)
 - If only one Lock & Key setting is present it will now be displayed in Indentity tab instead of a separate tab
