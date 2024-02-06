@@ -1,3 +1,6 @@
+## v2.5.4
+- Compatibility update for new version of [Tidy 5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/)
+
 ## v2.5.3
 - Small bug fix
 
