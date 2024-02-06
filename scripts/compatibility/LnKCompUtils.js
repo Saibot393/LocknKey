@@ -11,7 +11,7 @@ const cLibWrapper = "lib-wrapper";
 const cRideable = "Rideable";
 const cMonksEJ = "monks-enhanced-journal";
 const cMATT = "monks-active-tiles";
-const cTidy5eNew = "tidy5e-sheet-kgar";
+const cTidy5eNew = "tidy5e-sheet";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
