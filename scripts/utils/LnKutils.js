@@ -21,6 +21,7 @@ const cQuantity = "quantity"; //name of the quantity attribut of items in most s
 
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
+const cLockTypeTile = "LTTile"; //type for tile locks
 
 const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 
@@ -37,7 +38,7 @@ const cLUCustomCheck = "LockuseCustom"; //when a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //when a lock gets circumvented via e.g. a knock spell
 const cUPickPocket = "UsePickPocket"; //when a character is pickpocketed
 
-export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
+export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeTile, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
@@ -121,6 +122,8 @@ class LnKutils {
 	static DoorisLocked(pDoor) {} //returns of pDoor is locked
 	
 	static isToken(pObject) {} //returns if pObject is a Token
+	
+	static isTile(pObject) {} //returns if pObject is a Tile
 	
 	static LockuseDistance() {} //returns the distance over which a lock can be used
 	
@@ -528,6 +531,10 @@ class LnKutils {
 					}
 				}
 			}
+			
+			if (LnKutils.isTile(pDocument)) {
+				return cLockTypeTile;
+			}
 		}
 		
 		return "";
@@ -546,7 +553,7 @@ class LnKutils {
 	}
 	
 	static isWall(pObject) {
-		return Boolean(pObject.collectionName == "walls");
+		return pObject.documentName == "Wall";
 	}
 	
 	static DoorisLocked(pDoor) {
@@ -554,7 +561,11 @@ class LnKutils {
 	}
 	
 	static isToken(pObject) {
-		return Boolean(pObject.collectionName == "tokens");
+		return pObject.documentName == "Token";
+	}
+	
+	static isTile(pObject) {
+		return pObject.documentName == "Tile";
 	}
 	
 	static LockuseDistance() {	

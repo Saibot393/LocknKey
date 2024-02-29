@@ -17,7 +17,7 @@ class LnKSheetSettings {
 	
 	static WallSheetSettings(pApp, pHTML, pData) {} //add settinsg to wall sheet
 	
-	static async TokenSheetSettings(pApp, pHTML, pData) {} //add settinsg to token sheet
+	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {} //add settinsg to token sheet
 	
 	//dialogs
 	static OpenCustomPopups(pApp) {} //opens a popup to enter custom popups messages for object of pApp
@@ -204,8 +204,9 @@ class LnKSheetSettings {
 		Hooks.call(cModuleName + ".WallLockSettings", pApp, pHTML, pData);
 	}
 	
-	static async TokenSheetSettings(pApp, pHTML, pData) {
-		let vLockSettings = await LnKutils.isLockCompatible(pApp.token);
+	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
+		console.log(pApp);
+		let vLockSettings = await LnKutils.isLockCompatible(pApp.object);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
 		let vUseTab = (vLockSettings || vLockFormulaSettings);
@@ -213,12 +214,12 @@ class LnKSheetSettings {
 		let vTitle;
 		
 		if (vUseTab) {
-			let vTabbar = pHTML.find(`[data-group="main"].sheet-tabs`);
-			let vprevTab = pHTML.find(`div[data-tab="resources"]`); //places rideable tab after last core tab "details"
+			let vTabbar = pisTile ? pHTML.find(`nav.sheet-tabs`) : pHTML.find(`[data-group="main"].sheet-tabs`);
+			let vprevTab = pisTile ? pHTML.find(`div[data-tab="animation"]`) : pHTML.find(`div[data-tab="resources"]`); //places LnK tab after last core tab "details"
 			
 			let vTabIcon;
 			
-			if (await LnKutils.isLockCompatible(pApp.token)) {
+			if (await LnKutils.isLockCompatible(pApp.object)) {
 				vTabIcon = cLnKLockIcon;
 			}
 			else {
@@ -231,7 +232,7 @@ class LnKSheetSettings {
 								${Translate("Titles."+cModuleName+"abbr")}
 							</a>
 							`; //tab button HTML
-			let vTabContentHTML = `<div class="tab" data-group="main" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+			let vTabContentHTML = `<div class="tab" ${pisTile ? '' : 'data-group="main"'} data-tab="${cModuleName}"></div>`; //tab content sheet HTML
 			
 			vTabbar.append(vTabButtonHTML);
 			vprevTab.after(vTabContentHTML);	
@@ -256,7 +257,7 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
 														vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
 														vtype : "checkbox", 
-														vvalue : LnKFlags.isLockable(pApp.token),
+														vvalue : LnKFlags.isLockable(pApp.object),
 														vflagname : cLockableF
 														}, `div[data-tab="${cModuleName}"]`);
 														
@@ -264,7 +265,7 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
 														vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
 														vtype : "checkbox", 
-														vvalue : LnKFlags.isLocked(pApp.token),
+														vvalue : LnKFlags.isLocked(pApp.object),
 														vflagname : cLockedF
 														}, `div[data-tab="${cModuleName}"]`);	
 
@@ -277,46 +278,50 @@ class LnKSheetSettings {
 															vhint : Translate("SheetSettings."+ cSoundVariantF +".descrp"), 
 															vtype : "select", 
 															voptions : cSoundVariants,
-															vvalue : LnKFlags.SoundVariant(pApp.token), 
+															vvalue : LnKFlags.SoundVariant(pApp.object), 
 															vflagname : cSoundVariantF
 															}, `div[data-tab="${cModuleName}"]`);
 				}
 			}
 			
-			if (vLockSettings && vLockFormulaSettings) {
-				//createtitle for Character tokens
-				vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
+			if (!pisTile) {
+				if (vLockSettings && vLockFormulaSettings) {
+					//createtitle for Character tokens
+					vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
+					
+					pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+				}
 				
-				pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
-			}
-			
-			//formulas
-			if (vLockFormulaSettings) { //replaced by Pf2e
-				LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
-				
-				LnKSheetSettings.AddRollOptions(pApp, pHTML, pData,`div[data-tab="${cModuleName}"]` );
+				//formulas
+				if (vLockFormulaSettings) { //replaced by Pf2e
+					LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "token", `div[data-tab="${cModuleName}"]`);	
+					
+					LnKSheetSettings.AddRollOptions(pApp, pHTML, pData,`div[data-tab="${cModuleName}"]` );
+				}
 			}
 		}
 		
-		let vTargetHTML = `div[data-tab="${cModuleName}"]`;
-		
-		if (!vUseTab) {
-			let vTitleHTML = `<fieldset data-group="${cModuleName}" name="PickPocket"><legend><p><i class="fas ${cLnKLockIcon}"></i>  ${Translate("Titles.LocknKey")}</p> </legend></fieldset>`;
+		if (!pisTile) {
+			let vTargetHTML = `div[data-tab="${cModuleName}"]`;
 			
-			pHTML.find('div.tab[data-group="main"][data-tab="character"]').append(vTitleHTML);
+			if (!vUseTab) {
+				let vTitleHTML = `<fieldset data-group="${cModuleName}" name="PickPocket"><legend><p><i class="fas ${cLnKLockIcon}"></i>  ${Translate("Titles.LocknKey")}</p> </legend></fieldset>`;
+				
+				pHTML.find('div.tab[data-group="main"][data-tab="character"]').append(vTitleHTML);
+				
+				vTargetHTML = `fieldset[data-group="${cModuleName}"]`;
+			}
 			
-			vTargetHTML = `fieldset[data-group="${cModuleName}"]`;
+			//setting PickPocket dc			
+			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF +".name"), 
+													vhint : Translate("SheetSettings."+ cPickPocketDCF +".descrp"), 
+													vtype : "number", 
+													vvalue : await LnKFlags.PickPocketDC(pApp.object, true),
+													vflagname : cPickPocketDCF
+													}, vTargetHTML);
+													
+			Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 		}
-		
-		//setting PickPocket dc			
-		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF +".name"), 
-												vhint : Translate("SheetSettings."+ cPickPocketDCF +".descrp"), 
-												vtype : "number", 
-												vvalue : await LnKFlags.PickPocketDC(pApp.object, true),
-												vflagname : cPickPocketDCF
-												}, vTargetHTML);
-												
-		Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 		
 		LnKSheetSettings.FixSheetWindow(pHTML);
 	} 
@@ -667,6 +672,12 @@ class LnKSheetSettings {
 			case "numberpart":
 				vnewHTML = vnewHTML + `<input type=number name="flags.${cModuleName}.${vflagname[0]}" id=${vID} value="${vvalue[0]}"><label>/</label><input type=number name="flags.${cModuleName}.${vflagname[1]}" id=${vID} value="${vvalue[1]}">`;
 				break;
+			case "filePicker":
+				vnewHTML = vnewHTML + `
+					<input class="image" type="text" name="flags.${cModuleName}.${vflagname}" placeholder="path/image.png"></input>
+					<button type="button" class="file-picker" data-type="imagevideo" data-target="flags.${cModuleName}.${vflagname}"><i class="fas fa-file-import fa-fw"></i></button>
+				`;
+				break;
 		}
 			
 		vnewHTML = vnewHTML + `</div>`;
@@ -725,6 +736,8 @@ Hooks.once("ready", () => {
 		Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
 
 		Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
+		
+		Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData, true)); //for tokens
 	}
 });
 

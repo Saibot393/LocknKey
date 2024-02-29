@@ -32,6 +32,9 @@ const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how ma
 const ccanbeCircumventedFreeF = "canbeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
 const cRollOptionsF = "RollOptionsFlag"; //Flag to store roll options
 const cLockonCloseF = "LockonCloseFlag"; //Flag to set that this door should be locked when closed
+const cOpenImageF = "OpenImageFlag"; //Flag to store image when closed
+const cClosedImageF = "ClosedImageFlag"; //Flag to store image when closed
+const cisOpenF = "isOpenFlag"; //Flag to store if tile is open
 
 const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
 const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
@@ -173,6 +176,19 @@ class LnKFlags {
 	static currentLPsuccess(pLock) {} //returns the current LP successes of this lock
 	
 	static async changeLockPicksuccesses(pObject, pdelta) {} //changes the locks current successes by pdelta and returns true if this was enough to change locked state
+	
+	//Tiles
+	static async toggleOpenState(pTile, pUpdateImage = true) {} //toggles between opened and closed
+	
+	static OpenState(pTile) {} //returns if pTile is opened
+	
+	static OpenImage(pTile) {} //returns the open image of pTile
+	
+	static ClosedImage(pTile) {} //returns the closed image of pTile
+	
+	static async applyStateImage(pTile) {} //applies the appropiate state image to pTile
+	
+	static canbeInteracted(pTile) {} //if players can interact with this tile
 	
 	//Formulas
 	static LPFormula(pObject) {} //returns the Tokens/Items Lock Pick Formula
@@ -587,6 +603,45 @@ class LnKFlags {
 		return false; //default if anything fails	
 	}
 	
+	static #OpenImageFlag (pObject) {
+	//returns content of OpenImageFlag ofpObject (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cOpenImageF)) {
+				return vFlag.OpenImageFlag;
+			}
+		}
+		
+		return pObject.texture.src; //default if anything fails	
+	}
+	
+	static #ClosedImageFlag (pObject) {
+	//returns content of ClosedImageFlag ofpObject (string)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cClosedImageF)) {
+				return vFlag.ClosedImageFlag;
+			}
+		}
+		
+		return pObject.texture.src; //default if anything fails	
+	}
+	
+	static #isOpenFlag (pObject) {
+	//returns content of isOpenFlag ofpObject (boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cisOpenF)) {
+				return vFlag.isOpenFlag;
+			}
+		}
+		
+		return false; //default if anything fails	
+	}
+	
 	static async #PickPocketDCFlag (pToken) {
 	//returns content of PickPocketDC pToken (number)
 		let vFlag = this.#LnKFlags(pToken);
@@ -800,6 +855,16 @@ class LnKFlags {
 		return false;		
 	}
 	
+	static async #setisOpenFlag(pObject, pContent) {
+	//sets content of isOpenFlag (must be boolean)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, Boolean(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
 	static async #unsetPickPocketDCFlag(pObject) {
 	//unsets content of PickPocketDCFlag (must be number)
 		if (pObject) {
@@ -809,6 +874,7 @@ class LnKFlags {
 		}
 		return false;		
 	}
+
 	
 	//basic
 	static async makeLockable(pObject, pStartasLocked = undefined) {
@@ -1111,6 +1177,35 @@ class LnKFlags {
 	
 	static currentLPsuccess(pLock) {
 		return this.#currentLPsuccessFlag(pLock);
+	}
+	
+	//Tiles
+	static async toggleOpenState(pTile, pUpdateImage = true) {
+		this.#setisOpenFlag(pTile, !this.#isOpenFlag(pTile));
+		
+		if (pUpdateImage) {
+			await LnKFlags.applyStateImage(pTile);
+		}
+	}
+	
+	static OpenState(pTile) {
+		return this.#isOpenFlag(pTile);
+	}
+	
+	static OpenImage(pTile) {
+		return this.#OpenImageFlag(pTile);
+	} 
+	
+	static ClosedImage(pTile) {
+		return this.#ClosedImageFlag(pTile);
+	} 
+	
+	static async applyStateImage(pTile) {
+		await pTile.update({texture : {src : (LnKFlags.OpenState(pTile) ? LnKFlags.OpenImage(pTile) : LnKFlags.ClosedImage(pTile))}})
+	} 
+	
+	static canbeInteracted(pTile) {
+		return LnKFlags.isLockable(pTile) || (LnKFlags.OpenImage(pTile) != LnKFlags.ClosedImage(pTile));
 	}
 	
 	static async changeLockPicksuccesses(pObject, pdelta) {
