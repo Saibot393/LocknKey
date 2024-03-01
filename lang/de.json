@@ -36,7 +36,8 @@
 			"LockuseIdentity"			: "Identität",
 			"newPasskey"				: "Neues Passwort:",
 			"addIdentityMessage"		: "Spieler {pPlayerName} will folgende Indetitäten zu einem Schloss hinzufügen:{pIdentities}",
-			"IdentifierofType"			: " {pIdentifier} von {pType} {pName}"
+			"IdentifierofType"			: " {pIdentifier} von {pType} {pName}",
+			"ToggleTile"				: "Fliesen Zustand ändern (L&K)"
 		},
 		
 		"Popup" : {
@@ -120,6 +121,7 @@
 			},
 			
 			"PickPocket"				: "{pName} hat einen Taschendiebstahl versucht:",
+			"PickPocketDetailed"		: "{pName} hat einen Taschendiebstahl bei {pTargetName} mit einem SG von {pDC} versucht:",
 			"PickPocketSuccess" : {
 				"crit"					: "{pName} hatte beim Taschendiebstahl kritischen Erfolg",
 				"default" 				: "{pName} hat erfolgreich Taschendiebstahl begangen"			
@@ -351,6 +353,11 @@
 				"descrp"				: "Ob der Taschendiebstahl SG automatisch aktualisiert werden soll wenn Wahrnehmung gewürfelt wird"				
 			},
 			
+			"MentionPickpocketDetails" : {
+				"name" 					: "Erwähne Taschendiebstahl Details",
+				"descrp"				: "Ob der Name des Ziels und der SG bei Taschendiebstahls Nachrichten erwähnt werden soll"				
+			},
+			
 			"PerceptionKeyWord" : {
 				"name"					: "Wahrnehmungs Stichwort",
 				"descrp"				: "Stichwort welches benutzt wird um Wahrnehmungswürfe zu identifizieren (ein String/Wort welches im Text des Wahrnehmungswurf vorhanden ist)"	
@@ -429,6 +436,16 @@
 		},
 		
 		"SheetSettings" : {
+			"OpenImageFlag" : {
+				"name"					: "Offen Bild",
+				"descrp"				: "Bild welches für den offenen Zustand benutzt wird"
+			},
+
+			"ClosedImageFlag" : {
+				"name"					: "Zu Bild",
+				"descrp"				: "Bild welches für den geschlossenen Zustand benutzt wird"
+			},
+
 			"LockableFlag" : {
 				"name" 					: "Abschließbar",
 				"descrp"				: "Ob dieses Objekt abgeschlossen werden kann"					

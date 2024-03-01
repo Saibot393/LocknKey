@@ -1,6 +1,6 @@
-import { cModuleName, cLUisGM } from "../utils/LnKutils.js";
+import { cModuleName, Translate, cLUisGM } from "../utils/LnKutils.js";
 import { Geometricutils } from "../utils/Geometricutils.js";
-import { LnKFlags } from "./LnKFlags.js";
+import { LnKFlags, cCustomPopup } from "./LnKFlags.js";
 import { LnKSound } from "../helpers/LnKSound.js";
 import { LockManager } from "../LockManager.js";
 import { LnKPopups } from "./LnKPopups.js";
@@ -61,7 +61,14 @@ class LnKTilesHandler {
 		if (LnKFlags.isLocked(pTile) && !pForceToggle) {
 			LnKSound.PlayLockedSound(pTile); //PLAY SOUND
 			
-			LnKPopups.TextPopUpID(pTile, "DoorisLocked"); //MESSAGE POPUP
+			let vMessage = LnKFlags.getCustomPopups(pTile, cCustomPopup.LockLocked);
+			
+			if (vMessage) {
+				LnKPopups.TextPopUp(pTile, vMessage); //MESSAGE POPUP
+			}
+			else {
+				LnKPopups.TextPopUpID(pTile, "DoorisLocked"); //MESSAGE POPUP
+			}
 		}
 		else {
 			await LnKFlags.toggleOpenState(pTile);
@@ -150,7 +157,7 @@ class LnKTilesHandler {
 			const cButtonPosition = "right";
 				
 			let vButtonHTML = `	<div class="control-icon" data-action="toggleopen">
-									<i class="${LnKFlags.OpenState(vTile) ? cOpenIcon : cClosedIcon}"></i>
+									<i class="${LnKFlags.OpenState(vTile) ? cOpenIcon : cClosedIcon}" title="${Translate("Titles.ToggleTile")}"></i>
 								</div>`;
 			
 			pHTML.find("div.col."+cButtonPosition).append(vButtonHTML);

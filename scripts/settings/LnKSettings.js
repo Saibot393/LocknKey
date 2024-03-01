@@ -431,6 +431,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: "Perception"
   }); 
   
+  game.settings.register(cModuleName, "MentionPickpocketDetails", {
+	name: Translate("Settings.MentionPickpocketDetails.name"),
+	hint: Translate("Settings.MentionPickpocketDetails.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });  
+  
   //client
   game.settings.register(cModuleName, "ControlSceme", {
 	name: Translate("Settings.ControlSceme.name"),

@@ -254,7 +254,8 @@ class LnKSheetSettings {
 										vhint : Translate("SheetSettings."+ cOpenImageF +".descrp"), 
 										vtype : "filePicker", 
 										vvalue : LnKFlags.OpenImage(pApp.object),
-										vflagname : cOpenImageF
+										vflagname : cOpenImageF,
+										vwide : true
 										}, `div[data-tab="${cModuleName}"]`);
 							
 				//choose image for closed state
@@ -262,7 +263,8 @@ class LnKSheetSettings {
 										vhint : Translate("SheetSettings."+ cClosedImageF +".descrp"), 
 										vtype : "filePicker", 
 										vvalue : LnKFlags.ClosedImage(pApp.object),
-										vflagname : cClosedImageF
+										vflagname : cClosedImageF,
+										vwide : true
 										}, `div[data-tab="${cModuleName}"]`);
 			}
 				
