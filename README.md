@@ -70,6 +70,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Pick pocket default DC to set the default DC for pick pocketing
 - Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
 - Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
+- Mention Pick Pocket details to add more informations to the pick pocket chat messages
 - Perception key-word: to set they key-word used to recognise perception rolls
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
@@ -79,7 +80,9 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 #### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Remove key on use: to remove the key once it has been used (or reduce the stack by one)
-#### Walls/Lockable Tokens(separate tab):
+#### Walls/Lockable Tokens/Tiles(separate tab):
+- Open Image[Tiles only]: the image for the open state
+- Closed Image[Tiles only]: the image for the closed state
 - Lockable: if this token can be locked
 - Lock on close[Wall only]: to lock this door when it is closed
 - [Token only] Locked: if this token is locked
