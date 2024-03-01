@@ -124,6 +124,10 @@ class Geometricutils {
 		if (LnKutils.isToken(pObject)) {
 			return [pObject.x + Geometricutils.insceneWidth(pObject)/2, pObject.y + Geometricutils.insceneHeight(pObject)/2];
 		}		
+		
+		if (LnKutils.isTile(pObject)) {
+			return [pObject.x + pObject.width/2, pObject.y + pObject.height/2];
+		}
 	}
 	
 	static insceneWidth(pToken) {

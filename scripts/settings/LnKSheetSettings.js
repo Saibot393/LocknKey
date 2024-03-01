@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -205,7 +205,6 @@ class LnKSheetSettings {
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
-		console.log(pApp);
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.object);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
@@ -241,13 +240,30 @@ class LnKSheetSettings {
 		//setup
 		if (vLockSettings || vLockFormulaSettings) {
 			//only if any settings at all
-
 			
 			if (vLockSettings && vLockFormulaSettings) {
 				//create title for lock compatible tokens
 				vTitle = `<h3 class="border">${Translate("Titles.LockTokens")}</h3>`;
 				
 				pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+			}
+			
+			if (pisTile) {
+				//choose image for open state
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cOpenImageF +".name"), 
+										vhint : Translate("SheetSettings."+ cOpenImageF +".descrp"), 
+										vtype : "filePicker", 
+										vvalue : LnKFlags.OpenImage(pApp.object),
+										vflagname : cOpenImageF
+										}, `div[data-tab="${cModuleName}"]`);
+							
+				//choose image for closed state
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cClosedImageF +".name"), 
+										vhint : Translate("SheetSettings."+ cClosedImageF +".descrp"), 
+										vtype : "filePicker", 
+										vvalue : LnKFlags.ClosedImage(pApp.object),
+										vflagname : cClosedImageF
+										}, `div[data-tab="${cModuleName}"]`);
 			}
 				
 			if (vLockSettings) {
@@ -570,7 +586,24 @@ class LnKSheetSettings {
 	//support
 	
 	static AddHTMLOption(pHTML, pInfos, pto) {
-		pHTML.find(pto/*`div[data-tab="${cModuleName}"]`*/).append(LnKSheetSettings.createHTMLOption(pInfos))
+		let vParent = pHTML.find(pto);
+		
+		vParent.append(LnKSheetSettings.createHTMLOption(pInfos));
+		
+		if (pInfos.vtype == "filePicker") {
+			let vPickerButton = vParent[0].querySelector(`button[data-target="flags.${cModuleName}.${pInfos.vflagname}"]`);
+			let vDataField = vParent[0].querySelector(`input[name="flags.${cModuleName}.${pInfos.vflagname}"]`);
+			
+			let filePicker = new FilePicker({
+				field: vDataField,
+				type: vPickerButton.dataset.type,
+				current: vDataField?.value ?? "",
+				button: vPickerButton,
+				callback: (pFile, pFilePicker) => {pFilePicker.field.value = pFile}
+			});
+			
+			vPickerButton.onclick = () => {filePicker.render()};
+		}
 	}
 	
 	static createHTMLOption(pInfos, pwithformgroup = false) {
@@ -643,15 +676,15 @@ class LnKSheetSettings {
 		switch (vtype){
 			case "number":
 			case "text":
-				vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} value="${vvalue}">`;
+				vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} value="${vvalue}"></input>`;
 				break;
 				
 			case "checkbox":
 				if (vvalue) {
-					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} checked>`;
+					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} checked></input>`;
 				}
 				else {
-					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID}>`;
+					vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID}></input>`;
 				}
 				break;
 				
@@ -674,7 +707,7 @@ class LnKSheetSettings {
 				break;
 			case "filePicker":
 				vnewHTML = vnewHTML + `
-					<input class="image" type="text" name="flags.${cModuleName}.${vflagname}" placeholder="path/image.png"></input>
+					<input class="image" type="text" name="flags.${cModuleName}.${vflagname}" placeholder="path/image.png" value="${vvalue}"></input>
 					<button type="button" class="file-picker" data-type="imagevideo" data-target="flags.${cModuleName}.${vflagname}"><i class="fas fa-file-import fa-fw"></i></button>
 				`;
 				break;

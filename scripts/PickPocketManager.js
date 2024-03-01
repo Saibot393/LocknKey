@@ -209,7 +209,7 @@ class PickPocketManager {
 				}
 			}
 			
-			Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : vSuccessDegree, Data : pData});
+			Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : vSuccessDegree, Data : pData, useData: {userID : pData.userID}, UseType : cUPickPocket});
 		}
 	}
 	

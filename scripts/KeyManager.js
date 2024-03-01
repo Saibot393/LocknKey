@@ -687,6 +687,10 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token
 	KeyManager.onLockRightClick(pTokenDocument, pInfos);
 }); 
 
+Hooks.on(cModuleName + "." + "TileRClick", (pTokenDocument, pInfos) => {//Tile Lock use
+	KeyManager.onLockRightClick(pTokenDocument, pInfos);
+}); 
+
 Hooks.on("createChatMessage", (pMessage, pInfos, pSender) => {
 	KeyManager.onChatMessage(pMessage, pInfos, pSender);
 });

@@ -1,6 +1,6 @@
 import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
-import { LnKutils, cModuleName, cDelimiter, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
+import { LnKutils, cModuleName, cDelimiter, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent, cUPickPocket } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken, LockManager } from "../LockManager.js";
 import { LnKFlags, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -95,7 +95,7 @@ class LnKCompatibility {
 			
 		let vTypeOptions;
 		
-		for (let vUseType of [cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent]) {
+		for (let vUseType of [cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent, cUPickPocket]) {
 			switch (vUseType) {
 				case cLUuseKey:
 				case cLUusePasskey:
@@ -104,6 +104,7 @@ class LnKCompatibility {
 					break;
 				case cLUpickLock:
 				case cLUbreakLock:
+				case cUPickPocket:
 					vTypeOptions = cTConditions;
 					break;
 			}
@@ -141,6 +142,7 @@ class LnKCompatibility {
 			let vCharacter = canvas.tokens.get(pData.CharacterID)?.document;
 			
 			if (vTile && vCharacter) {
+				console.log("test");
 				vTile.trigger({ tokens: [vCharacter], method: 'trigger', options: {landing : pData.Infos.UseType}});
 			}
 		}
@@ -173,6 +175,7 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName + ".TokenLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData, true));
 		
 		Hooks.on(cModuleName + ".LockUse", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
+		Hooks.on(cModuleName + ".PickPocket", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
 	}
 	
 	if (LnKCompUtils.isactiveModule(cTidy5eNew)) {

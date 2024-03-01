@@ -6,6 +6,8 @@ const cDoorSoundPath = "sounds/doors/";
 const cLockSound = "/lock.ogg";
 const cunLockSound = "/unlock.ogg";
 const cLockedSound = "/test.ogg";
+const cCloseSound = "/close.ogg";
+const cOpenSound = "/open.ogg";
 
 const cFallbackSound = "sounds/lock.wav";
 
@@ -28,6 +30,10 @@ class LnKSound {
 	static async PlayunLockSound(pLock) {} //start PlaySound requests for unLock sound
 	
 	static async PlayLockedSound(pLock) {} //start PlaySound requests for Locked sound
+	
+	static async PlayCloseSound(pLock) {} //start PlaySound requests for Close sound
+	
+	static async PlayOpenSound(pLock) {} //start PlaySound requests for Open sound
 	
 	static PlayDiceSound(pCharacter) {} //start PlaySound requests for Dice sound
 	
@@ -56,7 +62,8 @@ class LnKSound {
 	
 	//specifics
 	static async PlayLockSound(pLock) {
-		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
+		let vLockType = await LnKutils.Locktype(pLock);
+		if (await LnKutils.isTokenLocktype(vLockType) || LnKutils.isTileLocktype(vLockType)) {
 			if (LnKFlags.SoundVariant(pLock) != "off") {
 				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockSound, FCore.sceneof(pLock).id);
 			}
@@ -64,7 +71,8 @@ class LnKSound {
 	}
 	
 	static async PlayunLockSound(pLock) {
-		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
+		let vLockType = await LnKutils.Locktype(pLock);
+		if (await LnKutils.isTokenLocktype(vLockType) || LnKutils.isTileLocktype(vLockType)) {
 			if (LnKFlags.SoundVariant(pLock) != "off") {
 				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cunLockSound, FCore.sceneof(pLock).id);
 			}
@@ -72,12 +80,31 @@ class LnKSound {
 	}
 	
 	static async PlayLockedSound(pLock) {
-		if (await LnKutils.isTokenLocktype(await LnKutils.Locktype(pLock))) {
+		let vLockType = await LnKutils.Locktype(pLock);
+		if (await LnKutils.isTokenLocktype(vLockType) || LnKutils.isTileLocktype(vLockType)) {
 			if (LnKFlags.SoundVariant(pLock) != "off") {
 				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cLockedSound, FCore.sceneof(pLock).id);
 			}
 		}		
-	} 
+	}
+
+	static async PlayCloseSound(pLock) {
+		let vLockType = await LnKutils.Locktype(pLock);
+		if (await LnKutils.isTokenLocktype(vLockType) || LnKutils.isTileLocktype(vLockType)) {
+			if (LnKFlags.SoundVariant(pLock) != "off") {
+				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cCloseSound, FCore.sceneof(pLock).id);
+			}
+		}	
+	}
+	
+	static async PlayOpenSound(pLock) {
+		let vLockType = await LnKutils.Locktype(pLock);
+		if (await LnKutils.isTokenLocktype(vLockType) || LnKutils.isTileLocktype(vLockType)) {
+			if (LnKFlags.SoundVariant(pLock) != "off") {
+				LnKSound.PlaySound(cDoorSoundPath + LnKFlags.SoundVariant(pLock) + cOpenSound, FCore.sceneof(pLock).id);
+			}
+		}	
+	}
 	
 	static PlayDiceSound(pCharacter) {
 		LnKSound.PlaySound(cDiceSound, FCore.sceneof(pCharacter).id);

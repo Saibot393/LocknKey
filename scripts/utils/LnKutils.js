@@ -64,6 +64,8 @@ class LnKutils {
 	//ID handling
 	static TokenfromID (pID, pScene = null) {} //returns the Token matching pID
 	
+	static TilefromID (pID, pScene = null) {} //returns the Tile matching pID
+	
 	static WallfromID(pID, pScene = null) {} //returns the Wall matching pID
 	
 	static LockfromID (pID, pLockType, pScene = null) {} //returns the Lock (Door or Token) matching pID
@@ -116,6 +118,8 @@ class LnKutils {
 	static isTokenLock(pLock) {} //returns if pLock is a Token
 	
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
+	
+	static isTileLocktype(pLocktype) {} //returns if pLocktype belongs to a Tile
 	
 	static isWall(pObject) {} //returns if pObject is a Wall
 	
@@ -202,6 +206,30 @@ class LnKutils {
 		}
 	} 
 	
+	static TilefromID (pID, pScene = null) {
+		if (pScene) {
+			let vDocument = pScene.tiles.find(vDocument => vDocument.id === pID);
+			
+			if (vDocument) {
+				return vDocument;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			//default scene
+			let vToken = canvas.tiles.placeables.find(vToken => vToken.id === pID);
+			
+			if (vToken) {
+				return vToken.document;
+			}
+			else {
+				return null;
+			}
+		}
+	}
+	
 	static WallfromID(pID, pScene = null) {
 		if (pScene) {
 			let vDocument = pScene.walls.get(pID);
@@ -229,6 +257,9 @@ class LnKutils {
 		switch(pLockType) {
 			case cLockTypeDoor:
 				return LnKutils.WallfromID(pID, pScene);
+				break;
+			case cLockTypeTile:
+				return LnKutils.TilefromID(pID, pScene);
 				break;
 			case cLockTypeLootPf2e:
 			default:
@@ -550,6 +581,10 @@ class LnKutils {
 	
 	static async isTokenLocktype(pLocktype) {
 		return cTokenLockTypes.includes(pLocktype) || (await LnKCompUtils.isTokenLocktype(pLocktype));
+	}
+	
+	static isTileLocktype(pLocktype) {
+		return pLocktype == cLockTypeTile;
 	}
 	
 	static isWall(pObject) {
