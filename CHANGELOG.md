@@ -1,3 +1,11 @@
+## v2.6.0
+- Added tiles as lockable objects:
+    - Tiles now have an open and a closed state and the settings "Open Image" and "Closed Image"
+    - Tiles can be locked, causing their state to be locked
+    - Tiles state can be toggle from the HUD
+- Added setting Mention Pick Pocket details to add more informations to the pick pocket chat messages
+- Pick pocketing can now trigger [Monk's Active Tile Triggers](https://foundryvtt.com/packages/monks-active-tiles)
+
 ## v2.5.4
 - Compatibility update for new version of [Tidy 5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/)
 
