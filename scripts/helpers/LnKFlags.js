@@ -609,7 +609,7 @@ class LnKFlags {
 		
 		if (vFlag) {
 			if (vFlag.hasOwnProperty(cOpenImageF)) {
-				return vFlag.OpenImageFlag;
+				return vFlag.OpenImageFlag || pObject.texture.src;
 			}
 		}
 		
@@ -622,7 +622,7 @@ class LnKFlags {
 		
 		if (vFlag) {
 			if (vFlag.hasOwnProperty(cClosedImageF)) {
-				return vFlag.ClosedImageFlag;
+				return vFlag.ClosedImageFlag || pObject.texture.src;
 			}
 		}
 		
