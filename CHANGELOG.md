@@ -1,3 +1,7 @@
+## v2.6.1
+- Fixed bug that caused faulty tab to be added to MATTs tile Triggers tab
+- Improved tile state switching
+
 ## v2.6.0
 - Added tiles as lockable objects:
     - Tiles now have an open and a closed state and the settings "Open Image" and "Closed Image"
