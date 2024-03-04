@@ -61,6 +61,8 @@ class LnKCompUtils {
 	//specific: ItemPiles
 	static async setIPLock(pItemPile, pLocked) {} //enables/disables pItemPile´based on pLocked
 	
+	static isItemPile(pToken) {} //returns if pToken is an item pile
+	
 	//specific: MATT
 	static async MATTTriggerTile(pLock) {} //returns Tile triggered by pLock actions
 	
@@ -174,6 +176,16 @@ class LnKCompUtils {
 		else {
 			game.itempiles?.API?.unlockItemPile(pItemPile);
 		}
+	}
+	
+	static isItemPile(pToken) {
+		let vActor = pToken;
+		
+		if (pToken?.actor) {
+			vActor = pToken.actor
+		}
+		
+		return vActor?.flags[cItemPiles];
 	}
 	
 	//specific: MATT

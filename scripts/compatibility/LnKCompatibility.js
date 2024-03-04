@@ -142,7 +142,6 @@ class LnKCompatibility {
 			let vCharacter = canvas.tokens.get(pData.CharacterID)?.document;
 			
 			if (vTile && vCharacter) {
-				console.log("test");
 				vTile.trigger({ tokens: [vCharacter], method: 'trigger', options: {landing : pData.Infos.UseType}});
 			}
 		}

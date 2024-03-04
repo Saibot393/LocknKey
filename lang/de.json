@@ -358,6 +358,11 @@
 				"descrp"				: "Ob der Name des Ziels und der SG bei Taschendiebstahls Nachrichten erwähnt werden soll"				
 			},
 			
+			"deadActorsLootable" : {
+				"name"					: "Tote Figuren lootbar",
+				"descrp"				: "Ob Tote Figuren ohne Wurf lootbar/bestehlbar seien sollen"	
+			},
+			
 			"PerceptionKeyWord" : {
 				"name"					: "Wahrnehmungs Stichwort",
 				"descrp"				: "Stichwort welches benutzt wird um Wahrnehmungswürfe zu identifizieren (ein String/Wort welches im Text des Wahrnehmungswurf vorhanden ist)"	

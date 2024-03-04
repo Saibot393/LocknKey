@@ -422,6 +422,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   });  
   
+  game.settings.register(cModuleName, "deadActorsLootable", {
+	name: Translate("Settings.deadActorsLootable.name"),
+	hint: Translate("Settings.deadActorsLootable.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });  
+  
   game.settings.register(cModuleName, "PerceptionKeyWord", {
 	name: Translate("Settings.PerceptionKeyWord.name"),
 	hint: Translate("Settings.PerceptionKeyWord.descrp"),

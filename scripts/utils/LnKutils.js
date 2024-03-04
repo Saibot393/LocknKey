@@ -150,6 +150,8 @@ class LnKutils {
 	
 	static async CalculatePPDefaultDC(pToken) {} //returns the calculated PickPocket DC (if formula available), else returns default dc value
 	
+	static isDead(pActor) {} //returns wether pActor is dead
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
 	
@@ -707,6 +709,20 @@ class LnKutils {
 		}
 		
 		return game.settings.get(cModuleName, "PickPocketDefaultDC");
+	}
+	
+	static isDead(pActor) {
+		if (LnKCompUtils.isItemPile(pActor)) {
+			return false;
+		}
+		
+		let vActor = pActor;
+		
+		if (vActor?.actor) {
+			vActor = vActor.actor;
+		}
+		
+		return vActor?.system?.attributes?.hp?.value <= 0;
 	}
 	
 	//arrays
