@@ -1,3 +1,6 @@
+## v2.7.0
+- Added setting Dead tokens lootable to make all dead tokens (except item piles) lootable without having to roll
+
 ## v2.6.1
 - Fixed bug that caused faulty tab to be added to MATTs tile Triggers tab
 - Improved tile state switching

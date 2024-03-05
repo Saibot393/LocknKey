@@ -70,7 +70,8 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Pick pocket default DC to set the default DC for pick pocketing
 - Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
 - Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
-- Mention Pick Pocket details to add more informations to the pick pocket chat messages
+- Mention Pick Pocket details: to add more informations to the pick pocket chat messages
+- Dead tokens lootable: to make all dead tokens (except item piles) lootable without having to roll
 - Perception key-word: to set they key-word used to recognise perception rolls
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
