@@ -1,3 +1,6 @@
+## v2.7.2
+- Fixed item piles recognition
+
 ## v2.7.1
 - Improved lock tile behaviour to prevent annoying popups
 
