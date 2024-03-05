@@ -108,17 +108,21 @@ class LnKTilesHandler {
 	}
 	
 	static onTileLeftClick(pTile, pEvent) {
-		if (canvas.activeLayer.name == "TilesLayer") return;
-		
-		LnKTilesHandler.requestToggleTile(pTile);
-		
-		Hooks.call(cModuleName + ".TileLClick", pTile, pEvent);
+		if (LnKFlags.canswitchStates(pTile)) {
+			if (canvas.activeLayer.name == "TilesLayer") return;
+			
+			LnKTilesHandler.requestToggleTile(pTile);
+			
+			Hooks.call(cModuleName + ".TileLClick", pTile, pEvent);
+		}
 	}
 	
 	static onTileRightClick(pTile, pEvent) {
-		if (canvas.activeLayer.name == "TilesLayer") return;
-		
-		Hooks.call(cModuleName + ".TileRClick", pTile, pEvent);
+		if (LnKFlags.isLockable(pTile)) {
+			if (canvas.activeLayer.name == "TilesLayer") return;
+			
+			Hooks.call(cModuleName + ".TileRClick", pTile, pEvent);
+		}
 	}
 	
 	static onTileUpdate(pTile, pChanges) {

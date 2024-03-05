@@ -186,6 +186,8 @@ class LnKFlags {
 	
 	static ClosedImage(pTile) {} //returns the closed image of pTile
 	
+	static canswitchStates(pTile) {} //if pTile can switch states
+	
 	static async applyStateImage(pTile) {} //applies the appropiate state image to pTile
 	
 	static canbeInteracted(pTile) {} //if players can interact with this tile
@@ -609,11 +611,11 @@ class LnKFlags {
 		
 		if (vFlag) {
 			if (vFlag.hasOwnProperty(cOpenImageF)) {
-				return vFlag.OpenImageFlag || pObject.texture.src;
+				return vFlag.OpenImageFlag || "";
 			}
 		}
 		
-		return pObject.texture.src; //default if anything fails	
+		return pObject.texture.src || ""; //default if anything fails	
 	}
 	
 	static #ClosedImageFlag (pObject) {
@@ -622,11 +624,11 @@ class LnKFlags {
 		
 		if (vFlag) {
 			if (vFlag.hasOwnProperty(cClosedImageF)) {
-				return vFlag.ClosedImageFlag || pObject.texture.src;
+				return vFlag.ClosedImageFlag || "";
 			}
 		}
 		
-		return pObject.texture.src; //default if anything fails	
+		return pObject.texture.src || ""; //default if anything fails	
 	}
 	
 	static #isOpenFlag (pObject) {
@@ -1200,12 +1202,16 @@ class LnKFlags {
 		return this.#ClosedImageFlag(pTile);
 	} 
 	
+	static canswitchStates(pTile) {
+		return LnKFlags.OpenImage(pTile) != LnKFlags.ClosedImage(pTile);
+	}
+	
 	static async applyStateImage(pTile) {
 		await pTile.update({texture : {src : (LnKFlags.OpenState(pTile) ? LnKFlags.OpenImage(pTile) : LnKFlags.ClosedImage(pTile))}})
 	} 
 	
 	static canbeInteracted(pTile) {
-		return LnKFlags.isLockable(pTile) || (LnKFlags.OpenImage(pTile) != LnKFlags.ClosedImage(pTile));
+		return LnKFlags.isLockable(pTile) || LnKFlags.canswitchStates(pTile);
 	}
 	
 	static async changeLockPicksuccesses(pObject, pdelta) {
