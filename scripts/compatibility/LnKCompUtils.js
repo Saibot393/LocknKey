@@ -185,7 +185,7 @@ class LnKCompUtils {
 			vActor = pToken.actor
 		}
 		
-		return vActor?.flags[cItemPiles];
+		return vActor?.flags[cItemPiles]?.data?.enabled;
 	}
 	
 	//specific: MATT
