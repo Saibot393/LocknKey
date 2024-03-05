@@ -1,3 +1,6 @@
+## v2.7.1
+- Improved lock tile behaviour to prevent annoying popups
+
 ## v2.7.0
 - Added setting Dead tokens lootable to make all dead tokens (except item piles) lootable without having to roll
 
