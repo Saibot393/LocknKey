@@ -1,3 +1,6 @@
+## v2.7.3
+- Fixed pick pocketing bug for Pf2e rules (thanks to [HaHussain](https://github.com/HaHussain))
+
 ## v2.7.2
 - Fixed item piles recognition
 
