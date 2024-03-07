@@ -97,7 +97,7 @@ class PickPocketManager {
 					PickPocketManager.RequestPickPocket(vData);
 				}
 				else {	
-					vCallback = async (psuccessdegree) => {
+					let vCallback = async (psuccessdegree) => {
 						let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, useSystemRoll : true, Systemresult : psuccessdegree};
 						
 						PickPocketManager.RequestPickPocket(vData);
