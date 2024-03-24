@@ -213,7 +213,7 @@ class LnKSheetSettings {
 		let vTitle;
 		
 		if (vUseTab) {
-			let vTabbar = pisTile ? pHTML.find(`nav.sheet-tabs[aria-role="Form Tab Navigation"]`) : pHTML.find(`[data-group="main"].sheet-tabs`);
+			let vTabbar = pisTile ? pHTML.find(`nav.sheet-tabs:first`) : pHTML.find(`[data-group="main"].sheet-tabs`);
 			let vprevTab = pisTile ? pHTML.find(`div[data-tab="animation"]`) : pHTML.find(`div[data-tab="resources"]`); //places LnK tab after last core tab "details"
 			
 			let vTabIcon;
