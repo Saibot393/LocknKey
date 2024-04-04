@@ -292,7 +292,9 @@ class LnKSystemutils {
 	
 	static isFreeCircumvent(pMessage) {
 		if (game.settings.get(cModuleName, "LockCircumventName").length > 0) {
-			return game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter).includes(pMessage.flavor);
+			let vWords = game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter);
+			
+			return vWords.includes(pMessage.flavor) || vWords.find(vWord => pMessage.content.includes(vWord));
 		}
 		else {
 			return false;
