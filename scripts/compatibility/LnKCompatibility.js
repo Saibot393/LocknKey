@@ -1,4 +1,4 @@
-import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions, cPuzzleLock } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
 import { LnKutils, cModuleName, cDelimiter, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent, cUPickPocket } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken, LockManager } from "../LockManager.js";

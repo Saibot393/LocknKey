@@ -4,6 +4,7 @@ import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
+import { LnKCompUtils } from "./compatibility/LnKCompUtils.js";
 
 const cLnKKeyIcon = "fa-key";
 const cLnKcheck = "fa-solid fa-check";
@@ -539,6 +540,8 @@ class LockManager {
 				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
 		
+		LnKCompUtils.LockPuzzle(pLock);
+		
 		LnKSound.PlayunLockSound(pLock);
 		
 		Hooks.callAll(cModuleName+".onLock", vLocktype, pLock);
@@ -593,25 +596,31 @@ class LockManager {
 					await LnKFlags.makeLockable(pLock);
 				}
 				
+				let vSuccess = true;
+				
 				switch(vLocktype) {
 					case cLockTypeDoor:
 						await LockManager.ToggleDoorLock(pLock, pLockusetype);
 						
-						return true;
+						vSuccess = true;
 						break;
 					case cLockTypeLootPf2e:
 					default:
 						await LnKFlags.invertLockedstate(pLock);
 						
-						if (LnKFlags.isLocked(pLock)) {
-							LockManager.onLock(pLock, pLockusetype);
-						}
-						else {
-							LockManager.onunLock(pLock, pLockusetype);
-						}
-						
-						return true;
+						vSuccess = true;
 						break;
+				}
+				
+				if (vSuccess) {
+					if (LnKFlags.isLocked(pLock)) {
+						LockManager.onLock(pLock, pLockusetype);
+					}
+					else {
+						LockManager.onunLock(pLock, pLockusetype);
+					}
+						
+					return true;
 				}
 			}
 			else {
