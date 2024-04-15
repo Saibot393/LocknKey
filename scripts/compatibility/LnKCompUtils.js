@@ -13,6 +13,7 @@ const cMonksEJ = "monks-enhanced-journal";
 const cMATT = "monks-active-tiles";
 const cTidy5eNew = "tidy5e-sheet";
 const cPuzzleLock = "puzzle-locks";
+const cReadysetRoll = "ready-set-roll-5e";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
@@ -42,7 +43,7 @@ export {cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTCondit
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
 
-export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT, cTidy5eNew, cPuzzleLock}
+export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT, cTidy5eNew, cPuzzleLock, cReadysetRoll}
 export { cLockTypeLootIP };
 
 class LnKCompUtils {
