@@ -1,3 +1,6 @@
+## v2.7.6
+- Small bug fix for free lock circumvent spell recognition
+
 ## v2.7.5
 - Whenever a lock is locked via Lock & Key the attached [Puzzle Lock](https://foundryvtt.com/packages/puzzle-locks) is now also locked
 
