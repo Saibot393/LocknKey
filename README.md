@@ -145,7 +145,7 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
 
 ### Languages:
 
-The module contains an English, a German, a Chinese (thanks to [feederze](https://github.com/feederze) and Thousand (_thousand@Discord)), and a French (thanks to [MastaGooz](https://github.com/MastaGooz)) translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/Rideable/issues).
+The module contains an English, a German, a Chinese (thanks to [feederze](https://github.com/feederze) and Thousand (_thousand@Discord)), a French (thanks to [MastaGooz](https://github.com/MastaGooz)) and a Polish (thanks to [Lioheart](https://github.com/Lioheart)) translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/Rideable/issues).
 
 ---
 
