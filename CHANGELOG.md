@@ -1,5 +1,5 @@
 ## v2.7.7
-- Added polish translation (thanks to [Lioheart]([https://github.com/Lioheart)))
+- Added polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
 ## v2.7.6
 - Small bug fix for free lock circumvent spell recognition
