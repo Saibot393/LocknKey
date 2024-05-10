@@ -1,3 +1,6 @@
+## v2.7.8
+- Added tiles a valid targets for [MATT](https://foundryvtt.com/packages/monks-active-tiles) actions and filters
+
 ## v2.7.7
 - Added polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
