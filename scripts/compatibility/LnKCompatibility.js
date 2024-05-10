@@ -217,9 +217,9 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['within', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'previous', 'tagger'] },
 						required: true,
-						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile)); }
 					}
 				],
 				group: cModuleName,
@@ -248,9 +248,9 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['within', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'previous', 'tagger'] },
 						required: true,
-						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile)); }
 					}
 				],
 				group: cModuleName,
@@ -279,9 +279,9 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['within', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'previous', 'tagger'] },
 						required: true,
-						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile)); }
 					}
 				],
 				group: cModuleName,
@@ -368,10 +368,10 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['token', 'within', 'players', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'players', 'previous', 'tagger'] },
 						required: true,
 						restrict: (entity) => {
-							return ((entity instanceof Token) || (entity instanceof Wall));
+							return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile));
 						}
 					},
 					{
