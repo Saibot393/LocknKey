@@ -1,4 +1,4 @@
-## v2.7.8
+## v2.7.9
 - Added russian translation (thanks to [maragondi](https://github.com/maragondi))
 
 ## v2.7.8
