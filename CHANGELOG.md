@@ -1,4 +1,7 @@
 ## v2.7.8
+- Added russian translation (thanks to [maragondi](https://github.com/maragondi))
+
+## v2.7.8
 - Added tiles a valid targets for [MATT](https://foundryvtt.com/packages/monks-active-tiles) actions and filters
 
 ## v2.7.7
