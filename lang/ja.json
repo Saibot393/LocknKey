@@ -243,28 +243,29 @@
 					"d100WFRP4"			: "d100 で出目1/100 [例:WFRP4e]",
 					"d100WFRP4Doubles"	: "d100 で出目1/100 及び ゾロ目 [例:WFRP4e]",
 					"d100CoC7e"			: "d100 難易度 [例:CoC7e]",
-					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [例:CoD2e]"
+					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [例:CoD2e]",
+					"3d20DSA": "3d20 DSA"
 				}
 			},
 			
 			"LockPickItem" : {
 				"name" 					: "ロックピックアイテム",
-				"descrp"				: "Names or compendium IDs (recommended) of a lockpicking items, \"-\" if no item is necessary (seperated with \";\")"		
+				"descrp"				: "鍵開け用のアイテムの名称もしくは辞典ID(推奨)。 アイテムが不要であれば\"-\" を入力 (\";\"で分割)"		
 			},
 			
 			"MentionLockPickItem" : {
-				"name" 					: "ロックピックのMention lockpick item",
-				"descrp"				: "If the used lockpick item should be mentioned in the chat"		
+				"name" 					: "ロックピックアイテムを呼び出し",
+				"descrp"				: "使用されたロックピックアイテムはチャットに書き込まれます"		
 			},
 			
 			"RemoveLPoncritFail" : {
 				"name" 					: "致命的失敗時にロックピックを取り除く",
-				"descrp"				: "If the used Lockpick is removed on a critical fail (or if the stack is reduced by 1)"		
+				"descrp"				: "致命的失敗時に、使用したロックピックが取り除かれます (もしくは個数が１つ減る)"		
 			},	
 			
 			"JamLockonLPcritFail" : {
 				"name" 					: "鍵開けの致命的失敗時に鍵を詰まらせる",
-				"descrp"				: "Doors are jammed on critical lockpick fails and cant be picked anymore"		
+				"descrp"				: "鍵開けの致命的失敗時に、扉が詰まりこれ以上鍵開けできなくなります"		
 			},
 			
 			"JamedLockKeyunusable" : {
@@ -273,92 +274,102 @@
 			},
 			
 			"defaultLPAttempts" : {
-				"name"					: "Default Lock pick attempts",
-				"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
+				"name"					: "デフォルトの鍵開け回数",
+				"descrp"				: "錠が鍵開け不能になるまでの規定の回数 (-1で無限)"
 			},
 			
 			"LockPickFormula" : {
-				"name" 					: "Lockpick roll formula",
-				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+				"name" 					: "鍵開けロールの判定式",
+				"descrp"				: "鍵開け時に使用するダイスロールの判定式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
 			},
 					
 			"DefaultPickDC" : {
-				"name" 					: "Default lock DC",
-				"descrp"				: "The default value for lock DCs"				
+				"name" 					: "デフォルトの鍵開けDC",
+				"descrp"				: "錠の規定DC（難易度）"				
 			},
 			
 			"LockBreakFormula" : {
-				"name" 					: "Break lock roll formula",
-				"descrp"				: "The formula which is used for dice rolls when breaking a lock (e.g. \"1d20 + @actor.skills.athletics.mod - 2\", help can be found on the Github page of this module)"				
+				"name" 					: "こじ開けロールの判定式",
+				"descrp"				: "こじ開け時に使用するダイスロールの判定式 (例： \"1d20 + @actor.skills.athletics.mod - 2\"、このMODのGithubページにヘルプがあります)"				
 			},
 			
 			"DefaultBreakDC" : {
-				"name" 					: "Default lock break DC",
-				"descrp"				: "The default value for lock break DCs"				
+				"name" 					: "デフォルトのこじ開けDC",
+				"descrp"				: "こじ開けの規定DC（難易度）"				
 			},
 			
 			"CustomCircumventName" : {
-				"name" 					: "Custom check name",
-				"descrp"				: "The name of the third optional custom check to circumvent locks (e.g. \"Hacking\" or \"Magic rune\", leave empty to deactivate)"				
+				"name" 					: "カスタムの判定名",
+				"descrp"				: "任意の、開錠するための三番目のカスタム判定の名称 (例：「ハッキング」や「魔法のルーン」など、空白で無効化)"				
 			},
 			
 			"CustomCircumventFormula" : {
-				"name" 					: "Custom check formula",
-				"descrp"				: "The formula which is used for dice rolls when using the custom check above"				
+				"name" 					: "カスタムの判定式",
+				"descrp"				: "上記のカスタム判定を実施するためのダイス式"				
 			},
 			
 			"CustomCircumventDefaultDC" : {
-				"name" 					: "Custom check default DC",
-				"descrp"				: "The default value for custom check DCs"				
+				"name" 					: "デフォルトのカスタム判定DC",
+				"descrp"				: "カスタム判定の規定DC（難易度）"				
 			},
 			
 			"LockBreakunlockable" : {
-				"name" 					: "Make broken locks unlockable",
-				"descrp"				: "Makes lock that have been broken unlockable"				
+				"name" 					: "壊れた錠を開錠不能にする",
+				"descrp"				: "壊れてしまった錠を開けなくします"				
 			},
 			
 			"onlyCombatMultiSuccess" : {
-				"name" 					: "Multi-success during combat only",
-				"descrp"				: "Ignores set required Lockpicking successes outside of combat"				
+				"name" 					: "戦闘中のみ、複数回の成功が必要",
+				"descrp"				: "戦闘外では、必要な鍵開け成功数を無視します。"				
 			},
 			
 			"LockCircumventName" : {
-				"name" 					: "Lock circumvention keywords",
-				"descrp"				: "Keywords to identify effects (e.g. the \"Knock\" spell) that allow players to circumvent locks (seperated with \";\")"				
+				"name" 					: "錠の回避用キーワード",
+				"descrp"				: "プレイヤーが錠を回避できる効果を特定するためのキーワード (例： \"Knock\" 呪文) を設定します ( \";\"で分割)"				
 			},
 			
 			"AutoAcceptIdentityAddition" : {
-				"name" 					: "Automatically accept identity additions",
-				"descrp"				: "If identity addtions should be accepted automatically (not recommended)"				
+				"name" 					: "identity 追加を自動許可",
+				"descrp"				: "If identity addtions should be accepted automatically (非推奨)"				
 			},
 			
 			"PickPocketFormula" : {
-				"name" 					: "Pick pocket formula",
-				"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+				"name" 					: "スリのダイス式",
+				"descrp"				: "The formula which is used for dice rolls when pick pocketing (例： \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
 			},
 			
 			"PickPocketDefaultDC" : {
-				"name" 					: "Pick pocket default DC",
-				"descrp"				: "The default value for pick pocket DCs"				
+				"name" 					: "デフォルトのスリDC",
+				"descrp"				: "スリの規定DC（難易度）"				
 			},
 			
 			"PickPocketDefaultDCFormula" : {
-				"name" 					: "Pick pocket default DC formula",
-				"descrp"				: "The default formula used to calculate the Pick Pocket DC (overrides other defaults)"				
+				"name" 					: "デフォルトのスリロールDC式",
+				"descrp"				: "スリDCを計算するための規定ダイス式 (ほかのデフォルトを上書きします)"				
 			},
 			
 			"AutoUpdatePickPocketDC" : {
-				"name" 					: "Auto update Pick Pocket DC",
+				"name" 					: "スリDCの自動更新",
 				"descrp"				: "If the Pick Pocket DC should get automatically updated when a perception check is rolled"				
+			},
+
+			"MentionPickpocketDetails" : {
+				"name" 					: "Mention Pick Pocket details",
+				"descrp"				: "If the target name and the DC should be mentioned in the Pick Pocket message"				
+			},
+			
+			"deadActorsLootable" : {
+				"name"					: "死亡したコマは略奪可能",
+				"descrp"				: "死亡状態のコマは判定不要で略奪／スリが可能かどうか"	
 			},
 			
 			"PerceptionKeyWord" : {
-				"name"					: "Perception key-word",
+				"name"					: "知覚キーワード",
 				"descrp"				: "Key word to recognise perception rolls (a string present in the flavour text of perception rolls)"		
 			},
 			
 			"ControlSceme" : {
-				"name" 					: "Control sceme",
+				"name" 					: "コントロールスキーム",
 				"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
 				"options" : {
 					"rightKeys"			: "right-click + key",
@@ -367,7 +378,7 @@
 			},			
 			
 			"MessagePopUps" : {
-				"name" 					: "Message popups",
+				"name" 					: "メッセージポップアップ",
 				"descrp"				: "Enables multible popups upon actions such locking or unlocking a lock"		
 			},
 			
@@ -381,27 +392,27 @@
 				"descrp"				: "The position of the indicator that shows that a token can circumvent the next lock on the token HUD",
 				"options" : {
 					"none"				: "nowhere",
-					"left"				: "left",
-					"right"				: "right"
+					"left"				: "左",
+					"right"				: "右"
 				}
 			}
 		},
 		
 		"Keys" : {
 			"ToggleLock" : {
-				"name"					: "Toggle lock"
+				"name"					: "錠をトグル"
 			},
 			
 			"CopyLock" : {
-				"name"					: "Copy lock ids"
+				"name"					: "錠idをコピー"
 			},
 			
 			"PasteLock" : {
-				"name"					: "Paste lock ids"
+				"name"					: "錠idを貼り付け"
 			},
 			
 			"CreatenewKey" : {
-				"name"					: "Create new key"
+				"name"					: "新規の鍵を作成"
 			},
 			
 			"UseKey" : {
@@ -417,7 +428,7 @@
 			},
 			
 			"CustomCheck" : {
-				"name"					: "Custom Check (ask GM (unless you are the GM))"
+				"name"					: "カスタム判定 (GMに確認 (あなたがGMでなければ))"
 			},
 			
 			"PickPocket" : {
@@ -430,18 +441,28 @@
 		},
 		
 		"SheetSettings" : {
+			"OpenImageFlag" : {
+				"name"					: "開錠時の画像",
+				"descrp"				: "開錠中に使用される画像"
+			},
+			
+			"ClosedImageFlag" : {
+				"name"					: "施錠時の画像",
+				"descrp"				: "施錠中に使用される画像"
+			},
+			
 			"LockableFlag" : {
 				"name" 					: "施錠可能",
-				"descrp"				: "もしこの物体が施錠可能ならIf this object is lockable"					
+				"descrp"				: "この物体が施錠可能かどうか"					
 			},
 			
 			"LockonCloseFlag" : {
-				"name" 					: "Lock on close",
+				"name" 					: "戸締り時に施錠",
 				"descrp"				: "If this door should be locked once it is closed"					
 			},
 			
 			"LockedFlag" : {
-				"name" 					: "Locked",
+				"name" 					: "施錠中",
 				"descrp"				: "If this object is locked"					
 			},
 			
@@ -454,12 +475,12 @@
 			},
 			
 			"PasskeysFlag" : {
-				"name"					: "Passwords",
+				"name"					: "パスワード",
 				"descrp"				: "Passwords that can unlock this lock (seperated with \";\")"
 			},
 			
 			"PasskeyChangeableFlag" : {
-				"name"					: "Password changeable",
+				"name"					: "パスワード変更可能",
 				"descrp"				: "If the password can be changed by players (requires correct password)"
 			},
 			
@@ -469,8 +490,8 @@
 			},
 			
 			"LockjammedFlag" : {
-				"name"					: "Jammed",
-				"descrp"				: "If this lock is jammed (see world settings)"				
+				"name"					: "詰まっている",
+				"descrp"				: "この錠が詰まっているかどうか (ワールド設定を参照)"				
 			},
 			
 			"RemoveKeyonUseFlag" : {
@@ -479,12 +500,12 @@
 			},			
 			
 			"LockDCFlag" : {
-				"name" 					: "Lock DC",
+				"name" 					: "錠 DC",
 				"descrp"				: "The difficulty class of this Lock, used for lockpicking (-1 to prevent lockpicking)"					
 			},
 			
 			"SpecialLPFlag" : {
-				"name" 					: "Special lockpick",
+				"name" 					: "特別なロックピック",
 				"descrp"				: "Special lockpick required to pick this lock (ID or name, multiple entries seperated with \";\")"					
 			},
 			
@@ -499,7 +520,7 @@
 			},
 			
 			"requiredLPsuccessFlag" : {
-				"name" 					: "Required Lockpicking successes",
+				"name" 					: "必要な鍵開け成功数",
 				"descrp"				: "How many Lockpicking successes are required for this lock (and how many have already been added) (crits count as 2)"				
 			},
 			
@@ -514,28 +535,28 @@
 			},
 			
 			"CustomPopupsFlag" : {
-				"openButtonname"			: "Custom Popups",
-				"Title"						: "Custom Popups",
+				"openButtonname"			: "カスタムポップアップ",
+				"Title"						: "カスタムポップアップ",
 				"name"						: "Set custom Popups for certain player interactions:",
 				"LockLocked" : {
-					"name"					: "Lock is locked:"
+					"name"					: "鍵が閉まっている:"
 				},
 				"LocknotPickable" : {
-					"name"					: "Lock can't be picked:"
+					"name"					: "鍵開けはできない:"
 				},
 				"LocknotBreakable" : {
-					"name"					: "Lock can't be broken:"
+					"name"					: "錠は壊せない:"
 				},
 				"LockPasskeyTitle" : {
-					"name"					: "Password dialog prompt:"
+					"name"					: "パスワード入力画面:"
 				},
 				"LocknotCustom" : {
-					"name"					: "Lock can't be used with custom check:"
+					"name"					: "錠に対してカスタム判定は使えない:"
 				},
 				"CharacternotPickpocketable" : {
-					"name"					: "Character can't be pick pocketed:"
+					"name"					: "このキャラクターにスリはできない:"
 				},
-				"confirmButtonname"        	: "Confirm Popups"
+				"confirmButtonname"        	: "ポップアップを確定"
 			},
 			
 			"SoundVariantFlag" : {
@@ -692,14 +713,14 @@
 		
 		"take-inventory-window" : {
 			"titles" : {
-				"inventory"				: "Inventory"
+				"inventory"				: "所持品"
 			},
 			"header" : {
 				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
 			},
 			"buttons" : {
 				"take" : {
-					"name"				: "Take selected"
+					"name"				: "選択したものを取得"
 				}
 			}
 		},
@@ -709,13 +730,13 @@
 				"name"						: "フィルター",
 				
 				"filter-by-lock-state" : {
-					"name"					: "Filter by lock state",
+					"name"					: "錠の状態でフィルター",
 					"settings" : {
 						"filterCondition" : {
-							"name"			: "Lock state condition",
+							"name"			: "錠の状態",
 							"options" : {
-								"locked"	: "is locked",
-								"unlocked"	: "is unlocked"
+								"locked"	: "施錠されている",
+								"unlocked"	: "開錠されている"
 							}
 						}
 					}
@@ -740,7 +761,7 @@
 					"descrp"				: "<span class=\"logic-style\">{pname}</span> of <span class=\"entity-style\">{pEntities}</span>, offer to <span class=\"details-style\">{pOfferto}</span>",
 					"settings" : {
 						"offerto" : {
-							"name"			: "Offer to"
+							"name"			: "渡す："
 						}
 					}	
 				}
