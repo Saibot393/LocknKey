@@ -71,6 +71,11 @@
 			"PasswordChanged"			: "パスワード変更",
 			"NoPasswordLength"			: "新しいパスワードは短かすぎる",
 			"CantChangePassword"		: "パスワードが変更できない"
+
+			"CantbePicked"				: "鍵開け不能",
+			"CantbeBroken"				: "こじ開け不能",
+			"CantbeCustomChecked"		: "{pCheckName}　使用不能",
+			"CantbePickpocketed"		: "スリ不能"
 		},	
 		
 		"ChatMessage" : {
@@ -80,7 +85,7 @@
 				"default" 				: "{pName} は開錠に成功"
 			},
 			"LockPickfail" : {
-				"crit"					: "{pName} は開錠に致命的に失敗",
+				"crit"					: "{pName} は開錠に致命的失敗",
 				"default" 				: "{pName} は開錠に失敗"
 			},
 			"LockPicksuccessLPName" : {
@@ -101,7 +106,7 @@
 				"default" 				: "{pName} は錠の破壊に成功した"
 			},
 			"LockBreakfail" : {
-				"crit"					: "{pName} は錠の破壊に致命的に失敗した",
+				"crit"					: "{pName} は錠の破壊に致命的失敗した",
 				"default" 				: "{pName} は錠の破壊に失敗した"
 			},
 			
@@ -111,17 +116,18 @@
 				"default" 				: "{pName} は {pCheckName} に成功"			
 			},
 			"CustomCheckFail" : {
-				"crit"					: "{pName} は {pCheckName} に致命的に失敗",
+				"crit"					: "{pName} は {pCheckName} に致命的失敗",
 				"default" 				: "{pName} は {pCheckName} に失敗"
 			},
 			
 			"PickPocket"				: "{pName} はスリを試みた:",
+			"PickPocketDetailed"		: "{pName} は {pTargetName} にDC{pDC}でスリを試みた:",
 			"PickPocketSuccess" : {
 				"crit"					: "{pName} はスリにクリティカル成功",
 				"default" 				: "{pName} はスリに成功"			
 			},
 			"PickPocketFail" : {
-				"crit"					: "{pName} はスリに致命的に失敗",
+				"crit"					: "{pName} はスリに致命的失敗",
 				"default" 				: "{pName} はスリに失敗"
 			}
 		},
@@ -129,96 +135,106 @@
 		"Settings" : {
 			"useGMquickKeys" : {
 				"name" 					: "GM クイック操作を使用",
-				"descrp"				: "Allows the GM to use the special lock related controls listed at the bottom (affected marked with *)"
+				"descrp"				: "GMに下記一覧のに錠に関連した特別な操作を許可します (*印でマークされているものが影響)"
 			},
 			
 			"allowLocking" : {
 				"name" 					: "プレイヤーに施錠を許可",
-				"descrp"				: "Allow players to lock locks if they have a matching key"
+				"descrp"				: "プレイヤーが合鍵を持っている時施錠を許可します"
 			},
 			
 			"startasLocked" : {
-				"name" 					: "Start as locked",
-				"descrp"				: "If newly registered locks start locked"
+				"name" 					: "施錠した状態で開始",
+				"descrp"				: "新規の錠は施錠された状態で作成されます"
 			},
 	
 			"LockDistance" : {
 				"name" 					: "施錠距離",
-				"descrp"				: "Distance over which a lock can be used (in in-game units)"		
+				"descrp"				: "錠が使用できる距離 (ゲーム内単位で)"		
 			},
 			
 			"DefaultLockSound" : {
 				"name"					: "デフォルトの施錠音",
-				"descrp"				: "新規の扉The default sound applied to new doors a lock tokens"
+				"descrp"				: "新規の扉に適用される錠トークンのデフォルト音"
 			},
 			
 			"UseArmReachDistance": {
-				"name" 					: "Use \"Arms Reach\" distance",
-				"descrp"				: "Uses the distance set in the \"Arms Reach\" for the lock distance"	
+				"name" 					: "「手の届く範囲」距離を使用",
+				"descrp"				: "施錠距離に、「手の届く範囲」で設定された距離を使用します"	
 			},
 			
 			"alwaysopenOwned" : {
-				"name" 					: "Always open owned",
-				"descrp"				: "Players can always open owned tokens, even if they are locked"		
+				"name" 					: "所有のものは常に開錠",
+				"descrp"				: "プレイヤーは施錠されていても、所有するコマを常に開けられます"		
+			},
+
+			"allowallInteractions" : {
+				"name" 					: "全てのインタラクションを許可",
+				"descrp"				: "すべてのインタラクション (鍵開け, こじ開け, カスタム, スリ) が不可能なDCであっても表示されるかどうか"					
 			},
 			
 			"showallLockInteractions" : {
-				"name" 					: "Show all lock interactions",
-				"descrp"				: "Always show all interaction options for locks (for the evil GM in you)"					
+				"name" 					: "錠のインタラクションを全て表示",
+				"descrp"				: "錠に対するインタラクションを常に全て表示します (心の中の悪いGMのため)"					
 			},
 			
 			"preventUseinPause" : {
-				"name" 					: "Prevent key use while paused",
-				"descrp"				: "Prevent players from using keys while the game is paused"		
+				"name" 					: "一時停止中の鍵使用を阻止",
+				"descrp"				: "ゲームの一時停止中、プレイヤーは鍵を使用できません"		
 			},
 	
 			"autoKeyuse" : {
-				"name" 					: "Automatic key use",
-				"descrp"				: "Players will automatically try to use a matching key if they interact with a locked object"		
+				"name" 					: "自動で鍵使用",
+				"descrp"				: "プレイヤーは施錠された物体とインタラクトするとき、自動的に一致する鍵の使用を試みます"		
 			},
 			
 			"KeyItemtype" : {
-				"name" 					: "鍵アイテムの種類",
-				"descrp"				: "The type of item the module will use for new keys, leave empty to use default type (you can get a list of valid types by typing \"game.items.documentClass.TYPES\" into the F12 console)"		
+				"name" 					: "鍵アイテムの種別",
+				"descrp"				: "新規鍵のためにMODが使用するアイテム種別です。空白でデフォルト種別を使用します (F12コンソール上で \"game.items.documentClass.TYPES\" とタイプすることで有効な種別の一覧を見れます)"		
 			},
 
 			"LnKSettingTypes" : {
-				"name" 					: "Setting item types",
-				"descrp"				: "The item types for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all types)"		
+				"name" 					: "アイテム種別の設定",
+				"descrp"				: "Lock & Key設定が表示されるアイテムの種別 (\";\"で区切り、 \"all\" で全種別)"		
+			},
+
+			"LnKSettingsubTypes" : {
+				"name" 					: "アイテムのサブ種別の設定",
+				"descrp"				: "Lock & Key設定が表示されるアイテムのサブ種別 (\";\"で区切り、 \"all\" で全サブ種別)"		
 			},
 			
 			"KeyitemCreationPopup" : {
 				"name" 					: "鍵の作成メニュー",
-				"descrp"				: "If a menu should be shown for newly generated key to change their name and folder"		
+				"descrp"				: "新規作成された鍵の名称とフォルダ変更用のメニューを表示します"		
 			},	
 			
 			"KeyitemCreationIDOption" : {
-				"name" 					: "Key creation id option",
-				"descrp"				: "If an option to enter a custom key id should be displayed in the key creation menu"		
+				"name" 					: "鍵作成のidオプション",
+				"descrp"				: "鍵作成メニューにカスタム鍵idを入力できる選択肢を表示します"		
 			},	
 			
 			"DefaultKeyFolder" : {
-				"name"					: "Default key folder",
-				"descrp"				: "The name of the default folders used in the key creation menu"
+				"name"					: "デフォルトの鍵フォルダ",
+				"descrp"				: "鍵作成メニューで使用されるデフォルトのフォルダ名"
 			},
 			
 			"LimitKeyFolders" : {
-				"name"					: "Filter key folders",
-				"descrp"				: "If only the default key folder and its subfolders should be shown in the key creation menu"
+				"name"					: "鍵フォルダでフィルター",
+				"descrp"				: "鍵作成メニューではデフォルトの鍵フォルダとそのサブフォルダのみ表示されます"
 			},
 
 			"UseKeynameasID" : {
-				"name" 					: "Key name as ID",
-				"descrp"				: "If a keys name should be considered as an additional ID for the purpose of opening locks"		
+				"name" 					: "鍵名称をIDにする",
+				"descrp"				: "鍵の名称が開錠時に使われる追加のIDとして扱われます"		
 			},	
 			
 			"usePf2eSystem" : {
-				"name" 					: "Use Pf2e roll system",
-				"descrp"				: "Use the Pf2e roll system (disables Lock & Key custom roll formulas and crit settings in favor of the Pf2e rules system)"						
+				"name" 					: "PF2eのロールシステムを使用",
+				"descrp"				: "パスファインダー第2版のロールシステムを使用します (パスファインダー第2版システムのためにLock & Key のカスタムダイス式とクリティカル設定を無効化します)"						
 			},
 			
 			"CritMethod" : {
-				"name" 					: "Crit system",
+				"name" 					: "クリティカル・システム",
 				"descrp"				: "クリティカルが決まる方法",
 				"options" : {
 					"noCrit"			: "クリティカルなし",
@@ -237,23 +253,23 @@
 			},
 			
 			"MentionLockPickItem" : {
-				"name" 					: "Mention lockpick item",
+				"name" 					: "ロックピックのMention lockpick item",
 				"descrp"				: "If the used lockpick item should be mentioned in the chat"		
 			},
 			
 			"RemoveLPoncritFail" : {
-				"name" 					: "Remove Lockpick on critical fail",
+				"name" 					: "致命的失敗時にロックピックを取り除く",
 				"descrp"				: "If the used Lockpick is removed on a critical fail (or if the stack is reduced by 1)"		
 			},	
 			
 			"JamLockonLPcritFail" : {
-				"name" 					: "Jam lock on critical lockpick fail",
+				"name" 					: "鍵開けの致命的失敗時に鍵を詰まらせる",
 				"descrp"				: "Doors are jammed on critical lockpick fails and cant be picked anymore"		
 			},
 			
 			"JamedLockKeyunusable" : {
-				"name" 					: "Keys can't be used on jammed locks",
-				"descrp"				: "Jammed locks will no longer accept matching keys"		
+				"name" 					: "詰まった錠への鍵使用不可",
+				"descrp"				: "詰まった錠は合鍵を受け付けません"		
 			},
 			
 			"defaultLPAttempts" : {
@@ -720,7 +736,7 @@
 				},
 				
 				"loot-inventory" : {
-					"name"					: "Loot inventory",
+					"name"					: "戦利品インベントリ",
 					"descrp"				: "<span class=\"logic-style\">{pname}</span> of <span class=\"entity-style\">{pEntities}</span>, offer to <span class=\"details-style\">{pOfferto}</span>",
 					"settings" : {
 						"offerto" : {
