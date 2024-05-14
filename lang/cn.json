@@ -68,7 +68,12 @@
 		"WrongIdentity"				: "Wrong identity",
 		"PasswordChanged"			: "Password changed",
 		"NoPasswordLength"			: "New password too short",
-		"CantChangePassword"		: "Can't change password"
+		"CantChangePassword"		: "Can't change password",
+			
+		"CantbePicked"				: "Can't be picked",
+		"CantbeBroken"				: "Can't be broken",
+		"CantbeCustomChecked"		: "Can't use {pCheckName}",
+		"CantbePickpocketed"		: "Can't be pickpocketed"
     },
     "ChatMessage": {
       "LockPick": "{pName}尝试撬锁:",
@@ -149,7 +154,11 @@
       "alwaysopenOwned": {
         "name": "打开自己拥有的锁",
         "descrp": "PL总是可以打开自己拥有的的token，不论是否上锁了"
-      },		
+      },	
+		"allowallInteractions" : {
+			"name" 					: "Allow all interactions",
+			"descrp"				: "If all interactions (pick, break, custom, pickpocket) should be allows even for impossible DCs"					
+		},		  
 		"showallLockInteractions" : {
 			"name" 					: "显示所有锁的交互功能",
 			"descrp"				: "永远显示所有锁的功能，无论这个功能用不用得了 (混乱邪恶GM推荐)"					
@@ -169,6 +178,10 @@
 		"LnKSettingTypes" : {
 			"name" 					: "Setting item types",
 			"descrp"				: "The item types for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all types)"		
+		},
+		"LnKSettingsubTypes" : {
+			"name" 					: "Setting item subtypes",
+			"descrp"				: "The item subtypes for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all subtypes)"		
 		},
 		"KeyitemCreationPopup" : {
 			"name" 					: "钥匙创建菜单",
@@ -191,10 +204,10 @@
 			"name" 					: "钥匙名则是ID",
 			"descrp"				: "在开锁时，是否应将钥匙名称视为ID"		
 		},	
-      "usePf2eSystem": {
-        "name": "使用PF2E掷骰系统",
-        "descrp": "使用PF2E掷骰系统 (关闭本模组的自定义掷骰公式与大成功系统，由PF2E系统取代)"
-      },
+		"usePf2eSystem" : {
+			"name" 					: "Use system rolls",
+			"descrp"				: "Use the systems roll rules (disables Lock & Key custom roll formulas and crit settings in favor of the systems rolls rules)"						
+		},
       "CritMethod": {
         "name": "大成功/大失败",
         "descrp": "如何界定大成功与大失败",
@@ -205,7 +218,8 @@
 		  "d100WFRP4"			: "d100 Nat1/100 [e.g. WFRP4e]",
 		  "d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]",
 		  "d100CoC7e"			: "d100 difficulty ranges [e.g. CoC7e]",
-		  "d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]"
+		  "d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]",
+		  "3d20DSA": "3d20 DSA"
         }
       },
       "LockPickItem": {

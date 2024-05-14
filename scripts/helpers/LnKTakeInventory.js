@@ -371,8 +371,6 @@ class LnKTakeInventory {
 	}
 }
 
-//https://foundryvtt.wiki/en/development/guides/understanding-form-applications
-
 class TakeInventoryWindow extends Application {
 	constructor(pTaker, pInventoryOwner, pInventoryInfo, pOptions = {GMConfirm : "off"}) {
 		super(pOptions);

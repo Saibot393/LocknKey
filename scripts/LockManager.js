@@ -1,9 +1,10 @@
 import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
-import { cLockTypeDoor, cLockTypeLootPf2e } from "./utils/LnKutils.js";
+import { cLockTypeDoor, cLockTypeTile, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
+import { LnKCompUtils } from "./compatibility/LnKCompUtils.js";
 
 const cLnKKeyIcon = "fa-key";
 const cLnKcheck = "fa-solid fa-check";
@@ -30,6 +31,10 @@ class LockManager {
 	static useFreeCircumvent(pLock, pCharacter, puseData = {}) {} //handels use of free lock circumvents (e.g. knock spell)
 	
 	static async LockuseRequest(puseData) {} //called when a player request to use a lock, handeld by gm
+	
+	static requestLockonClose(pLock) {} //request the GM to lock a lock on close door
+	
+	static LockonCloseRequest(pData) {} //called when a player requests a lock on close
 	
 	//LockKeys
 	static async newLockKey(pLock) {} //create a new item key for pLock
@@ -63,6 +68,10 @@ class LockManager {
 	
 	//ons
 	static onpreupdateWall(pWall, pChanges, pInfos, pUser) {} //called when a wall preupdates
+	
+	static onLockLClick(pDocument, pInfos, pType) {} //called when a lock is left clicked
+	
+	static onLockRClick(pDocument, pInfos, pType) {} //called when a lock is right clicked
 	
 	//IMPLEMENTATIONS
 	//basics
@@ -395,18 +404,42 @@ class LockManager {
 						case cLUpickLock:
 						case cLUbreakLock:
 						case cLUCustomCheck:
-							if (!puseData.usePf2eRoll || (puseData.useType == cLUCustomCheck)) {
+							if (!puseData.useSystemRoll || (puseData.useType == cLUCustomCheck)) {
 								LockManager.circumventLock(vLock, vCharacter, puseData.UsedItemID, puseData.Rollresult, puseData.Diceresult, puseData.useType, puseData);
 							}
 							else {
-								//use Pf2e systems result
-								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Pf2eresult, puseData.useType, false, puseData);
+								//use systems result
+								LockManager.oncircumventLockresult(vLock, vCharacter, puseData.UsedItemID, puseData.Systemresult, puseData.useType, false, puseData);
 							}
 							break;
 						case cLUFreeCircumvent:
 								LockManager.useFreeCircumvent(vLock, vCharacter, puseData);
 							break;
 					}
+				}
+			}
+		}
+	}
+	
+	static requestLockonClose(pLock) {
+		let vData = {sceneID : pLock.parent.id, lockID : pLock.id};
+		
+		if (game.user.isGM) {
+			LockManager.LockonCloseRequest(vData);
+		}
+		else {
+			game.socket.emit("module."+cModuleName, {pFunction : "LockonCloseRequest", pData : vData});
+		}
+	}
+	
+	static LockonCloseRequest(pData) {
+		let vScene = game.scenes.get(pData.sceneID);
+		
+		if (vScene) {
+			let vLock = vScene.walls.get(pData.lockID);
+			if (vLock.door > 0) {
+				if (LnKFlags.isLockonClose(vLock)) {
+					LockManager.ToggleLock(vLock, cLUisGM);
 				}
 			}
 		}
@@ -499,12 +532,15 @@ class LockManager {
 		let vLocktype = await LnKutils.Locktype(pLock);
 		switch(vLocktype) {
 			case cLockTypeDoor:
+			case cLockTypeTile:
 				LnKPopups.TextPopUpID(pLock, "lockedDoor"); //MESSAGE POPUP
 				break;
 			case cLockTypeLootPf2e:
 			default:
 				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
+		
+		LnKCompUtils.LockPuzzle(pLock);
 		
 		LnKSound.PlayunLockSound(pLock);
 		
@@ -515,6 +551,7 @@ class LockManager {
 		let vLocktype = await LnKutils.Locktype(pLock);
 		switch(vLocktype) {
 			case cLockTypeDoor:
+			case cLockTypeTile:
 				LnKPopups.TextPopUpID(pLock, "unlockedDoor"); //MESSAGE POPUP
 				break;
 			case cLockTypeLootPf2e:
@@ -559,25 +596,31 @@ class LockManager {
 					await LnKFlags.makeLockable(pLock);
 				}
 				
+				let vSuccess = true;
+				
 				switch(vLocktype) {
 					case cLockTypeDoor:
 						await LockManager.ToggleDoorLock(pLock, pLockusetype);
 						
-						return true;
+						vSuccess = true;
 						break;
 					case cLockTypeLootPf2e:
 					default:
 						await LnKFlags.invertLockedstate(pLock);
 						
-						if (LnKFlags.isLocked(pLock)) {
-							LockManager.onLock(pLock, pLockusetype);
-						}
-						else {
-							LockManager.onunLock(pLock, pLockusetype);
-						}
-						
-						return true;
+						vSuccess = true;
 						break;
+				}
+				
+				if (vSuccess) {
+					if (LnKFlags.isLocked(pLock)) {
+						LockManager.onLock(pLock, pLockusetype);
+					}
+					else {
+						LockManager.onunLock(pLock, pLockusetype);
+					}
+						
+					return true;
 				}
 			}
 			else {
@@ -682,7 +725,7 @@ class LockManager {
 			LnKPopups.TextPopUp(pObject, vMessage);
 		}
 		else {
-			if (vLocktype == cLockTypeDoor) {
+			if (vLocktype == cLockTypeDoor || vLocktype == LockTypeTile) {
 				LnKPopups.TextPopUpID(pObject, "DoorisLocked"); //MESSAGE POPUP
 			}
 			
@@ -712,59 +755,61 @@ class LockManager {
 	
 	//ons
 	static onpreupdateWall(pWall, pChanges, pInfos, pUser) {
-		if (game.user.isGM) {
-			if (pWall.door > 0) {
-				if (pChanges.ds == 0 && pWall.ds == 1) {
-					if (LnKFlags.isLockonClose(pWall)) {
-						LockManager.ToggleLock(pWall, cLUisGM)
-					}
+		if (pWall.door > 0) {
+			if (pChanges.ds == 0 && pWall.ds == 1) {
+				if (LnKFlags.isLockonClose(pWall)) {
+					LockManager.requestLockonClose(pWall)
 				}
 			}
+		}
+	}
+	
+	static onLockLClick(pDocument, pInfos, pType) {
+		if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: paste lock IDs
+			LockManager.pasteLock(pDocument);
+		}
+		
+		if (pType == "Wall") {
+			if (!game.user.isGM) {
+				LockManager.isUnlocked(pDocument, true);
+			}
+		}
+	}
+	
+	static onLockRClick(pDocument, pInfos, pType) {
+		if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
+			LockManager.newLockKey(pDocument);
+		}
+		
+		if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
+			LockManager.copyLock(pDocument);
+		}
+		
+		if (pType == "Token" || pType == "Tile") {
+			if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
+				LockManager.ToggleLock(pDocument, cLUisGM);
+			}	
 		}
 	}
 }
 
 //Hooks
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
-	if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
-		LockManager.newLockKey(pDoorDocument);
-	}
-	
-	if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
-		LockManager.copyLock(pDoorDocument);
-	}
+	LockManager.onLockRClick(pDoorDocument, pInfos, "Wall");
 });
 
 Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {	
-	if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: paste lock IDs
-		LockManager.pasteLock(pDoorDocument);
-	}
-
-	if (!game.user.isGM) {
-		LockManager.isUnlocked(pDoorDocument, true);
-	}
+	LockManager.onLockLClick(pDoorDocument, pInfos, "Wall");
 });
 
 Hooks.on(cModuleName + "." + "TokenRClick", async (pTokenDocument, pInfos) => {
 	if (await LnKutils.isLockCompatible(pTokenDocument)) {
-		if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
-			LockManager.newLockKey(pTokenDocument);
-		}
-		
-		if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
-			LockManager.copyLock(pTokenDocument);
-		}
-		
-		if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
-			LockManager.ToggleLock(pTokenDocument, cLUisGM);
-		}
+		LockManager.onLockRClick(pTokenDocument, pInfos, "Token");
 	}
 });
 
 Hooks.on(cModuleName + "." + "TokenLClick", (pTokenDocument, pInfos) => {
-	if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: paste lock IDs
-		LockManager.pasteLock(pTokenDocument);
-	}
+	LockManager.onLockLClick(pTokenDocument, pInfos, "Token");
 });
 
 Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //for sheet opening
@@ -773,6 +818,14 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 	}
 	
 	return true; //if anything fails
+});
+
+Hooks.on(cModuleName + "." + "TileRClick", async (pTileDocument, pInfos) => {
+	LockManager.onLockRClick(pTileDocument, pInfos, "Tile");
+});
+
+Hooks.on(cModuleName + "." + "TileLClick", (pTileDocument, pInfos) => {
+	LockManager.onLockLClick(pTileDocument, pInfos, "Tile");
 });
 
 Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
@@ -823,7 +876,9 @@ function isUnlocked(pObject, pPopup = false) {return LockManager.isUnlocked(pObj
 
 function UserCanopenToken(pToken, pPopup = false) {return LockManager.UserCanopenToken(pToken, pPopup)} //if the current user can open pToken
 
-export { LockuseRequest, isUnlocked, UserCanopenToken }
+function LockonCloseRequest(pData) {return LockManager.LockonCloseRequest(pData)};
+
+export { LockuseRequest, isUnlocked, UserCanopenToken, LockonCloseRequest }
 
 //wrap export macro functions, GM only
 function TogglehoveredLockGM() {if (game.user.isGM) { return LockManager.ToggleLock(LnKutils.hoveredObject(), cLUisGM)}};

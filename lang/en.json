@@ -36,7 +36,8 @@
 			"LockuseIdentity"			: "Identity",
 			"newPasskey"				: "New password:",
 			"addIdentityMessage"		: "Player {pPlayerName} wants to add these identities to a lock:{pIdentities}",
-			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}"
+			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
+			"ToggleTile"				: "Toggle tile state (L&K)"
 		},
 		
 		"Popup" : {
@@ -69,7 +70,12 @@
 			"WrongIdentity"				: "Wrong identity",
 			"PasswordChanged"			: "Password changed",
 			"NoPasswordLength"			: "New password too short",
-			"CantChangePassword"		: "Can't change password"
+			"CantChangePassword"		: "Can't change password",
+			
+			"CantbePicked"				: "Can't be picked",
+			"CantbeBroken"				: "Can't be broken",
+			"CantbeCustomChecked"		: "Can't use {pCheckName}",
+			"CantbePickpocketed"		: "Can't be pickpocketed"
 		},	
 		
 		"ChatMessage" : {
@@ -115,6 +121,7 @@
 			},
 			
 			"PickPocket"				: "{pName} tried to pick pocket:",
+			"PickPocketDetailed"		: "{pName} tried to pick pocket {pTargetName} with a DC of {pDC}:",
 			"PickPocketSuccess" : {
 				"crit"					: "{pName} critically succeeded at pick pocketing",
 				"default" 				: "{pName} succeeded at pick pocketing"			
@@ -161,6 +168,11 @@
 				"descrp"				: "Players can always open owned tokens, even if they are locked"		
 			},
 			
+			"allowallInteractions" : {
+				"name" 					: "Allow all interactions",
+				"descrp"				: "If all interactions (pick, break, custom, pickpocket) should be allows even for impossible DCs"					
+			},			
+			
 			"showallLockInteractions" : {
 				"name" 					: "Show all lock interactions",
 				"descrp"				: "Always show all interaction options for locks (for the evil GM in you)"					
@@ -184,6 +196,11 @@
 			"LnKSettingTypes" : {
 				"name" 					: "Setting item types",
 				"descrp"				: "The item types for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all types)"		
+			},
+			
+			"LnKSettingsubTypes" : {
+				"name" 					: "Setting item subtypes",
+				"descrp"				: "The item subtypes for which the Lock & Key settings are displayed (seperated with \";\", \"all\" for all subtypes)"		
 			},
 			
 			"KeyitemCreationPopup" : {
@@ -212,8 +229,8 @@
 			},	
 			
 			"usePf2eSystem" : {
-				"name" 					: "Use Pf2e roll system",
-				"descrp"				: "Use the Pf2e roll system (disables Lock & Key custom roll formulas and crit settings in favor of the Pf2e rules system)"						
+				"name" 					: "Use system rolls",
+				"descrp"				: "Use the systems roll rules (disables Lock & Key custom roll formulas and crit settings in favor of the systems rolls rules)"						
 			},
 			
 			"CritMethod" : {
@@ -226,7 +243,8 @@
 					"d100WFRP4"			: "d100 Nat1/100 [e.g. WFRP4e]",
 					"d100WFRP4Doubles"	: "d100 Nat1/100 & doubles [e.g. WFRP4e]",
 					"d100CoC7e"			: "d100 difficulty ranges [e.g. CoC7e]",
-					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]"
+					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [e.g. CoD2e]",
+					"3d20DSA": "3d20 DSA"
 				}
 			},
 			
@@ -335,6 +353,16 @@
 				"descrp"				: "If the Pick Pocket DC should get automatically updated when a perception check is rolled"				
 			},
 			
+			"MentionPickpocketDetails" : {
+				"name" 					: "Mention Pick Pocket details",
+				"descrp"				: "If the target name and the DC should be mentioned in the Pick Pocket message"				
+			},
+			
+			"deadActorsLootable" : {
+				"name"					: "Dead tokens lootable",
+				"descrp"				: "If dead token should be lootable/pick pocketable without roll"	
+			},
+			
 			"PerceptionKeyWord" : {
 				"name"					: "Perception key-word",
 				"descrp"				: "Key word to recognise perception rolls (a string present in the flavour text of perception rolls)"		
@@ -413,6 +441,16 @@
 		},
 		
 		"SheetSettings" : {
+			"OpenImageFlag" : {
+				"name"					: "Open Image",
+				"descrp"				: "Image used for the open state"
+			},
+			
+			"ClosedImageFlag" : {
+				"name"					: "Closed Image",
+				"descrp"				: "Image used for the closed state"
+			},
+			
 			"LockableFlag" : {
 				"name" 					: "Lockable",
 				"descrp"				: "If this object is lockable"					
@@ -622,6 +660,7 @@
 				"LockusePick.name"		: "On pick Lock",
 				"LockuseBreak.name"		: "On break Lock",
 				"LockuseFree.name"		: "On lock circumvention",
+				"UsePickPocket.name"	: "On pick pocket",
 				"options" : {
 					"never"				: "never",
 					"always"			: "always",

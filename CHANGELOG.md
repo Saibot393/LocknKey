@@ -1,3 +1,77 @@
+## v2.7.10
+- Updated russian translation (thanks to [maragondi](https://github.com/maragondi))
+
+## v2.7.9
+- Added russian translation (thanks to [maragondi](https://github.com/maragondi))
+
+## v2.7.8
+- Added tiles a valid targets for [MATT](https://foundryvtt.com/packages/monks-active-tiles) actions and filters
+
+## v2.7.7
+- Added polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
+## v2.7.6
+- Small bug fix for free lock circumvent spell recognition
+
+## v2.7.5
+- Whenever a lock is locked via Lock & Key the attached [Puzzle Lock](https://foundryvtt.com/packages/puzzle-locks) is now also locked
+
+## v2.7.4
+- Small bug fix
+
+## v2.7.3
+- Fixed pick pocketing bug for Pf2e rules (thanks to [HaHussain](https://github.com/HaHussain))
+
+## v2.7.2
+- Fixed item piles recognition
+
+## v2.7.1
+- Improved lock tile behaviour to prevent annoying popups
+
+## v2.7.0
+- Added setting Dead tokens lootable to make all dead tokens (except item piles) lootable without having to roll
+
+## v2.6.1
+- Fixed bug that caused faulty tab to be added to MATTs tile Triggers tab
+- Improved tile state switching
+
+## v2.6.0
+- Added tiles as lockable objects:
+    - Tiles now have an open and a closed state and the settings "Open Image" and "Closed Image"
+    - Tiles can be locked, causing their state to be locked
+    - Tiles state can be toggle from the HUD
+- Added setting Mention Pick Pocket details to add more informations to the pick pocket chat messages
+- Pick pocketing can now trigger [Monk's Active Tile Triggers](https://foundryvtt.com/packages/monks-active-tiles)
+
+## v2.5.4
+- Compatibility update for new version of [Tidy 5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/)
+
+## v2.5.3
+- Small bug fix
+
+## v2.5.2
+- Added world setting Allow all interactions to allow even impossible actions (pick, break, custom, pickpocket)
+- If only one Lock & Key setting is present it will now be displayed in Indentity tab instead of a separate tab
+
+## v2.5.1
+- The trigger tab for MATT compatibility will no longer show up in subtabs
+
+## v2.5.0
+- replaced setting Use Pf2e roll system with Use system rolls. This system now works Pf2e and DSA5e (thanks to [Plushtoast](https://github.com/Plushtoast))
+
+## v2.4.4
+- Added compatibility for [Tidy 5e rewrite](https://github.com/kgar/foundry-vtt-tidy-5e-sheets)
+
+## v2.4.3
+- Added support for DSA and SWADE
+- Added option to only show items settings for specific subtypes (currently only available for DSA, will be added to other systems based on requests)
+
+## v2.4.2
+- Fixed bug with lock on close feature
+
+## v2.4.1
+- The enter key will now work in the password dialog
+
 ## v2.4.0
 - Added `@skills` to roll formulas, allowing formulas to reference skills in systems where skills a saved as items (e.g. Warhammer4e, DSA5e, Stars without Number...)
 - Added `@DC` to roll formulas, allowing formulas to reference the targets DC

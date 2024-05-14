@@ -1,0 +1,771 @@
+{
+	"LocknKey" : {
+		"Titles" : {
+			"confirm"					: "zatwierdź",
+			"abbort"					: "wycofaj",
+			"LocknKey"					: "Lock & Key",
+			"LocknKeyabbr"				: "L&K",
+			"WorldSettings"				: "Ustawienia świata (tylko MG)",
+			"ClientSettings"			: "Ustawienia klienta",
+			"GMonly"					: "Tylko MG",
+			"LockTokens"				: "Ustawienia zamka",
+			"CharacterTokens"			: "Ustawienia postaci",
+			"KeyItems"					: "Ustawienia klucza",
+			"LPItems"					: "Ustawienia manipulacji zamkiem",
+			"LockusePasskey"			: "Hasło",
+			"Passkey"					: "Hasło",
+			"EnterPasskey"				: "Wprowadź hasło:",
+			"ConfirmPasskey"			: "Potwierdź",
+			"Lockuse"					: "Użycie zamka",
+			"LockuseKey"				: "Użycie klucza",
+			"LockusePick"				: "Włamywanie",
+			"LockuseBreak"				: "Wyłamanie zamka",
+			"LockuseFree"				: "Swobodne korzystanie z zamka",
+			"LockuseCustom"				: "{pCheckName}",
+			"Close"						: "Zamknij",
+			"Keycreation"				: "Tworzenie klucza",
+			"Keyname"					: "Nazwa klucza",
+			"KeyID"						: "ID klucza (!NIE UŻYWAJ \";\" W ID)",
+			"Keyfolder"					: "Folder docelowy klucza",
+			"ConfirmKeycreation"		: "Utwórz",
+			"Basic"						: "Podstawowy",
+			"Triggers"					: "Wyzwalacze",
+			"FreeCircumventHUD"			: "Ten token może obejść następny zamek, kliknij, aby usunąć",
+			"PickPocket"				: "Kradzież kieszonkowa",
+			"LockchangePasskey"			: "Zmiana hasła",
+			"LockuseIdentity"			: "Tożsamość",
+			"newPasskey"				: "Nowe hasło:",
+			"addIdentityMessage"		: "Gracz {pPlayerName} chce dodać te tożsamości do zamka: {pIdentities}",
+			"IdentifierofType"			: " {pIdentifier} z {pType} {pName}",
+			"ToggleTile"				: "Przełączanie stanu kafelka (L&K)"
+		},
+		
+		"Popup" : {
+			"TokenisLocked"				: "{pLockName} jest zamknięty",
+			"DoorisLocked"				: "Te drzwi są zamknięte",
+			"Lockoutofreach"			: "Ten zamek jest poza zasięgiem",
+			"Tokenoutofreach"			: "{pTokenName} jest poza zasięgiem",
+			"lockedDoor"				: "Drzwi są teraz zamknięte",
+			"lockedToken"				: "{pLockName} jest teraz zamknięty",
+			"unlockedDoor"				: "Drzwi są teraz odblokowane",
+			"unlockedToken"				: "{pLockName} jest teraz odblokowany",
+			"GamePaused"				: "Gra jest wstrzymana",
+			"noLockPickItem"			: "Brak wytrycha w ekwipunku",
+			"nomatchingKey"				: "Brak pasującego klucza",
+			"pickLockfailed"			: "Nie udało się otworzyć zamka",
+			"cantLock" : {
+				"default"				: "Ten zamek nie może zostać zamknięty",
+				"break"					: "Ten zamek jest już otwarty"
+			},
+			"breakLockfailed"			: "Nie udało się wyłamać zamka",
+			"NotaLock"					: "To nie jest zamek",
+			"WrongPassword"				: "Nieprawidłowe hasło",
+			"Lockisjammed"				: "Zamek się zaciął i jest zablokowany",
+			"Lockpickbroke"				: "Wytrych się złamał",
+			"jammedLock"				: "Zacięty zamek",
+			"cantcircumventFree"		: "Zamka nie można obejść",
+			"CantbePickpocketed"		: "Nie można się włamać",
+			"PickPocketfailed"			: "Kradzież nieudana",
+			"customcheckfailed"			: "{pCheckName} nieudany",
+			"WrongIdentity"				: "Nieprawidłowa tożsamość",
+			"PasswordChanged"			: "Hasło zostało zmienione",
+			"NoPasswordLength"			: "Nowe hasło jest zbyt krótkie",
+			"CantChangePassword"		: "Nie można zmienić hasła",
+			
+			"CantbePicked"				: "Nie można ukraść",
+			"CantbeBroken"				: "Nie można wyłamać",
+			"CantbeCustomChecked"		: "Nie można użyć {pCheckName}"
+		},	
+		
+		"ChatMessage" : {
+			"LockPick"					: "{pName} próbował otworzyć zamek:",
+			"LockPicksuccess" : {
+				"crit"					: "{pName} odniósł krytyczny sukces w otwieraniu zamku",
+				"default" 				: "{pName} odniósł sukces w otwieraniu zamku"
+			},
+			"LockPickfail" : {
+				"crit"					: "{pName} odniósł krytyczną porażkę w otwieraniu zamku",
+				"default" 				: "{pName} odniósł porażkę w otwieraniu zamku"
+			},
+			"LockPicksuccessLPName" : {
+				"crit"					: "{pName} odniósł krytyczny sukces w otwieraniu zamku za pomocą {pLPName}",
+				"default" 				: "{pName} odniósł sukces w otwieraniu zamku za pomocą {pLPName}"
+			},
+			"LockPickfailLPName" : {
+				"crit"					: "{pName} odniósł krytyczną porażkę w otwieraniu zamku za pomocą {pLPName}",
+				"default" 				: "{pName} odniósł porażkę w otwieraniu zamku za pomocą {pLPName}"
+			},
+			"LockPickfailLPNameremove" : {
+				"crit"					: "{pName} odniósł krytyczną porażkę w otwieraniu zamku i złamał {pLPName}"
+			},
+			
+			"LockBreak"					: "{pName} próbował wyważyć zamek:",
+			"LockBreaksuccess" : {
+				"crit"					: "{pName} odniósł krytyczny sukces w wyważaniu zamku",
+				"default" 				: "{pName} odniósł sukces w wyważaniu zamku"
+			},
+			"LockBreakfail" : {
+				"crit"					: "{pName} odniósł krytyczną porażkę w wyważaniu zamku",
+				"default" 				: "{pName} odniósł porażkę w wyważaniu zamku"
+			},
+			
+			"CustomCheck"				: "{pName} używa {pCheckName}:",
+			"CustomChecksuccess" : {
+				"crit"					: "{pName} odniósł krytyczny sukces w {pCheckName}",
+				"default" 				: "{pName} odniósł sukces w {pCheckName}"			
+			},
+			"CustomCheckFail" : {
+				"crit"					: "{pName} odniósł krytyczną porażkę w {pCheckName}",
+				"default" 				: "{pName} odniósł porażkę w {pCheckName}"
+			},
+			
+			"PickPocket"				: "{pName} próbował ukraść:",
+			"PickPocketDetailed"		: "{pName} próbował ukraść {pTargetName} z ST {pDC}:",
+			"PickPocketSuccess" : {
+				"crit"					: "{pName} odniósł krytyczny sukces w kradzieży kieszonkowej",
+				"default" 				: "{pName} odniósł sukces w kradzieży kieszonkowej"			
+			},
+			"PickPocketFail" : {
+				"crit"					: "{pName} odniósł krytyczną porażkę w kradzieży kieszonkowej",
+				"default" 				: "{pName} odniósł porażkę w kradzieży kieszonkowej"
+			}
+		},
+		
+		"Settings" : {
+			"useGMquickKeys" : {
+				"name" 					: "Użyj szybkich elementów sterujących MG",
+				"descrp"				: "Umożliwia MG korzystanie ze specjalnych elementów sterujących związanych z zamkiem wymienionych na dole (oznaczone *)"
+			},
+			
+			"allowLocking" : {
+				"name" 					: "Zezwalaj na blokowanie graczy",
+				"descrp"				: "Pozwól graczom blokować zamki, jeśli mają odpowiedni klucz"
+			},
+			
+			"startasLocked" : {
+				"name" 					: "Rozpocznij jako zablokowany",
+				"descrp"				: "Nowo utworzone zamki rozpoczną jako zablokowane"
+			},
+	
+			"LockDistance" : {
+				"name" 					: "Odległość zamka",
+				"descrp"				: "Odległość, na jaką można użyć blokady (w jednostkach w grze)"		
+			},
+			
+			"DefaultLockSound" : {
+				"name"					: "Domyślny dźwięk zamka",
+				"descrp"				: "Domyślny dźwięk stosowany do nowych drzwi i tokenów zamka"
+			},
+			
+			"UseArmReachDistance": {
+				"name" 					: "Użyj dystansu \"Arms Reach\"",
+				"descrp"				: "Używa odległości ustawionej w opcji \"Arms Reach\" jako odległości blokady"	
+			},
+			
+			"alwaysopenOwned" : {
+				"name" 					: "Zawsze otwarty dla właściciela",
+				"descrp"				: "Gracze zawsze mogą otwierać posiadanymi tokenami, nawet jeśli są one zablokowane"		
+			},
+			
+			"allowallInteractions" : {
+				"name" 					: "Zezwalaj na wszystkie interakcje",
+				"descrp"				: "Jeśli wszystkie interakcje (otwieranie, wyłamywanie, niestandardowe, kradzież) powinny być dozwolone nawet dla niemożliwych ST"					
+			},			
+			
+			"showallLockInteractions" : {
+				"name" 					: "Pokaż wszystkie interakcje otwierania",
+				"descrp"				: "Zawsze pokazuj wszystkie opcje interakcji dla zamków (dla złego MG w tobie)"					
+			},
+			
+			"preventUseinPause" : {
+				"name" 					: "Zapobiegaj używaniu klucza podczas pauzy",
+				"descrp"				: "Uniemożliwienie graczom używania kluczy, gdy gra jest wstrzymana"		
+			},
+	
+			"autoKeyuse" : {
+				"name" 					: "Automatyczne użycie klucza",
+				"descrp"				: "Gracze automatycznie spróbują użyć pasującego klucza, jeśli wejdą w interakcję z zablokowanym obiektem"		
+			},
+			
+			"KeyItemtype" : {
+				"name" 					: "Typ elementów kluczy",
+				"descrp"				: "Typ przedmiotu, którego moduł użyje dla nowych kluczy, pozostaw pusty, aby użyć domyślnego typu (możesz uzyskać listę prawidłowych typów, wpisując \"game.items.documentClass.TYPES\" w konsoli F12)"		
+			},
+
+			"LnKSettingTypes" : {
+				"name" 					: "Ustawienie typów elementów",
+				"descrp"				: "Typy przedmiotów, dla których wyświetlane są ustawienia Lock & Key (oddzielone znakiem \";\", \"all\" dla wszystkich typów)"		
+			},
+			
+			"LnKSettingsubTypes" : {
+				"name" 					: "Ustawianie podtypów elementów",
+				"descrp"				: "Podtypy przedmiotów, dla których wyświetlane są ustawienia Lock & Key (oddzielone znakiem \";\", \"all\" dla wszystkich podtypów)"		
+			},
+			
+			"KeyitemCreationPopup" : {
+				"name" 					: "Menu tworzenia klucza",
+				"descrp"				: "Dla nowo wygenerowanego klucza powinno być wyświetlane menu umożliwiające zmianę jego nazwy i folderu"		
+			},	
+			
+			"KeyitemCreationIDOption" : {
+				"name" 					: "Opcja id tworzenia klucza",
+				"descrp"				: "Włączenie opcji wprowadzania niestandardowego identyfikatora klucza w menu tworzenia klucza"		
+			},	
+			
+			"DefaultKeyFolder" : {
+				"name"					: "Domyślny folder kluczy",
+				"descrp"				: "Nazwa domyślnych folderów używanych w menu tworzenia kluczy"
+			},
+			
+			"LimitKeyFolders" : {
+				"name"					: "Filtrowanie folderów kluczy",
+				"descrp"				: "Wyłącznie domyślny folder klucza i jego podfoldery powinny być wyświetlane w menu tworzenia klucza"
+			},
+
+			"UseKeynameasID" : {
+				"name" 					: "Nazwa klucza jako ID",
+				"descrp"				: "Nazwa klucza powinna być traktowana jako dodatkowy identyfikator do celów otwierania zamków"		
+			},	
+			
+			"usePf2eSystem" : {
+				"name" 					: "Użyj systemowych rzutów",
+				"descrp"				: "Użyj systemowych reguł rzutów (wyłącza niestandardowe formuły rzutów Lock & Key i ustawienia krytyczne na rzecz systemowych reguł rzutów)"						
+			},
+			
+			"CritMethod" : {
+				"name" 					: "System krytyków",
+				"descrp"				: "Sposób określania rzutów krytycznych",
+				"options" : {
+					"noCrit"			: "Brak krytyków",
+					"natCrit"			: "Nat 1/20",
+					"natCritpm10"		: "Nat 1/20 & +-10 z ST [np. Pf2e]",
+					"d100WFRP4"			: "k100 Nat1/100 [np. WFRP4e]",
+					"d100WFRP4Doubles"	: "k100 Nat1/100 & duble [np. WFRP4e]",
+					"d100CoC7e"			: "k100 zakresy trudności [np. CoC7e]",
+					"d10poolCoD2e"		: "k10 zbiór >=8 i przerzut na 10 [np. CoD2e]",
+					"3d20DSA": "3k20 DSA"
+				}
+			},
+			
+			"LockPickItem" : {
+				"name" 					: "Przedmioty wytrychów",
+				"descrp"				: "Nazwy lub identyfikatory kompendium (zalecane) przedmiotów wytrychów, \"-\" jeśli żaden przedmiot nie jest potrzebny (oddzielone \";\")"		
+			},
+			
+			"MentionLockPickItem" : {
+				"name" 					: "Wzmianka o wytrychu",
+				"descrp"				: "Możliwość wspomnienia o użyciu wytrychu na czacie"		
+			},
+			
+			"RemoveLPoncritFail" : {
+				"name" 					: "Usunięcie wytrychu przy krytycznej porażce",
+				"descrp"				: "Usunięcie użytego wytrychu przy krytycznej porażce (lub zmniejszenie stosu o 1)"		
+			},	
+			
+			"JamLockonLPcritFail" : {
+				"name" 					: "Zablokowanie zamka przy krytycznej porażce otwierania wytrychem",
+				"descrp"				: "Drzwi zacinają się po krytycznej porażce wytrycha i nie można ich już otworzyć"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "Kluczy nie można używać do zablokowanych zamków",
+				"descrp"				: "Zacięte zamki nie będą już akceptować pasujących kluczy"		
+			},
+			
+			"defaultLPAttempts" : {
+				"name"					: "Ilość prób otwarcia zamka",
+				"descrp"				: "Domyślna liczba prób otwarcia zamka, po których zamek staje się niemożliwy do otwarcia (-1 dla nieograniczonej liczby prób)"
+			},
+			
+			"LockPickFormula" : {
+				"name" 					: "Formuła rzutu na otwarcie wytrychem",
+				"descrp"				: "Formuła używana do rzutów kośćmi podczas otwierania zamka (np. \"1k20 + @actor.skills.thievery.mod\", pomoc można znaleźć na stronie Github tego modułu)"				
+			},
+					
+			"DefaultPickDC" : {
+				"name" 					: "Domyślnie ST zamka",
+				"descrp"				: "Wartość domyślna ST dla zamka"				
+			},
+			
+			"LockBreakFormula" : {
+				"name" 					: "Formuła rzutu na wyłamanie zamka",
+				"descrp"				: "Formuła, która jest używana do rzutów kośćmi podczas wyłamywania zamka (np. \"1k20 + @actor.skills.athletics.mod - 2\", pomoc można znaleźć na stronie Github tego modułu)"				
+			},
+			
+			"DefaultBreakDC" : {
+				"name" 					: "Domyślnie ST wyłamania zamka",
+				"descrp"				: "Wartość domyślna ST dla wyłamania zamka"				
+			},
+			
+			"CustomCircumventName" : {
+				"name" 					: "Niestandardowa nazwa testu",
+				"descrp"				: "Nazwa trzeciego opcjonalnego niestandardowego sprawdzenia w celu obejścia zamków (np. \"Hakowanie\" lub \"Magiczna runa\", pozostaw puste, aby dezaktywować)"				
+			},
+			
+			"CustomCircumventFormula" : {
+				"name" 					: "Niestandardowa formuła testu",
+				"descrp"				: "Formuła używana do rzutów kośćmi podczas korzystania z powyższego niestandardowego testu"				
+			},
+			
+			"CustomCircumventDefaultDC" : {
+				"name" 					: "Domyślne ST niestandardowego testu",
+				"descrp"				: "Wartość domyślna ST dla niestandardowego testu"				
+			},
+			
+			"LockBreakunlockable" : {
+				"name" 					: "Możliwość odblokowania uszkodzonych zamków",
+				"descrp"				: "Umożliwia odblokowanie zepsutego zamka"				
+			},
+			
+			"onlyCombatMultiSuccess" : {
+				"name" 					: "Wielokrotny sukces tylko podczas walki",
+				"descrp"				: "Ignoruje wymagane sukcesy w Otwieraniu zamków poza walką"				
+			},
+			
+			"LockCircumventName" : {
+				"name" 					: "Obejście blokady - słowa kluczowe",
+				"descrp"				: "Słowa kluczowe identyfikujące efekty (np. zaklęcie \"Knock\"), które pozwalają graczom omijać zamki (oddzielone znakiem \";\")"				
+			},
+			
+			"AutoAcceptIdentityAddition" : {
+				"name" 					: "Automatycznie akceptuj dodawane tożsamości",
+				"descrp"				: "Jeśli dodatki tożsamości powinny być akceptowane automatycznie (niezalecane)"				
+			},
+			
+			"PickPocketFormula" : {
+				"name" 					: "Formuła kradzieży kieszonkowej",
+				"descrp"				: "Formuła używana do rzutów kośćmi podczas kradzieży kieszonkowej (np. \"1k20 + @actor.skills.thievery.mod\", pomoc można znaleźć na stronie Github tego modułu)"				
+			},
+			
+			"PickPocketDefaultDC" : {
+				"name" 					: "Domyślne ST kradzieży kieszonkowej",
+				"descrp"				: "Wartość domyślna ST dla kradzieży kieszonkowej"				
+			},
+			
+			"PickPocketDefaultDCFormula" : {
+				"name" 					: "Domyślne ST formuły kradzieży kieszonkowej",
+				"descrp"				: "Domyślna formuła używana do obliczania ST kradzieży kieszonkowej (zastępuje inne ustawienia domyślne)"				
+			},
+			
+			"AutoUpdatePickPocketDC" : {
+				"name" 					: "Automatyczna aktualizacja ST kradzieży kieszonkowej",
+				"descrp"				: "Wartość ST kradzieży kieszonkowej powinna być automatycznie aktualizowana po wykonaniu testu percepcji"				
+			},
+			
+			"MentionPickpocketDetails" : {
+				"name" 					: "Wspomnij o szczegółach kradzieży kieszonkowej",
+				"descrp"				: "Jeśli nazwa celu i ST powinny być wymienione w wiadomości kradzieży kieszonkowej"				
+			},
+			
+			"deadActorsLootable" : {
+				"name"					: "Martwe tokeny jako łupy",
+				"descrp"				: "Jeśli martwy token powinien być łupem/do okradnięcia bez rzutu"	
+			},
+			
+			"PerceptionKeyWord" : {
+				"name"					: "Słowo kluczowe percepcji",
+				"descrp"				: "Słowo kluczowe do rozpoznawania rzutów percepcji (ciąg znaków obecny w tekście rzutów percepcji)"		
+			},
+			
+			"ControlSceme" : {
+				"name" 					: "Schemat kontroli",
+				"descrp"				: "Schemat używany do sterowania odtwarzaniem (kliknięcie prawym przyciskiem myszy + klawisze opisano bardziej szczegółowo poniżej w sekcji \"Sterowanie postaciami\")",	
+				"options" : {
+					"rightKeys"			: "prawy przycisk myszy + klawisz",
+					"rightPopups"		: "menu podręczne po kliknięciu prawym przyciskiem myszy"
+				}
+			},			
+			
+			"MessagePopUps" : {
+				"name" 					: "Wyskakujące okna wiadomości",
+				"descrp"				: "Umożliwia wyświetlanie wielu wyskakujących okienek po wykonaniu czynności, takich jak zablokowanie lub odblokowanie zamka"		
+			},
+			
+			"PlayLockSounds" : {
+				"name" 					: "Odtwórz dźwięki blokady",
+				"descrp"				: "Odtwarzanie dźwięku po zablokowaniu/odblokowaniu zamka"		
+			},
+			
+			"FreeCircumventButtonPosition" : {
+				"name" 					: "Pozycja wskaźnika omijania blokady",
+				"descrp"				: "Pozycja wskaźnika, który pokazuje, że token może ominąć następną blokadę na tokenie HUD",
+				"options" : {
+					"none"				: "nigdzie",
+					"left"				: "lewo",
+					"right"				: "prawo"
+				}
+			}
+		},
+		
+		"Keys" : {
+			"ToggleLock" : {
+				"name"					: "Przełącznik blokady"
+			},
+			
+			"CopyLock" : {
+				"name"					: "Kopiowanie ID blokad"
+			},
+			
+			"PasteLock" : {
+				"name"					: "Wklejanie ID blokad"
+			},
+			
+			"CreatenewKey" : {
+				"name"					: "Utwórz nowy klucz"
+			},
+			
+			"UseKey" : {
+				"name"					: "Użyj klucza"
+			},
+			
+			"PickLock" : {
+				"name"					: "Włamywanie"
+			},
+			
+			"BreakLock" : {
+				"name"					: "Wyłamanie zamka"
+			},
+			
+			"CustomCheck" : {
+				"name"					: "Niestandardowy test (zapytaj MG (chyba, że jesteś MG))"
+			},
+			
+			"PickPocket" : {
+				"name"					: "Kradzież"
+			},
+		
+			"ChangePassword" : {
+				"name"					: "Zmiana hasła"
+			}
+		},
+		
+		"SheetSettings" : {
+			"OpenImageFlag" : {
+				"name"					: "Obraz otwarcia",
+				"descrp"				: "Obraz używany dla stanu otwartego"
+			},
+			
+			"ClosedImageFlag" : {
+				"name"					: "Obraz zamknięcia",
+				"descrp"				: "Obraz używany dla stanu zamkniętego"
+			},
+			
+			"LockableFlag" : {
+				"name" 					: "Zamknięte",
+				"descrp"				: "Jeśli ten obiekt jest zamykany"					
+			},
+			
+			"LockonCloseFlag" : {
+				"name" 					: "Blokada przy zamknięciu",
+				"descrp"				: "Jeśli drzwi mają być zablokowane po zamknięciu"					
+			},
+			
+			"LockedFlag" : {
+				"name" 					: "Zablokowany",
+				"descrp"				: "Jeśli ten obiekt jest zablokowany"					
+			},
+			
+			"IDKeysFlag" : {
+				"name" 					: "ID kluczy",
+				"descrp" : {
+					"lock" 				: "Identyfikatory, które mogą zablokować/odblokować tę blokadę (oddzielone \";\")",
+					"key" 				: "Identyfikatory, które ten klucz może zablokować/odblokować (oddzielone \";\")"
+				}
+			},
+			
+			"PasskeysFlag" : {
+				"name"					: "Hasła",
+				"descrp"				: "Hasła, które mogą odblokować tę blokadę (oddzielone znakiem \";\")"
+			},
+			
+			"PasskeyChangeableFlag" : {
+				"name"					: "Możliwość zmiany hasła",
+				"descrp"				: "Jeśli hasło może zostać zmienione przez graczy (wymaga poprawnego hasła)"
+			},
+			
+			"IdentityKeyFlag" : {
+				"name"					: "Tożsamości",
+				"descrp"				: "Tożsamości, które mogą odblokować tę blokadę (oddzielone \";\", identyfikatory/nazwy tokena/aktora/użytkownika)"
+			},
+			
+			"LockjammedFlag" : {
+				"name"					: "Zakleszczenie",
+				"descrp"				: "Jeśli blokada jest zakleszczona (patrz ustawienia światowe)"				
+			},
+			
+			"RemoveKeyonUseFlag" : {
+				"name" 					: "Usunięcie klucza po użyciu",
+				"descrp"				: "Klucz ten zostanie usunięty po użyciu (lub stos zostanie zmniejszony o jeden)"					
+			},			
+			
+			"LockDCFlag" : {
+				"name" 					: "ST Zamka",
+				"descrp"				: "Klasa trudności tego zamka, używana do włamywania (-1 do uniemożliwienia włamywania)"					
+			},
+			
+			"SpecialLPFlag" : {
+				"name" 					: "Specjalny wytrych",
+				"descrp"				: "Specjalny wytrych wymagany do otwarcia tego zamka (ID lub nazwa, wiele wpisów oddzielonych \";\")"					
+			},
+			
+			"LockBreakDCFlag" : {
+				"name" 					: "ST wyłamania zamka",
+				"descrp"				: "Klasa trudności wyłamania tego zamka (-1, aby uniemożliwić wyłamanie)"					
+			},
+			
+			"LockCCDCFlag" : {
+				"name" 					: "ST {pCheckName}",
+				"descrp"				: "Klasa trudności do użycia {pCheckName} na tym zamku (-1, aby zapobiec)"					
+			},
+			
+			"requiredLPsuccessFlag" : {
+				"name" 					: "Wymagane sukcesy w Otwieraniu zamków",
+				"descrp"				: "Ile sukcesów Otwierania zamków jest wymaganych dla tego zamka (i ile zostało już dodanych) (trafienia krytyczne liczą się jako 2)"				
+			},
+			
+			"LPAttemptsFlag" : {
+				"name" 					: "Ilość pozostałych prób Otwierania zamków",
+				"descrp"				: "Ile prób Otwierania zamków pozostało do wykonania (-1 dla nieograniczonej liczby)"				
+			},
+			
+			"canbeCircumventedFreeFlag" : {
+				"name" 					: "Możliwość obejścia",
+				"descrp"				: "Jeśli blokada ta może zostać ominięta przez efekty (np. zaklęcie \"Knock\")"				
+			},
+			
+			"CustomPopupsFlag" : {
+				"openButtonname"			: "Niestandardowe wyskakujące okienka",
+				"Title"						: "Niestandardowe wyskakujące okienka",
+				"name"						: "Ustaw niestandardowe wyskakujące okienka dla niektórych interakcji gracza:",
+				"LockLocked" : {
+					"name"					: "Zamek jest zablokowany:"
+				},
+				"LocknotPickable" : {
+					"name"					: "Nie można otworzyć zamka:"
+				},
+				"LocknotBreakable" : {
+					"name"					: "Zamka nie można wyłamać:"
+				},
+				"LockPasskeyTitle" : {
+					"name"					: "Okno dialogowe z hasłem:"
+				},
+				"LocknotCustom" : {
+					"name"					: "Zamek nie może być używany z niestandardowym testem:"
+				},
+				"CharacternotPickpocketable" : {
+					"name"					: "Postaci nie można okraść:"
+				},
+				"confirmButtonname"        	: "Potwierdź wyskakujące okienka"
+			},
+			
+			"SoundVariantFlag" : {
+				"name"					: "Dźwięk zamka",
+				"descrp"				: "Ustawienie zestawu dźwięków używanego w akcjach z tymi drzwiami",
+				"options" : {
+					"off"				: "wyłączony",
+					"futuristic"		: "Futurystyczny",
+					"industrial"		: "Przemysłowy",
+					"jail"				: "Więzienie",
+					"metal"				: "Metal 🤘",
+					"shutter"			: "Zasłona",
+					"sliding"			: "Przesuwne",
+					"stone"				: "Kamień",
+					"wood"				: "Drewno"
+				}
+			},
+			
+			"LPFormulaFlag" : {
+				"name" 					: "Formuła otwarcia wytrychem",
+				"descrp" : {
+					"token" 			: "Formuła dodana do rzutów otwarcia wytrychem tego tokena sprawia, że",
+					"item"				: "Formuła dodawana do rzutów otwarcia wytrychem wykonywanych przez właściciela tego przedmiotu (używana tylko najlepiej w ekwipunku)"
+				}			
+			},
+			
+			"LPFormulaOverrideFlag" : {
+				"name" 					: "Nadpisanie formuły otwarcia wytrychem",
+				"descrp" : {
+					"token" 			: "Jeśli formuła otwarcia wytrychem tego tokena zastępuje formułę świata",
+					"item"				: "Jeśli formuła wytrychów zastępuje formułę tokenów/światów"
+				}				
+			},
+			
+			"LBFormulaFlag" : {
+				"name" 					: "Formuła wyłamania zamka",
+				"descrp" : {
+					"token" 			: "Formuła dodana do rzutów wyłamania zamka tego tokena sprawia, że",
+					"item"				: "Formuła dodawana do rzutów wyłamania zamka wykonywanych przez właściciela tego przedmiotu (używana tylko w przypadku najlepszych przedmiotów w ekwipunku)"
+				}					
+			},
+			
+			"LBFormulaOverrideFlag" : {
+				"name" 					: "Nadpisanie formuły wyłamania zamka",
+				"descrp" : {
+					"token" 			: "Jeśli formuła wyłamania zamka tego tokena zastępuje formułę świata",
+					"item"				: "Jeśli formuła wyłamania zamka zastępuje formułę tokenów/światów"
+				}				
+			},
+			
+			"CCFormulaFlag" : {
+				"name" 					: "Formuła {pCheckName}",
+				"descrp" : {
+					"token" 			: "Formuła dodana do rzutów {pCheckName} tego tokena sprawia, że",
+					"item"				: "Formuła dodawana do rzutów {pCheckName} wykonywanych przez właściciela tego przedmiotu (używana tylko w przypadku najlepszych przedmiotów w ekwipunku)"
+				}					
+			},
+			
+			"CCFormulaOverrideFlag" : {
+				"name" 					: "Nadpisanie formuły {pCheckName}",
+				"descrp" : {
+					"token" 			: "Jeśli formuła {pCheckName} tego tokena zastępuje formułę świata",
+					"item"				: "Jeśli formuła {pCheckName} zastępuje formułę tokenów/światów"
+				}				
+			},
+			
+			"PickPocketFormulaFlag" : {
+				"name" 					: "Formuła kradzieży kieszonkowej",
+				"descrp" : {
+					"token" 			: "Formuła dodana do rzutów kradzieży kieszonkowej tego tokena sprawia, że",
+					"item"				: "Formuła dodawana do rzutów kradzieży kieszonkowej wykonywanych przez właściciela tego przedmiotu (używana tylko najlepiej w ekwipunku)"
+				}					
+			},
+			
+			"PickPocketFormulaOverrideFlag" : {
+				"name" 					: "Nadpisanie formuły kradzieży kieszonkowej",
+				"descrp" : {
+					"token" 			: "Jeśli formuła kradzieży kieszonkowej tego tokena zastępuje formułę świata",
+					"item"				: "Jeśli formuła kradzieży kieszonkowej zastępuje formułę tokenów/światów"
+				}				
+			},
+			
+			"PickPocketDCFlag" : {
+				"name" 					: "ST kradzieży kieszonkowej",
+				"descrp"  				: "Klasa trudności, której należy użyć do kradzieży kieszonkowej dla tej postaci (-1 dla niemożliwego)"			
+			},
+			
+			"ReplacementItemFlag" : {
+				"name" 					: "Przedmioty zamienne",
+				"descrp" 				: "Przedmioty, które zostaną zużyte zamiast tego przedmiotu, gdy rzut się nie powiedzie (ID lub nazwa, wiele wpisów oddzielonych \";\")"			
+			},
+
+			"MATTTriggerTileFlag" : {
+				"name" 					: "ID aktywowanego kafelka",
+				"descrp"				: "Identyfikator kafelka uruchamianego przez poniższe akcje Lock & Key (możesz użyć różnych)"
+			},
+			
+			"MATTTriggerConditionsFlag" : {
+				"LockuseKey.name"		: "Użycie klucza",
+				"LockusePasskey.name"	: "Użycie hasła",
+				"LockusePick.name"		: "Użycie otwierania zamków",
+				"LockuseBreak.name"		: "Użycie wyłamania zamków",
+				"LockuseFree.name"		: "Omijanie blokady",
+				"UsePickPocket.name"	: "Użycie kradzieży kieszonkowej",
+				"options" : {
+					"never"				: "nigdy",
+					"always"			: "zawsze",
+					"failure"			: "porażka",
+					"critfailure"		: "krytyczna porażka",
+					"success"			: "sukces"
+				}
+			},
+			
+			"RollOptionsFlag" : {
+				"LockusePick" : {
+					"d10CritLimit" : {
+						"name"			: "Limit trafień krytycznych otwierania zamków k10",
+						"descrp"		: "Minimalna wartość krytyczna dla rzutów otwierania zamków k10"
+					}
+				},
+				"LockuseBreak" : {
+					"d10CritLimit" : {
+						"name"			: "Limit trafień krytycznych wyłamywania zamków k10",
+						"descrp"		: "Minimalna wartość krytyczna dla rzutów wyłamywania zamków k10"
+					}					
+				}
+			}
+		},
+		
+		"Context" : {
+			"KeyCopy"					: "Kopiuj ID kluczy",
+			"KeyPaste"					: "Wklej ID do klucza"
+		},
+		
+		"Words" : {
+			"Key"						: "Klucz"
+		},
+		
+		"Text" : {
+			"GMControls" : {
+				"line0"					: "Elementy sterujące MG:",
+				"line1" 				: "-shift+kliknięcie prawym przyciskiem myszy, aby utworzyć nowy klucz dla zamka",
+				"line2" 				: "-alt+kliknięcie prawym przyciskiem myszy, aby przełączyć blokadę tokena (*)",
+				"line3" 				: "-ctrl+kliknięcie prawym przyciskiem myszy, aby skopiować ID kluczy (*)",
+				"line4" 				: "-ctrl+kliknięcie lewym przyciskiem myszy, aby wkleić ID kluczy (*)"
+			},
+			
+			"PlayerControls" : {
+				"line0"					: "Elementy sterujące graczy:",
+				"line1" 				: "-kliknięcie prawym przyciskiem myszy w celu użycia klucza na zamku",
+				"line2" 				: "-shift+kliknięcie prawym przyciskiem myszy, aby spróbować otworzyć zamek wytrychem",
+				"line3" 				: "-alt+kliknięcie prawym przyciskiem myszy, aby spróbować wyłamać zamek"
+			}
+		},
+		
+		"take-inventory-window" : {
+			"titles" : {
+				"inventory"				: "Ekwipunek"
+			},
+			"header" : {
+				"title"					: "<h> Pobranie z zasobów <b>{pOwnerName}</b> (ląduje w zasobach <b>{pTakerName}</b> ): </h>"
+			},
+			"buttons" : {
+				"take" : {
+					"name"				: "Wybierz zaznaczone"
+				}
+			}
+		},
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "Filtr",
+				
+				"filter-by-lock-state" : {
+					"name"					: "Filtrowanie według stanu zamka",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "Stan zamka",
+							"options" : {
+								"locked"	: "jest zablokowany",
+								"unlocked"	: "jest odblokowany"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "Zablokowane"
+				},
+				
+				"unlock" : {
+					"name"					: "Odblokowane"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "Przełącznik blokady"
+				},
+				
+				"loot-inventory" : {
+					"name"					: "Inwentarz łupów",
+					"descrp"				: "<span class=\"logic-style\">{pname}</span> z <span class=\"entity-style\">{pEntities}</span>, oferują dla <span class=\"details-style\">{pOfferto}</span>",
+					"settings" : {
+						"offerto" : {
+							"name"			: "Oferta dla"
+						}
+					}	
+				}
+			}
+		}
+	}
+}

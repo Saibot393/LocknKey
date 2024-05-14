@@ -8,17 +8,22 @@ class LnKMouseHandler {
 	//registers
 	static RegisterClicks() {} //call all register functions
 	
-		//doors
+	//doors
 	static RegisterDoorLeftClick() {} //register Door leftclick
 	
 	static RegisterDoorRightClick() {} //register Door rleftclick
 	
-		//tokens
+	//tokens
 	static RegisterTokenLeftClick() {} //register Door rightclick
 	
 	static RegisterTokenRightClick() {} //register Token rightclick
 	
 	static RegisterTokenDblClick() {} //register Token doubleClick
+	
+	//canvas
+	static RegisterCanvasLeftClick() {} //register Canvas Left click
+	
+	static RegisterCanvasRightClick() {} //register Canvas Right click
 	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {} //called if Door is left clicked
@@ -30,6 +35,10 @@ class LnKMouseHandler {
 	static onTokenRightClick(pTokenEvent, pToken) {} //called if Token is right clicked
 	
 	static async onTokenDblClick(pTokenEvent, pToken) {} //called if Token is double clicked, returns pOldTokenCall if necessary
+	
+	static onCanvasLClick(pEvent) {} //called when canvas is left clicked
+	
+	static onCanvasRClick(pEvent) {} //called when canvas is left clicked
 	
 	//additional
 	static canHUD(pEvent, pToken) {} //to replace the rightclick canHud which was disabled
@@ -43,6 +52,9 @@ class LnKMouseHandler {
 		LnKMouseHandler.RegisterTokenLeftClick();
 		LnKMouseHandler.RegisterTokenRightClick();
 		LnKMouseHandler.RegisterTokenDblClick();
+		
+		LnKMouseHandler.RegisterCanvasLeftClick();
+		LnKMouseHandler.RegisterCanvasRightClick();
 	}
 
 		//doors	
@@ -165,6 +177,43 @@ class LnKMouseHandler {
 		}			
 	}
 	
+	//canvas
+	static RegisterCanvasLeftClick() {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+			libWrapper.register(cModuleName, "canvas._onClickLeft", function(vWrapped, ...args) {if (LnKMouseHandler.onCanvasLClick(...args)) {return vWrapped(...args)}}, "MIXED");
+		}
+		else {
+			const vOldCanvasCall = canvas._onClickLeft;
+			
+			canvas._onClickLeft = function (pEvent) {
+				if (LnKMouseHandler.onCanvasLClick(pEvent)) {		
+					if (vOldCanvasCall) {
+						let vCanvasCallBuffer = vOldCanvasCall.bind(this);
+						vCanvasCallBuffer(pEvent);
+					}
+				}
+			}
+		}		
+	}
+	
+	static RegisterCanvasRightClick() {
+		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+			libWrapper.register(cModuleName, "canvas._onClickRight", function(vWrapped, ...args) {if (LnKMouseHandler.onCanvasRClick(...args)) {return vWrapped(...args)}}, "MIXED");
+		}
+		else {
+			const vOldCanvasCall = canvas._onClickRight;
+			
+			canvas._onClickRight = function (pEvent) {
+				if (LnKMouseHandler.onCanvasRClick(pEvent)) {		
+					if (vOldCanvasCall) {
+						let vCanvasCallBuffer = vOldCanvasCall.bind(this);
+						vCanvasCallBuffer(pEvent);
+					}
+				}
+			}
+		}		
+	}
+	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {
 		let vOldCall = Hooks.callAll(cModuleName + "." + "DoorLClick", pWall.document, FCore.keysofevent(pDoorEvent));
@@ -196,6 +245,18 @@ class LnKMouseHandler {
 		return vOldCall || game.user.isGM;
 	}
 	
+	static onCanvasLClick(pEvent) {
+		Hooks.callAll(cModuleName + "." + "CanvasLClick", canvas, canvas.mousePosition, pEvent);
+		
+		return true;
+	}
+	
+	static onCanvasRClick(pEvent) {
+		Hooks.callAll(cModuleName + "." + "CanvasRClick", canvas, canvas.mousePosition, pEvent);
+		
+		return true;
+	}
+	
 	//additional
 	static canHUD(pEvent, pToken) { //adapted from core
 		if ( canvas.controls.ruler.active ) return false;
@@ -209,3 +270,5 @@ class LnKMouseHandler {
 Hooks.on("init", function() {
 	LnKMouseHandler.RegisterClicks();
 });
+
+Hooks.on(cModuleName + "." + "CanvasClick", (pCanvas, pPosition) => {LnKMouseHandler.onCanvasClick(pCanvas, pPosition)});

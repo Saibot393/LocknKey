@@ -38,6 +38,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Lock distance: the maximum distance from which a lock can be used
 - Default lock sound: to set the default sound used for Doors and lockable Tokens
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
+- Allow all interactions: to allow even impossible actions (pick, break, custom, pickpocket)
 - Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
@@ -47,7 +48,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Default key folder: to set the default folder the key creation menu selects
 - Limit key folders: to only show the chosen default key folder and its sub folders in the key creation menu
 - Key name as ID: to use the keys name as an additional ID when interacting with locks
-- Use Pf2e roll system: to use the Pf2e system instead of the Lock & Key roll and crit settings
+- Use system rolls[only Pf2e and DSA5e]: to use the systems roll rules instead of the Lock & Key roll and crit settings
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
 - Mention lockpick item: to give additional information in the chat regarding the used item when picking a lock
@@ -69,6 +70,8 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Pick pocket default DC to set the default DC for pick pocketing
 - Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
 - Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
+- Mention Pick Pocket details: to add more informations to the pick pocket chat messages
+- Dead tokens lootable: to make all dead tokens (except item piles) lootable without having to roll
 - Perception key-word: to set they key-word used to recognise perception rolls
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
@@ -78,7 +81,9 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 #### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Remove key on use: to remove the key once it has been used (or reduce the stack by one)
-#### Walls/Lockable Tokens(separate tab):
+#### Walls/Lockable Tokens/Tiles(separate tab):
+- Open Image[Tiles only]: the image for the open state
+- Closed Image[Tiles only]: the image for the closed state
 - Lockable: if this token can be locked
 - Lock on close[Wall only]: to lock this door when it is closed
 - [Token only] Locked: if this token is locked
@@ -135,10 +140,12 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
     - Action Toggle lock to toggle a Door/Token
     - Action Loot inventory to offer the Inventory of a token to a player
     - Filter Filter by lock state to filter by the lock state (locked/unlocked)
+ - [Tidy 5e rewrite](https://github.com/kgar/foundry-vtt-tidy-5e-sheets)
+   - The item settings will appear correctly
 
 ### Languages:
 
-The module contains an English, a German, a Chinese (thanks to [feederze](https://github.com/feederze) and Thousand (_thousand@Discord)), and a French (thanks to [MastaGooz](https://github.com/MastaGooz)) translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/Rideable/issues).
+The module contains an English, a German, a Chinese (thanks to [feederze](https://github.com/feederze) and Thousand (_thousand@Discord)), a French (thanks to [MastaGooz](https://github.com/MastaGooz)), a Polish (thanks to [Lioheart](https://github.com/Lioheart)), and a Russian (thanks to [maragondi](https://github.com/maragondi)) translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/LocknKey/issues).
 
 ---
 

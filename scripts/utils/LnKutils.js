@@ -21,6 +21,7 @@ const cQuantity = "quantity"; //name of the quantity attribut of items in most s
 
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
+const cLockTypeTile = "LTTile"; //type for tile locks
 
 const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 
@@ -37,7 +38,7 @@ const cLUCustomCheck = "LockuseCustom"; //when a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //when a lock gets circumvented via e.g. a knock spell
 const cUPickPocket = "UsePickPocket"; //when a character is pickpocketed
 
-export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
+export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeTile, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
@@ -62,6 +63,8 @@ class LnKutils {
 	//DELCARATIONS		
 	//ID handling
 	static TokenfromID (pID, pScene = null) {} //returns the Token matching pID
+	
+	static TilefromID (pID, pScene = null) {} //returns the Tile matching pID
 	
 	static WallfromID(pID, pScene = null) {} //returns the Wall matching pID
 	
@@ -116,19 +119,19 @@ class LnKutils {
 	
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
+	static isTileLocktype(pLocktype) {} //returns if pLocktype belongs to a Tile
+	
 	static isWall(pObject) {} //returns if pObject is a Wall
 	
 	static DoorisLocked(pDoor) {} //returns of pDoor is locked
 	
 	static isToken(pObject) {} //returns if pObject is a Token
 	
+	static isTile(pObject) {} //returns if pObject is a Tile
+	
 	static LockuseDistance() {} //returns the distance over which a lock can be used
 	
 	static WithinLockingDistance(pCharacter, pLock) {} //returns if pLock is within the use Distanc of pUser
-	
-	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
-	
-	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
 	
 	static generateRollInfos(pToken) {} //returns roll infos based on pToken, used by successDegree()
 	
@@ -147,12 +150,20 @@ class LnKutils {
 	
 	static async CalculatePPDefaultDC(pToken) {} //returns the calculated PickPocket DC (if formula available), else returns default dc value
 	
+	static isDead(pActor) {} //returns wether pActor is dead
+	
 	//arrays
 	static Intersection(pArray1, pArray2) {} //returns the intersection of pArray1 and pArray2
 	
 	static includesone(pString, pIncludes) {} //returns if string contains a string included in pIncludes array
 	
 	//rolls
+	static beatsDC(pRollresult, pDC) {} //returns if pRollresult beats pDC
+	
+	static infinitythreshold() {} //returns the threshhold below which a number is interpreted as Infinity
+	
+	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
+	
 	static createroll(pFormula, pActor, pDC) {} //returns a roll with actor and skills as possible @ values in the formual
 	
 	static StitchFormula(pFormulaA, pFormulaB) {} //stitches two roll formulsa together and returns the stitchedresult
@@ -162,6 +173,10 @@ class LnKutils {
 	static async AverageResult(pFormula, pActor) {} //returns the average result of Roll formula pFormula
 	
 	static async HighestExpectedRollID(pRolls, pActor) {} //takes an array of rolls and returs the id of the highest expected roll result
+	
+	static validChars(pstring) {} //returns the part of pstring containing valid (ASCII) chars
+	
+	static diceResults(pRoll) {} //returns array of Dice results of pRoll
 	
 	//keyboard
 	static KeyisDown(pKeyName, pnoKeyvalid = false) {} //returns if a key belonging to keybinding pKeyName is down (pnoKeyvalid if no key pressed is valid "input")
@@ -193,6 +208,30 @@ class LnKutils {
 		}
 	} 
 	
+	static TilefromID (pID, pScene = null) {
+		if (pScene) {
+			let vDocument = pScene.tiles.find(vDocument => vDocument.id === pID);
+			
+			if (vDocument) {
+				return vDocument;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			//default scene
+			let vToken = canvas.tiles.placeables.find(vToken => vToken.id === pID);
+			
+			if (vToken) {
+				return vToken.document;
+			}
+			else {
+				return null;
+			}
+		}
+	}
+	
 	static WallfromID(pID, pScene = null) {
 		if (pScene) {
 			let vDocument = pScene.walls.get(pID);
@@ -220,6 +259,9 @@ class LnKutils {
 		switch(pLockType) {
 			case cLockTypeDoor:
 				return LnKutils.WallfromID(pID, pScene);
+				break;
+			case cLockTypeTile:
+				return LnKutils.TilefromID(pID, pScene);
 				break;
 			case cLockTypeLootPf2e:
 			default:
@@ -522,6 +564,10 @@ class LnKutils {
 					}
 				}
 			}
+			
+			if (LnKutils.isTile(pDocument)) {
+				return cLockTypeTile;
+			}
 		}
 		
 		return "";
@@ -539,8 +585,12 @@ class LnKutils {
 		return cTokenLockTypes.includes(pLocktype) || (await LnKCompUtils.isTokenLocktype(pLocktype));
 	}
 	
+	static isTileLocktype(pLocktype) {
+		return pLocktype == cLockTypeTile;
+	}
+	
 	static isWall(pObject) {
-		return Boolean(pObject.collectionName == "walls");
+		return pObject.documentName == "Wall";
 	}
 	
 	static DoorisLocked(pDoor) {
@@ -548,7 +598,11 @@ class LnKutils {
 	}
 	
 	static isToken(pObject) {
-		return Boolean(pObject.collectionName == "tokens");
+		return pObject.documentName == "Token";
+	}
+	
+	static isTile(pObject) {
+		return pObject.documentName == "Tile";
 	}
 	
 	static LockuseDistance() {	
@@ -572,9 +626,126 @@ class LnKutils {
 		return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKutils.LockuseDistance();
 	}
 	
+	static generateRollInfos(pToken) {
+		let vInfos = {};
+		
+		return vInfos;
+	}
+	
+	static LPformulaWorld() {
+		if (game.settings.get(cModuleName, "LockPickFormula").length) {
+			return game.settings.get(cModuleName, "LockPickFormula");
+		}
+		else {
+			return LnKSystemutils.SystemdefaultLPformula();
+		}
+	}
+	
+	static LBformulaWorld() {
+		if (game.settings.get(cModuleName, "LockBreakFormula").length) {
+			return game.settings.get(cModuleName, "LockBreakFormula");
+		}
+		else {
+			return LnKSystemutils.SystemdefaultLBformula();
+		}		
+	}
+	
+	static CCformulaWorld() {
+		if (game.settings.get(cModuleName, "CustomCircumventFormula").length) {
+			return game.settings.get(cModuleName, "CustomCircumventFormula");
+		}
+		else {
+			return "0";
+		}			
+	}
+	
+	static formulaWorld(pType) {
+		switch (pType) {
+			case cLUpickLock:
+				return LnKutils.LPformulaWorld();
+				break;
+			case cLUbreakLock:
+				return LnKutils.LBformulaWorld();
+				break;
+			case cLUCustomCheck:
+				return LnKutils.CCformulaWorld();
+				break;
+			default:
+				return "";
+				break;
+		}
+	}
+	
+	static useMultiSuccess(pObject) {
+		let vScene = FCore.sceneof(pObject);
+		
+		if (vScene && game.settings.get(cModuleName, "onlyCombatMultiSuccess")) {
+			//lock if combat is active in scene of pObject
+			return game.combats.find(vCombat => vCombat.scene.id == vScene.id && vCombat.started)
+		}
+		
+		return true;
+	}
+	
+	//pick pocket
+	static PickPocketformulaWorld() {
+		if (game.settings.get(cModuleName, "PickPocketFormula").length) {
+			return game.settings.get(cModuleName, "PickPocketFormula");
+		}
+		else {
+			return "0";
+		}			
+	}
+	
+	static async CalculatePPDefaultDC(pToken) {
+		let vFormula = game.settings.get(cModuleName, "PickPocketDefaultDCFormula");
+		
+		if (vFormula && pToken.actor) {
+			let vRoll = new Roll(vFormula, {actor : pToken.actor});
+			
+			await vRoll.evaluate();
+			
+			return vRoll.total;
+		}
+		
+		return game.settings.get(cModuleName, "PickPocketDefaultDC");
+	}
+	
+	static isDead(pActor) {
+		if (LnKCompUtils.isItemPile(pActor)) {
+			return false;
+		}
+		
+		let vActor = pActor;
+		
+		if (vActor?.actor) {
+			vActor = vActor.actor;
+		}
+		
+		return vActor?.system?.attributes?.hp?.value <= 0;
+	}
+	
+	//arrays
+	static Intersection(pArray1, pArray2) {
+		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
+	}
+	
+	static includesone(pString, pIncludes) {
+		return pIncludes.find(vInclude => pString.includes(vInclude));
+	}
+	
+	//rolls
 	static beatsDC(pRollresult, pDC) {
 		return pRollresult >= pDC;
 	}
+	
+	static infinitythreshold() {
+		switch (game.settings.get(cModuleName, "CritMethod")) {
+			default:
+				return -1;
+				break;
+		}
+	} 
 	
 	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {
 		
@@ -592,6 +763,9 @@ class LnKutils {
 				break;
 			case "CritMethod-d100CoC7e":
 			case "CritMethod-d10poolCoD2e":
+				break;
+			case "CritMethod-3d20DSA":
+				vsuccessDegree = Number(pRollresult <= 0);
 				break;
 			default:
 				vsuccessDegree = Number(pRollresult >= pDC); //F || S
@@ -717,6 +891,15 @@ class LnKutils {
 					
 					vsuccessDegree = Number(vPoolSuccesses >= pDC);
 					break;
+				case "CritMethod-3d20DSA":
+					if (pDiceDetails.filter(vdice => vdice == 1).length >= 2) {
+						vsuccessDegree = 2; //crit S
+					}
+					
+					if (pDiceDetails.filter(vdice => vdice == 20).length >= 2) {
+						vsuccessDegree = -1;//crit F
+					}
+					break;
 			}
 		}
 		
@@ -725,105 +908,10 @@ class LnKutils {
 		return vsuccessDegree;
 	}
 	
-	static generateRollInfos(pToken) {
-		let vInfos = {};
-		
-		return vInfos;
-	}
-	
-	static LPformulaWorld() {
-		if (game.settings.get(cModuleName, "LockPickFormula").length) {
-			return game.settings.get(cModuleName, "LockPickFormula");
-		}
-		else {
-			return LnKSystemutils.SystemdefaultLPformula();
-		}
-	}
-	
-	static LBformulaWorld() {
-		if (game.settings.get(cModuleName, "LockBreakFormula").length) {
-			return game.settings.get(cModuleName, "LockBreakFormula");
-		}
-		else {
-			return LnKSystemutils.SystemdefaultLBformula();
-		}		
-	}
-	
-	static CCformulaWorld() {
-		if (game.settings.get(cModuleName, "CustomCircumventFormula").length) {
-			return game.settings.get(cModuleName, "CustomCircumventFormula");
-		}
-		else {
-			return "0";
-		}			
-	}
-	
-	static formulaWorld(pType) {
-		switch (pType) {
-			case cLUpickLock:
-				return LnKutils.LPformulaWorld();
-				break;
-			case cLUbreakLock:
-				return LnKutils.LBformulaWorld();
-				break;
-			case cLUCustomCheck:
-				return LnKutils.CCformulaWorld();
-				break;
-			default:
-				return "";
-				break;
-		}
-	}
-	
-	static useMultiSuccess(pObject) {
-		let vScene = FCore.sceneof(pObject);
-		
-		if (vScene && game.settings.get(cModuleName, "onlyCombatMultiSuccess")) {
-			//lock if combat is active in scene of pObject
-			return game.combats.find(vCombat => vCombat.scene.id == vScene.id && vCombat.started)
-		}
-		
-		return true;
-	}
-	
-	//pick pocket
-	static PickPocketformulaWorld() {
-		if (game.settings.get(cModuleName, "PickPocketFormula").length) {
-			return game.settings.get(cModuleName, "PickPocketFormula");
-		}
-		else {
-			return "0";
-		}			
-	}
-	
-	static async CalculatePPDefaultDC(pToken) {
-		let vFormula = game.settings.get(cModuleName, "PickPocketDefaultDCFormula");
-		
-		if (vFormula && pToken.actor) {
-			let vRoll = new Roll(vFormula, {actor : pToken.actor});
-			
-			await vRoll.evaluate();
-			
-			return vRoll.total;
-		}
-		
-		return game.settings.get(cModuleName, "PickPocketDefaultDC");
-	}
-	
-	//arrays
-	static Intersection(pArray1, pArray2) {
-		return pArray1.filter(vElement => pArray2.includes(vElement)).filter(vElement => vElement.length);
-	}
-	
-	static includesone(pString, pIncludes) {
-		return pIncludes.find(vInclude => pString.includes(vInclude));
-	}
-	
-	//rolls
 	static createroll(pFormula, pActor, pDC) {
 		let vSkills = LnKSystemutils.skillitems(pActor);
 		
-		let vRoll = new Roll(pFormula, {actor : pActor, skills : vSkills, DC : pDC});
+		let vRoll = new Roll(LnKutils.validChars(pFormula), {actor : pActor, skills : vSkills, DC : pDC});
 		
 		return vRoll;
 	}
@@ -902,6 +990,20 @@ class LnKutils {
 		}
 		
 		return vID;
+	}
+	
+	static validChars(pstring) {
+		return pstring.replace(/[^\x00-\x7F]/g, "");
+	}
+	
+	static diceResults(pRoll) {
+		let vResults = [];
+		
+		for (let i = 0; i < pRoll.dice.length; i++) {
+			vResults = vResults.concat(pRoll.dice[i]?.results.map(vDie => vDie?.result));	
+		}
+		
+		return vResults.filter(vDie => vDie != undefined);
 	}
 	
 	//keyboard

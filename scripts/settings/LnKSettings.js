@@ -73,6 +73,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "allowallInteractions", {
+	name: Translate("Settings.allowallInteractions.name"),
+	hint: Translate("Settings.allowallInteractions.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  }); 
+  
   game.settings.register(cModuleName, "showallLockInteractions", {
 	name: Translate("Settings.showallLockInteractions.name"),
 	hint: Translate("Settings.showallLockInteractions.descrp"),
@@ -167,11 +176,20 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: "all"
   }); 
   
+  game.settings.register(cModuleName, "LnKSettingsubTypes", {
+	name: Translate("Settings.LnKSettingsubTypes.name"),
+	hint: Translate("Settings.LnKSettingsubTypes.descrp"),
+	scope: "world",
+	config: LnKSystemutils.candetectSystemSubtype(),
+	type: String,
+	default: "all"
+  }); 
+  
   game.settings.register(cModuleName, "usePf2eSystem", {
 	name: Translate("Settings.usePf2eSystem.name"),
 	hint: Translate("Settings.usePf2eSystem.descrp"),
 	scope: "world",
-	config: LnKSystemutils.isPf2e(),
+	config: LnKSystemutils.hasSystemrolls(),
 	type: Boolean,
 	default: false,
 	requiresReload: true
@@ -190,9 +208,19 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 		"CritMethod-d100WFRP4": Translate("Settings.CritMethod.options.d100WFRP4"),
 		"CritMethod-d100WFRP4Doubles": Translate("Settings.CritMethod.options.d100WFRP4Doubles"),
 		"CritMethod-d100CoC7e" : Translate("Settings.CritMethod.options.d100CoC7e"),
-		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e")
+		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e"),
+		"CritMethod-3d20DSA" : Translate("Settings.CritMethod.options.3d20DSA")
 	},
-	default: "CritMethod-natCrit"
+	default: "CritMethod-natCrit",
+	onChange: pvalue => {
+		const cdefaultDCsettings = ["PickPocketDefaultDC", "CustomCircumventDefaultDC", "DefaultBreakDC", "DefaultPickDC"];
+		
+		for (let i = 0; i < cdefaultDCsettings.length; i++) {
+			if (game.settings.get(cModuleName, cdefaultDCsettings[i]) < 0) {
+				game.settings.set(cModuleName, cdefaultDCsettings[i], LnKutils.infinitythreshold());
+			}
+		}
+	},
   });
   
   game.settings.register(cModuleName, "LockPickItem", {
@@ -394,6 +422,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   });  
   
+  game.settings.register(cModuleName, "deadActorsLootable", {
+	name: Translate("Settings.deadActorsLootable.name"),
+	hint: Translate("Settings.deadActorsLootable.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });  
+  
   game.settings.register(cModuleName, "PerceptionKeyWord", {
 	name: Translate("Settings.PerceptionKeyWord.name"),
 	hint: Translate("Settings.PerceptionKeyWord.descrp"),
@@ -402,6 +439,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: String,
 	default: "Perception"
   }); 
+  
+  game.settings.register(cModuleName, "MentionPickpocketDetails", {
+	name: Translate("Settings.MentionPickpocketDetails.name"),
+	hint: Translate("Settings.MentionPickpocketDetails.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  });  
   
   //client
   game.settings.register(cModuleName, "ControlSceme", {

@@ -1,4 +1,4 @@
-import {cModuleName, cDelimiter} from "./LnKutils.js";
+import {cModuleName, LnKutils, Translate, cDelimiter, cLUpickLock, cLUbreakLock, cUPickPocket} from "./LnKutils.js";
 
 //system names
 const cPf2eName = "pf2e"; //name of Pathfinder 2. edition system
@@ -17,6 +17,7 @@ const cSandbox = "sandbox"; //name of the sandbox system
 const cWarhammerFRP4e = "wfrp4e"; //name of the warhammer fantasy roleplaying 4e system
 const cCoC7e = "CoC7"; //name of the Call of Cthulhu system 7th edition
 const cDSA5 = "dsa5"; //name of the Das schwarze Auge system (5e)
+const cSWADE = "swade"; //name of the SWADE system
 
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
@@ -38,6 +39,19 @@ const Pf2eSkillDictionary = {
     ste: "stealth",
     sur: "survival",
     thi: "thievery"
+}
+
+const DSAskills = {
+    de: {
+        LockusePick : "Schlösserknacken",
+        LockuseBreak : "Kraftakt",
+		UsePickPocket : "Taschendiebstahl"
+    },
+    en: {
+        LockusePick : "Pick Locks",
+        LockuseBreak : "Feat of Strength",
+		UsePickPocket : "Pickpocket"
+    }
 }
 
 //Lock Types
@@ -74,6 +88,18 @@ class LnKSystemutils {
 	static isSystemPerceptionRoll(pMessage, pInfos) {} //returns if the message belongs to a perception roll
 	
 	static skillitems(pActor) {} //returns an object containing all items of type skill
+	
+	//subtypes
+	static candetectSystemSubtype() {} //returns if an item can be detected in this system
+	
+	static SystemSubtype(pItem) {} //returns system specific subtype of pItem
+	
+	//system rolls
+	static hasSystemrolls() {} //returns if system rolls are available for this system
+	
+	static systemRoll(ptype, pactor, pcallback, pinfos = {difficulty : 0}) {} //called for system rolls
+	
+	static systemSuccesdegree(pData) {} //returns the succes degree based on system
 	
 	//IMPLEMENTATIONS
 	//Identification	
@@ -170,27 +196,23 @@ class LnKSystemutils {
 		switch (game.system.id) {
 			case cPf2eName:
 				return "1d20 + @actor.skills.thievery.mod";
-				break;
 			case cDnD5e:
 				return "1d20 + @actor.system.abilities.dex.mod + @actor.system.tools.thief.prof.flat + @actor.system.tools.thief.bonus";
-				break;
 			case cDnD35e:
 				return "1d20 + @actor.system.skills.opl.mod";
-				break;
 			case cStarFinderName:
 				return "1d20 + @actor.system.skills.eng.mod";
-				break;
 			case cPf1eName:
 				return "1d20 + @actor.system.skills.dev.mod";
-				break;
 			case cWarhammer4e:
 				return "1d100 - @actor.characteristics.dex.value";
-				break;
 			case cCoC7e:
 				return "1d100/@actor.system.skills.Locksmith.value";
-				break;
 			case cDSA5:
-				return "1d20 @actor.system.characteristics.in + 1d20 @actor.system.characteristics.ff + 1d20 @actor.system.characteristics.ff";
+				return `(max(1d20 - (@actor.system.characteristics.in.value + min(@DC, 0)), 0) + max(1d20 - (@actor.system.characteristics.ff.value + min(@DC, 0)),0) + max(1d20 - (@actor.system.characteristics.ff.value + min(@DC, 0)),0)) - (@skills.Pick_Locks.system.talentValue.value + max(@DC, 0))`;
+				break;
+			case cSWADE:
+				return "{1d@skills.Thievery.system.die.sides,1d6}kh + @skills.Thievery.system.die.modifier";
 				break;
 			default:
 				return "";
@@ -216,6 +238,12 @@ class LnKSystemutils {
 				break;
 			case cCoC7e:
 				return "1d100/@actor.system.characteristics.str.value";
+				break;
+			case cDSA5:
+				return `(max(1d20 - (@actor.system.characteristics.ko.value + min(@DC, 0)), 0) + max(1d20 - (@actor.system.characteristics.kk.value + min(@DC, 0)),0) + max(1d20 - (@actor.system.characteristics.kk.value + min(@DC, 0)),0)) - (@skills.${game.i18n.localize("LocalizedIDs.featOfStrength")}.system.talentValue.value + max(@DC, 0))`;
+				break;
+			case cSWADE:
+				return "{1d@skills.Athletics.system.die.sides,1d6}kh + @skills.Athletics.system.die.modifier";
 				break;
 			default:
 				return "";
@@ -264,7 +292,9 @@ class LnKSystemutils {
 	
 	static isFreeCircumvent(pMessage) {
 		if (game.settings.get(cModuleName, "LockCircumventName").length > 0) {
-			return game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter).includes(pMessage.flavor);
+			let vWords = game.settings.get(cModuleName, "LockCircumventName").split(cDelimiter);
+			
+			return vWords.includes(pMessage.flavor) || vWords.find(vWord => pMessage.content.includes(vWord));
 		}
 		else {
 			return false;
@@ -330,7 +360,7 @@ class LnKSystemutils {
 		let vItemset = {};
 		
 		for (let i = 0; i < vItems.length; i++) {
-			let vSkillName = vItems[i]?.name.replace(" ", "_");
+			let vSkillName = LnKutils.validChars(vItems[i]?.name.replace(" ", "_"));
 			
 			if (!vSkillName) {
 				vItems[i]?.id;
@@ -346,6 +376,103 @@ class LnKSystemutils {
 	
 	static canAutodetectSystemPerceptionRoll() {
 		return [cPf2eName, cDnD5e, cPf1eName].includes(game.system.id);
+	}
+	
+	//subtypes
+	static candetectSystemSubtype() {
+		return [cDSA5].includes(game.system.id);
+	} 
+	
+	static SystemSubtype(pItem) {
+		switch (game.system.id) {
+			case cDSA5:
+				return pItem?.system.equipmentType?.value;
+				break;
+		}
+		
+		return false;
+	}
+	
+	//system rolls
+	static hasSystemrolls() {
+		return [cPf2eName, cDSA5].includes(game.system.id);
+	}
+	
+	static systemRoll(ptype, pactor, pcallback, pinfos = {difficulty : 0}) {
+		switch (game.system.id) {
+			case cPf2eName:
+				switch(ptype) {
+					case cLUpickLock:
+						game.pf2e.actions.pickALock({
+							actors: pactor,
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
+							difficultyClass: {value : pinfos.difficulty}
+						});
+						break;
+					case cLUbreakLock:
+						game.pf2e.actions.forceOpen({
+							actors: pactor,
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
+							difficultyClass: {value : pinfos.difficulty}
+						});
+						break;
+					case cUPickPocket:
+						game.pf2e.actions.steal({
+							actors: pactor,
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
+							difficultyClass: {value : pinfos.difficulty}
+						});
+						break;
+				}
+				break;
+			case cDSA5:
+				let vSkill = pactor.items.find(x => x.type == "skill" && x.name == DSAskills[game.i18n.lang][ptype]);
+				
+				if (vSkill) {
+					pactor.setupSkill(vSkill, { modifier: pinfos.difficulty/*, subtitle: ` (${Translate("Titles." + ptype)})`*/}, pactor.sheet.getTokenId()).then(async(psetupData) => {
+							psetupData.testData.opposable = false
+							const cresultdata = await pactor.basicTest(psetupData);
+				
+							pcallback(LnKSystemutils.systemSuccesdegree(cresultdata));
+					});
+				}
+				break;
+		}
+	}
+	
+	static systemSuccesdegree(pData) {
+		switch (game.system.id) {
+			case cPf2eName:
+				switch (pData.roll.outcome) {
+					case 'criticalFailure':
+						return -1;
+						break;
+					case 'failure':
+						return 0;
+						break;
+					case 'success':
+						return 1;
+						break;
+					case 'criticalSuccess':
+						return 2;
+						break;
+					default:
+						return 0;
+						break;
+				}
+				break;
+			case cDSA5:
+				let vDSAresult = pData.result.successLevel;
+				
+				if (vDSAresult > 0) {
+					return vDSAresult;
+				}
+				
+				if (vDSAresult < 0) {
+					return vDSAresult + 1;
+				}
+				break;
+		}
 	}
 }
 

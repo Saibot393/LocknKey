@@ -1,10 +1,11 @@
-import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions, cPuzzleLock, cReadysetRoll } from "./LnKCompUtils.js";
 import { cLockTypeLootIP } from "./LnKCompUtils.js";
-import { LnKutils, cModuleName, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent } from "../utils/LnKutils.js";
+import { LnKutils, cModuleName, cDelimiter, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent, cUPickPocket } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken, LockManager } from "../LockManager.js";
 import { LnKFlags, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
 import {LnKSheetSettings} from "../settings/LnKSheetSettings.js";
+import {LnKSystemutils} from "../utils/LnKSystemutils.js";
 
 //LnKCompatibility will take care of compatibility with other modules in regards to calls, currently supported:
 
@@ -63,7 +64,7 @@ class LnKCompatibility {
 		let vAddBasics = pAddBasics && !pHTML.find(`a[data-tab="triggers"]`).length;
 		
 		if (vAddBasics) {
-			let vTabbar = pHTML.find(`nav.sheet-tabs`);
+			let vTabbar = pHTML.find(`nav.sheet-tabs[data-group="main"]`);
 			
 			let vTabButtonHTML = 	`
 							<a class="item" data-tab="triggers">
@@ -94,7 +95,7 @@ class LnKCompatibility {
 			
 		let vTypeOptions;
 		
-		for (let vUseType of [cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent]) {
+		for (let vUseType of [cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent, cUPickPocket]) {
 			switch (vUseType) {
 				case cLUuseKey:
 				case cLUusePasskey:
@@ -103,6 +104,7 @@ class LnKCompatibility {
 					break;
 				case cLUpickLock:
 				case cLUbreakLock:
+				case cUPickPocket:
 					vTypeOptions = cTConditions;
 					break;
 			}
@@ -172,6 +174,31 @@ Hooks.once("init", () => {
 		Hooks.on(cModuleName + ".TokenLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData, true));
 		
 		Hooks.on(cModuleName + ".LockUse", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
+		Hooks.on(cModuleName + ".PickPocket", (pLock, pCharacter, pInfos) => LnKCompatibility.onLnKLockUse(pLock, pCharacter, pInfos));
+	}
+	
+	if (LnKCompUtils.isactiveModule(cTidy5eNew)) {
+		Hooks.once('tidy5e-sheet.ready', (api) => {
+			api.registerItemTab(
+				new api.models.HandlebarsTab({
+				title: Translate("Titles."+cModuleName),
+				tabId: cModuleName,
+				path: `/modules/${cModuleName}/templates/default.html`,
+				enabled: (data) => {
+					let vitem = data.document;
+					
+					return (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(vitem.type)
+					&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(vitem))))
+				},
+				onRender(params) {
+					LnKSheetSettings.ItemSheetSettings(params.app, $(params.element), params.data);
+				},
+			}));
+		});
+	}
+	
+	if (LnKCompUtils.isactiveModule(cReadysetRoll)) {
+		libWrapper.ignore_conflicts(cModuleName, cReadysetRoll, "ItemSheet.prototype._onChangeTab' ");
 	}
 });
 
@@ -190,9 +217,9 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['within', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'previous', 'tagger'] },
 						required: true,
-						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile)); }
 					}
 				],
 				group: cModuleName,
@@ -221,9 +248,9 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['within', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'previous', 'tagger'] },
 						required: true,
-						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile)); }
 					}
 				],
 				group: cModuleName,
@@ -252,9 +279,9 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['within', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'previous', 'tagger'] },
 						required: true,
-						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall)); }
+						restrict: (entity) => { return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile)); }
 					}
 				],
 				group: cModuleName,
@@ -341,10 +368,10 @@ Hooks.once("setupTileActions", (pMATT) => {
 						name: "MonksActiveTiles.ctrl.select-entity",
 						type: "select",
 						subtype: "entity",
-						options: { show: ['token', 'within', 'players', 'previous', 'tagger'] },
+						options: { show: ['tile', 'token', 'within', 'players', 'previous', 'tagger'] },
 						required: true,
 						restrict: (entity) => {
-							return ((entity instanceof Token) || (entity instanceof Wall));
+							return ((entity instanceof Token) || (entity instanceof Wall) || (entity instanceof Tile));
 						}
 					},
 					{

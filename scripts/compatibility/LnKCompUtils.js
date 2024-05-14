@@ -11,6 +11,9 @@ const cLibWrapper = "lib-wrapper";
 const cRideable = "Rideable";
 const cMonksEJ = "monks-enhanced-journal";
 const cMATT = "monks-active-tiles";
+const cTidy5eNew = "tidy5e-sheet";
+const cPuzzleLock = "puzzle-locks";
+const cReadysetRoll = "ready-set-roll-5e";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
@@ -40,7 +43,7 @@ export {cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTCondit
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
 
-export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT}
+export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT, cTidy5eNew, cPuzzleLock, cReadysetRoll}
 export { cLockTypeLootIP };
 
 class LnKCompUtils {
@@ -59,6 +62,11 @@ class LnKCompUtils {
 	
 	//specific: ItemPiles
 	static async setIPLock(pItemPile, pLocked) {} //enables/disables pItemPile´based on pLocked
+	
+	static isItemPile(pToken) {} //returns if pToken is an item pile
+	
+	//specific: Puzzle lock
+	static async LockPuzzle(pDocument) {} //locks puzzle
 	
 	//specific: MATT
 	static async MATTTriggerTile(pLock) {} //returns Tile triggered by pLock actions
@@ -172,6 +180,25 @@ class LnKCompUtils {
 		}
 		else {
 			game.itempiles?.API?.unlockItemPile(pItemPile);
+		}
+	}
+	
+	static isItemPile(pToken) {
+		let vActor = pToken;
+		
+		if (pToken?.actor) {
+			vActor = pToken.actor
+		}
+		
+		return vActor?.flags[cItemPiles]?.data?.enabled;
+	}
+	
+	//specific: Puzzle lock
+	static async LockPuzzle(pDocument) {
+		if (game.modules.get(cPuzzleLock)?.active) {
+			if (pDocument) {
+				await pDocument.setFlag(cPuzzleLock, "general.unlocked", false);
+			}
 		}
 	}
 	

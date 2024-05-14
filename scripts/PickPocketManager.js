@@ -32,7 +32,19 @@ class PickPocketManager {
 		if (pTarget && vCharacter) {
 			if(!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {
 				if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
-					PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
+					let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
+					
+					if (!vAllowCheck) {
+						vAllowCheck = LnKFlags.Canbepickpocketed(pTarget);
+						
+						if (!vAllowCheck) {
+							LnKPopups.TextPopUpID(pLockObject, "CantbePickpocketed"); //MESSAGE POPUP
+						}
+					}
+					
+					if (vAllowCheck) {
+						PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
+					}
 				}
 				else {
 					LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
@@ -45,77 +57,99 @@ class PickPocketManager {
 	}
 	
 	static async PickPocketToken(pTarget, pCharacter, pPopUps = true) {
-		if (await LnKFlags.Canbepickpocketed(pTarget)) {
-			if (!game.settings.get(cModuleName, "usePf2eSystem")) {
-				let vRollFormula = LnKFlags.PickPocketFormula(pCharacter);
-					
-				if (!LnKFlags.PickPocketFormulaOverrides(pCharacter)) {
-					vRollFormula = LnKutils.StitchFormula(LnKutils.PickPocketformulaWorld(), vRollFormula);
-				}
-				
-				if (!vRollFormula.length) {
-					//if nothing has been set
-					vRollFormula = "0";
-				}
-			
-				let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, await LnKFlags.PickPocketDC(pTarget));
-					
-				LnKSound.PlayDiceSound(pCharacter);
-					
-				await vRoll.evaluate();
-				
-				Hooks.callAll(cModuleName+".DiceRoll", cUPickPocket, pCharacter, vRoll);
-					
-				await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocket", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
-					
-				let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : vRoll.dice[0]?.results.map(vDie => vDie?.result)};
-					
-				PickPocketManager.RequestPickPocket(vData);
-			}
-			else {	
-				//no roll neccessary, handled by Pf2e system
-				let vCallback = async (proll) => {
-					let vResult;
-					
-					switch (proll.outcome) {
-						case 'criticalFailure':
-							vResult = -1;
-							break;
-						case 'failure':
-							vResult = 0;
-							break;
-						case 'success':
-							vResult = 1;
-							break;
-						case 'criticalSuccess':
-							vResult = 2;
-							break;
-						default:
-							vResult = 0;
-							break;
-					}
-					
-					let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, usePf2eRoll : true, Pf2eresult : vResult};
-				
-					PickPocketManager.RequestPickPocket(vData);
-				};
-	
-				game.pf2e.actions.steal({
-					actors: pCharacter.actor,
-					callback: vCallback,
-					difficultyClass: {value : await LnKFlags.PickPocketDC(pTarget)}
-				});
-			}
+		if (LnKutils.isDead(pTarget) && game.settings.get(cModuleName, "deadActorsLootable")) {
+			let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, isDead : true};
+						
+			PickPocketManager.RequestPickPocket(vData);
 		}
 		else {
-			if (pPopUps) {
-				let vMessage = LnKFlags.getCustomPopups(pTarget, cCustomPopup.CharacternotPickpocketable);
-		
-				if (vMessage.length) {
-					LnKPopups.TextPopUp(pTarget, vMessage); //MESSAGE POPUP
+			if (await LnKFlags.Canbepickpocketed(pTarget)) {
+				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
+					let vRollFormula = LnKFlags.PickPocketFormula(pCharacter);
+						
+					if (!LnKFlags.PickPocketFormulaOverrides(pCharacter)) {
+						vRollFormula = LnKutils.StitchFormula(LnKutils.PickPocketformulaWorld(), vRollFormula);
+					}
+					
+					if (!vRollFormula.length) {
+						//if nothing has been set
+						vRollFormula = "0";
+					}
+					let vDC = await LnKFlags.PickPocketDC(pTarget);
+				
+					let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, vDC);
+						
+					LnKSound.PlayDiceSound(pCharacter);
+						
+					await vRoll.evaluate();
+					
+					Hooks.callAll(cModuleName+".DiceRoll", cUPickPocket, pCharacter, vRoll);
+						
+					if (game.settings.get(cModuleName, "MentionPickpocketDetails")) {
+						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocketDetailed", {pName : pCharacter.name, pTargetName : pTarget.name, pDC : vDC}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+					}
+					else {
+						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocket", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+					}
+						
+					let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : LnKutils.diceResults(vRoll)};
+						
+					PickPocketManager.RequestPickPocket(vData);
 				}
-				else {
-					LnKPopups.TextPopUpID(pTarget, "CantbePickpocketed"); //MESSAGE POPUP
+				else {	
+					let vCallback = async (psuccessdegree) => {
+						let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, useSystemRoll : true, Systemresult : psuccessdegree};
+						
+						PickPocketManager.RequestPickPocket(vData);
+					};
+					
+					LnKSystemutils.systemRoll(cUPickPocket, pCharacter.actor, vCallback, {difficulty : await LnKFlags.PickPocketDC(pTarget)});
+					/*
+					//no roll neccessary, handled by Pf2e system
+					let vCallback = async (proll) => {
+						let vResult;
+						
+						switch (proll.outcome) {
+							case 'criticalFailure':
+								vResult = -1;
+								break;
+							case 'failure':
+								vResult = 0;
+								break;
+							case 'success':
+								vResult = 1;
+								break;
+							case 'criticalSuccess':
+								vResult = 2;
+								break;
+							default:
+								vResult = 0;
+								break;
+						}
+						
+						let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, usePf2eRoll : true, Pf2eresult : vResult};
+					
+						PickPocketManager.RequestPickPocket(vData);
+					};
+		
+					game.pf2e.actions.steal({
+						actors: pCharacter.actor,
+						callback: vCallback,
+						difficultyClass: {value : await LnKFlags.PickPocketDC(pTarget)}
+					});
+					*/
+				}
+			}
+			else {
+				if (pPopUps) {
+					let vMessage = LnKFlags.getCustomPopups(pTarget, cCustomPopup.CharacternotPickpocketable);
+			
+					if (vMessage.length) {
+						LnKPopups.TextPopUp(pTarget, vMessage); //MESSAGE POPUP
+					}
+					else {
+						LnKPopups.TextPopUpID(pTarget, "CantbePickpocketed"); //MESSAGE POPUP
+					}
 				}
 			}
 		}
@@ -145,8 +179,10 @@ class PickPocketManager {
 			if (vScene) {
 				vTarget = LnKutils.TokenfromID(pData.TargetID, vScene);
 				
-				if (await LnKFlags.Canbepickpocketed(vTarget)) {
-					vCharacter = LnKutils.TokenfromID(pData.CharacterID, vScene);
+				vCharacter = LnKutils.TokenfromID(pData.CharacterID, vScene);
+				
+				
+				if (await LnKFlags.Canbepickpocketed(vTarget) || pData.isDead) {
 					
 					PickPocketManager.EvaluatePickPocket(vTarget, vCharacter, pData);
 				}
@@ -155,40 +191,49 @@ class PickPocketManager {
 	}
 	
 	static async EvaluatePickPocket(pTarget, pCharacter, pData, pChatMessages = true) {
-		let vSuccessDegree;
-		
-		if (!pData.usePf2eRoll) {
-			vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, await LnKFlags.PickPocketDC(pTarget), pCharacter, {RollType : cUPickPocket});
+		if (pData.isDead) {
+			if (LnKutils.isDead(pTarget) && game.settings.get(cModuleName, "deadActorsLootable")) {
+				LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {});
+				
+				Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : 2, Data : pData, useData: {userID : pData.userID}, UseType : cUPickPocket});
+			}
 		}
 		else {
-			vSuccessDegree = pData.Pf2eresult;
-		}
-		
-		let vCritMessagesuffix = ".default";	
-		
-		if (await LnKFlags.Canbepickpocketed(pTarget)) {
-			if ((vSuccessDegree > 1) || (vSuccessDegree < 0)) {
-				vCritMessagesuffix = ".crit";
-			}
+			let vSuccessDegree;
 			
-			if (vSuccessDegree > 0) {
-				//success
-				LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {});
-								
-				if (pChatMessages) {
-					await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.PickPocketSuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
-				}	
+			if (!pData.useSystemRoll) {
+				vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, await LnKFlags.PickPocketDC(pTarget), pCharacter, {RollType : cUPickPocket});
 			}
 			else {
-				//failure
-				LnKPopups.TextPopUpID(pTarget, "PickPocketfailed"); //MESSAGE POPUP
-				
-				if (pChatMessages) {
-					await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.PickPocketFail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
-				}
+				vSuccessDegree = pData.Systemresult;
 			}
 			
-			Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : vSuccessDegree, Data : pData});
+			let vCritMessagesuffix = ".default";	
+			
+			if (await LnKFlags.Canbepickpocketed(pTarget)) {
+				if ((vSuccessDegree > 1) || (vSuccessDegree < 0)) {
+					vCritMessagesuffix = ".crit";
+				}
+				
+				if (vSuccessDegree > 0) {
+					//success
+					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {});
+									
+					if (pChatMessages) {
+						await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.PickPocketSuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+					}	
+				}
+				else {
+					//failure
+					LnKPopups.TextPopUpID(pTarget, "PickPocketfailed"); //MESSAGE POPUP
+					
+					if (pChatMessages) {
+						await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.PickPocketFail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
+					}
+				}
+				
+				Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : vSuccessDegree, Data : pData, useData: {userID : pData.userID}, UseType : cUPickPocket});
+			}
 		}
 	}
 	
