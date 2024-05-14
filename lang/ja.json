@@ -37,7 +37,7 @@
 			"newPasskey"				: "新しいパスワード:",
 			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」はこれらの要素を錠に追加を要求:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
-			"ToggleTile"				: "Toggle tile state (L&K)"
+			"ToggleTile"				: "タイルの状態をトグル (L&K)"
 		},
 		
 		"Popup" : {
@@ -143,13 +143,13 @@
 			},
 	
 			"LockDistance" : {
-				"name" 					: "Lock distance",
+				"name" 					: "施錠距離",
 				"descrp"				: "Distance over which a lock can be used (in in-game units)"		
 			},
 			
 			"DefaultLockSound" : {
-				"name"					: "デフォルトの錠の音声",
-				"descrp"				: "The default sound applied to new doors a lock tokens"
+				"name"					: "デフォルトの施錠音",
+				"descrp"				: "新規の扉The default sound applied to new doors a lock tokens"
 			},
 			
 			"UseArmReachDistance": {
