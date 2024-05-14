@@ -36,7 +36,8 @@
 			"LockuseIdentity"			: "鑑定",
 			"newPasskey"				: "新しいパスワード:",
 			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」はこれらの要素を錠に追加を要求:{pIdentities}",
-			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}"
+			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
+			"ToggleTile"				: "Toggle tile state (L&K)"
 		},
 		
 		"Popup" : {
