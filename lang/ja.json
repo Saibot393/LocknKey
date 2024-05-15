@@ -330,7 +330,7 @@
 			
 			"AutoAcceptIdentityAddition" : {
 				"name" 					: "identity 追加を自動許可",
-				"descrp"				: "If identity addtions should be accepted automatically (非推奨)"				
+				"descrp"				: "identity の追加を自動で許可します (非推奨)"				
 			},
 			
 			"PickPocketFormula" : {
