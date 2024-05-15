@@ -696,11 +696,11 @@
 		
 		"Text" : {
 			"GMControls" : {
-				"line0"					: "GM controls:",
-				"line1" 				: "•shift+right-click to create a new key for the lock",
-				"line2" 				: "•alt+right-click to toggle token lock (*)",
-				"line3" 				: "•ctrl+right-click to copy the locks key IDs (*)",
-				"line4" 				: "•ctrl+left-click to paste key IDs into the lock (*)"
+				"line0"					: "GM操作:",
+				"line1" 				: "•shift+右クリックで錠に対する鍵を新規作成",
+				"line2" 				: "•alt+右クリックで toggle token lock (*)",
+				"line3" 				: "•ctrl+右クリックで copy the locks key IDsコピー (*)",
+				"line4" 				: "•ctrl+左クリックで鍵IDを錠に貼り付け (*)"
 			},
 			
 			"PlayerControls" : {
