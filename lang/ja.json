@@ -704,10 +704,10 @@
 			},
 			
 			"PlayerControls" : {
-				"line0"					: "Player controls:",
-				"line1" 				: "•right-click to try to use a key on a lock",
-				"line2" 				: "•shift+right-click to try to pick a lock",
-				"line3" 				: "•alt+right-click to try to break a lock"
+				"line0"					: "プレイヤー操作:",
+				"line1" 				: "•右クリックで錠に対して鍵を試す",
+				"line2" 				: "•shift+右クリックで鍵開けを試みる",
+				"line3" 				: "•alt+右クリックでこじ開けを試みる"
 			}
 		},
 		
@@ -716,7 +716,7 @@
 				"inventory"				: "所持品"
 			},
 			"header" : {
-				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
+				"title"					: "<h> <b>{pOwnerName}s</b>の所持品から取得 (<b>{pTakerName}s</b> の所持品に移った): </h>"
 			},
 			"buttons" : {
 				"take" : {
