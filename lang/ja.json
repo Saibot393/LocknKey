@@ -1,0 +1,771 @@
+{
+	"LocknKey" : {
+		"Titles" : {
+			"confirm"					: "決定",
+			"abbort"					: "取り消し",
+			"LocknKey"					: "Lock & Key",
+			"LocknKeyabbr"				: "L&K",
+			"WorldSettings"				: "ワールド設定 (GMのみ)",
+			"ClientSettings"			: "クライアント設定",
+			"GMonly"					: "GMのみ",
+			"LockTokens"				: "錠の設定",
+			"CharacterTokens"			: "キャラクター設定",
+			"KeyItems"					: "鍵の設定",
+			"LPItems"					: "鍵の細工設定",
+			"LockusePasskey"			: "パスワード",
+			"Passkey"					: "パスワード",
+			"EnterPasskey"				: "パスワードを入力:",
+			"ConfirmPasskey"			: "決定",
+			"Lockuse"					: "錠の使用",
+			"LockuseKey"				: "鍵を使用",
+			"LockusePick"				: "開錠",
+			"LockuseBreak"				: "こじあける",
+			"LockuseFree"				: "Free lock use",
+			"LockuseCustom"				: "{pCheckName}",
+			"Close"						: "閉じる",
+			"Keycreation"				: "鍵を作成",
+			"Keyname"					: "鍵の名前",
+			"KeyID"						: "鍵のID (!IDに \";\" を使用しないでください)",
+			"Keyfolder"					: "Key target folder",
+			"ConfirmKeycreation"		: "作成",
+			"Basic"						: "基本",
+			"Triggers"					: "トリガー",
+			"FreeCircumventHUD"			: "このコマは次の錠を無視できる、クリックして取り除く",
+			"PickPocket"				: "スリ",
+			"LockchangePasskey"			: "パスワード変更",
+			"LockuseIdentity"			: "鑑定",
+			"newPasskey"				: "新しいパスワード:",
+			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」はこれらの要素を錠に追加を要求:{pIdentities}",
+			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
+			"ToggleTile"				: "タイルの状態をトグル (L&K)"
+		},
+		
+		"Popup" : {
+			"TokenisLocked"				: "{pLockName} は施錠されている",
+			"DoorisLocked"				: "この扉は施錠されている",
+			"Lockoutofreach"			: "この錠に届かない",
+			"Tokenoutofreach"			: "{pTokenName} に届かない",
+			"lockedDoor"				: "扉は施錠された",
+			"lockedToken"				: "{pLockName} は施錠された",
+			"unlockedDoor"				: "扉は開錠された",
+			"unlockedToken"				: "{pLockName} は開錠された",
+			"GamePaused"				: "ゲームが停止中",
+			"noLockPickItem"			: "ロックピックが所持品に無い",
+			"nomatchingKey"				: "合う鍵がない",
+			"pickLockfailed"			: "鍵開けに失敗",
+			"cantLock" : {
+				"default"				: "この錠は施錠できない",
+				"break"					: "この錠はすでに開いている"
+			},
+			"breakLockfailed"			: "こじあけに失敗",
+			"NotaLock"					: "錠ではない",
+			"WrongPassword"				: "パスワードが違う",
+			"Lockisjammed"				: "錠は詰まっている",
+			"Lockpickbroke"				: "ロックピックが壊れた",
+			"jammedLock"				: "錠を詰まらせた",
+			"cantcircumventFree"		: "錠を回せない",
+			"CantbePickpocketed"		: "スリできない",
+			"PickPocketfailed"			: "スリ失敗",
+			"customcheckfailed"			: "{pCheckName} 失敗",
+			"WrongIdentity"				: "Wrong identity",
+			"PasswordChanged"			: "パスワード変更",
+			"NoPasswordLength"			: "新しいパスワードは短かすぎる",
+			"CantChangePassword"		: "パスワードが変更できない"
+
+			"CantbePicked"				: "鍵開け不能",
+			"CantbeBroken"				: "こじ開け不能",
+			"CantbeCustomChecked"		: "{pCheckName}　使用不能",
+			"CantbePickpocketed"		: "スリ不能"
+		},	
+		
+		"ChatMessage" : {
+			"LockPick"					: "{pName} は開錠を試みた:",
+			"LockPicksuccess" : {
+				"crit"					: "{pName} は開錠にクリティカル成功",
+				"default" 				: "{pName} は開錠に成功"
+			},
+			"LockPickfail" : {
+				"crit"					: "{pName} は開錠に致命的失敗",
+				"default" 				: "{pName} は開錠に失敗"
+			},
+			"LockPicksuccessLPName" : {
+				"crit"					: "{pName} は {pLPName} を使って開錠にクリティカル成功",
+				"default" 				: "{pName} は {pLPName} を使って開錠に成功した"
+			},
+			"LockPickfailLPName" : {
+				"crit"					: "{pName} は {pLPName} を使って開錠に致命的に失敗",
+				"default" 				: "{pName} は {pLPName} を使って開錠に失敗"
+			},
+			"LockPickfailLPNameremove" : {
+				"crit"					: "{pName} は開錠に致命的に失敗して {pLPName} を壊してしまった"
+			},
+			
+			"LockBreak"					: "{pName} は錠の破壊を試みた:",
+			"LockBreaksuccess" : {
+				"crit"					: "{pName} は錠の破壊にクリティカル成功した",
+				"default" 				: "{pName} は錠の破壊に成功した"
+			},
+			"LockBreakfail" : {
+				"crit"					: "{pName} は錠の破壊に致命的失敗した",
+				"default" 				: "{pName} は錠の破壊に失敗した"
+			},
+			
+			"CustomCheck"				: "{pName} は {pCheckName}を使用した:",
+			"CustomChecksuccess" : {
+				"crit"					: "{pName} は {pCheckName} にクリティカル成功",
+				"default" 				: "{pName} は {pCheckName} に成功"			
+			},
+			"CustomCheckFail" : {
+				"crit"					: "{pName} は {pCheckName} に致命的失敗",
+				"default" 				: "{pName} は {pCheckName} に失敗"
+			},
+			
+			"PickPocket"				: "{pName} はスリを試みた:",
+			"PickPocketDetailed"		: "{pName} は {pTargetName} にDC{pDC}でスリを試みた:",
+			"PickPocketSuccess" : {
+				"crit"					: "{pName} はスリにクリティカル成功",
+				"default" 				: "{pName} はスリに成功"			
+			},
+			"PickPocketFail" : {
+				"crit"					: "{pName} はスリに致命的失敗",
+				"default" 				: "{pName} はスリに失敗"
+			}
+		},
+		
+		"Settings" : {
+			"useGMquickKeys" : {
+				"name" 					: "GM クイック操作を使用",
+				"descrp"				: "GMに下記一覧のに錠に関連した特別な操作を許可します (*印でマークされているものが影響)"
+			},
+			
+			"allowLocking" : {
+				"name" 					: "プレイヤーに施錠を許可",
+				"descrp"				: "プレイヤーが合鍵を持っている時施錠を許可します"
+			},
+			
+			"startasLocked" : {
+				"name" 					: "施錠した状態で開始",
+				"descrp"				: "新規の錠は施錠された状態で作成されます"
+			},
+	
+			"LockDistance" : {
+				"name" 					: "施錠距離",
+				"descrp"				: "錠が使用できる距離 (ゲーム内単位で)"		
+			},
+			
+			"DefaultLockSound" : {
+				"name"					: "デフォルトの施錠音",
+				"descrp"				: "新規の扉に適用される錠トークンのデフォルト音"
+			},
+			
+			"UseArmReachDistance": {
+				"name" 					: "「手の届く範囲」距離を使用",
+				"descrp"				: "施錠距離に、「手の届く範囲」で設定された距離を使用します"	
+			},
+			
+			"alwaysopenOwned" : {
+				"name" 					: "所有のものは常に開錠",
+				"descrp"				: "プレイヤーは施錠されていても、所有するコマを常に開けられます"		
+			},
+
+			"allowallInteractions" : {
+				"name" 					: "全てのインタラクションを許可",
+				"descrp"				: "すべてのインタラクション (鍵開け, こじ開け, カスタム, スリ) が不可能なDCであっても表示されるかどうか"					
+			},
+			
+			"showallLockInteractions" : {
+				"name" 					: "錠のインタラクションを全て表示",
+				"descrp"				: "錠に対するインタラクションを常に全て表示します (心の中の悪いGMのため)"					
+			},
+			
+			"preventUseinPause" : {
+				"name" 					: "一時停止中の鍵使用を阻止",
+				"descrp"				: "ゲームの一時停止中、プレイヤーは鍵を使用できません"		
+			},
+	
+			"autoKeyuse" : {
+				"name" 					: "自動で鍵使用",
+				"descrp"				: "プレイヤーは施錠された物体とインタラクトするとき、自動的に一致する鍵の使用を試みます"		
+			},
+			
+			"KeyItemtype" : {
+				"name" 					: "鍵アイテムの種別",
+				"descrp"				: "新規鍵のためにMODが使用するアイテム種別です。空白でデフォルト種別を使用します (F12コンソール上で \"game.items.documentClass.TYPES\" とタイプすることで有効な種別の一覧を見れます)"		
+			},
+
+			"LnKSettingTypes" : {
+				"name" 					: "アイテム種別の設定",
+				"descrp"				: "Lock & Key設定が表示されるアイテムの種別 (\";\"で区切り、 \"all\" で全種別)"		
+			},
+
+			"LnKSettingsubTypes" : {
+				"name" 					: "アイテムのサブ種別の設定",
+				"descrp"				: "Lock & Key設定が表示されるアイテムのサブ種別 (\";\"で区切り、 \"all\" で全サブ種別)"		
+			},
+			
+			"KeyitemCreationPopup" : {
+				"name" 					: "鍵の作成メニュー",
+				"descrp"				: "新規作成された鍵の名称とフォルダ変更用のメニューを表示します"		
+			},	
+			
+			"KeyitemCreationIDOption" : {
+				"name" 					: "鍵作成のidオプション",
+				"descrp"				: "鍵作成メニューにカスタム鍵idを入力できる選択肢を表示します"		
+			},	
+			
+			"DefaultKeyFolder" : {
+				"name"					: "デフォルトの鍵フォルダ",
+				"descrp"				: "鍵作成メニューで使用されるデフォルトのフォルダ名"
+			},
+			
+			"LimitKeyFolders" : {
+				"name"					: "鍵フォルダでフィルター",
+				"descrp"				: "鍵作成メニューではデフォルトの鍵フォルダとそのサブフォルダのみ表示されます"
+			},
+
+			"UseKeynameasID" : {
+				"name" 					: "鍵名称をIDにする",
+				"descrp"				: "鍵の名称が開錠時に使われる追加のIDとして扱われます"		
+			},	
+			
+			"usePf2eSystem" : {
+				"name" 					: "PF2eのロールシステムを使用",
+				"descrp"				: "パスファインダー第2版のロールシステムを使用します (パスファインダー第2版システムのためにLock & Key のカスタムダイス式とクリティカル設定を無効化します)"						
+			},
+			
+			"CritMethod" : {
+				"name" 					: "クリティカル・システム",
+				"descrp"				: "クリティカルが決まる方法",
+				"options" : {
+					"noCrit"			: "クリティカルなし",
+					"natCrit"			: "出目 1/20",
+					"natCritpm10"		: "出目 1/20 及び 難易度から +-10 [例:Pf2e]",
+					"d100WFRP4"			: "d100 で出目1/100 [例:WFRP4e]",
+					"d100WFRP4Doubles"	: "d100 で出目1/100 及び ゾロ目 [例:WFRP4e]",
+					"d100CoC7e"			: "d100 難易度 [例:CoC7e]",
+					"d10poolCoD2e"		: "d10 pool >=8 and reroll on 10 [例:CoD2e]",
+					"3d20DSA": "3d20 DSA"
+				}
+			},
+			
+			"LockPickItem" : {
+				"name" 					: "ロックピックアイテム",
+				"descrp"				: "鍵開け用のアイテムの名称もしくは辞典ID(推奨)。 アイテムが不要であれば\"-\" を入力 (\";\"で分割)"		
+			},
+			
+			"MentionLockPickItem" : {
+				"name" 					: "ロックピックアイテムを投稿",
+				"descrp"				: "使用されたロックピックアイテムはチャットに書き込まれます"		
+			},
+			
+			"RemoveLPoncritFail" : {
+				"name" 					: "致命的失敗時にロックピックを取り除く",
+				"descrp"				: "致命的失敗時に、使用したロックピックが取り除かれます (もしくは個数が１つ減る)"		
+			},	
+			
+			"JamLockonLPcritFail" : {
+				"name" 					: "鍵開けの致命的失敗時に鍵を詰まらせる",
+				"descrp"				: "鍵開けの致命的失敗時に、扉が詰まりこれ以上鍵開けできなくなります"		
+			},
+			
+			"JamedLockKeyunusable" : {
+				"name" 					: "詰まった錠への鍵使用不可",
+				"descrp"				: "詰まった錠は合鍵を受け付けません"		
+			},
+			
+			"defaultLPAttempts" : {
+				"name"					: "デフォルトの鍵開け回数",
+				"descrp"				: "錠が鍵開け不能になるまでの規定の回数 (-1で無限)"
+			},
+			
+			"LockPickFormula" : {
+				"name" 					: "鍵開けロールの計算式",
+				"descrp"				: "鍵開け時に使用する計算式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
+			},
+					
+			"DefaultPickDC" : {
+				"name" 					: "デフォルトの鍵開けDC",
+				"descrp"				: "錠の規定DC（難易度）"				
+			},
+			
+			"LockBreakFormula" : {
+				"name" 					: "こじ開けロールの計算式",
+				"descrp"				: "こじ開け時に使用する計算式 (例： \"1d20 + @actor.skills.athletics.mod - 2\"、このMODのGithubページにヘルプがあります)"				
+			},
+			
+			"DefaultBreakDC" : {
+				"name" 					: "デフォルトのこじ開けDC",
+				"descrp"				: "こじ開けの規定DC（難易度）"				
+			},
+			
+			"CustomCircumventName" : {
+				"name" 					: "カスタムの判定名",
+				"descrp"				: "任意の、開錠するための三番目のカスタム判定の名称 (例：「ハッキング」や「魔法のルーン」など、空白で無効化)"				
+			},
+			
+			"CustomCircumventFormula" : {
+				"name" 					: "カスタムの計算式",
+				"descrp"				: "上記のカスタム判定に使用する計算式"				
+			},
+			
+			"CustomCircumventDefaultDC" : {
+				"name" 					: "デフォルトのカスタム判定DC",
+				"descrp"				: "カスタム判定の規定DC（難易度）"				
+			},
+			
+			"LockBreakunlockable" : {
+				"name" 					: "壊れた錠を開錠不能にする",
+				"descrp"				: "壊れてしまった錠を開けなくします"				
+			},
+			
+			"onlyCombatMultiSuccess" : {
+				"name" 					: "戦闘中のみ、複数回の成功が必要",
+				"descrp"				: "戦闘外では、必要な鍵開け成功数を無視します。"				
+			},
+			
+			"LockCircumventName" : {
+				"name" 					: "錠の回避用キーワード",
+				"descrp"				: "プレイヤーが錠を回避できる効果を特定するためのキーワード (例： \"Knock\" 呪文) を設定します ( \";\"で分割)"				
+			},
+			
+			"AutoAcceptIdentityAddition" : {
+				"name" 					: "identity 追加を自動許可",
+				"descrp"				: "identity の追加を自動で許可します (非推奨)"				
+			},
+			
+			"PickPocketFormula" : {
+				"name" 					: "スリの計算式",
+				"descrp"				: "スリ判定を実施するための計算式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
+			},
+			
+			"PickPocketDefaultDC" : {
+				"name" 					: "デフォルトのスリDC",
+				"descrp"				: "スリの規定DC（難易度）"				
+			},
+			
+			"PickPocketDefaultDCFormula" : {
+				"name" 					: "デフォルトのスリロールDC式",
+				"descrp"				: "スリDCを計算するための規定ダイス式 (ほかのデフォルトを上書きします)"				
+			},
+			
+			"AutoUpdatePickPocketDC" : {
+				"name" 					: "スリDCの自動更新",
+				"descrp"				: "知覚判定がロールされたとき、スリDCが自動的に更新されるかどうか"				
+			},
+
+			"MentionPickpocketDetails" : {
+				"name" 					: "スリの詳細を追記",
+				"descrp"				: "対象の名前とDCがスリのメッセージに追記するかどうか"				
+			},
+			
+			"deadActorsLootable" : {
+				"name"					: "死亡したコマは略奪可能",
+				"descrp"				: "死亡状態のコマは判定不要で略奪／スリが可能かどうか"	
+			},
+			
+			"PerceptionKeyWord" : {
+				"name"					: "知覚キーワード",
+				"descrp"				: "知覚ロールを認識するためのキーワード (知覚ロールのフレーバーテキストを表す文字列)"		
+			},
+			
+			"ControlSceme" : {
+				"name" 					: "コントロールスキーム",
+				"descrp"				: "プレイヤーコントロールに使用されるスキーム (右クリック+キーは「プレイヤーコントロール」下で詳細があります",	
+				"options" : {
+					"rightKeys"			: "右クリック + キー",
+					"rightPopups"		: "右クリックポップアップメニュー"
+				}
+			},			
+			
+			"MessagePopUps" : {
+				"name" 					: "メッセージポップアップ",
+				"descrp"				: "施錠／開錠時に複数のポップアップを有効化します"		
+			},
+			
+			"PlayLockSounds" : {
+				"name" 					: "錠の音を鳴らす",
+				"descrp"				: "施錠・開錠時に音を鳴らします"		
+			},
+			
+			"FreeCircumventButtonPosition" : {
+				"name" 					: "錠の回避インジケーター位置",
+				"descrp"				: "コマが次の錠を回避できると表示するコマHUD内インジケーターの位置を設定します",
+				"options" : {
+					"none"				: "なし",
+					"left"				: "左",
+					"right"				: "右"
+				}
+			}
+		},
+		
+		"Keys" : {
+			"ToggleLock" : {
+				"name"					: "錠を切り替え"
+			},
+			
+			"CopyLock" : {
+				"name"					: "錠idをコピー"
+			},
+			
+			"PasteLock" : {
+				"name"					: "錠idを貼り付け"
+			},
+			
+			"CreatenewKey" : {
+				"name"					: "新規の鍵を作成"
+			},
+			
+			"UseKey" : {
+				"name"					: "鍵を使用"
+			},
+			
+			"PickLock" : {
+				"name"					: "鍵開け"
+			},
+			
+			"BreakLock" : {
+				"name"					: "こじ開ける"
+			},
+			
+			"CustomCheck" : {
+				"name"					: "カスタム判定 (GMに確認 (あなたがGMでなければ))"
+			},
+			
+			"PickPocket" : {
+				"name"					: "スリ"
+			},
+		
+			"ChangePassword" : {
+				"name"					: "パスワード変更"
+			}
+		},
+		
+		"SheetSettings" : {
+			"OpenImageFlag" : {
+				"name"					: "開錠時の画像",
+				"descrp"				: "開錠中に使用される画像"
+			},
+			
+			"ClosedImageFlag" : {
+				"name"					: "施錠時の画像",
+				"descrp"				: "施錠中に使用される画像"
+			},
+			
+			"LockableFlag" : {
+				"name" 					: "施錠可能",
+				"descrp"				: "この物体が施錠可能かどうか"					
+			},
+			
+			"LockonCloseFlag" : {
+				"name" 					: "戸締り時に施錠",
+				"descrp"				: "この扉が閉められたら施錠するかどうかd"					
+			},
+			
+			"LockedFlag" : {
+				"name" 					: "施錠中",
+				"descrp"				: "この物体が施錠されているかどうか"					
+			},
+			
+			"IDKeysFlag" : {
+				"name" 					: "ID キー",
+				"descrp" : {
+					"lock" 				: "この錠を施錠／開錠できるID (\";\"で分割)",
+					"key" 				: "この錠を施錠／開錠できるID (\";\"で分割)"
+				}
+			},
+			
+			"PasskeysFlag" : {
+				"name"					: "パスワード",
+				"descrp"				: "この錠を開錠できるパスワード (\";\"で分割)"
+			},
+			
+			"PasskeyChangeableFlag" : {
+				"name"					: "パスワード変更可能",
+				"descrp"				: "パスワードがプレイヤーによって変更可能かどうか (正しいパスワードが必要)"
+			},
+			
+			"IdentityKeyFlag" : {
+				"name"					: "個人認証",
+				"descrp"				: "この錠を開錠できる個人認証 (\";\"で分割、コマ/アクター/ユーザーのID/名前)"
+			},
+			
+			"LockjammedFlag" : {
+				"name"					: "詰まっている",
+				"descrp"				: "この錠が詰まっているかどうか (ワールド設定を参照)"				
+			},
+			
+			"RemoveKeyonUseFlag" : {
+				"name" 					: "使用時に鍵を取り除く",
+				"descrp"				: "使用時にこの鍵が取り除かれるかどうか (または個数を１つ減らす)"					
+			},			
+			
+			"LockDCFlag" : {
+				"name" 					: "錠 DC",
+				"descrp"				: "鍵開けに使用される、この錠の難易度 (-1で鍵開け不可能)"					
+			},
+			
+			"SpecialLPFlag" : {
+				"name" 					: "特別なロックピック",
+				"descrp"				: "この錠に特別なロックピックが必要かどうか (IDか名前、複数エントリーは \";\"で分割されます)"					
+			},
+			
+			"LockBreakDCFlag" : {
+				"name" 					: "こじ開けDC",
+				"descrp"				: "この錠をこじ開けるための難易度 (-1で破壊不能)"					
+			},
+			
+			"LockCCDCFlag" : {
+				"name" 					: "{pCheckName} DC",
+				"descrp"				: "{pCheckName} をこの錠に使用する難易度 (-1で無効)"					
+			},
+			
+			"requiredLPsuccessFlag" : {
+				"name" 					: "必要な鍵開け成功数",
+				"descrp"				: "この錠を開けるのに必要な鍵開け成功数 (そしてこれまで何回加算されたか) (クリティカルは2と扱われる)"				
+			},
+			
+			"LPAttemptsFlag" : {
+				"name" 					: "鍵開けの残り試行回数",
+				"descrp"				: "何回鍵開けの試行回数が残っているか (-1で無限)"				
+			},
+			
+			"canbeCircumventedFreeFlag" : {
+				"name" 					: "回避可能",
+				"descrp"				: "この錠を効果によって回避可能にします (e.g. the spell \"Knock\")"				
+			},
+			
+			"CustomPopupsFlag" : {
+				"openButtonname"			: "カスタムポップアップ",
+				"Title"						: "カスタムポップアップ",
+				"name"						: "特定プレイヤーのインタラクション用のカスタムポップアップ:",
+				"LockLocked" : {
+					"name"					: "鍵が閉まっている:"
+				},
+				"LocknotPickable" : {
+					"name"					: "鍵開けはできない:"
+				},
+				"LocknotBreakable" : {
+					"name"					: "錠は壊せない:"
+				},
+				"LockPasskeyTitle" : {
+					"name"					: "パスワード入力画面:"
+				},
+				"LocknotCustom" : {
+					"name"					: "錠に対してカスタム判定は使えない:"
+				},
+				"CharacternotPickpocketable" : {
+					"name"					: "このキャラクターにスリはできない:"
+				},
+				"confirmButtonname"        	: "ポップアップを確定"
+			},
+			
+			"SoundVariantFlag" : {
+				"name"					: "施錠音",
+				"descrp"				: "このドアに対するアクションに使われる音を設定してください",
+				"options" : {
+					"off"				: "オフ",
+					"futuristic"		: "未来的",
+					"industrial"		: "インダストリアル",
+					"jail"				: "牢屋",
+					"metal"				: "メタル 🤘",
+					"shutter"			: "シャッター",
+					"sliding"			: "引き戸",
+					"stone"				: "石製",
+					"wood"				: "木製"
+				}
+			},
+			
+			"LPFormulaFlag" : {
+				"name" 					: "鍵開けの判定式",
+				"descrp" : {
+					"token" 			: "このコマが行う鍵開けロールに追加される判定式",
+					"item"				: "このアイテムの所有者に追加される鍵開けの判定式 (所持品で最大のものが使用されます)"
+				}			
+			},
+			
+			"LPFormulaOverrideFlag" : {
+				"name" 					: "鍵開けの判定式上書き",
+				"descrp" : {
+					"token" 			: "このコマのロックピック判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このアイテムのロックピック判定式がコマ／ワールド判定式を上書きするかどうか"
+				}				
+			},
+			
+			"LBFormulaFlag" : {
+				"name" 					: "こじ開けの判定式",
+				"descrp" : {
+					"token" 			: "このコマが行うこじ開けロールに追加される判定式",
+					"item"				: "このアイテムの所有者に追加されるこじ開けロールの判定式 (所持品で最大のものが使用されます)"
+				}					
+			},
+			
+			"LBFormulaOverrideFlag" : {
+				"name" 					: "こじ開けの判定式上書き",
+				"descrp" : {
+					"token" 			: "このコマのこじ開け判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このアイテムのこじ開け判定式がコマ／ワールド判定式を上書きするかどうか"
+				}				
+			},
+			
+			"CCFormulaFlag" : {
+				"name" 					: "{pCheckName} 判定式",
+				"descrp" : {
+					"token" 			: "このコマが行う {pCheckName} に追加される判定式",
+					"item"				: "このアイテムの所有者に追加される {pCheckName} ロールの判定式 (所持品で最大のものが使用されます)"
+				}					
+			},
+			
+			"CCFormulaOverrideFlag" : {
+				"name" 					: "{pCheckName} 判定式上書き",
+				"descrp" : {
+					"token" 			: "このコマの {pCheckName} 判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このアイテムの {pCheckName} 判定式がコマ／ワールド判定式を上書きするかどうか"
+				}				
+			},
+			
+			"PickPocketFormulaFlag" : {
+				"name" 					: "スリの判定式",
+				"descrp" : {
+					"token" 			: "このコマが行うスリロールに追加される判定式",
+					"item"				: "このアイテムの所有者に追加されるスリロールの判定式 (所持品で最大のものが使用されます)"
+				}					
+			},
+			
+			"PickPocketFormulaOverrideFlag" : {
+				"name" 					: "スリの判定式上書き",
+				"descrp" : {
+					"token" 			: "このコマのスリ判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このコマのスリ判定式がコマ／ワールド判定式を上書きするかどうか"
+				}				
+			},
+			
+			"PickPocketDCFlag" : {
+				"name" 					: "スリDC",
+				"descrp"  				: "このキャラクターに行うスリを試みる難易度 (-1で不可能)"			
+			},
+			
+			"ReplacementItemFlag" : {
+				"name" 					: "身代わりアイテム",
+				"descrp" 				: "判定失敗時にこのアイテムの代わりに消費されるアイテム (IDか名前、複数エントリーは \";\"で分割されます)"			
+			},
+
+			"MATTTriggerTileFlag" : {
+				"name" 					: "起動されるタイルID",
+				"descrp"				: "以下のLock & Keyアクションによって起動されるタイルID (複数の起動条件を選べます)"
+			},
+			
+			"MATTTriggerConditionsFlag" : {
+				"LockuseKey.name"		: "鍵の使用時",
+				"LockusePasskey.name"	: "パスワード使用時",
+				"LockusePick.name"		: "鍵開けの時",
+				"LockuseBreak.name"		: "こじ開けの時",
+				"LockuseFree.name"		: "錠回避の時",
+				"options" : {
+					"never"				: "なし",
+					"always"			: "常時",
+					"failure"			: "失敗",
+					"critfailure"		: "致命的失敗",
+					"success"			: "成功"
+				}
+			},
+			
+			"RollOptionsFlag" : {
+				"LockusePick" : {
+					"d10CritLimit" : {
+						"name"			: "鍵開け d10 クリティカル上限",
+						"descrp"		: "d10鍵開けロールのクリティカル最低値"
+					}
+				},
+				"LockuseBreak" : {
+					"d10CritLimit" : {
+						"name"			: "こじ開け d10 クリティカル上限",
+						"descrp"		: "d10こじ開けロールのクリティカル最低値"
+					}					
+				}
+			}
+		},
+		
+		"Context" : {
+			"KeyCopy"					: "鍵のIDをコピー",
+			"KeyPaste"					: "IDを鍵に貼り付け"
+		},
+		
+		"Words" : {
+			"Key"						: "鍵"
+		},
+		
+		"Text" : {
+			"GMControls" : {
+				"line0"					: "GM操作:",
+				"line1" 				: "•shift+右クリックで錠に対する鍵を新規作成",
+				"line2" 				: "•alt+右クリックでコマの錠を切り替え (*)",
+				"line3" 				: "•ctrl+右クリックで錠の鍵IDをコピー (*)",
+				"line4" 				: "•ctrl+左クリックで鍵IDを錠に貼り付け (*)"
+			},
+			
+			"PlayerControls" : {
+				"line0"					: "プレイヤー操作:",
+				"line1" 				: "•右クリックで錠に対して鍵を試す",
+				"line2" 				: "•shift+右クリックで鍵開けを試みる",
+				"line3" 				: "•alt+右クリックでこじ開けを試みる"
+			}
+		},
+		
+		"take-inventory-window" : {
+			"titles" : {
+				"inventory"				: "所持品"
+			},
+			"header" : {
+				"title"					: "<h> <b>{pOwnerName}s</b>の所持品から取得 (<b>{pTakerName}s</b> の所持品に移った): </h>"
+			},
+			"buttons" : {
+				"take" : {
+					"name"				: "選択したものを取得"
+				}
+			}
+		},
+		
+		"monks-active-tiles" : {
+			"filters" : {
+				"name"						: "フィルター",
+				
+				"filter-by-lock-state" : {
+					"name"					: "錠の状態でフィルター",
+					"settings" : {
+						"filterCondition" : {
+							"name"			: "錠の状態",
+							"options" : {
+								"locked"	: "施錠されている",
+								"unlocked"	: "開錠されている"
+							}
+						}
+					}
+				}
+			},
+			
+			"actions" : {
+				"lock" : {
+					"name"					: "施錠"
+				},
+				
+				"unlock" : {
+					"name"					: "開錠"
+				},
+				
+				"toggle-lock" : {
+					"name"					: "錠を切り替え"
+				},
+				
+				"loot-inventory" : {
+					"name"					: "戦利品インベントリ",
+					"descrp"				: "<span class=\"logic-style\">{pname}</span> of <span class=\"entity-style\">{pEntities}</span>, offer to <span class=\"details-style\">{pOfferto}</span>",
+					"settings" : {
+						"offerto" : {
+							"name"			: "渡す："
+						}
+					}	
+				}
+			}
+		}
+	}
+}
