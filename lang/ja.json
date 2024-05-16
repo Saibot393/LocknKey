@@ -467,26 +467,26 @@
 			},
 			
 			"IDKeysFlag" : {
-				"name" 					: "ID keys",
+				"name" 					: "ID キー",
 				"descrp" : {
-					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\")",
-					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
+					"lock" 				: "この錠を施錠／開錠できるID (\";\"で分割)",
+					"key" 				: "この錠を施錠／開錠できるID (\";\"で分割)"
 				}
 			},
 			
 			"PasskeysFlag" : {
 				"name"					: "パスワード",
-				"descrp"				: "Passwords that can unlock this lock (seperated with \";\")"
+				"descrp"				: "この錠を開錠できるパスワード (\";\"で分割)"
 			},
 			
 			"PasskeyChangeableFlag" : {
 				"name"					: "パスワード変更可能",
-				"descrp"				: "If the password can be changed by players (requires correct password)"
+				"descrp"				: "パスワードがプレイヤーによって変更可能かどうか (正しいパスワードが必要)"
 			},
 			
 			"IdentityKeyFlag" : {
-				"name"					: "Identities",
-				"descrp"				: "Identities that can unlock this lock (seperated with \";\", IDs/Names of Token/Actor/User)"
+				"name"					: "個人認証",
+				"descrp"				: "この錠を開錠できる個人認証 (\";\"で分割、コマ/アクター/ユーザーのID/名前)"
 			},
 			
 			"LockjammedFlag" : {
@@ -510,7 +510,7 @@
 			},
 			
 			"LockBreakDCFlag" : {
-				"name" 					: "Lock break DC",
+				"name" 					: "こじ開けDC",
 				"descrp"				: "The difficulty class to break this lock (-1 to prevent breaking)"					
 			},
 			
@@ -537,7 +537,7 @@
 			"CustomPopupsFlag" : {
 				"openButtonname"			: "カスタムポップアップ",
 				"Title"						: "カスタムポップアップ",
-				"name"						: "Set custom Popups for certain player interactions:",
+				"name"						: "特定プレイヤーのインタラクション用のカスタムポップアップ:",
 				"LockLocked" : {
 					"name"					: "鍵が閉まっている:"
 				},
@@ -560,18 +560,18 @@
 			},
 			
 			"SoundVariantFlag" : {
-				"name"					: "Lock Sound",
-				"descrp"				: "Set the sound set used for actions with this door",
+				"name"					: "施錠音",
+				"descrp"				: "このドアに対するアクションに使われる音を設定してください",
 				"options" : {
-					"off"				: "off",
-					"futuristic"		: "Futuristic",
-					"industrial"		: "Industrial",
-					"jail"				: "Jail",
-					"metal"				: "Metal 🤘",
-					"shutter"			: "Shutter",
-					"sliding"			: "Sliding",
-					"stone"				: "Stone",
-					"wood"				: "Wood"
+					"off"				: "オフ",
+					"futuristic"		: "未来的",
+					"industrial"		: "インダストリアル",
+					"jail"				: "牢屋",
+					"metal"				: "メタル 🤘",
+					"shutter"			: "シャッター",
+					"sliding"			: "引き戸",
+					"stone"				: "石製",
+					"wood"				: "木製"
 				}
 			},
 			
@@ -624,7 +624,7 @@
 			},
 			
 			"PickPocketFormulaFlag" : {
-				"name" 					: "Pick pocket formula",
+				"name" 					: "スリのダイス式",
 				"descrp" : {
 					"token" 			: "The formula added to Pick pocket rolls this token makes",
 					"item"				: "The formula added to Pick pocket rolls the owner of this item makes (only best in inventory used)"
@@ -640,7 +640,7 @@
 			},
 			
 			"PickPocketDCFlag" : {
-				"name" 					: "Pick pocket DC",
+				"name" 					: "スリDC",
 				"descrp"  				: "The difficulty class to use Pick pocket this character (-1 for impossible)"			
 			},
 			
