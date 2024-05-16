@@ -55,7 +55,7 @@
       "name": "日本語",
       "path": "lang/ja.json",
       "flags": {}
-    },
+    }
   ],
   "esmodules": [
 	"scripts/utils/LnKutils.js",
