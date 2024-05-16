@@ -280,7 +280,7 @@
 			
 			"LockPickFormula" : {
 				"name" 					: "鍵開けロールの判定式",
-				"descrp"				: "鍵開け時に使用するダイスロールの判定式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
+				"descrp"				: "鍵開け時に使用するダイス式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
 			},
 					
 			"DefaultPickDC" : {
@@ -290,7 +290,7 @@
 			
 			"LockBreakFormula" : {
 				"name" 					: "こじ開けロールの判定式",
-				"descrp"				: "こじ開け時に使用するダイスロールの判定式 (例： \"1d20 + @actor.skills.athletics.mod - 2\"、このMODのGithubページにヘルプがあります)"				
+				"descrp"				: "こじ開け時に使用するダイス式 (例： \"1d20 + @actor.skills.athletics.mod - 2\"、このMODのGithubページにヘルプがあります)"				
 			},
 			
 			"DefaultBreakDC" : {
@@ -305,7 +305,7 @@
 			
 			"CustomCircumventFormula" : {
 				"name" 					: "カスタムの判定式",
-				"descrp"				: "上記のカスタム判定を実施するためのダイス式"				
+				"descrp"				: "上記のカスタム判定に使用するダイス式"				
 			},
 			
 			"CustomCircumventDefaultDC" : {
@@ -335,7 +335,7 @@
 			
 			"PickPocketFormula" : {
 				"name" 					: "スリのダイス式",
-				"descrp"				: "The formula which is used for dice rolls when pick pocketing (例： \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
+				"descrp"				: "スリ判定を実施するためのダイス式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
 			},
 			
 			"PickPocketDefaultDC" : {
