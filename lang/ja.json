@@ -279,8 +279,8 @@
 			},
 			
 			"LockPickFormula" : {
-				"name" 					: "鍵開けロールの判定式",
-				"descrp"				: "鍵開け時に使用するダイス式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
+				"name" 					: "鍵開けロールの計算式",
+				"descrp"				: "鍵開け時に使用する計算式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
 			},
 					
 			"DefaultPickDC" : {
@@ -289,8 +289,8 @@
 			},
 			
 			"LockBreakFormula" : {
-				"name" 					: "こじ開けロールの判定式",
-				"descrp"				: "こじ開け時に使用するダイス式 (例： \"1d20 + @actor.skills.athletics.mod - 2\"、このMODのGithubページにヘルプがあります)"				
+				"name" 					: "こじ開けロールの計算式",
+				"descrp"				: "こじ開け時に使用する計算式 (例： \"1d20 + @actor.skills.athletics.mod - 2\"、このMODのGithubページにヘルプがあります)"				
 			},
 			
 			"DefaultBreakDC" : {
@@ -304,8 +304,8 @@
 			},
 			
 			"CustomCircumventFormula" : {
-				"name" 					: "カスタムの判定式",
-				"descrp"				: "上記のカスタム判定に使用するダイス式"				
+				"name" 					: "カスタムの計算式",
+				"descrp"				: "上記のカスタム判定に使用する計算式"				
 			},
 			
 			"CustomCircumventDefaultDC" : {
@@ -334,8 +334,8 @@
 			},
 			
 			"PickPocketFormula" : {
-				"name" 					: "スリのダイス式",
-				"descrp"				: "スリ判定を実施するためのダイス式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
+				"name" 					: "スリの計算式",
+				"descrp"				: "スリ判定を実施するための計算式 (例： \"1d20 + @actor.skills.thievery.mod\"、このMODのGithubページにヘルプがあります)"				
 			},
 			
 			"PickPocketDefaultDC" : {
@@ -495,43 +495,43 @@
 			},
 			
 			"RemoveKeyonUseFlag" : {
-				"name" 					: "Remove key on use",
-				"descrp"				: "If this key is removed on use (or the stack is reduced by one)"					
+				"name" 					: "使用時に鍵を取り除く",
+				"descrp"				: "使用時にこの鍵が取り除かれるかどうか (または個数を１つ減らす)"					
 			},			
 			
 			"LockDCFlag" : {
 				"name" 					: "錠 DC",
-				"descrp"				: "The difficulty class of this Lock, used for lockpicking (-1 to prevent lockpicking)"					
+				"descrp"				: "鍵開けに使用される、この錠の難易度 (-1で鍵開け不可能)"					
 			},
 			
 			"SpecialLPFlag" : {
 				"name" 					: "特別なロックピック",
-				"descrp"				: "Special lockpick required to pick this lock (ID or name, multiple entries seperated with \";\")"					
+				"descrp"				: "この錠に特別なロックピックが必要かどうか (IDか名前、複数エントリーは \";\"で分割されます)"					
 			},
 			
 			"LockBreakDCFlag" : {
 				"name" 					: "こじ開けDC",
-				"descrp"				: "The difficulty class to break this lock (-1 to prevent breaking)"					
+				"descrp"				: "この錠をこじ開けるための難易度 (-1で破壊不能)"					
 			},
 			
 			"LockCCDCFlag" : {
 				"name" 					: "{pCheckName} DC",
-				"descrp"				: "The difficulty class to use {pCheckName} on this lock (-1 to prevent)"					
+				"descrp"				: "{pCheckName} をこの錠に使用する難易度 (-1で無効)"					
 			},
 			
 			"requiredLPsuccessFlag" : {
 				"name" 					: "必要な鍵開け成功数",
-				"descrp"				: "How many Lockpicking successes are required for this lock (and how many have already been added) (crits count as 2)"				
+				"descrp"				: "この錠を開けるのに必要な鍵開け成功数 (そしてこれまで何回加算されたか) (クリティカルは2と扱われる)"				
 			},
 			
 			"LPAttemptsFlag" : {
-				"name" 					: "Lockpicking attempts left",
-				"descrp"				: "How many Lockpicking attempts are left (-1 for unlimited)"				
+				"name" 					: "鍵開けの残り試行回数",
+				"descrp"				: "何回鍵開けの試行回数が残っているか (-1で無限)"				
 			},
 			
 			"canbeCircumventedFreeFlag" : {
-				"name" 					: "Can be circumvented",
-				"descrp"				: "If this lock can be circumvented by effects (e.g. the spell \"Knock\")"				
+				"name" 					: "回避可能",
+				"descrp"				: "この錠を効果によって回避可能にします (e.g. the spell \"Knock\")"				
 			},
 			
 			"CustomPopupsFlag" : {
@@ -576,110 +576,110 @@
 			},
 			
 			"LPFormulaFlag" : {
-				"name" 					: "Lockpick formula",
+				"name" 					: "鍵開けの判定式",
 				"descrp" : {
-					"token" 			: "The formula added to Lockpick rolls this token makes",
-					"item"				: "The formula added to Lockpick rolls the owner of this item makes (only best in inventory used)"
+					"token" 			: "このコマが行う鍵開けロールに追加される判定式",
+					"item"				: "このアイテムの所有者に追加される鍵開けの判定式 (所持品で最大のものが使用されます)"
 				}			
 			},
 			
 			"LPFormulaOverrideFlag" : {
-				"name" 					: "Override Lockpick formula",
+				"name" 					: "鍵開けの判定式上書き",
 				"descrp" : {
-					"token" 			: "If this tokens Lockpick formula overrides the world formula",
-					"item"				: "If this items Lockpick formula overrides the tokens/worlds formula"
+					"token" 			: "このコマのロックピック判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このアイテムのロックピック判定式がコマ／ワールド判定式を上書きするかどうか"
 				}				
 			},
 			
 			"LBFormulaFlag" : {
-				"name" 					: "Break lock formula",
+				"name" 					: "こじ開けの判定式",
 				"descrp" : {
-					"token" 			: "The formula added to Breack lock rolls this token makes",
-					"item"				: "The formula added to Breack lock rolls the owner of this item makes (only best in inventory used)"
+					"token" 			: "このコマが行うこじ開けロールに追加される判定式",
+					"item"				: "このアイテムの所有者に追加されるこじ開けロールの判定式 (所持品で最大のものが使用されます)"
 				}					
 			},
 			
 			"LBFormulaOverrideFlag" : {
-				"name" 					: "Override Break lock formula",
+				"name" 					: "こじ開けの判定式上書き",
 				"descrp" : {
-					"token" 			: "If this tokens Break lock formula overrides the world formula",
-					"item"				: "If this items Break lock formula overrides the tokens/worlds formula"
+					"token" 			: "このコマのこじ開け判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このアイテムのこじ開け判定式がコマ／ワールド判定式を上書きするかどうか"
 				}				
 			},
 			
 			"CCFormulaFlag" : {
-				"name" 					: "{pCheckName} formula",
+				"name" 					: "{pCheckName} 判定式",
 				"descrp" : {
-					"token" 			: "The formula added to {pCheckName} rolls this token makes",
-					"item"				: "The formula added to {pCheckName} rolls the owner of this item makes (only best in inventory used)"
+					"token" 			: "このコマが行う {pCheckName} に追加される判定式",
+					"item"				: "このアイテムの所有者に追加される {pCheckName} ロールの判定式 (所持品で最大のものが使用されます)"
 				}					
 			},
 			
 			"CCFormulaOverrideFlag" : {
-				"name" 					: "Override {pCheckName} formula",
+				"name" 					: "{pCheckName} 判定式上書き",
 				"descrp" : {
-					"token" 			: "If this tokens {pCheckName} formula overrides the world formula",
-					"item"				: "If this items {pCheckName} formula overrides the tokens/worlds formula"
+					"token" 			: "このコマの {pCheckName} 判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このアイテムの {pCheckName} 判定式がコマ／ワールド判定式を上書きするかどうか"
 				}				
 			},
 			
 			"PickPocketFormulaFlag" : {
-				"name" 					: "スリのダイス式",
+				"name" 					: "スリの判定式",
 				"descrp" : {
-					"token" 			: "The formula added to Pick pocket rolls this token makes",
-					"item"				: "The formula added to Pick pocket rolls the owner of this item makes (only best in inventory used)"
+					"token" 			: "このコマが行うスリロールに追加される判定式",
+					"item"				: "このアイテムの所有者に追加されるスリロールの判定式 (所持品で最大のものが使用されます)"
 				}					
 			},
 			
 			"PickPocketFormulaOverrideFlag" : {
-				"name" 					: "Override Pick pocket lock formula",
+				"name" 					: "スリの判定式上書き",
 				"descrp" : {
-					"token" 			: "If this tokens Pick pocket formula overrides the world formula",
-					"item"				: "If this items Pick pocket formula overrides the tokens/worlds formula"
+					"token" 			: "このコマのスリ判定式がワールド判定式を上書きするかどうか",
+					"item"				: "このコマのスリ判定式がコマ／ワールド判定式を上書きするかどうか"
 				}				
 			},
 			
 			"PickPocketDCFlag" : {
 				"name" 					: "スリDC",
-				"descrp"  				: "The difficulty class to use Pick pocket this character (-1 for impossible)"			
+				"descrp"  				: "このキャラクターに行うスリを試みる難易度 (-1で不可能)"			
 			},
 			
 			"ReplacementItemFlag" : {
-				"name" 					: "Replacement Items",
-				"descrp" 				: "Items that get consumed instead of this item when a roll fails (ID or name, multiple entries seperated with \";\")"			
+				"name" 					: "身代わりアイテム",
+				"descrp" 				: "判定失敗時にこのアイテムの代わりに消費されるアイテム (IDか名前、複数エントリーは \";\"で分割されます)"			
 			},
 
 			"MATTTriggerTileFlag" : {
-				"name" 					: "Triggered tile ID",
-				"descrp"				: "The ID of the tile triggered by the Lock & Key actions below (you may use different landings)"
+				"name" 					: "起動されるタイルID",
+				"descrp"				: "以下のLock & Keyアクションによって起動されるタイルID (複数の起動条件を選べます)"
 			},
 			
 			"MATTTriggerConditionsFlag" : {
-				"LockuseKey.name"		: "On Key use",
-				"LockusePasskey.name"	: "On Password use",
-				"LockusePick.name"		: "On pick Lock",
-				"LockuseBreak.name"		: "On break Lock",
-				"LockuseFree.name"		: "On lock circumvention",
+				"LockuseKey.name"		: "鍵の使用時",
+				"LockusePasskey.name"	: "パスワード使用時",
+				"LockusePick.name"		: "鍵開けの時",
+				"LockuseBreak.name"		: "こじ開けの時",
+				"LockuseFree.name"		: "錠回避の時",
 				"options" : {
-					"never"				: "never",
-					"always"			: "always",
-					"failure"			: "failure",
-					"critfailure"		: "critical failure",
-					"success"			: "success"
+					"never"				: "なし",
+					"always"			: "常時",
+					"failure"			: "失敗",
+					"critfailure"		: "致命的失敗",
+					"success"			: "成功"
 				}
 			},
 			
 			"RollOptionsFlag" : {
 				"LockusePick" : {
 					"d10CritLimit" : {
-						"name"			: "Lockpick d10 crit limit",
-						"descrp"		: "The minimum crit value for d10 lockpick rolls"
+						"name"			: "鍵開け d10 クリティカル上限",
+						"descrp"		: "d10鍵開けロールのクリティカル最低値"
 					}
 				},
 				"LockuseBreak" : {
 					"d10CritLimit" : {
-						"name"			: "Lock break d10 crit limit",
-						"descrp"		: "The minimum crit value for d10 lock break rolls"
+						"name"			: "こじ開け d10 クリティカル上限",
+						"descrp"		: "d10こじ開けロールのクリティカル最低値"
 					}					
 				}
 			}
@@ -698,8 +698,8 @@
 			"GMControls" : {
 				"line0"					: "GM操作:",
 				"line1" 				: "•shift+右クリックで錠に対する鍵を新規作成",
-				"line2" 				: "•alt+右クリックで toggle token lock (*)",
-				"line3" 				: "•ctrl+右クリックで copy the locks key IDsコピー (*)",
+				"line2" 				: "•alt+右クリックでコマの錠を切り替え (*)",
+				"line3" 				: "•ctrl+右クリックで錠の鍵IDをコピー (*)",
 				"line4" 				: "•ctrl+左クリックで鍵IDを錠に貼り付け (*)"
 			},
 			
