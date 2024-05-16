@@ -70,7 +70,7 @@
 			"WrongIdentity"				: "Wrong identity",
 			"PasswordChanged"			: "パスワード変更",
 			"NoPasswordLength"			: "新しいパスワードは短かすぎる",
-			"CantChangePassword"		: "パスワードが変更できない"
+			"CantChangePassword"		: "パスワードが変更できない",
 
 			"CantbePicked"				: "鍵開け不能",
 			"CantbeBroken"				: "こじ開け不能",
