@@ -379,19 +379,19 @@
 			
 			"MessagePopUps" : {
 				"name" 					: "メッセージポップアップ",
-				"descrp"				: "有効化Enables multible popups upon actions such locking or unlocking a lock"		
+				"descrp"				: "施錠／開錠時に複数のポップアップを有効化します"		
 			},
 			
 			"PlayLockSounds" : {
 				"name" 					: "錠の音を鳴らす",
-				"descrp"				: "施錠・開錠時に音を鳴らすd"		
+				"descrp"				: "施錠・開錠時に音を鳴らします"		
 			},
 			
 			"FreeCircumventButtonPosition" : {
-				"name" 					: "Lock circumvention indicator position",
-				"descrp"				: "The position of the indicator that shows that a token can circumvent the next lock on the token HUD",
+				"name" 					: "錠の回避インジケーター位置",
+				"descrp"				: "コマが次の錠を回避できると表示するコマHUD内インジケーターの位置を設定します",
 				"options" : {
-					"none"				: "nowhere",
+					"none"				: "なし",
 					"left"				: "左",
 					"right"				: "右"
 				}
@@ -458,12 +458,12 @@
 			
 			"LockonCloseFlag" : {
 				"name" 					: "戸締り時に施錠",
-				"descrp"				: "If this door should be locked once it is closed"					
+				"descrp"				: "この扉が閉められたら施錠するかどうかd"					
 			},
 			
 			"LockedFlag" : {
 				"name" 					: "施錠中",
-				"descrp"				: "If this object is locked"					
+				"descrp"				: "この物体が施錠されているかどうか"					
 			},
 			
 			"IDKeysFlag" : {
