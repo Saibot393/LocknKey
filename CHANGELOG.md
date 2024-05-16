@@ -1,3 +1,6 @@
+## v2.7.11
+- Updated russian translation (thanks to [doumoku](https://github.com/doumoku))
+
 ## v2.7.10
 - Updated russian translation (thanks to [maragondi](https://github.com/maragondi))
 
