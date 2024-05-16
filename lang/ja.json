@@ -370,9 +370,9 @@
 			
 			"ControlSceme" : {
 				"name" 					: "コントロールスキーム",
-				"descrp"				: "Sceme used for the play controls (right-click+keys is described in more detail below under \"Player controls\"",	
+				"descrp"				: "プレイヤーコントロールに使用されるスキーム (右クリック+キーは「プレイヤーコントロール」下で詳細があります",	
 				"options" : {
-					"rightKeys"			: "右クリック + key",
+					"rightKeys"			: "右クリック + キー",
 					"rightPopups"		: "右クリックポップアップメニュー"
 				}
 			},			
@@ -400,7 +400,7 @@
 		
 		"Keys" : {
 			"ToggleLock" : {
-				"name"					: "錠をトグル"
+				"name"					: "錠を切り替え"
 			},
 			
 			"CopyLock" : {
