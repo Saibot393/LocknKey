@@ -1,3 +1,6 @@
+## v2.7.12
+- Fixed error in module.json (thanks to [adracea](https://github.com/adracea))
+
 ## v2.7.11
 - Updated russian translation (thanks to [doumoku](https://github.com/doumoku))
 
