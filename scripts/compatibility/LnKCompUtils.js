@@ -95,6 +95,9 @@ class LnKCompUtils {
 				if (pDocument.flags[cItemPiles]?.data.enabled && cIPtypes.includes(pDocument.getFlag(cItemPiles, "data.type"))) {
 					return cLockTypeLootIP;
 				}
+				if (pDocument.actor.flags[cItemPiles]?.data.enabled && cIPtypes.includes(pDocument.actor.getFlag(cItemPiles, "data.type"))) {
+					return cLockTypeLootIP;
+				}
 			}
 			/*
 			if (LnKCompUtils.isactiveModule(cRideable)) {
