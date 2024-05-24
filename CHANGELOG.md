@@ -1,3 +1,6 @@
+## v3.0.0
+- v12 Compatibility
+
 ## v2.7.13
 - Fixed bug with Item piles recognition of prototype tokens 
 
