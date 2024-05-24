@@ -1,3 +1,6 @@
+## v2.7.13
+- Fixed bug with Item piles recognition of prototype tokens 
+
 ## v2.7.12
 - Fixed error in module.json (thanks to [adracea](https://github.com/adracea))
 
