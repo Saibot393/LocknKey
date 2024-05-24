@@ -612,7 +612,7 @@ class LockManager {
 						break;
 				}
 				
-				if (vSuccess) {
+				if (vSuccess && vLocktype != cLockTypeDoor) {
 					if (LnKFlags.isLocked(pLock)) {
 						LockManager.onLock(pLock, pLockusetype);
 					}

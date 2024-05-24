@@ -66,7 +66,7 @@ class LnKMouseHandler {
 		}
 		else {
 		*/
-		if (FCore.Fversion() > 10) {
+		if (game.release.generation > 10) {
 			const vOldDoorCall = DoorControl.prototype.onclick;
 			
 			DoorControl.prototype.onclick = function (pEvent) {
@@ -179,39 +179,65 @@ class LnKMouseHandler {
 	
 	//canvas
 	static RegisterCanvasLeftClick() {
-		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "canvas._onClickLeft", function(vWrapped, ...args) {if (LnKMouseHandler.onCanvasLClick(...args)) {return vWrapped(...args)}}, "MIXED");
+		if (game.release.generation < 12) {
+			if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+				libWrapper.register(cModuleName, "canvas._onClickLeft", function(vWrapped, ...args) {if (LnKMouseHandler.onCanvasLClick(...args)) {return vWrapped(...args)}}, "MIXED");
+			}
+			else {
+				const vOldCanvasCall = canvas._onClickLeft;
+				
+				canvas._onClickLeft = function (pEvent) {
+					if (LnKMouseHandler.onCanvasLClick(pEvent)) {		
+						if (vOldCanvasCall) {
+							let vCanvasCallBuffer = vOldCanvasCall.bind(this);
+							vCanvasCallBuffer(pEvent);
+						}
+					}
+				}
+			}	
 		}
 		else {
-			const vOldCanvasCall = canvas._onClickLeft;
+			let vOldClick = document.querySelector("canvas#board").onclick;
 			
-			canvas._onClickLeft = function (pEvent) {
-				if (LnKMouseHandler.onCanvasLClick(pEvent)) {		
-					if (vOldCanvasCall) {
-						let vCanvasCallBuffer = vOldCanvasCall.bind(this);
-						vCanvasCallBuffer(pEvent);
+			document.querySelector("canvas#board").onclick = (pEvent) => {
+				if (LnKMouseHandler.onCanvasLClick(pEvent)) {
+					if (vOldClick) {
+						vOldClick(pEvent);
 					}
 				}
 			}
-		}		
+		}
 	}
 	
 	static RegisterCanvasRightClick() {
-		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "canvas._onClickRight", function(vWrapped, ...args) {if (LnKMouseHandler.onCanvasRClick(...args)) {return vWrapped(...args)}}, "MIXED");
+		if (game.release.generation < 12) {
+			if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+				libWrapper.register(cModuleName, "canvas._onClickRight", function(vWrapped, ...args) {if (LnKMouseHandler.onCanvasRClick(...args)) {return vWrapped(...args)}}, "MIXED");
+			}
+			else {
+				const vOldCanvasCall = canvas._onClickRight;
+				
+				canvas._onClickRight = function (pEvent) {
+					if (LnKMouseHandler.onCanvasRClick(pEvent)) {		
+						if (vOldCanvasCall) {
+							let vCanvasCallBuffer = vOldCanvasCall.bind(this);
+							vCanvasCallBuffer(pEvent);
+						}
+					}
+				}
+			}	
 		}
 		else {
-			const vOldCanvasCall = canvas._onClickRight;
+			let vOldClick = document.querySelector("canvas#board").oncontextmenu;
 			
-			canvas._onClickRight = function (pEvent) {
-				if (LnKMouseHandler.onCanvasRClick(pEvent)) {		
-					if (vOldCanvasCall) {
-						let vCanvasCallBuffer = vOldCanvasCall.bind(this);
-						vCanvasCallBuffer(pEvent);
+			document.querySelector("canvas#board").oncontextmenu = (pEvent) => {
+				if (LnKMouseHandler.onCanvasRClick(pEvent)) {
+					if (vOldClick) {
+						vOldClick(pEvent);
 					}
 				}
 			}
-		}		
+		}
 	}
 	
 	//ons
@@ -267,7 +293,7 @@ class LnKMouseHandler {
 }
 
 //Hooks
-Hooks.on("init", function() {
+Hooks.once("ready", function() {
 	LnKMouseHandler.RegisterClicks();
 });
 

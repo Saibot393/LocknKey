@@ -387,6 +387,7 @@ class LnKutils {
 		
 		return (LnKutils.includesone(pItem.name, vLockpickItems) 
 			|| (pItem.flags.core?.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, vLockpickItems)) 
+			|| (pItem._stats?.compendiumSource && LnKutils.includesone(pItem._stats.compendiumSource, vLockpickItems)) //for v12
 			|| LnKutils.includesone(pItem.id, vLockpickItems) 
 			|| (pItem.ciKey && LnKutils.includesone(pItem.ciKey, vLockpickItems))
 			|| (pItem.flags.ddbimporter?.definitionId && LnKutils.includesone(pItem.flags.ddbimporter?.definitionId?.toString(), vLockpickItems)));

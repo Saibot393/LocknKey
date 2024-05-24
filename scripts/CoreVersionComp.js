@@ -38,3 +38,7 @@ export function isv10() {
 export function isv11() {
 	return game.version.split(".")[0] == "11";
 }
+
+export function isv12() {
+	return game.version.split(".")[0] == "12";
+}

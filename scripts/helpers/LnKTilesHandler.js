@@ -137,9 +137,9 @@ class LnKTilesHandler {
 	//support
 	static interactiveTileatPosition(pPosition) {
 		let vvalidTiles = canvas.tiles.placeables.filter(vTile => LnKFlags.canbeInteracted(vTile.document) && !vTile.document.hidden).map(vTile => vTile.document);
-		
+
 		vvalidTiles = vvalidTiles.filter(vTile => Geometricutils.withinBoundaries(vTile, "TokenFormRectangle", [pPosition.x, pPosition.y]));
-		
+
 		let vTile = vvalidTiles[0];
 		let vTilesort = vvalidTiles[0]?.sort;
 		
