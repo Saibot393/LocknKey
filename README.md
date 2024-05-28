@@ -145,7 +145,7 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
 
 ### Languages:
 
-The module contains an English, a German, a Chinese (thanks to [feederze](https://github.com/feederze) and Thousand (_thousand@Discord)), a French (thanks to [MastaGooz](https://github.com/MastaGooz)), a Polish (thanks to [Lioheart](https://github.com/Lioheart)), a Russian (thanks to [maragondi](https://github.com/maragondi)), and a Japanese(thanks to [doumoku](https://github.com/doumoku)) translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/LocknKey/issues).
+The module contains an English, a German, a Chinese (thanks to [feederze](https://github.com/feederze) and Thousand (_thousand@Discord)), a French (thanks to [MastaGooz](https://github.com/MastaGooz)), a Polish (thanks to [Lioheart](https://github.com/Lioheart)), a Russian (thanks to [maragondi](https://github.com/maragondi)), a Japanese (thanks to [doumoku](https://github.com/doumoku)), and a Portuguese Brazil (thanks to [Andersants](https://github.com/Andersants)) translation. If you want additional languages to be supported [let me know](https://github.com/Saibot393/LocknKey/issues).
 
 ---
 
