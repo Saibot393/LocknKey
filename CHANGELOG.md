@@ -1,3 +1,6 @@
+## v3.0.1
+- Added Portuguese Brazil translation (thanks to [Andersants](https://github.com/Andersants))
+
 ## v3.0.0
 - v12 Compatibility
 
