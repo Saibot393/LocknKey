@@ -1,3 +1,6 @@
+## v3.0.2
+- Fixed bug that caused chosen default sound not to be applied to new doors
+
 ## v3.0.1
 - Added Portuguese Brazil translation (thanks to [Andersants](https://github.com/Andersants))
 
