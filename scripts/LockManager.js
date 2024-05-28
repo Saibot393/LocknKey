@@ -845,7 +845,7 @@ Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be remove
 						vSound = "futuristicFast";
 						break;
 					case "shutter":
-						vSound = ""; //find pendant
+						vSound = "slidingMetal"; //find pendant
 						break;
 					case "sliding":
 						vSound = "slidingWood";
@@ -854,11 +854,11 @@ Hooks.on("createWall", (pWall, pSettings, pInfos, pUserID) => { //will be remove
 						vSound = "stoneBasic";
 						break;
 					case "wood":
-						vSound = "woodBasicThe";
+						vSound = "woodBasic";
 						break;
 				}
 				
-				pWall.update({doorSound : game.settings.get(cModuleName, "DefaultLockSound")}) ;
+				pWall.update({doorSound : vSound}) ;
 			}
 		}
 	}
