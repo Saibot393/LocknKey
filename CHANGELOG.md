@@ -1,3 +1,6 @@
+## v3.0.3
+- Fixed bug that caused some clicks to not register correctly
+
 ## v3.0.2
 - Fixed bug that caused chosen default sound not to be applied to new doors
 
