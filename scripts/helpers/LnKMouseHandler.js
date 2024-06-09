@@ -8,6 +8,8 @@ class LnKMouseHandler {
 	//registers
 	static RegisterClicks() {} //call all register functions
 	
+	static RegisterClicksv12() {} //call all register functions
+	
 	//doors
 	static RegisterDoorLeftClick() {} //register Door leftclick
 	
@@ -24,6 +26,10 @@ class LnKMouseHandler {
 	static RegisterCanvasLeftClick() {} //register Canvas Left click
 	
 	static RegisterCanvasRightClick() {} //register Canvas Right click
+	
+	static RegisterCanvasLeftClickv12() {} //register Canvas Left click
+	
+	static RegisterCanvasRightClickv12() {} //register Canvas Right click
 	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {} //called if Door is left clicked
@@ -55,6 +61,11 @@ class LnKMouseHandler {
 		
 		LnKMouseHandler.RegisterCanvasLeftClick();
 		LnKMouseHandler.RegisterCanvasRightClick();
+	}
+	
+	static RegisterClicksv12() {
+		LnKMouseHandler.RegisterCanvasLeftClickv12();
+		LnKMouseHandler.RegisterCanvasRightClickv12();
 	}
 
 		//doors	
@@ -196,17 +207,6 @@ class LnKMouseHandler {
 				}
 			}	
 		}
-		else {
-			let vOldClick = document.querySelector("canvas#board").onclick;
-			
-			document.querySelector("canvas#board").onclick = (pEvent) => {
-				if (LnKMouseHandler.onCanvasLClick(pEvent)) {
-					if (vOldClick) {
-						vOldClick(pEvent);
-					}
-				}
-			}
-		}
 	}
 	
 	static RegisterCanvasRightClick() {
@@ -227,7 +227,24 @@ class LnKMouseHandler {
 				}
 			}	
 		}
-		else {
+	}
+	
+	static RegisterCanvasLeftClickv12() {
+		if (game.release.generation >= 12) {
+			let vOldClick = document.querySelector("canvas#board").onclick;
+			
+			document.querySelector("canvas#board").onclick = (pEvent) => {
+				if (LnKMouseHandler.onCanvasLClick(pEvent)) {
+					if (vOldClick) {
+						vOldClick(pEvent);
+					}
+				}
+			}
+		}
+	}
+	
+	static RegisterCanvasRightClickv12() {
+		if (game.release.generation >= 12) {
 			let vOldClick = document.querySelector("canvas#board").oncontextmenu;
 			
 			document.querySelector("canvas#board").oncontextmenu = (pEvent) => {
@@ -293,8 +310,14 @@ class LnKMouseHandler {
 }
 
 //Hooks
-Hooks.once("ready", function() {
+Hooks.once("init", function() {
 	LnKMouseHandler.RegisterClicks();
+});
+
+Hooks.once("ready", function() {
+	if (game.release.generation >= 12) {
+		LnKMouseHandler.RegisterClicksv12();
+	}
 });
 
 Hooks.on(cModuleName + "." + "CanvasClick", (pCanvas, pPosition) => {LnKMouseHandler.onCanvasClick(pCanvas, pPosition)});
