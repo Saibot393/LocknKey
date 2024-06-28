@@ -64,7 +64,6 @@
 			"Lockpickbroke"				: "Dietrich ist zerbrochen",
 			"jammedLock"				: "Schloss verklemmt",
 			"cantcircumventFree"		: "Schloss kann nicht umgangen werden",
-			"CantbePickpocketed"		: "Kann nicht bestohlen werden",
 			"PickPocketfailed"			: "Taschendiebstahl fehlgeschlagen",
 			"customcheckfailed"			: "{pCheckName} fehlgeschlagen",
 			"WrongIdentity"				: "Falsche Identität",

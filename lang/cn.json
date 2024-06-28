@@ -62,7 +62,6 @@
       "Lockpickbroke": "撬锁器损坏了",
       "jammedLock": "堵住了锁",
 	  "cantcircumventFree": "Lock can't be circumvented",
-	  "CantbePickpocketed"		: "Can't be pick pocketed",
 	  "PickPocketfailed"			: "Pick pocket failed",
 	  "customcheckfailed"			: "{pCheckName} failed",
 		"WrongIdentity"				: "Wrong identity",

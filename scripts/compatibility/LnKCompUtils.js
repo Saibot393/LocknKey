@@ -210,7 +210,29 @@ class LnKCompUtils {
 		let vID = pLock?.flags[cMATT]?.entity?.id; //from MATT
 		
 		if (vID) {
-			return fromUuid(vID);
+			if (vID == "within") {
+				//from MATT code
+				for (let tile of pLock.parent.tiles) {
+					let triggerData = tile.flags["monks-active-tiles"] || {};
+					let triggers = triggerData?.trigger || [];
+					if (triggerData?.active && triggerData.actions?.length > 0 && triggers.includes("door")) {
+
+						let pt1 = { x: pLock.c[0], y: pLock.c[1] };
+						let pt2 = { x: pLock.c[2], y: pLock.c[3] };
+						if (tile.pointWithin(pt1) || tile.pointWithin(pt2))
+							return tile;
+						else {
+							let collisions = tile.getIntersections(pt1, pt2);
+							if (collisions.length) {
+								return tile;
+							}
+						}
+					}
+				}
+			}
+			else {
+				return fromUuid(vID);
+			}
 		}
 		
 		if (pLock?.flags[cModuleName]) {

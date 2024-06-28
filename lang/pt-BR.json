@@ -64,7 +64,6 @@
 			"Lockpickbroke"				: "Ferramenta de arrombamento quebrou",
 			"jammedLock"				: "Tranca emperrada",
 			"cantcircumventFree"		: "Tranca não pode ser contornada",
-			"CantbePickpocketed"		: "Não pode ser furtado",
 			"PickPocketfailed"			: "Falha ao furtar",
 			"customcheckfailed"			: "{pCheckName} falhou",
 			"WrongIdentity"				: "Identidade incorreta",

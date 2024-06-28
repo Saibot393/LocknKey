@@ -64,7 +64,6 @@
 			"Lockpickbroke"				: "Wytrych się złamał",
 			"jammedLock"				: "Zacięty zamek",
 			"cantcircumventFree"		: "Zamka nie można obejść",
-			"CantbePickpocketed"		: "Nie można się włamać",
 			"PickPocketfailed"			: "Kradzież nieudana",
 			"customcheckfailed"			: "{pCheckName} nieudany",
 			"WrongIdentity"				: "Nieprawidłowa tożsamość",
@@ -74,7 +73,8 @@
 			
 			"CantbePicked"				: "Nie można ukraść",
 			"CantbeBroken"				: "Nie można wyłamać",
-			"CantbeCustomChecked"		: "Nie można użyć {pCheckName}"
+			"CantbeCustomChecked"		: "Nie można użyć {pCheckName}",
+			"CantbePickpocketed"		: "Nie można się włamać"
 		},	
 		
 		"ChatMessage" : {

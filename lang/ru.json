@@ -64,7 +64,6 @@
 			"Lockpickbroke"				: "Отмычка сломалась",
 			"jammedLock"				: "Заклинило замок",
 			"cantcircumventFree"		: "Замок невозможно обойти",
-			"CantbePickpocketed"		: "Нельзя общарить карманы",
 			"PickPocketfailed"			: "Не удалось обшарить карманы",
 			"customcheckfailed"			: "{pCheckName} не удалось",
 			"WrongIdentity"				: "Неверный идентификатор",

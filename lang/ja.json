@@ -64,7 +64,6 @@
 			"Lockpickbroke"				: "ロックピックが壊れた",
 			"jammedLock"				: "錠を詰まらせた",
 			"cantcircumventFree"		: "錠を回せない",
-			"CantbePickpocketed"		: "スリできない",
 			"PickPocketfailed"			: "スリ失敗",
 			"customcheckfailed"			: "{pCheckName} 失敗",
 			"WrongIdentity"				: "Wrong identity",

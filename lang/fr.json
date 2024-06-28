@@ -63,7 +63,6 @@
 			"Lockpickbroke"				: "Outil détruit",
 			"jammedLock"				: "Blocage du verrou",
 			"cantcircumventFree"		: "Verrou incontournable",
-			"CantbePickpocketed"		: "Ne peut pas être volé",
 			"PickPocketfailed"			: "Echec du vol à la tire",
 			"customcheckfailed"			: "{pCheckName} a échoué",
 			"WrongIdentity"				: "Wrong identity",
@@ -74,7 +73,7 @@
 			"CantbePicked"				: "Can't be picked",
 			"CantbeBroken"				: "Can't be broken",
 			"CantbeCustomChecked"		: "Can't use {pCheckName}",
-			"CantbePickpocketed"		: "Can't be pickpocketed"
+			"CantbePickpocketed"		: "Ne peut pas être volé"
 		},	
 		
 		"ChatMessage" : {
