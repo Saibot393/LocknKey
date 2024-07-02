@@ -1,3 +1,6 @@
+## v3.0.5
+- Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
 ## v3.0.4
 - Matt trigger "Tiles under Door" should now work correctly
 - Cleaned up translation files
