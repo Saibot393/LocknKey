@@ -1,3 +1,7 @@
+## v3.0.4
+- Matt trigger "Tiles under Door" should now work correctly
+- Cleaned up translation files
+
 ## v3.0.3
 - Fixed bug that caused some clicks to not register correctly
 
