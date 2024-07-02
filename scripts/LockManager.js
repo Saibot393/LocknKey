@@ -725,7 +725,7 @@ class LockManager {
 			LnKPopups.TextPopUp(pObject, vMessage);
 		}
 		else {
-			if (vLocktype == cLockTypeDoor || vLocktype == LockTypeTile) {
+			if (vLocktype == cLockTypeDoor || vLocktype == cLockTypeTile) {
 				LnKPopups.TextPopUpID(pObject, "DoorisLocked"); //MESSAGE POPUP
 			}
 			

@@ -74,7 +74,7 @@
 			"CantbePicked"				: "Nie można ukraść",
 			"CantbeBroken"				: "Nie można wyłamać",
 			"CantbeCustomChecked"		: "Nie można użyć {pCheckName}",
-			"CantbePickpocketed"		: "Nie można się włamać"
+			"CantbePickpocketed"		: "Brak możliwości kradzieży kieszonkowej"
 		},	
 		
 		"ChatMessage" : {
