@@ -1,3 +1,6 @@
+## v3.0.6
+- Fixed small bug in @Skill section for roll formulas
+
 ## v3.0.5
 - Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
