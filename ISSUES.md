@@ -27,7 +27,7 @@ The formulas are extremely system specific and rules based. I have therefore onl
   - **Dicepools:** use cs to specify results (e.g. 4d6cd>3 to roll 4 d6 counting results over 3 as success)
 - enter "game.actors.find(a=>true).system" in the F12 console to get an overview over all available values for rolls 
 - You can use +,-,*,/ to connect several values
-- You can reference skill items with `@skills` followed by their display name (replace ` ` with `_`)
+- You can reference skill items with `@skills` followed by their display name (replace ` ` and `/` with `_`)
 - You can reference the targets DC with `@DC`
 
 ### Languages
