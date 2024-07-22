@@ -212,7 +212,7 @@ class LnKSystemutils {
 				return `(max(1d20 - (@actor.system.characteristics.in.value + min(@DC, 0)), 0) + max(1d20 - (@actor.system.characteristics.ff.value + min(@DC, 0)),0) + max(1d20 - (@actor.system.characteristics.ff.value + min(@DC, 0)),0)) - (@skills.Pick_Locks.system.talentValue.value + max(@DC, 0))`;
 				break;
 			case cSWADE:
-				return "{1d@skills.Thievery.system.die.sides,1d6}kh + @skills.Thievery.system.die.modifier";
+				return "{1d@(skills.Thievery.system.die.sides)x,1d6x}kh + @skills.Thievery.system.die.modifier";
 				break;
 			default:
 				return "";
@@ -243,7 +243,7 @@ class LnKSystemutils {
 				return `(max(1d20 - (@actor.system.characteristics.ko.value + min(@DC, 0)), 0) + max(1d20 - (@actor.system.characteristics.kk.value + min(@DC, 0)),0) + max(1d20 - (@actor.system.characteristics.kk.value + min(@DC, 0)),0)) - (@skills.${game.i18n.localize("LocalizedIDs.featOfStrength")}.system.talentValue.value + max(@DC, 0))`;
 				break;
 			case cSWADE:
-				return "{1d@skills.Athletics.system.die.sides,1d6}kh + @skills.Athletics.system.die.modifier";
+				return "{1d@(skills.Athletics.system.die.sides)x,1d6x}kh + @skills.Athletics.system.die.modifier";
 				break;
 			default:
 				return "";

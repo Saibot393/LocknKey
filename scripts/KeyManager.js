@@ -522,24 +522,42 @@ class KeyManager {
 				}
 				
 				if (vshowPicklock) {
+					let vDCText = "";
+					
+					if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+						vDCText = ` (${Translate("Titles." + "DC", {pDC : LnKFlags.LockDC(pLockObject)})})`
+					}
+					
 					vButtons[cLUpickLock] = {
-						label: Translate("Titles." + cLUpickLock),
+						label: Translate("Titles." + cLUpickLock) + vDCText,
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUpickLock);},
 						icon: `<i class="fas ${cLnKPickLockIcon}"></i>`
 					}
 				}
 				
 				if (vshowBreaklock) {
+					let vDCText = "";
+					
+					if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+						vDCText = ` (${Translate("Titles." + "DC", {pDC : LnKFlags.LockBreakDC(pLockObject)})})`
+					}			
+		
 					vButtons[cLUbreakLock] = {
-						label: Translate("Titles." + cLUbreakLock),
+						label: Translate("Titles." + cLUbreakLock) + vDCText,
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUbreakLock);},
 						icon: `<i class="fas ${cLnKBreakLockIcon}"></i>`
 					}
 				}
 				
 				if (vshowCustomCheck) {
+					let vDCText = "";
+					
+					if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+						vDCText = ` (${Translate("Titles." + "DC", {pDC : LnKFlags.LockCCDC(pLockObject)})})`
+					}	
+					
 					vButtons[cLUCustomCheck] = {
-						label: Translate("Titles." + cLUCustomCheck, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}),
+						label: Translate("Titles." + cLUCustomCheck, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}) + vDCText,
 						callback: () => {KeyManager.onatemptedLockuse(pLockObject, cLUCustomCheck);},
 						icon: `<i class="fas ${cLnKCustomCheckIcon}"></i>`
 					}
