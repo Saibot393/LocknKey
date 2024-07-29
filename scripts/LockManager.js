@@ -596,23 +596,30 @@ class LockManager {
 					await LnKFlags.makeLockable(pLock);
 				}
 				
-				let vSuccess = true;
+				switch (game.settings.get("autoResetAttempts")) {
+					case "lockchange":
+						LnKFlags.resetLPAttempts(pLock);
+						break;
+					case "lpsuccess":
+						if (pLockusetype == cLUpickLock) {
+							LnKFlags.resetLPAttempts(pLock);
+						}
+						break;
+				}
+				
+				
 				
 				switch(vLocktype) {
 					case cLockTypeDoor:
 						await LockManager.ToggleDoorLock(pLock, pLockusetype);
-						
-						vSuccess = true;
 						break;
 					case cLockTypeLootPf2e:
 					default:
 						await LnKFlags.invertLockedstate(pLock);
-						
-						vSuccess = true;
 						break;
 				}
 				
-				if (vSuccess && vLocktype != cLockTypeDoor) {
+				if (vLocktype != cLockTypeDoor) {
 					if (LnKFlags.isLocked(pLock)) {
 						LockManager.onLock(pLock, pLockusetype);
 					}

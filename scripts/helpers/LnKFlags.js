@@ -27,7 +27,8 @@ const cSoundVariantF = "SoundVariantFlag"; //FLag for tokens which sound should 
 const cLockjammedF = "LockjammedFlag"; //FLag wether lock is jammed
 const cSpecialLPF = "SpecialLPFlag"; //Flag that sets special Lock picks
 const cReplacementItemF = "ReplacementItemFlag"; //Flag to store ids or names of items that get consumed instead of this item when present
-const cLPAttemptsF = "LPAttemptsFlag"; //FLag to store the ammount of Lock Pick attempts of this lock
+const cLPAttemptsF = "LPAttemptsFlag"; //Flag to store the ammount of Lock Pick attempts of this lock
+const cLPAttemptsMaxF = "LPAttemptsMaxFlag"; //Flag to store the maximum amount of Lock Pick attempts of this lock
 const cFreeLockCircumventsF = "FreeLockCircumventsFlag"; //Flagt to store how many FreeLockCircumvents this token has
 const ccanbeCircumventedFreeF = "canbeCircumventedFreeFlag"; //Flag to store wether this Lock can be circumvented with a fee lock circumvent
 const cRollOptionsF = "RollOptionsFlag"; //Flag to store roll options
@@ -40,7 +41,7 @@ const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
 const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
 const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -156,11 +157,15 @@ class LnKFlags {
 	
 	static hasSpecialLockpicks(pLock) {} //if pLock has special Lockpicks
 	
-	static LPAttemptsLeft(pLock, pRAW = false) {} //retunrst he ammount of Lockpick attempts left in pLock
+	static LPAttemptsLeft(pLock, praw = false) {} //retunrst he ammount of Lockpick attempts left in pLock
 	
 	static hasLPAttemptsLeft(pLock) {} //returns of pLock has any LP attempts left
 	
 	static async ReduceLPAttempts(pLock) {} //reduces the Lock pick attempts left in pLock
+	
+	static LPAttemptsMax(pLock, praw = false) {} //returns the maximum amount of lock pick attempts
+	
+	static async resetLPAttempts(pLock) {} //resets the LPAtempts left to the max
 	
 	static async giveFreeLockCircumvent(pToken) {} //gives pToken a free lock circumvent
 	
@@ -223,7 +228,9 @@ class LnKFlags {
 	static isLockonClose(pObject) {} //returns of pObject should be locked when closed
 	
 	//PickPocket
-	static PickPocketDC(pToken, praw = false) {} //returns the PickPocketDC of pToken
+	static async PickPocketDC(pToken, praw = false) {} //returns the PickPocketDC of pToken
+	
+	static async PickPocketItemDC(pItem) {} //returns the PickPocket DC for Items
 	
 	static async Canbepickpocketed(pToken) {} //returns wether pToken can be pick pocketed
 	
@@ -579,6 +586,19 @@ class LnKFlags {
 		return game.settings.get(cModuleName, "defaultLPAttempts"); //default if anything fails				
 	}
 	
+	static #LPAttemptsMaxFlag (pObject) {
+	//returns content of LPAttemptsMaxFlag ofpObject (number)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLPAttemptsMaxF)) {
+				return vFlag.LPAttemptsMaxFlag;
+			}
+		}
+		
+		return game.settings.get(cModuleName, "defaultLPAttempts"); //default if anything fails				
+	}
+	
 	static #FreeLockCircumventsFlag (pObject) {
 	//returns content of FreeLockCircumventsFlag ofpObject (number)
 		let vFlag = this.#LnKFlags(pObject);
@@ -644,9 +664,9 @@ class LnKFlags {
 		return false; //default if anything fails	
 	}
 	
-	static async #PickPocketDCFlag (pToken) {
-	//returns content of PickPocketDC pToken (number)
-		let vFlag = this.#LnKFlags(pToken);
+	static async #PickPocketDCFlag (pObject) {
+	//returns content of PickPocketDC pObject (number)
+		let vFlag = this.#LnKFlags(pObject);
 		
 		if (vFlag) {
 			if (vFlag.hasOwnProperty(cPickPocketDCF)) {
@@ -654,7 +674,13 @@ class LnKFlags {
 			}
 		}
 		
-		return await LnKutils.CalculatePPDefaultDC(pToken);//game.settings.get(cModuleName, "PickPocketDefaultDC"); //default if anything fails				
+		if (pObject.documentName == "Token") {
+			return await LnKutils.CalculatePPDefaultDC(pObject);//game.settings.get(cModuleName, "PickPocketDefaultDC"); //default if anything fails	
+		}
+		
+		if (pObject.documentName == "Token") {
+			return 0; //default for items
+		}
 	}
 	
 	static #PickPocketFormulaFlag (pObject) { 
@@ -811,6 +837,16 @@ class LnKFlags {
 	//sets content of LPAttemptsFlag (must be number)
 		if (pObject) {
 			await pObject.setFlag(cModuleName, cLPAttemptsF, Number(pContent));
+			
+			return true;
+		}
+		return false;		
+	}
+	
+	static async #setLPAttemptsMaxFlag(pObject, pContent) {
+	//sets content of LPAttemptsMaxFlag (must be number)
+		if (pObject) {
+			await pObject.setFlag(cModuleName, cLPAttemptsmaxF, Number(pContent));
 			
 			return true;
 		}
@@ -1132,10 +1168,10 @@ class LnKFlags {
 		}
 	}
 	
-	static LPAttemptsLeft(pLock, pRAW = false) {
+	static LPAttemptsLeft(pLock, praw = false) {
 		let vLPAleft = this.#LPAttemptsFlag(pLock);
 		
-		if (pRAW) {
+		if (praw) {
 			return vLPAleft;
 		}
 		
@@ -1154,6 +1190,24 @@ class LnKFlags {
 		if (LnKFlags.hasLPAttemptsLeft(pLock)) {
 			await this.#setLPAttemptsFlag(pLock, this.#LPAttemptsFlag(pLock)-1);
 		}
+	}
+	
+	static LPAttemptsMax(pLock, praw = false) {
+		let vLPAmax = this.#LPAttemptsMaxFlag(pLock);
+
+		if (praw) {
+			return vLPAmax;
+		}
+		
+		if (vLPAmax < 0) {
+			vLPAmax = Infinity;
+		}
+		
+		return vLPAmax;
+	}
+	
+	static async resetLPAttempts(pLock) {
+		this.#setLPAttemptsFlag(pLock, LnKFlags.LPAttemptsMax(pLock));
 	}
 	
 	static async giveFreeLockCircumvent(pToken) {
@@ -1355,6 +1409,12 @@ class LnKFlags {
 		if (vDC == LnKutils.infinitythreshold() && !praw) {
 			vDC = Infinity;
 		}
+		
+		return vDC;
+	}
+	
+	static async PickPocketItemDC(pItem) {
+		let vDC = await this.#PickPocketDCFlag(pItem);
 		
 		return vDC;
 	}

@@ -1,7 +1,7 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
-import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
+import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
@@ -41,8 +41,12 @@ class LnKSheetSettings {
 	//IMPLEMENTATIONS
 	
 	static ItemSheetSettings(pApp, pHTML, pData) {
-		if (game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)
-			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.object)))) {
+		let vLockSettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)
+			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.object)));
+			
+		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.object.type);
+		
+		if (vLockSettings || vLootSettings) {
 			//setup
 			let vTabbar = pHTML.find(`div.tabs[data-tab-container="primary"]`)
 			if (!vTabbar.length) {
@@ -98,49 +102,62 @@ class LnKSheetSettings {
 				let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
 				vprevTab.after(vTabContentHTML);
 			}
-
-			//settings	
 			
-			//create title for key items
-			let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
-			
-			pHTML.find(`div.${cModuleName}`).append(vTitle);
-			
-			//setting item ids	
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
-													vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
-													vtype : "text", 
-													vwide : true,
-													vvalue : LnKFlags.KeyIDs(pApp.object),
-													vflagname : cIDKeysF
-													}, `div.${cModuleName}`);	
-									
-			//setting remove key on use
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
-													vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
-													vtype : "checkbox", 
-													vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
-													vflagname : cRemoveKeyonUseF
-													}, `div.${cModuleName}`);
-				
-			//create title for Lockpick/Break items
-			vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
-			
-			pHTML.find(`div.${cModuleName}`).append(vTitle);
-				
-			if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
-				//formulas
-				LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", `div.${cModuleName}`);	
+			if (vLootSettings) {
+				//loot settings
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".name"), 
+														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp.key"), 
+														vtype : "text", 
+														vwide : true,
+														vvalue : LnKFlags.PickPocketItemDC(pApp.object),
+														vflagname : cPickPocketDCF
+														}, `div.${cModuleName}`);	
 			}
-			
-			//setting replacement item
-			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
-													vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
-													vtype : "text",
-													vwide : true,												
-													vvalue : LnKFlags.ReplacementItems(pApp.object, true),
-													vflagname : cReplacementItemF
-													}, `div.${cModuleName}`);
+
+			if (vLockSettings) {
+				//lock settings	
+				
+				//create title for key items
+				let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
+				
+				pHTML.find(`div.${cModuleName}`).append(vTitle);
+				
+				//setting item ids	
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+														vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
+														vtype : "text", 
+														vwide : true,
+														vvalue : LnKFlags.KeyIDs(pApp.object),
+														vflagname : cIDKeysF
+														}, `div.${cModuleName}`);	
+										
+				//setting remove key on use
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
+														vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
+														vtype : "checkbox", 
+														vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
+														vflagname : cRemoveKeyonUseF
+														}, `div.${cModuleName}`);
+					
+				//create title for Lockpick/Break items
+				vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
+				
+				pHTML.find(`div.${cModuleName}`).append(vTitle);
+					
+				if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
+					//formulas
+					LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", `div.${cModuleName}`);	
+				}
+				
+				//setting replacement item
+				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
+														vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
+														vtype : "text",
+														vwide : true,												
+														vvalue : LnKFlags.ReplacementItems(pApp.object, true),
+														vflagname : cReplacementItemF
+														}, `div.${cModuleName}`);
+			}
 													
 			if (pApp.LnKTabactive) {
 				pApp.activateTab(cModuleName);
@@ -466,13 +483,23 @@ class LnKSheetSettings {
 												vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
 												vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
 												}, pto);
-									
+		
+		/*		
 		//setting for LP attempts left in this lock
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPAttemptsF +".name"), 
 												vhint : Translate("SheetSettings."+ cLPAttemptsF +".descrp"), 
 												vtype : "number", 
 												vvalue : LnKFlags.LPAttemptsLeft(pApp.object, true),
 												vflagname : cLPAttemptsF,
+												}, pto);
+		*/
+						
+		//setting for LP attempts left/max in this lock
+		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPAttemptsF +".name"), 
+												vhint : Translate("SheetSettings."+ cLPAttemptsF +".descrp"), 
+												vtype : "numberpart", 
+												vvalue : [LnKFlags.LPAttemptsLeft(pApp.object, true), LnKFlags.LPAttemptsMax(pApp.object, true)],
+												vflagname : [cLPAttemptsF, cLPAttemptsMaxF]
 												}, pto);
 												
 		//can be circumvented free setting

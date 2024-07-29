@@ -1,13 +1,16 @@
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
+import { LnKFlags } from "./LnKFlags.js";
 
 const cWindowID = "take-inventory-window";
 
 const cTakeIcon = "fa-solid fa-hand";
 const cTransferItemsIcon = "fa-solid fa-box";
 
+const cNumCurrency = "#currency";
+
 class LnKTakeInventory {
 	//DECLARATIONS
-	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {}) {} //opens a take inventory for puser to take items from pInventoryOwner
+	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {} //opens a take inventory for puser to take items from pInventoryOwner
 	
 	static RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {} //starts a sockets request for user pUserID to open a TI window
 	
@@ -21,6 +24,8 @@ class LnKTakeInventory {
 	static TokenInventory(pToken) {} //returns Inventory of pToken
 	
 	static InventoryInfo(pToken) {} //returns the Inventory infos of pToken
+	
+	static InventoryFilter(pInventory, pRollInfos = {baseDC : 0, rollResult : 0, outcome : 0}) {} //filters the inventory based on roll result (including item dc mod)
 	
 	static TransferItems(pSource, pTarget, pItemInfos) {} //transfers items defined by pItemInfos(array of id, quantity) from pSource to pTarget
 	
@@ -37,7 +42,7 @@ class LnKTakeInventory {
 	static GetCurrencyName(pKey, pActor = undefined) {} //returns the name of the currency belonging to pKey
 	
 	//IMPLEMENTATIONS
-	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {}) {
+	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {
 		if (pUserID.includes(game.user.id)) {
 			LnKTakeInventory.openTIWindowself(pInventoryOwner, LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions);
 		}
@@ -81,13 +86,26 @@ class LnKTakeInventory {
 	
 	//support
 	static TokenInventory(pToken) {
-		const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tool", "treasure", "weapon", "equippableItem"];
+		//const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tool", "treasure", "weapon", "equippableItem"];
+		let vValidTypes = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase());
+
+		let vInventory = [];
 		
+		if (pToken.actor?.items) {
+			vInventory = Array.from(pToken.actor.items);
+		}
+
+		if (!vValidTypes.includes("all")) {
+			vInventory = vInventory.filter(vItemInfo => vValidTypes.includes(vItemInfo.type));
+		}
+		
+		/*
 		if (pToken.actor?.items) {
 			return pToken.actor.items.filter(vItem => cITypeWhiteList.includes(vItem.type));
 		}
+		*/
 		
-		return []
+		return vInventory;
 	}
 	
 	static InventoryInfo(pToken) {
@@ -95,54 +113,58 @@ class LnKTakeInventory {
 		
 		let vInventoryInfos = [];
 		
-		let vCurrency = LnKTakeInventory.GetCurrencies(pToken.actor)//.system.currency;
-		if (vCurrency) {
-			//currencies
-						
-			let vCurrencyKeys = Object.keys(vCurrency);
-			
-			for (let i = 0; i < vCurrencyKeys.length; i++) {
+		if (game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).includes(cNumCurrency)) {
+			let vCurrency = LnKTakeInventory.GetCurrencies(pToken.actor)//.system.currency;
+			if (vCurrency) {
+				//currencies
+							
+				let vCurrencyKeys = Object.keys(vCurrency);
 				
-				let vIMG;
-				switch(vCurrencyKeys[i]) {
-					case "cp":
-						//vIMG = "icons/commodities/currency/coins-wheat-stack-copper.webp";
-						vIMG = "icons/commodities/currency/coin-engraved-slot-one-copper.webp";
-						break;
-					case "ep":
-						vIMG = "icons/commodities/currency/coin-engraved-oval-steel.webp";
-						break;
-					case "gp":
-						//vIMG = "icons/commodities/currency/coins-crown-stack-gold.webp";
-						vIMG = "icons/commodities/currency/coin-embossed-gold-stag.webp";
-						break;
-					case "pp":
-						//vIMG = "icons/commodities/currency/coins-assorted-mix-platinum.webp";
-						vIMG = "icons/commodities/currency/coins-engraved-face-silver.webp";
-						break;
-					case "sp":
-						//vIMG = "icons/commodities/currency/coins-assorted-mix-silver.webp";
-						vIMG = "icons/commodities/currency/coin-embossed-unicorn-silver.webp";
-						break;
-					case "credit":
-						vIMG = "icons/svg/target.svg"; //find better?
-						break;
-					case "upb":
-						vIMG = "icons/commodities/metal/ingot-engraved-silver.webp";
-						break;
-					default:
-						vIMG = "icons/svg/coins.svg";
-						break;
-				}
-				
-				if (vCurrency[vCurrencyKeys[i]] > 0) {
-					vInventoryInfos.push({
-						name : LnKTakeInventory.GetCurrencyName(vCurrencyKeys[i], pToken.actor),
-						img : vIMG,
-						id : vCurrencyKeys[i],
-						quantity : vCurrency[vCurrencyKeys[i]],
-						iscurrency : true
-					});
+				for (let i = 0; i < vCurrencyKeys.length; i++) {
+					
+					let vIMG;
+					switch(vCurrencyKeys[i]) {
+						case "cp":
+							//vIMG = "icons/commodities/currency/coins-wheat-stack-copper.webp";
+							vIMG = "icons/commodities/currency/coin-engraved-slot-one-copper.webp";
+							break;
+						case "ep":
+							vIMG = "icons/commodities/currency/coin-engraved-oval-steel.webp";
+							break;
+						case "gp":
+							//vIMG = "icons/commodities/currency/coins-crown-stack-gold.webp";
+							vIMG = "icons/commodities/currency/coin-embossed-gold-stag.webp";
+							break;
+						case "pp":
+							//vIMG = "icons/commodities/currency/coins-assorted-mix-platinum.webp";
+							vIMG = "icons/commodities/currency/coins-engraved-face-silver.webp";
+							break;
+						case "sp":
+							//vIMG = "icons/commodities/currency/coins-assorted-mix-silver.webp";
+							vIMG = "icons/commodities/currency/coin-embossed-unicorn-silver.webp";
+							break;
+						case "credit":
+							vIMG = "icons/svg/target.svg"; //find better?
+							break;
+						case "upb":
+							vIMG = "icons/commodities/metal/ingot-engraved-silver.webp";
+							break;
+						default:
+							vIMG = "icons/svg/coins.svg";
+							break;
+					}
+					
+					if (vCurrency[vCurrencyKeys[i]] > 0) {
+						vInventoryInfos.push({
+							name : LnKTakeInventory.GetCurrencyName(vCurrencyKeys[i], pToken.actor),
+							type : "#currency",
+							img : vIMG,
+							id : vCurrencyKeys[i],
+							quantity : vCurrency[vCurrencyKeys[i]],
+							iscurrency : true,
+							dcmod : 0
+						});
+					}
 				}
 			}
 		}
@@ -151,18 +173,43 @@ class LnKTakeInventory {
 		
 		for (let i = 0; i < vInventory.length; i++) {
 			vQuantity = LnKTakeInventory.GetQuantity(vInventory[i]);//vInventory[i].system?.quantity
-			
+
 			if (vQuantity != undefined && vQuantity > 0) {
 				vInventoryInfos.push({
 										name : vInventory[i].name,
+										type : vInventory[i].type,
 										img : vInventory[i].img,
 										id : vInventory[i].id,
-										quantity : vQuantity
+										quantity : vQuantity,
+										dcmod : LnKFlags.PickPocketItemDC(vInventory[i])
 									});
 			}
 		}
 		
 		return vInventoryInfos;
+	}
+	
+	static InventoryFilter(pInventory, pRollInfos = {baseDC : 0, rollResult : 0, outcome : 0}) {
+		let vInventory = pInventory;
+		
+		switch (pResultInfos.outcome) {
+			case -1:
+				//crit fail, no loot
+				return [];
+				break;
+			case 0:
+				//std fail, apply item dc mods
+				return vInventory.filter(vItemInfo => vItemInfo.dcmod < 0 && (vItemInfo.dcmod + dcmod <= pResultInfos.rollResult));
+				break;
+			case 1:
+				//std success, apply item dc mods
+				return vInventory.filter(vItemInfo => vItemInfo.dcmod == 0 || (vItemInfo.dcmod + dcmod <= pResultInfos.rollResult));
+				break;
+			case 2:
+				//crit success, loot everything with dc summ under or equal to crit threshold
+				return vInventory.filter(vItemInfo => vItemInfo.dcmod + dcmod <= game.settings.get(cModuleName, "PickPocketDCCritThreshold"));
+				break;
+		}
 	}
 
 	static TransferItems(pSource, pTarget, pItemInfos) {
@@ -354,7 +401,6 @@ class LnKTakeInventory {
 			return vCurrencyTranslator[pKey].label;
 		}
 		
-		console.log(vCurrencyTranslator);
 		if (!vCurrencyTranslator && pActor) {
 			vCurrencyTranslator = {};
 			
@@ -372,7 +418,7 @@ class LnKTakeInventory {
 }
 
 class TakeInventoryWindow extends Application {
-	constructor(pTaker, pInventoryOwner, pInventoryInfo, pOptions = {GMConfirm : "off"}) {
+	constructor(pTaker, pInventoryOwner, pInventoryInfo, pOptions = {GMConfirm : "off", applyDCFilter : false, rollInfos : undefined}) {
 		super(pOptions);
 		
 		//pTaker
@@ -386,8 +432,16 @@ class TakeInventoryWindow extends Application {
 		}
 		
 		this.vInventoryInfo = pInventoryInfo;
+
+		if (pOptions.applyDCFilter && pOptions.rollInfos) {
+			this.vInventoryInfo = LnKTakeInventory.InventoryFilter(this.vInventoryInfo, pOptions.rollInfos);
+		}
 		
 		this.vOptions = pOptions;
+		
+		if (this.vInventoryInfo.length == 0) {
+			this.close();
+		}
 	}
 	
 	//app stuff
@@ -426,17 +480,19 @@ class TakeInventoryWindow extends Application {
 		
 		for (let i = 0; i < vInventory.length; i++) {
 			vInventoryHTML = vInventoryHTML + 	`
-												<div class="form-group item-entry" itemid="${vInventory[i].id}" style="display:flex;flex-direction:row;align-items:center;gap:1em;border: 1px solid">
-													<img src="${vInventory[i].img}" style = "height: 2.6em;">
-													<p style="width:fit-content">${vInventory[i].name}</p>
-													<div style="flex-grow:1"></div>
-													<div style="display:flex;flex-direction:row;align-items:center;gap:0.2em;width:fit-content">
-														<input class="take-value" value="0" type="number" name="${cWindowID}.take-value.${vTokenID}.${vInventory[i].id}" style="width:2em">
-														<p class="take-maximum" style="">/${vInventory[i].quantity}</p>
+												<div class="form-group item-entry" itemid="${vInventory[i].id}" style="display:flex;flex-direction:column;align-items:center;gap:1em;border: 1px solid">
+													<div style="display:flex;flex-direction:row;align-items:center;gap:1em;width:100%">
+														<img src="${vInventory[i].img}" style = "height: 2.6em;">
+														<p style="width:fit-content">${vInventory[i].name}</p>
+														<div style="flex-grow:1"></div>
+														<div style="display:flex;flex-direction:row;align-items:center;gap:0.2em;width:fit-content">
+															<input class="take-value" value="0" type="number" name="${cWindowID}.take-value.${vTokenID}.${vInventory[i].id}" style="width:2em">
+															<p class="take-maximum" style="">/${vInventory[i].quantity}</p>
+														</div>
+														<button type="button" style="width:fit-content" name="${cWindowID}.take-all.${vTokenID}.${vInventory[i].id}" onclick= "$(this).parent().find('input.take-value').val(${vInventory[i].quantity})">
+															<i class="${cTakeIcon}"></i> 
+														</button>
 													</div>
-													<button type="button" style="width:fit-content" name="${cWindowID}.take-all.${vTokenID}.${vInventory[i].id}" 
-														onclick= "$(this).parent().find('input.take-value').val(${vInventory[i].quantity})"
-														> <i class="${cTakeIcon}"></i> </button>
 												</div>`;
 		}
 		

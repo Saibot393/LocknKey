@@ -19,6 +19,8 @@ class PickPocketManager {
 	
 	static async EvaluatePickPocket(pTarget, pCharacter, pData, pChatMessages = true) {} //evaluates if the pick pocket was succesfull and starts it if
 	
+	static PickPocketFilter(pToken, pResult) {}; //returns list off all lootable items of pToken withp pResult
+	
 	//ui
 	static addPickPocketButton(pButtons, pLockObject, pLockType, pCharacter, pShowall) {} //adds a pick pocket button to interface popup
 	
@@ -97,13 +99,17 @@ class PickPocketManager {
 					PickPocketManager.RequestPickPocket(vData);
 				}
 				else {	
-					let vCallback = async (psuccessdegree) => {
-						let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, useSystemRoll : true, Systemresult : psuccessdegree};
+					let pInfos = {baseDC : await LnKFlags.PickPocketDC(pTarget)};
+					let vCallback = async (psuccessdegree, pRollresult) => {
+						pInfos.rollResult = pRollresult;
+						pInfos.outcome = psuccessdegree;
+						
+						let vData = {SceneID : pTarget.parent.id, TargetID : pTarget.id, CharacterID : pCharacter.id, useSystemRoll : true, Systemresult : psuccessdegree, rollInfos : pInfos};
 						
 						PickPocketManager.RequestPickPocket(vData);
 					};
 					
-					LnKSystemutils.systemRoll(cUPickPocket, pCharacter.actor, vCallback, {difficulty : await LnKFlags.PickPocketDC(pTarget)});
+					LnKSystemutils.systemRoll(cUPickPocket, pCharacter.actor, vCallback, pInfos);
 					/*
 					//no roll neccessary, handled by Pf2e system
 					let vCallback = async (proll) => {
@@ -202,7 +208,8 @@ class PickPocketManager {
 			let vSuccessDegree;
 			
 			if (!pData.useSystemRoll) {
-				vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, await LnKFlags.PickPocketDC(pTarget), pCharacter, {RollType : cUPickPocket});
+				pData.rollInfos = {RollType : cUPickPocket};
+				vSuccessDegree = await LnKutils.successDegree(pData.Rollresult, pData.Diceresult, await LnKFlags.PickPocketDC(pTarget), pCharacter, pData.rollInfos);
 			}
 			else {
 				vSuccessDegree = pData.Systemresult;
@@ -215,10 +222,12 @@ class PickPocketManager {
 					vCritMessagesuffix = ".crit";
 				}
 				
+				if (vSuccessDegree >= 0) {
+					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {applyDCFilter : true, rollInfos : pData.rollInfos});
+				}
+				
 				if (vSuccessDegree > 0) {
-					//success
-					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {});
-									
+					//success		
 					if (pChatMessages) {
 						await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.PickPocketSuccess"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 					}	
@@ -236,6 +245,10 @@ class PickPocketManager {
 			}
 		}
 	}
+	
+	static PickPocketFilter(pToken, pResult) {
+		
+	};
 	
 	//ui
 	static async addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall) {

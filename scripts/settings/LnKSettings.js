@@ -126,7 +126,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: String,
-	default: LnKSystemutils.Systemdefaultitemtype()
+	default: LnKSystemutils.SystemdefaultKeyitemtype()
   }); 
   
   game.settings.register(cModuleName, "KeyitemCreationPopup", {
@@ -286,6 +286,20 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: -1
   }); 
   
+  game.settings.register(cModuleName, "autoResetAttempts", {
+	name: Translate("Settings.autoResetAttempts.name"),
+	hint: Translate("Settings.autoResetAttempts.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	choices: {
+		"off" : Translate("Settings.autoResetAttempts.options.off"),
+		"lockchange" : Translate("Settings.autoResetAttempts.options.lockchange"),
+		"lpsuccess"	: Translate("Settings.autoResetAttempts.options.lpsuccess")
+	},
+	default: "off"
+  }); 
+  
   game.settings.register(cModuleName, "LockPickFormula", {
 	name: Translate("Settings.LockPickFormula.name"),
 	hint: Translate("Settings.LockPickFormula.descrp"),
@@ -413,6 +427,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: -1
   });   
   
+  game.settings.register(cModuleName, "PickPocketDCCritThreshold", {
+	name: Translate("Settings.PickPocketDCCritThreshold.name"),
+	hint: Translate("Settings.PickPocketDCCritThreshold.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: 99
+  });   
+  
   game.settings.register(cModuleName, "PickPocketDefaultDCFormula", {
 	name: Translate("Settings.PickPocketDefaultDCFormula.name"),
 	hint: Translate("Settings.PickPocketDefaultDCFormula.descrp"),
@@ -420,6 +443,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	default: ""
+  });  
+  
+  game.settings.register(cModuleName, "PickPocketItemTypes", {
+	name: Translate("Settings.PickPocketItemTypes.name"),
+	hint: Translate("Settings.PickPocketItemTypes.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKSystemutils.SystemPickPocketdefaultTypes()
   });  
   
   game.settings.register(cModuleName, "AutoUpdatePickPocketDC", {

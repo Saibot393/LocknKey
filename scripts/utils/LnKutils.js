@@ -752,7 +752,11 @@ class LnKutils {
 		
 		let vsuccessDegree;
 		
+		pInfos.baseDC = pDC;
+		pInfos.rollResult = pRollresult;
+		
 		if (pDC == Infinity) {
+			pInfos.outcome = 0; 
 			return 0; //auto fail on infinity DC
 		}
 		
@@ -905,6 +909,7 @@ class LnKutils {
 		}
 		
 		vsuccessDegree = Math.min(2, Math.max(-1, vsuccessDegree)); //make sure vsuccessDegree is in [-1, 2]
+		pInfos.outcome = vsuccessDegree;
 		
 		return vsuccessDegree;
 	}

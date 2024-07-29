@@ -66,7 +66,9 @@ class LnKSystemutils {
 	static isPf2e() {} //used for special Pf2e functions
 	
 	//system defaults
-	static Systemdefaultitemtype() {} //returns the default type of item for keys in the current system
+	static SystemdefaultKeyitemtype() {} //returns the default type of item for keys in the current system
+	
+	static SystemPickPocketdefaultTypes() {} //returns the list auf default pick pocketable items types
 	
 	static SystemdefaultLockPickItem() {} //returns the default Lock Pick item in the current system
 	
@@ -97,7 +99,7 @@ class LnKSystemutils {
 	//system rolls
 	static hasSystemrolls() {} //returns if system rolls are available for this system
 	
-	static systemRoll(ptype, pactor, pcallback, pinfos = {difficulty : 0}) {} //called for system rolls
+	static systemRoll(ptype, pactor, pcallback, pinfos = {baseDC : 0}) {} //called for system rolls
 	
 	static systemSuccesdegree(pData) {} //returns the succes degree based on system
 	
@@ -108,15 +110,17 @@ class LnKSystemutils {
 	}
 	
 	//system defaults
-	static Systemdefaultitemtype() {
+	static SystemdefaultKeyitemtype() {
 		switch (game.system.id) {
 			case cPf2eName:
 				return "equipment";
 				break;
 			case cDnD5e:
 				return "tool";
+				break;
 			case cDnD35e:
 				return "equipment";
+				break;
 			case cStarFinderName:
 				return "technological";
 				break;
@@ -167,6 +171,42 @@ class LnKSystemutils {
 					}
 					return game.items.documentClass.TYPES[0];
 				}
+				break;
+		}
+		
+		return "";
+	}
+	
+	static SystemPickPocketdefaultTypes() {
+		switch (game.system.id) {
+			case cPf2eName:
+				return "#currency;armor;backpack;consumable;equipment;kit;shield;treasure;weapon";
+				break;
+			case cDnD5e:
+				return "#currency;weapon;equipment;consumable;tool;loot;container";
+				break;
+			case cStarFinderName:
+				return "#currency;ammunition;consumable;container;equipment;goods;hybrid;magic;shield;technological;upgrade;weapon;weaponAccessory";
+				break;
+			case cCoC7:
+				return "#currency;item;weapon;book";
+				break;
+			case cWarhammer4e:
+				return "#currency;ammunition;armour;container;money;weapon;cargo";
+				break;
+			case cDarkEye5e:
+				return "#currency;equipment;armor;ammunition;rangeweapon;meleeweapon;money;consumable;plant;magicalsign;book";
+				break;
+			/*
+			case cPf1eName:
+				return "equipment";
+				break;
+			case cCyberpunkRED:
+				return "gear";
+				break;
+			*/
+			default:
+				return "all";
 				break;
 		}
 		
@@ -398,29 +438,29 @@ class LnKSystemutils {
 		return [cPf2eName, cDSA5].includes(game.system.id);
 	}
 	
-	static systemRoll(ptype, pactor, pcallback, pinfos = {difficulty : 0}) {
+	static systemRoll(ptype, pactor, pcallback, pinfos = {baseDC : 0}) {
 		switch (game.system.id) {
 			case cPf2eName:
 				switch(ptype) {
 					case cLUpickLock:
 						game.pf2e.actions.pickALock({
 							actors: pactor,
-							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
-							difficultyClass: {value : pinfos.difficulty}
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}), proll.total)},
+							difficultyClass: {value : pinfos.baseDC}
 						});
 						break;
 					case cLUbreakLock:
 						game.pf2e.actions.forceOpen({
 							actors: pactor,
-							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
-							difficultyClass: {value : pinfos.difficulty}
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}), proll.total)},
+							difficultyClass: {value : pinfos.baseDC}
 						});
 						break;
 					case cUPickPocket:
 						game.pf2e.actions.steal({
 							actors: pactor,
-							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}))},
-							difficultyClass: {value : pinfos.difficulty}
+							callback: (proll) => {pcallback(LnKSystemutils.systemSuccesdegree({roll : proll}), proll.total)},
+							difficultyClass: {value : pinfos.baseDC}
 						});
 						break;
 				}
@@ -429,11 +469,11 @@ class LnKSystemutils {
 				let vSkill = pactor.items.find(x => x.type == "skill" && x.name == DSAskills[game.i18n.lang][ptype]);
 				
 				if (vSkill) {
-					pactor.setupSkill(vSkill, { modifier: pinfos.difficulty/*, subtitle: ` (${Translate("Titles." + ptype)})`*/}, pactor.sheet.getTokenId()).then(async(psetupData) => {
+					pactor.setupSkill(vSkill, { modifier: pinfos.baseDC/*, subtitle: ` (${Translate("Titles." + ptype)})`*/}, pactor.sheet.getTokenId()).then(async(psetupData) => {
 							psetupData.testData.opposable = false
 							const cresultdata = await pactor.basicTest(psetupData);
 				
-							pcallback(LnKSystemutils.systemSuccesdegree(cresultdata));
+							pcallback(LnKSystemutils.systemSuccesdegree(cresultdata), 0);
 					});
 				}
 				break;
