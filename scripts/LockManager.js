@@ -14,7 +14,7 @@ const cLnKcross = "fa-solid fa-xmark";
 class LockManager {
 	//DECLARATIONS
 	//basics
-	static async useLockKey(pLock, pCharacter, pKeyItemID, puseData = {}) {} //handels pLock use of pCharacter with item of pItemID
+	static async useLockKey(pLock, pCharacter, pKeyItemIDs, puseData = {}) {} //handels pLock use of pCharacter with item of pItemID
 	
 	static async useLockPasskey(pLock, pCharacter, pPasskey, puseData = {}) {} //handels pLock use of pCharacter with Passkey pPasskey
 	
@@ -75,13 +75,13 @@ class LockManager {
 	
 	//IMPLEMENTATIONS
 	//basics
-	static async useLockKey(pLock, pCharacter, pKeyItemID, puseData = {}) {
-		let vKey = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pKeyItemID);
+	static async useLockKey(pLock, pCharacter, pKeyItemIDs, puseData = {}) {
+		let vKeys = (await LnKutils.TokenInventory(pCharacter)).filter(vItem => pKeyItemIDs.includes(vItem.id));
 		
 		let vOutcome = 0;
 		
-		if (vKey) {
-			if (LnKFlags.matchingIDKeys(vKey, pLock, game.settings.get(cModuleName, "UseKeynameasID"))) {
+		if (vKeys.length == pKeyItemIDs.length) {
+			if (LnKFlags.matchingIDKeys(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")).length) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
 					//lock is jammed and cant be opened by key
 					LnKPopups.TextPopUpID(pLock, "Lockisjammed"); //MESSAGE POPUP
@@ -92,9 +92,11 @@ class LockManager {
 					
 					vOutcome = 1;
 					
-					if (LnKFlags.RemoveKeyonUse(vKey)) {
-						//remove one from stack, which will also delte if no key left
-						LnKutils.removeoneItem(vKey, pCharacter);
+					for (vKey of vKeys) {
+						if (LnKFlags.RemoveKeyonUse(vKey)) {
+							//remove one from stack, which will also delete if no key left
+							LnKutils.removeoneItem(vKey, pCharacter);
+						}
 					}
 				}
 			}
@@ -387,7 +389,7 @@ class LockManager {
 					switch (puseData.useType) {
 						case cLUuseKey:
 							//a key was used on the lock
-							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemID, puseData);
+							LockManager.useLockKey(vLock, vCharacter, puseData.KeyItemIDs, puseData);
 							break;
 						case cLUusePasskey:
 							LockManager.useLockPasskey(vLock, vCharacter, puseData.EnteredPasskey, puseData);
@@ -481,7 +483,7 @@ class LockManager {
 		
 		if (game.settings.get(cModuleName, "KeyitemCreationIDOption")) {
 			vHTML = vHTML + `<label>${Translate("Titles.KeyID")}</label>
-							<input type="text" id="KeyID" name="Keyname" value="">`;
+							<input type="text" id="KeyID" name="Keyname" value="${randomID()}">`;
 		}		
 					
 		vHTML = vHTML + `<label>${Translate("Titles.Keyfolder")}</label>

@@ -187,6 +187,10 @@ class LnKCompUtils {
 	}
 	
 	static isItemPile(pToken) {
+		if (!LnKCompUtils.isactiveModule(cItemPiles)) {
+			return false;
+		}
+		
 		let vActor = pToken;
 		
 		if (pToken?.actor) {

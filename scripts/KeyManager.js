@@ -141,7 +141,7 @@ class KeyManager {
 	
 	static async onatemptedKeyuse(pLockObject, pUseType, pCharacter, pFallBack = true) {	
 		let vKeyItems;
-		let vFittingKey;
+		let vFittingKeys;
 		let vLockType = await LnKutils.Locktype(pLockObject);
 		
 		switch (pUseType) {
@@ -171,10 +171,10 @@ class KeyManager {
 					vKeyItems = await LnKutils.TokenInventory(pCharacter, true);
 					
 					//only key which contains keyid matching at least one key id of pLockObject fits
-					vFittingKey = vKeyItems.find(vKey => LnKFlags.matchingIDKeys(vKey, pLockObject, game.settings.get(cModuleName, "UseKeynameasID")));				
+					vFittingKeys = LnKFlags.matchingIDKeysandmode(vKeyItems, pLockObject, game.settings.get(cModuleName, "UseKeynameasID"));				
 					
-					if (vFittingKey) {	
-						let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemID : vFittingKey.id};
+					if (vFittingKeys.length) {	
+						let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemIDs : vFittingKeys};
 						KeyManager.requestLockuse(vData);
 					}
 					else {

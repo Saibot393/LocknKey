@@ -2,6 +2,7 @@ import { cModuleName } from "../utils/LnKutils.js";
 import { LnKutils, cLUpickLock, cLUbreakLock, cLUCustomCheck, cUPickPocket } from "../utils/LnKutils.js";
 
 const cDelimiter = ";";
+const candDelimiter = "&";
 
 //Flag names
 const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
@@ -40,8 +41,9 @@ const cisOpenF = "isOpenFlag"; //Flag to store if tile is open
 const cPickPocketDCF = "PickPocketDCFlag"; //Flag to store the PickPocket DC
 const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom PickPocket Formula
 const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
+const cLootFormulaF = "LootFormulaFlag"; //Flag for custom formula to loot this token
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF }
+export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cLootFormulaF, cPickPocketFormulaOverrideF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -239,6 +241,10 @@ class LnKFlags {
 	static PickPocketFormula(pObject) {} //returns the pick pocket formula of pObject
 	
 	static PickPocketFormulaOverrides(pObject) {} //returns wether this object Pick pocket formula overrides
+	
+	static hasLootFormula(pObject) {} //returns if this object has a special loot formula
+	
+	static LootFormula(pObject) {} //returns special loot formula of this object
 	
 	static ResetPickPocketDC(pObject) {} //resets the pick pocket DC to the default value
 	
@@ -709,6 +715,19 @@ class LnKFlags {
 		return false; //default if anything fails
 	}
 	
+	static #LootFormulaFlag (pObject) {
+	//returns a custom loot formula for this object
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cLootFormulaF)) {
+				return vFlag.LootFormulaFlag;
+			}
+		}
+		
+		return ""; //default if anything fails
+	}
+	
 	static #canbeCircumventedFreeFlag (pObject) {
 	//returns content of canbeCircumventedFreeFlag ofpObject (number)
 		let vFlag = this.#LnKFlags(pObject);
@@ -975,6 +994,50 @@ class LnKFlags {
 	
 	static matchingIDKeys(pObject1, pObject2, pConsiderName1 = false) {	
 		return Boolean(LnKutils.Intersection(this.#IDKeysFlag(pObject1).split(cDelimiter), this.#IDKeysFlag(pObject2).split(cDelimiter)).length) || (pConsiderName1 && pObject1.name && this.#IDKeysFlag(pObject2).split(cDelimiter).includes(pObject1.name));
+	}
+	
+	static matchingIDKeysandmode(pKeyObjects, pLockObject, pConsiderKeyName = false) {	
+		let vKeyObjects = pKeyObjects.filter(vObject => this.#IDKeysFlag(pKeyObject).length);
+		
+		let vKeyIDs = {};
+		
+		for (vKey of vKeyObjects) {
+			let vIDs = this.#IDKeysFlag(vKey).split(cDelimiter);
+			
+			if (pConsiderKeyName) {
+				vIDs.push(vKey.name);
+			}
+			
+			vKeyIDs[vKey.id] = vIDs;
+		}
+		
+		let pLockObjectIDs = this.#IDKeysFlag(pKeyObject).split(cDelimiter);
+		
+		if (vIDset.length) {
+			for (let vIDset of pLockObjectIDs) {
+				let vandIDs = vIDset.split(candDelimiter);
+				
+				let vrequiredKeys = [];
+				
+				let vmatch = true;
+				
+				for (let vID of vandIDs) {
+					if (vmatch) {
+						vmatch = Object.keys(vKeyIDs).find(vKey => vKeyIDs[vKey].includes(vID));
+						
+						if (vmatch) {
+							vrequiredKeys.push(vrequiredKeys);
+						}
+					}
+				}
+				
+				if (vmatch) {
+					return vrequiredKeys;
+				}
+			}
+		}
+		
+		return [];
 	}
 	
 	static KeyIDs(pObject) {
@@ -1433,6 +1496,14 @@ class LnKFlags {
 	
 	static PickPocketFormulaOverrides(pObject) {
 		return this.#PickPocketFormulaOverrideFlag(pObject);
+	}
+	
+	static hasLootFormula(pObject) {
+		return this.#LootFormulaFlag(pObject) != "";
+	} 
+	
+	static LootFormula(pObject) {
+		return this.#LootFormulaFlag(pObject);
 	}
 	
 	static ResetPickPocketDC(pObject) {

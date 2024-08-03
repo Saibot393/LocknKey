@@ -536,6 +536,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: "none"
   });
   
+  game.settings.register(cModuleName, "dblClicktoLoot", {
+	name: Translate("Settings.dblClicktoLoot.name"),
+	hint: Translate("Settings.dblClicktoLoot.descrp"),
+	scope: "client",
+	config: true,
+	type: Boolean,
+	default: true
+  }); 
+  
   //Keys (GM)
   game.keybindings.register(cModuleName, "ToggleLock", {
 	name: Translate("Keys.ToggleLock.name"),

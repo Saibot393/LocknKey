@@ -4,6 +4,7 @@ import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { LnKTakeInventory } from "./helpers/LnKTakeInventory.js";
 import { LnKSystemutils} from "./utils/LnKSystemutils.js";
+import { LnKCompUtils } from "./compatibility/LnKCompUtils.js";
 
 const cPickPocketIcon = "fa-solid fa-hand";
 
@@ -277,6 +278,12 @@ class PickPocketManager {
 Hooks.on(cModuleName +  ".ObjectInteractionMenu", (pButtons, pObject, pLockType, pCharacter, pShowall) => {PickPocketManager.addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall);});
 
 Hooks.on(cModuleName + ".PerceptionRoll", (pActorID, pRoll, pUserID, pReplaceSkill = "") => {PickPocketManager.onPerceptionRoll(pActorID, pRoll, pUserID, pReplaceSkill)});
+
+Hooks.on(cModuleName + ".TokendblClick", (pToken) => {
+														if (game.settings.get(cModuleName, "dblClicktoLoot") && !LnKCompUtils.isItemPile(pToken)) {
+															PickPocketManager.onAtemptedPickPocket(pToken);
+														}
+		});
 
 //sockets
 export function PickPocketRequest(pData) {PickPocketManager.PickPocketRequest(pData)};
