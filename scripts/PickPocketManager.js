@@ -204,7 +204,7 @@ class PickPocketManager {
 	static async EvaluatePickPocket(pTarget, pCharacter, pData, pChatMessages = true) {
 		if (pData.isDead) {
 			if (LnKutils.isDead(pTarget) && game.settings.get(cModuleName, "deadActorsLootable")) {
-				LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {});
+				LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {lootFilter : game.settings.get(cModuleName, "lootFilter")});
 				
 				Hooks.call(cModuleName + ".PickPocket", pTarget, pCharacter, {Outcome : 2, Data : pData, useData: {userID : pData.userID}, UseType : cUPickPocket});
 			}
@@ -228,7 +228,7 @@ class PickPocketManager {
 				}
 				
 				if (vSuccessDegree >= 0) {
-					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {applyDCFilter : true, rollInfos : pData.rollInfos});
+					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {applyDCFilter : true, rollInfos : pData.rollInfos, lootFilter : game.settings.get(cModuleName, "lootFilter")});
 				}
 				
 				if (vSuccessDegree > 0) {

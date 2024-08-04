@@ -103,6 +103,13 @@ class LnKSystemutils {
 	
 	static systemSuccesdegree(pData) {} //returns the succes degree based on system
 	
+	//items
+	static isInContainer(pContainer, pItem) {} //returns if pItem is in Container
+	
+	static isContainer(pContainer) {} //returns if pContainer is container
+	
+	static containerContent(pContainer) {} //retruns content ids of pContainer
+	
 	//IMPLEMENTATIONS
 	//Identification	
 	static isPf2e() {
@@ -513,6 +520,43 @@ class LnKSystemutils {
 				}
 				break;
 		}
+	}
+	
+	//items
+	static isInContainer(pContainer, pItem) {
+		if (pContainer?.system) {
+			if (pContainer.system?.contents) {
+				return pContainer.contents?.has(pItem.id);
+			}
+			
+			if (pContainer.system?.container?.contents) {
+				return pContainer.system.container.contents.find(vEntry => vEntry.id == pItem.id);
+			}
+			
+			if (pContainer.contents) {
+				return pContainer.contents?.has(pItem.id);
+			}
+		}
+		
+		return false;
+	}
+	
+	static isContainer(pContainer) {
+		if (pContainer) {
+			if (pContainer.system?.contents) {
+				return true;
+			}
+			
+			if (pContainer.system?.container?.contents) {
+				return true;
+			}
+			
+			if (pContainer.contents) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
 

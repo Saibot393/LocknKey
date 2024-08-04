@@ -472,6 +472,20 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   });  
   
+  game.settings.register(cModuleName, "lootFilter", {
+	name: Translate("Settings.lootFilter.name"),
+	hint: Translate("Settings.lootFilter.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	choices: {
+		"off"   : Translate("Settings.lootFilter.options.rightKeys"),
+		"ifavailable" : Translate("Settings.lootFilter.options.ifavailable"),
+		"always" : Translate("Settings.lootFilter.options.always")
+	},
+	default: "off"
+  });  
+  
   game.settings.register(cModuleName, "PerceptionKeyWord", {
 	name: Translate("Settings.PerceptionKeyWord.name"),
 	hint: Translate("Settings.PerceptionKeyWord.descrp"),

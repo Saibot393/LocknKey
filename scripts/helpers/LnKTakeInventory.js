@@ -1,5 +1,6 @@
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
 import { LnKFlags } from "./LnKFlags.js";
+import { LnKSystemutils } from "../utils/LnKSystemutils.js";
 
 const cWindowID = "take-inventory-window";
 
@@ -21,9 +22,9 @@ class LnKTakeInventory {
 	static ItemTransferRequest(pTaker, pInventoryOwner, pTransferInfo, poptions) {} //answers a item transfer request
 	
 	//support
-	static TokenInventory(pToken) {} //returns Inventory of pToken
+	static TokenInventory(pToken, pLootFilter = "off") {} //returns Inventory of pToken
 	
-	static async InventoryInfo(pToken) {} //returns the Inventory infos of pToken
+	static async InventoryInfo(pToken, pLootFilter = "off") {} //returns the Inventory infos of pToken
 	
 	static InventoryFilter(pInventory, pRollInfos = {baseDC : 0, rollResult : 0, outcome : 0}) {} //filters the inventory based on roll result (including item dc mod)
 	
@@ -42,9 +43,9 @@ class LnKTakeInventory {
 	static GetCurrencyName(pKey, pActor = undefined) {} //returns the name of the currency belonging to pKey
 	
 	//IMPLEMENTATIONS
-	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {
+	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined, lootFilter : false}) {
 		if (pUserID.includes(game.user.id)) {
-			LnKTakeInventory.openTIWindowself(pInventoryOwner, await LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions);
+			LnKTakeInventory.openTIWindowself(pInventoryOwner, await LnKTakeInventory.InventoryInfo(pInventoryOwner, pOptions.lootFilter), pOptions);
 		}
 		else {
 			LnKTakeInventory.RequestTIWindow(pUserID, pInventoryOwner, pOptions);
@@ -53,7 +54,7 @@ class LnKTakeInventory {
 	
 	static async RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {
 		if (game.user.isGM) {
-			game.socket.emit("module."+cModuleName, {pFunction : "TIWindowRequest", pData : {pUserID : pUserID, pSceneID : pInventoryOwner.parent?.id, pInventoryOwnerID : pInventoryOwner?.id, pInventoryInfo : await LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions : pOptions}});
+			game.socket.emit("module."+cModuleName, {pFunction : "TIWindowRequest", pData : {pUserID : pUserID, pSceneID : pInventoryOwner.parent?.id, pInventoryOwnerID : pInventoryOwner?.id, pInventoryInfo : await LnKTakeInventory.InventoryInfo(pInventoryOwner, pOptions.lootFilter), pOptions : pOptions}});
 		}
 	}
 	
@@ -85,7 +86,7 @@ class LnKTakeInventory {
 	}
 	
 	//support
-	static TokenInventory(pToken) {
+	static TokenInventory(pToken, pLootFilter = false) {
 		//const cITypeWhiteList = ["armor", "backpack", "book", "consumable", "equipment", "item", "loot", "tool", "treasure", "weapon", "equippableItem"];
 		let vValidTypes = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase());
 
@@ -99,6 +100,14 @@ class LnKTakeInventory {
 			vInventory = vInventory.filter(vItemInfo => vValidTypes.includes(vItemInfo.type));
 		}
 		
+		if (pLootFilter != "off") {
+			let vLootContainer = vInventory.filter(vItemInfo => ["loot", "Loot"].includes(vItemInfo.name) && LnKSystemUtils.isContainer(vItemInfo));
+			
+			if (vLootContainer.length || pLootFilter == "always") {
+				vInventory = vInventory.filter(vItemInfo => vLootContainer.find(vContainer => LnKSystemUtils.isInContainer(vContainer, vItemInfo)));
+			}
+		}
+		
 		/*
 		if (pToken.actor?.items) {
 			return pToken.actor.items.filter(vItem => cITypeWhiteList.includes(vItem.type));
@@ -108,8 +117,8 @@ class LnKTakeInventory {
 		return vInventory;
 	}
 	
-	static async InventoryInfo(pToken) {
-		let vInventory = LnKTakeInventory.TokenInventory(pToken);
+	static async InventoryInfo(pToken, pLootFilter = false) {
+		let vInventory = LnKTakeInventory.TokenInventory(pToken, pLootFilter);
 		
 		let vInventoryInfos = [];
 		
