@@ -69,6 +69,10 @@ class PickPocketManager {
 			if (await LnKFlags.Canbepickpocketed(pTarget)) {
 				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
 					let vRollFormula = LnKFlags.PickPocketFormula(pCharacter);
+					
+					if (LnKFlags.hasLootFormula(pTarget)) {
+						vRollFormula = LnKFlags.LootFormula(pTarget);
+					}
 						
 					if (!LnKFlags.PickPocketFormulaOverrides(pCharacter)) {
 						vRollFormula = LnKutils.StitchFormula(LnKutils.PickPocketformulaWorld(), vRollFormula);
