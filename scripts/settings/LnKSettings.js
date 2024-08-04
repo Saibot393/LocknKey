@@ -543,7 +543,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: true
-  }); 
+  });  
   
   //Keys (GM)
   game.keybindings.register(cModuleName, "ToggleLock", {
@@ -678,5 +678,5 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
 	}
 	
-	pHTML.find('select[name="' + cModuleName + '.FreeCircumventButtonPosition"]').closest(".form-group").after(vnewHTML);
+	pHTML.find('select[name="' + cModuleName + '.dblClicktoLoot"]').closest(".form-group").after(vnewHTML);
 });

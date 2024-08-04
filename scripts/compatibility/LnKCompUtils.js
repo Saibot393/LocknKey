@@ -92,10 +92,10 @@ class LnKCompUtils {
 	static async Locktype(pDocument) {	
 		if (pDocument && pDocument.actor) {
 			if (LnKCompUtils.isactiveModule(cItemPiles)) {
-				if (pDocument.flags[cItemPiles]?.data.enabled && cIPtypes.includes(pDocument.getFlag(cItemPiles, "data.type"))) {
+				if (pDocument.flags[cItemPiles]?.data?.enabled && cIPtypes.includes(pDocument.getFlag(cItemPiles, "data.type"))) {
 					return cLockTypeLootIP;
 				}
-				if (pDocument.actor.flags[cItemPiles]?.data.enabled && cIPtypes.includes(pDocument.actor.getFlag(cItemPiles, "data.type"))) {
+				if (pDocument.actor?.flags[cItemPiles]?.data?.enabled && cIPtypes.includes(pDocument.actor.getFlag(cItemPiles, "data.type"))) {
 					return cLockTypeLootIP;
 				}
 			}

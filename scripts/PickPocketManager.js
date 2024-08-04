@@ -3,7 +3,7 @@ import { LnKFlags, cCustomPopup } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { LnKTakeInventory } from "./helpers/LnKTakeInventory.js";
-import { LnKSystemutils} from "./utils/LnKSystemutils.js";
+import { LnKSystemutils, cPf2eLoottype} from "./utils/LnKSystemutils.js";
 import { LnKCompUtils } from "./compatibility/LnKCompUtils.js";
 
 const cPickPocketIcon = "fa-solid fa-hand";
@@ -280,10 +280,7 @@ Hooks.on(cModuleName +  ".ObjectInteractionMenu", (pButtons, pObject, pLockType,
 Hooks.on(cModuleName + ".PerceptionRoll", (pActorID, pRoll, pUserID, pReplaceSkill = "") => {PickPocketManager.onPerceptionRoll(pActorID, pRoll, pUserID, pReplaceSkill)});
 
 Hooks.on(cModuleName + ".TokendblClick", (pToken) => {
-														console.log(!pToken.isOwner);
-														console.log(game.settings.get(cModuleName, "dblClicktoLoot"));
-														console.log(!LnKCompUtils.isItemPile(pToken));
-														if (!pToken.isOwner && game.settings.get(cModuleName, "dblClicktoLoot") && !LnKCompUtils.isItemPile(pToken)) {
+														if (!pToken.isOwner && game.settings.get(cModuleName, "dblClicktoLoot") && !LnKCompUtils.isItemPile(pToken) && pToken.type != cPf2eLoottype) {
 															PickPocketManager.onAtemptedPickPocket(pToken);
 														}
 		});

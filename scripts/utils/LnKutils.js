@@ -713,7 +713,7 @@ class LnKutils {
 	}
 	
 	static isDead(pActor) {
-		if (LnKCompUtils.isItemPile(pActor)) {
+		if (LnKCompUtils.isItemPile(pActor) || pActor.type == cPf2eLoottype) {
 			return false;
 		}
 		

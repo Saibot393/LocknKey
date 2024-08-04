@@ -31,6 +31,8 @@ class LnKMouseHandler {
 	
 	static RegisterCanvasRightClickv12() {} //register Canvas Right click
 	
+	static RegisterCanvasDBLClick() {} //register Canvas dbl click
+	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {} //called if Door is left clicked
 	
@@ -61,6 +63,8 @@ class LnKMouseHandler {
 		
 		LnKMouseHandler.RegisterCanvasLeftClick();
 		LnKMouseHandler.RegisterCanvasRightClick();
+		
+		
 	}
 	
 	static RegisterClicksv12() {
@@ -257,6 +261,18 @@ class LnKMouseHandler {
 		}
 	}
 	
+	static RegisterCanvasDBLClick() {
+		let vOldClick = document.querySelector("canvas#board").ondblclick;
+		
+		document.querySelector("canvas#board").ondblclick = (pEvent) => {
+			if (LnKMouseHandler.onCanvasDBLClick(pEvent)) {
+				if (vOldClick) {
+					vOldClick(pEvent);
+				}
+			}
+		}
+	}
+	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {
 		let vOldCall = Hooks.callAll(cModuleName + "." + "DoorLClick", pWall.document, FCore.keysofevent(pDoorEvent));
@@ -300,6 +316,17 @@ class LnKMouseHandler {
 		return true;
 	}
 	
+	static onCanvasDBLClick(pEvent) {
+		Hooks.callAll(cModuleName + "." + "CanvasdblClick", canvas, canvas.mousePosition, pEvent);
+		
+		let vTokenHover = canvas.tokens.hover;
+		if (vTokenHover && !vTokenHover._canView(game.user)) {
+			Hooks.callAll(cModuleName + "." + "TokendblClick", vTokenHover.document, FCore.keysofevent(pEvent));
+		}
+		
+		return true;
+	}
+	
 	//additional
 	static canHUD(pEvent, pToken) { //adapted from core
 		if ( canvas.controls.ruler.active ) return false;
@@ -318,6 +345,8 @@ Hooks.once("ready", function() {
 	if (game.release.generation >= 12) {
 		LnKMouseHandler.RegisterClicksv12();
 	}
+	
+	LnKMouseHandler.RegisterCanvasDBLClick();
 });
 
 Hooks.on(cModuleName + "." + "CanvasClick", (pCanvas, pPosition) => {LnKMouseHandler.onCanvasClick(pCanvas, pPosition)});

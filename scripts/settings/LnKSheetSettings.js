@@ -96,6 +96,7 @@ class LnKSheetSettings {
 							</a>
 							`; //tab button HTML
 				
+			vTabbar.append(vTabButtonHTML);	
 			Array.from(vTabbar.find(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
 			vTabbar.find(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
 			

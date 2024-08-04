@@ -76,12 +76,13 @@ class LockManager {
 	//IMPLEMENTATIONS
 	//basics
 	static async useLockKey(pLock, pCharacter, pKeyItemIDs, puseData = {}) {
+		console.log(pKeyItemIDs);
 		let vKeys = (await LnKutils.TokenInventory(pCharacter)).filter(vItem => pKeyItemIDs.includes(vItem.id));
 		
 		let vOutcome = 0;
 		
 		if (vKeys.length == pKeyItemIDs.length) {
-			if (LnKFlags.matchingIDKeys(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")).length) {
+			if (LnKFlags.matchingIDKeysandmode(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")).length) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
 					//lock is jammed and cant be opened by key
 					LnKPopups.TextPopUpID(pLock, "Lockisjammed"); //MESSAGE POPUP
@@ -92,7 +93,7 @@ class LockManager {
 					
 					vOutcome = 1;
 					
-					for (vKey of vKeys) {
+					for (let vKey of vKeys) {
 						if (LnKFlags.RemoveKeyonUse(vKey)) {
 							//remove one from stack, which will also delete if no key left
 							LnKutils.removeoneItem(vKey, pCharacter);
@@ -598,7 +599,7 @@ class LockManager {
 					await LnKFlags.makeLockable(pLock);
 				}
 				
-				switch (game.settings.get("autoResetAttempts")) {
+				switch (game.settings.get(cModuleName, "autoResetAttempts")) {
 					case "lockchange":
 						LnKFlags.resetLPAttempts(pLock);
 						break;

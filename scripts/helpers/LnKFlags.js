@@ -997,11 +997,11 @@ class LnKFlags {
 	}
 	
 	static matchingIDKeysandmode(pKeyObjects, pLockObject, pConsiderKeyName = false) {	
-		let vKeyObjects = pKeyObjects.filter(vObject => this.#IDKeysFlag(pKeyObject).length);
+		let vKeyObjects = pKeyObjects.filter(pKeyObject => this.#IDKeysFlag(pKeyObject).length);
 		
 		let vKeyIDs = {};
 		
-		for (vKey of vKeyObjects) {
+		for (let vKey of vKeyObjects) {
 			let vIDs = this.#IDKeysFlag(vKey).split(cDelimiter);
 			
 			if (pConsiderKeyName) {
@@ -1011,22 +1011,22 @@ class LnKFlags {
 			vKeyIDs[vKey.id] = vIDs;
 		}
 		
-		let pLockObjectIDs = this.#IDKeysFlag(pKeyObject).split(cDelimiter);
+		let pLockObjectIDs = this.#IDKeysFlag(pLockObject).split(cDelimiter);
 		
-		if (vIDset.length) {
+		if (pLockObjectIDs.length) {
 			for (let vIDset of pLockObjectIDs) {
 				let vandIDs = vIDset.split(candDelimiter);
 				
 				let vrequiredKeys = [];
 				
-				let vmatch = true;
+				let vmatch = vIDset.length > 0;
 				
 				for (let vID of vandIDs) {
 					if (vmatch) {
 						vmatch = Object.keys(vKeyIDs).find(vKey => vKeyIDs[vKey].includes(vID));
 						
 						if (vmatch) {
-							vrequiredKeys.push(vrequiredKeys);
+							vrequiredKeys.push(vmatch);
 						}
 					}
 				}
