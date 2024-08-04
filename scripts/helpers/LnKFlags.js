@@ -684,7 +684,7 @@ class LnKFlags {
 			return await LnKutils.CalculatePPDefaultDC(pObject);//game.settings.get(cModuleName, "PickPocketDefaultDC"); //default if anything fails	
 		}
 		
-		if (pObject.documentName == "Token") {
+		if (pObject.documentName == "Item") {
 			return 0; //default for items
 		}
 	}
@@ -1477,7 +1477,7 @@ class LnKFlags {
 	}
 	
 	static async PickPocketItemDC(pItem) {
-		let vDC = await this.#PickPocketDCFlag(pItem);
+		let vDC = Number(await this.#PickPocketDCFlag(pItem));
 		
 		return vDC;
 	}

@@ -10,9 +10,9 @@ const cNumCurrency = "#currency";
 
 class LnKTakeInventory {
 	//DECLARATIONS
-	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {} //opens a take inventory for puser to take items from pInventoryOwner
+	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {} //opens a take inventory for puser to take items from pInventoryOwner
 	
-	static RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {} //starts a sockets request for user pUserID to open a TI window
+	static async RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {} //starts a sockets request for user pUserID to open a TI window
 	
 	static TIWindowRequest(pUserID, pSceneID, pInventoryOwnerID, pInventoryInfo, pOptions = {}) {} //answers a socket request for pUserID to open a TI window
 	
@@ -23,7 +23,7 @@ class LnKTakeInventory {
 	//support
 	static TokenInventory(pToken) {} //returns Inventory of pToken
 	
-	static InventoryInfo(pToken) {} //returns the Inventory infos of pToken
+	static async InventoryInfo(pToken) {} //returns the Inventory infos of pToken
 	
 	static InventoryFilter(pInventory, pRollInfos = {baseDC : 0, rollResult : 0, outcome : 0}) {} //filters the inventory based on roll result (including item dc mod)
 	
@@ -42,18 +42,18 @@ class LnKTakeInventory {
 	static GetCurrencyName(pKey, pActor = undefined) {} //returns the name of the currency belonging to pKey
 	
 	//IMPLEMENTATIONS
-	static openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {
+	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {
 		if (pUserID.includes(game.user.id)) {
-			LnKTakeInventory.openTIWindowself(pInventoryOwner, LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions);
+			LnKTakeInventory.openTIWindowself(pInventoryOwner, await LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions);
 		}
 		else {
 			LnKTakeInventory.RequestTIWindow(pUserID, pInventoryOwner, pOptions);
 		}
 	}
 	
-	static RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {
+	static async RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {
 		if (game.user.isGM) {
-			game.socket.emit("module."+cModuleName, {pFunction : "TIWindowRequest", pData : {pUserID : pUserID, pSceneID : pInventoryOwner.parent?.id, pInventoryOwnerID : pInventoryOwner?.id, pInventoryInfo : LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions : pOptions}});
+			game.socket.emit("module."+cModuleName, {pFunction : "TIWindowRequest", pData : {pUserID : pUserID, pSceneID : pInventoryOwner.parent?.id, pInventoryOwnerID : pInventoryOwner?.id, pInventoryInfo : await LnKTakeInventory.InventoryInfo(pInventoryOwner), pOptions : pOptions}});
 		}
 	}
 	
@@ -73,7 +73,7 @@ class LnKTakeInventory {
 			vTaker = LnKTakeInventory.CurrentToken();
 		}
 		
-		new TakeInventoryWindow(vTaker, pInventoryOwner, pInventoryInfo, pOptions).render(true);
+		new TakeInventoryWindow(vTaker, pInventoryOwner, pInventoryInfo, pOptions).conditionalrender(true);
 	}
 	
 	static ItemTransferRequest(pTaker, pInventoryOwner, pTransferInfo, pOptions) {
@@ -108,7 +108,7 @@ class LnKTakeInventory {
 		return vInventory;
 	}
 	
-	static InventoryInfo(pToken) {
+	static async InventoryInfo(pToken) {
 		let vInventory = LnKTakeInventory.TokenInventory(pToken);
 		
 		let vInventoryInfos = [];
@@ -181,7 +181,7 @@ class LnKTakeInventory {
 										img : vInventory[i].img,
 										id : vInventory[i].id,
 										quantity : vQuantity,
-										dcmod : LnKFlags.PickPocketItemDC(vInventory[i])
+										dcmod : await LnKFlags.PickPocketItemDC(vInventory[i])
 									});
 			}
 		}
@@ -192,22 +192,22 @@ class LnKTakeInventory {
 	static InventoryFilter(pInventory, pRollInfos = {baseDC : 0, rollResult : 0, outcome : 0}) {
 		let vInventory = pInventory;
 		
-		switch (pResultInfos.outcome) {
+		switch (pRollInfos.outcome) {
 			case -1:
 				//crit fail, no loot
 				return [];
 				break;
 			case 0:
 				//std fail, apply item dc mods
-				return vInventory.filter(vItemInfo => vItemInfo.dcmod < 0 && (vItemInfo.dcmod + dcmod <= pResultInfos.rollResult));
+				return vInventory.filter(vItemInfo => vItemInfo.dcmod < 0 && (vItemInfo.dcmod + pRollInfos.baseDC <= pRollInfos.rollResult));
 				break;
 			case 1:
 				//std success, apply item dc mods
-				return vInventory.filter(vItemInfo => vItemInfo.dcmod == 0 || (vItemInfo.dcmod + dcmod <= pResultInfos.rollResult));
+				return vInventory.filter(vItemInfo => vItemInfo.dcmod == 0 || (vItemInfo.dcmod + pRollInfos.baseDC <= pRollInfos.rollResult));
 				break;
 			case 2:
 				//crit success, loot everything with dc summ under or equal to crit threshold
-				return vInventory.filter(vItemInfo => vItemInfo.dcmod + dcmod <= game.settings.get(cModuleName, "PickPocketDCCritThreshold"));
+				return vInventory.filter(vItemInfo => vItemInfo.dcmod + pRollInfos.baseDC <= game.settings.get(cModuleName, "PickPocketDCCritThreshold"));
 				break;
 		}
 	}
@@ -432,16 +432,13 @@ class TakeInventoryWindow extends Application {
 		}
 		
 		this.vInventoryInfo = pInventoryInfo;
+		this.vrollInfos = pOptions.rollInfos;
 
-		if (pOptions.applyDCFilter && pOptions.rollInfos) {
-			this.vInventoryInfo = LnKTakeInventory.InventoryFilter(this.vInventoryInfo, pOptions.rollInfos);
+		if (pOptions.applyDCFilter && this.vrollInfos) {
+			this.vInventoryInfo = LnKTakeInventory.InventoryFilter(this.vInventoryInfo, this.vrollInfos);
 		}
 		
 		this.vOptions = pOptions;
-		
-		if (this.vInventoryInfo.length == 0) {
-			this.close();
-		}
 	}
 	
 	//app stuff
@@ -531,6 +528,12 @@ class TakeInventoryWindow extends Application {
 	
 	async _updateObject(pEvent, pData) {
 	}	
+	
+	conditionalrender(pForce = false, pOptions = {}) {
+		if (this.vInventoryInfo.length > 0 || this.vrollInfos?.outcome > 0) {
+			this.render(pForce, pOptions);
+		}
+	}
 	
 	//DECLARATIONs
 	RequestItemTransfer() {} //requests the item transfer as defined

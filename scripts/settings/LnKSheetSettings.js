@@ -13,7 +13,7 @@ const cLnKpickpocketIcon = "fa-user-ninja";
 
 class LnKSheetSettings {
 	//DECLARATIONS	
-	static ItemSheetSettings(pApp, pHTML, pData) {} //add settings to key item sheet
+	static async ItemSheetSettings(pApp, pHTML, pData) {} //add settings to key item sheet
 	
 	static WallSheetSettings(pApp, pHTML, pData) {} //add settinsg to wall sheet
 	
@@ -40,7 +40,7 @@ class LnKSheetSettings {
 	
 	//IMPLEMENTATIONS
 	
-	static ItemSheetSettings(pApp, pHTML, pData) {
+	static async ItemSheetSettings(pApp, pHTML, pData) {
 		let vLockSettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)
 			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.object)));
 			
@@ -96,7 +96,8 @@ class LnKSheetSettings {
 							</a>
 							`; //tab button HTML
 				
-			vTabbar.append(vTabButtonHTML);	
+			Array.from(vTabbar.find(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
+			vTabbar.find(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
 			
 			if (!pHTML.find(`div.${cModuleName}`).length) {
 				let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
@@ -109,7 +110,7 @@ class LnKSheetSettings {
 														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp.key"), 
 														vtype : "text", 
 														vwide : true,
-														vvalue : LnKFlags.PickPocketItemDC(pApp.object),
+														vvalue : await LnKFlags.PickPocketItemDC(pApp.object),
 														vflagname : cPickPocketDCF
 														}, `div.${cModuleName}`);	
 			}
@@ -758,12 +759,13 @@ class LnKSheetSettings {
 	static RegisterItemSheetTabChange() {
 		//register onChangeTab (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
+			libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { console.log(args), this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
 		}
 		else {
 			const vOldSheetCall = ItemSheet.prototype._onChangeTab;
 			
 			ItemSheet.prototype._onChangeTab = async function (...args) {
+				console.log(args);
 				this.LnKTabactive = (args[2] == cModuleName); //args[2] is tab name
 				
 				let vSheetCallBuffer = vOldSheetCall.bind(this);
@@ -803,6 +805,8 @@ Hooks.once("ready", () => {
 	}
 });
 
+/* replaced in v3.1.0
 Hooks.once("init", function() {
 	LnKSheetSettings.RegisterItemSheetTabChange();
 });
+*/
