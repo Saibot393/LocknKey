@@ -76,12 +76,15 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Pick pocket item types: to filter which item types can be pick pocketed
 - Mention Pick Pocket details: to add more informations to the pick pocket chat messages
 - Dead tokens lootable: to make all dead tokens (except item piles) lootable without having to roll
+- Loot filter to limit items that can be looted via pick pocketing to items in bags/containers called "Loot"
 - Perception key-word: to set they key-word used to recognise perception rolls
+- Mention Pick Pocket details: to set if more details should be mentioned when pick pocketing
 #### Client:
 - Control sceme: to either use the standard controls to interact with doors or to get a pop up when right-clicking a lock
 - Message popups: to activate some popups on certain actions
 - Play lock sounds: to activate sounds when tokens are locked/unlocked
 - Lock circumvention indicator position: to set where in the token HUD the Lock circumvention indicator should be displayed
+- Double click: to pick pocket to adjust controls
 #### Keys(separate tab):
 - ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
 - Remove key on use: to remove the key once it has been used (or reduce the stack by one)
@@ -91,7 +94,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Lockable: if this token can be locked
 - Lock on close[Wall only]: to lock this door when it is closed
 - [Token only] Locked: if this token is locked
-- ID keys: IDs which this key can lock/unlock seperated with ";". You can add any string of characters to this list.
+- ID keys: IDs which this key can lock/unlock seperated with ";" (or ";" if multiple keys are required). You can add any string of characters to this list.
 - Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
 - Password changeable: to allow players to change this locks password if they have a valid password (only useable with the popup-menu control sceme)
 - Identities: to use identities (IDs and Names of Tokens/Actors/User) to unlock this lock
@@ -115,7 +118,8 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Pick pocket formula to add to the world pick pocketing formula
 - Override Pick pocket lock formula to verride world pick pocket formula
 - Replacement items[Items only]: to set items that get consumed instead of this item when a roll fails
-- Pick pocket DC[Tokens only]: to set the DC of pick pocket checks against this token
+- Custom loot formula[Tokens only]: to set a custom formula to pick pocket this token
+- Pick pocket DC: to set the DC of pick pocket checks against this token (or modifier of such for this item)
 
 ### Compatibility:
 
