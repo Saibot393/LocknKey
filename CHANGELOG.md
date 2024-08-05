@@ -1,13 +1,14 @@
 ## v3.1.0 (unreleased)
-- Added item setting Pick pocket DC to adjust the pick pocket DC per item
+- Added item setting Pick pocket DC mod to adjust the pick pocket DC per item
 - Key IDs for locks can now be seperated by "&" to require mutliple keys at the same time
-- Added token setting custom Pick pocket formula to override the gloabel pick pocket formula
+- Added token setting Custom loot formula to override the gloabel pick pocket formula
 - Added world setting Show DCs in interaction menu to add the DCs of available checks to the interaction menu
-- Added world setting Reset lock pick attempts to set the rule for when lock pick attempts are to be reset
-- Added world setting Maximum pick pocket crit DC to set the maximum DC for pickpocketing that can be overcome by crits
+- Added world setting Auto reset lock pick attempts to set the rule for when lock pick attempts are to be reset
+- Added world setting Pick pocket crit DC threshold to set the maximum DC for pickpocketing that can be overcome by crits
 - Added world setting Pick pocket item types to filter which item types can be pick pocketed
 - Added world setting Loot filter to limit items that can be looted via pick pocketing to items in bags/containers called "Loot"
 - Added client setting Double click to pick pocket to adjust controls
+- Some bug fixes
 
 ## v3.0.6
 - Fixed small bug in @skills section for roll formulas
