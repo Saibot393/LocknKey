@@ -39,6 +39,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Default lock sound: to set the default sound used for Doors and lockable Tokens
 - Alway open owned: to allow players to open their owned tokens, even if they are locked
 - Allow all interactions: to allow even impossible actions (pick, break, custom, pickpocket)
+- Show DCs in interaction menu: to add the DCs of available checks to the interaction menu
 - Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
 - Type of key items: to change the item type of newly created keys
@@ -56,6 +57,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Jam lock on critical lockpick fail: to automatically set locks as jammed
 - Keys can't be used on jammed locks: to prevent matching keys from being used on jammed locks
 - Default Lock pick attempts to set with how many lock pick attempts a lock normally starts
+- Auto reset lock pick attempts: to set the rule for when lock pick attempts are to be reset
 - Lockpick roll formula: the dice formula used for lockpick rolls
 - Default lock dc: to set the lock dc of nely created locks
 - Break lock roll formula: the dice formula used for break lock rolls
@@ -66,10 +68,12 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
 - Multi-success during combat only: to disable required multi success outside of combat
 - Lock circumvention keywords to set keywords used to identify effects that allow players to circumvent locks (e.g. the spell "Knock")
-- Pick pocket formula to set the formula used for pick pocketing
-- Pick pocket default DC to set the default DC for pick pocketing
+- Pick pocket formula: to set the formula used for pick pocketing
+- Pick pocket default DC: to set the default DC for pick pocketing
 - Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
+- Pick pocket crit DC threshold: to set the maximum DC for pickpocketing that can be overcome by crits
 - Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
+- Pick pocket item types: to filter which item types can be pick pocketed
 - Mention Pick Pocket details: to add more informations to the pick pocket chat messages
 - Dead tokens lootable: to make all dead tokens (except item piles) lootable without having to roll
 - Perception key-word: to set they key-word used to recognise perception rolls
