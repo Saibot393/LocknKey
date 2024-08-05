@@ -1,5 +1,5 @@
 ## v3.1.0 (unreleased)
-- Added item setting Pick pocket DC to adjust the pick pocket DC per item
+- Added item setting Pick pocket DC mod to adjust the pick pocket DC per item
 - Key IDs for locks can now be seperated by "&" to require mutliple keys at the same time
 - Added token setting custom Pick pocket formula to override the gloabel pick pocket formula
 - Added world setting Show DCs in interaction menu to add the DCs of available checks to the interaction menu
