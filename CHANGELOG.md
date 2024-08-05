@@ -3,7 +3,7 @@
 - Key IDs for locks can now be seperated by "&" to require mutliple keys at the same time
 - Added token setting Custom loot formula to override the gloabel pick pocket formula
 - Added world setting Show DCs in interaction menu to add the DCs of available checks to the interaction menu
-- Added world setting Reset lock pick attempts to set the rule for when lock pick attempts are to be reset
+- Added world setting Auto reset lock pick attempts to set the rule for when lock pick attempts are to be reset
 - Added world setting Maximum pick pocket crit DC to set the maximum DC for pickpocketing that can be overcome by crits
 - Added world setting Pick pocket item types to filter which item types can be pick pocketed
 - Added world setting Loot filter to limit items that can be looted via pick pocketing to items in bags/containers called "Loot"
