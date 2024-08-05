@@ -425,16 +425,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Number,
 	default: -1
-  });   
-  
-  game.settings.register(cModuleName, "PickPocketDCCritThreshold", {
-	name: Translate("Settings.PickPocketDCCritThreshold.name"),
-	hint: Translate("Settings.PickPocketDCCritThreshold.descrp"),
-	scope: "world",
-	config: true,
-	type: Number,
-	default: 99
-  });   
+  });     
   
   game.settings.register(cModuleName, "PickPocketDefaultDCFormula", {
 	name: Translate("Settings.PickPocketDefaultDCFormula.name"),
@@ -445,14 +436,14 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: ""
   });  
   
-  game.settings.register(cModuleName, "PickPocketItemTypes", {
-	name: Translate("Settings.PickPocketItemTypes.name"),
-	hint: Translate("Settings.PickPocketItemTypes.descrp"),
+  game.settings.register(cModuleName, "PickPocketDCCritThreshold", {
+	name: Translate("Settings.PickPocketDCCritThreshold.name"),
+	hint: Translate("Settings.PickPocketDCCritThreshold.descrp"),
 	scope: "world",
 	config: true,
-	type: String,
-	default: LnKSystemutils.SystemPickPocketdefaultTypes()
-  });  
+	type: Number,
+	default: 99
+  }); 
   
   game.settings.register(cModuleName, "AutoUpdatePickPocketDC", {
 	name: Translate("Settings.AutoUpdatePickPocketDC.name"),
@@ -461,6 +452,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: false
+  });  
+  
+  game.settings.register(cModuleName, "PickPocketItemTypes", {
+	name: Translate("Settings.PickPocketItemTypes.name"),
+	hint: Translate("Settings.PickPocketItemTypes.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	default: LnKSystemutils.SystemPickPocketdefaultTypes()
   });  
   
   game.settings.register(cModuleName, "deadActorsLootable", {
@@ -479,7 +479,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: String,
 	choices: {
-		"off"   : Translate("Settings.lootFilter.options.rightKeys"),
+		"off"   : Translate("Settings.lootFilter.options.off"),
 		"ifavailable" : Translate("Settings.lootFilter.options.ifavailable"),
 		"always" : Translate("Settings.lootFilter.options.always")
 	},

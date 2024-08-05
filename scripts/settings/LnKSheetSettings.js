@@ -108,7 +108,7 @@ class LnKSheetSettings {
 			if (vLootSettings) {
 				//loot settings
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".name"), 
-														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp.key"), 
+														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp"), 
 														vtype : "text", 
 														vwide : true,
 														vvalue : await LnKFlags.PickPocketItemDC(pApp.object),
@@ -592,7 +592,7 @@ class LnKSheetSettings {
 													
 			//Loot formula for this token
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLootFormulaF +".name"), 
-													vhint : Translate("SheetSettings."+ cLootFormulaF +".descrp.token"), 
+													vhint : Translate("SheetSettings."+ cLootFormulaF +".descrp"), 
 													vtype : "text", 
 													vwide : true,
 													vvalue : LnKFlags.LootFormula(pApp.object),

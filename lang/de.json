@@ -173,6 +173,11 @@
 				"descrp"				: "Ob alle Interaktionen (knacken, brechen, eigene, Taschendiebstahl) erlaubt sein soll, auch bei unmöglichen SGs"					
 			},	
 			
+			"showinteractionDCs" : {
+				"name" 					: "Interaktions SGs anzeigen",
+				"descrp"				: "Ob im Interaktionsmenu die SGs angezeigt werden sollen"					
+			},
+			
 			"showallLockInteractions" : {
 				"name" 					: "Zeige alle Schloss Interaktionen",
 				"descrp"				: "Zeige immer alles Schloss Interaktionen (für die bösen SLs unter euch)"					
@@ -274,9 +279,19 @@
 			},
 			
 			"defaultLPAttempts" : {
-				"name"					: "Default Lock pick attempts",
-				"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
-			},			
+				"name"					: "Standard Schlossknack Versuche",
+				"descrp"				: "Die standard Anzahl an Schlossknack Versuchen bevor das Schloss unknackbar wird (-1 für unbegrenzte Versuche)"
+			},	
+			
+			"autoResetAttempts" : {
+				"name"					: "Auto Schlossknack Versuche zurück setzen",
+				"descrp"				: "Wann Schlossknack Versuche zurück gesetzt werden sollen",
+				"options" : {
+					"off"				: "niemals",
+					"lockchange"		: "bei Schloss Status Änderung",
+					"lpsuccess"			: "bei Schlossknack Erfolg"
+				}
+			},		
 			
 			"LockPickFormula" : {
 				"name" 					: "Schlossknack Wurfformel",
@@ -348,19 +363,39 @@
 				"descrp"				: "Die standard formel welche für Taschendiebstahl standard SGs benutzt wird (überschreibt andere Standards)"				
 			},
 			
+			"PickPocketDCCritThreshold" : {
+				"name" 					: "Taschendiebstahl SG Krit-Schwelle",
+				"descrp"				: "Maximaler SG der von kritischen Taschendiebstahlswürfen überkommen werden kann"				
+			},
+			
 			"AutoUpdatePickPocketDC" : {
 				"name" 					: "Taschendiebstahl SG automatisch aktualisieren",
 				"descrp"				: "Ob der Taschendiebstahl SG automatisch aktualisiert werden soll wenn Wahrnehmung gewürfelt wird"				
 			},
 			
-			"MentionPickpocketDetails" : {
-				"name" 					: "Erwähne Taschendiebstahl Details",
-				"descrp"				: "Ob der Name des Ziels und der SG bei Taschendiebstahls Nachrichten erwähnt werden soll"				
+			"PickPocketItemTypes" : {
+				"name" 					: "Stehlbare Gegenstandstypen",
+				"descrp"				: "Gegenstandstypen welche gestohlen werden können (mit \";\" getrennt, \"#currency\" for numerische Währungen)"				
 			},
 			
 			"deadActorsLootable" : {
 				"name"					: "Tote Figuren lootbar",
 				"descrp"				: "Ob Tote Figuren ohne Wurf lootbar/bestehlbar seien sollen"	
+			},
+			
+			"lootFilter" : {
+				"name"					: "Beute Filter",
+				"descrp"				: "Ob nur Gegenstände welche sich in einer Tasche oder einem Container namens \"Loot\" befinden Stehlbar sein sollen (nur für manche Systeme unterstützt)",
+				"options" : {
+					"off"				: "aus",
+					"ifavailable"		: "wenn loot verfügbar",
+					"always"			: "immer"
+				}
+			},
+			
+			"MentionPickpocketDetails" : {
+				"name" 					: "Erwähne Taschendiebstahl Details",
+				"descrp"				: "Ob der Name des Ziels und der SG bei Taschendiebstahls Nachrichten erwähnt werden soll"				
 			},
 			
 			"PerceptionKeyWord" : {
@@ -395,6 +430,11 @@
 					"left"				: "links",
 					"right"				: "rechts"
 				}
+			},
+			
+			"dblClicktoLoot" : {
+				"name"					: "Doppelklick für Taschendiebstahl",
+				"descrp"				: "Ob eine Figur zu Doppelklicken einen Taschendiebstahl versuchen soll"
 			}
 		},
 		
@@ -469,7 +509,7 @@
 			"IDKeysFlag" : {
 				"name" 					: "ID Schlüssel",
 				"descrp" : {
-					"lock" 				: "IDs welche dieses Schloss auf-/abschließen können (mit \";\" getrennt)",
+					"lock" 				: "IDs welche dieses Schloss auf-/abschließen können (mit \";\" getrennt, \"&\" für mehrer benötigte Schlüssel)",
 					"key" 				: "IDs welche dieser Schlüssel auf-/abschließen kann (mit \";\" getrennt)"
 				}
 			},
@@ -639,9 +679,18 @@
 				}				
 			},
 			
+			"LootFormulaFlag" : {
+				"name" 					: "Eigene Loot Formel",
+				"descrp"  				: "Ersatz für die Taschendiebstahl Formel, wenn diese Figure bestohlen wird"
+			},
+			
 			"PickPocketDCFlag" : {
 				"name" 					: "Taschendiebstahl SG",
-				"descrp"  				: "Der Schwierigkeitsgrad um diesen Charakter zu bestehlen (-1 für unmöglich)"			
+				"descrp"  				: "Der Schwierigkeitsgrad um diesen Charakter zu bestehlen (-1 für unmöglich)",
+				"item" : {
+					"name"				: "Taschendiebstahl SG modifikator",
+					"descrp"			: "Der Modifikator für den SG wenn dieser Gegenstand gestohlen wird"
+				}	
 			},
 			
 			"ReplacementItemFlag" : {

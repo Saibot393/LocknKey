@@ -171,6 +171,11 @@
 			"allowallInteractions" : {
 				"name" 					: "Allow all interactions",
 				"descrp"				: "If all interactions (pick, break, custom, pickpocket) should be allows even for impossible DCs"					
+			},
+
+			"showinteractionDCs" : {
+				"name" 					: "Show interaction DCs",
+				"descrp"				: "If the interaction DCs should be shown in the interaction menu"					
 			},			
 			
 			"showallLockInteractions" : {
@@ -278,6 +283,16 @@
 				"descrp"				: "The default amount of Lock pick attempts before the lock becomes unpickable (-1 for unlimited attempts)"
 			},
 			
+			"autoResetAttempts" : {
+				"name"					: "Auto reset lock pick attempts",
+				"descrp"				: "When the lock pick attempts should be reset",
+				"options" : {
+					"off"				: "never",
+					"lockchange"		: "on lock state change",
+					"lpsuccess"			: "on lock pick success"
+				}
+			},
+			
 			"LockPickFormula" : {
 				"name" 					: "Lockpick roll formula",
 				"descrp"				: "The formula which is used for dice rolls when picking a lock (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
@@ -348,19 +363,39 @@
 				"descrp"				: "The default formula used to calculate the Pick Pocket DC (overrides other defaults)"				
 			},
 			
+			"PickPocketDCCritThreshold" : {
+				"name" 					: "Pick pocket crit DC threshold",
+				"descrp"				: "Maximum SG for pick pocketing that can be overcome by critical successes"				
+			},
+			
 			"AutoUpdatePickPocketDC" : {
 				"name" 					: "Auto update Pick Pocket DC",
 				"descrp"				: "If the Pick Pocket DC should get automatically updated when a perception check is rolled"				
 			},
 			
-			"MentionPickpocketDetails" : {
-				"name" 					: "Mention Pick Pocket details",
-				"descrp"				: "If the target name and the DC should be mentioned in the Pick Pocket message"				
+			"PickPocketItemTypes" : {
+				"name" 					: "Pick pocketable item types",
+				"descrp"				: "Item types that can be pick pocketed (seperated with \";\", \"#currency\" for numerical currency)"				
 			},
 			
 			"deadActorsLootable" : {
 				"name"					: "Dead tokens lootable",
 				"descrp"				: "If dead token should be lootable/pick pocketable without roll"	
+			},
+			
+			"lootFilter" : {
+				"name"					: "Loot filter",
+				"descrp"				: "If only items in a bag or container item called \"Loot\" should be pick pocketable (only supported for some systems)",
+				"options" : {
+					"off"				: "off",
+					"ifavailable"		: "if loot item available",
+					"always"			: "always"
+				}
+			},
+			
+			"MentionPickpocketDetails" : {
+				"name" 					: "Mention Pick Pocket details",
+				"descrp"				: "If the target name and the DC should be mentioned in the Pick Pocket message"				
 			},
 			
 			"PerceptionKeyWord" : {
@@ -395,6 +430,11 @@
 					"left"				: "left",
 					"right"				: "right"
 				}
+			},
+			
+			"dblClicktoLoot" : {
+				"name"					: "Double click to pick pocket",
+				"descrp"				: "If double clicking a token should trigger pick pocketing"
 			}
 		},
 		
@@ -469,7 +509,7 @@
 			"IDKeysFlag" : {
 				"name" 					: "ID keys",
 				"descrp" : {
-					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\")",
+					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\", \"&\" for multiple required keys)",
 					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
 				}
 			},
@@ -639,9 +679,18 @@
 				}				
 			},
 			
+			"LootFormulaFlag" : {
+				"name" 					: "Custom loot formula",
+				"descrp"  				: "Replacement for pick pocket formula when pick pocketing this token"
+			},
+			
 			"PickPocketDCFlag" : {
 				"name" 					: "Pick pocket DC",
-				"descrp"  				: "The difficulty class to use Pick pocket this character (-1 for impossible)"			
+				"descrp"  				: "The difficulty class to use Pick pocket this character (-1 for impossible)",
+				"item" : {
+					"name"				: "Pick pocket DC mod",
+					"descrp"			: "Modifier when pick pocketing this item"
+				}
 			},
 			
 			"ReplacementItemFlag" : {

@@ -80,8 +80,8 @@ class LockManager {
 		let vKeys = (await LnKutils.TokenInventory(pCharacter)).filter(vItem => pKeyItemIDs.includes(vItem.id));
 		
 		let vOutcome = 0;
-		
-		if (vKeys.length == pKeyItemIDs.length) {
+		console.log(pKeyItemIDs.find(vID => !vKeys.find(vKey => vKey.id == vID)));
+		if (!pKeyItemIDs.find(vID => !vKeys.find(vKey => vKey.id == vID))) {
 			if (LnKFlags.matchingIDKeysandmode(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")).length) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
 					//lock is jammed and cant be opened by key
