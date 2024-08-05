@@ -37,7 +37,8 @@
 			"newPasskey"				: "Neues Passwort:",
 			"addIdentityMessage"		: "Spieler {pPlayerName} will folgende Indetitäten zu einem Schloss hinzufügen:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} von {pType} {pName}",
-			"ToggleTile"				: "Fliesen Zustand ändern (L&K)"
+			"ToggleTile"				: "Fliesen Zustand ändern (L&K)",
+			"DC"						: "(SG: {pDC})"
 		},
 		
 		"Popup" : {

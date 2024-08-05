@@ -101,10 +101,11 @@ class LnKTakeInventory {
 		}
 		
 		if (pLootFilter != "off") {
-			let vLootContainer = vInventory.filter(vItemInfo => ["loot", "Loot"].includes(vItemInfo.name) && LnKSystemUtils.isContainer(vItemInfo));
+			let vLootContainer = vInventory.filter(vItemInfo => ["loot", "Loot"].includes(vItemInfo.name) && LnKSystemutils.isContainer(vItemInfo));
 			
+			console.log(vLootContainer);
 			if (vLootContainer.length || pLootFilter == "always") {
-				vInventory = vInventory.filter(vItemInfo => vLootContainer.find(vContainer => LnKSystemUtils.isInContainer(vContainer, vItemInfo)));
+				vInventory = vInventory.filter(vItemInfo => vLootContainer.find(vContainer => LnKSystemutils.isInContainer(vContainer, vItemInfo)));
 			}
 		}
 		

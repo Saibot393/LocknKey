@@ -524,9 +524,10 @@ class LnKSystemutils {
 	
 	//items
 	static isInContainer(pContainer, pItem) {
+		console.log(pItem);
 		if (pContainer?.system) {
 			if (pContainer.system?.contents) {
-				return pContainer.contents?.has(pItem.id);
+				return pContainer.system.contents?.has(pItem.id);
 			}
 			
 			if (pContainer.system?.container?.contents) {

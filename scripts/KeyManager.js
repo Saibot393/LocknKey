@@ -524,7 +524,7 @@ class KeyManager {
 				if (vshowPicklock) {
 					let vDCText = "";
 					
-					if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+					if (game.settings.get(cModuleName, "showinteractionDCs")) {
 						vDCText = ` (${Translate("Titles." + "DC", {pDC : LnKFlags.LockDC(pLockObject)})})`
 					}
 					
@@ -538,7 +538,7 @@ class KeyManager {
 				if (vshowBreaklock) {
 					let vDCText = "";
 					
-					if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+					if (game.settings.get(cModuleName, "showinteractionDCs")) {
 						vDCText = ` (${Translate("Titles." + "DC", {pDC : LnKFlags.LockBreakDC(pLockObject)})})`
 					}			
 		
@@ -552,7 +552,7 @@ class KeyManager {
 				if (vshowCustomCheck) {
 					let vDCText = "";
 					
-					if (game.settings.get(cModuleName, "CustomCircumventActive")) {
+					if (game.settings.get(cModuleName, "showinteractionDCs")) {
 						vDCText = ` (${Translate("Titles." + "DC", {pDC : LnKFlags.LockCCDC(pLockObject)})})`
 					}	
 					

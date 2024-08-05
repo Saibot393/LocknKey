@@ -68,14 +68,17 @@ class PickPocketManager {
 		else {
 			if (await LnKFlags.Canbepickpocketed(pTarget)) {
 				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
-					let vRollFormula = LnKFlags.PickPocketFormula(pCharacter);
+					let vRollFormula;
 					
 					if (LnKFlags.hasLootFormula(pTarget)) {
 						vRollFormula = LnKFlags.LootFormula(pTarget);
 					}
-						
-					if (!LnKFlags.PickPocketFormulaOverrides(pCharacter)) {
-						vRollFormula = LnKutils.StitchFormula(LnKutils.PickPocketformulaWorld(), vRollFormula);
+					else {
+						vRollFormula = LnKFlags.PickPocketFormula(pCharacter);
+							
+						if (!LnKFlags.PickPocketFormulaOverrides(pCharacter)) {
+							vRollFormula = LnKutils.StitchFormula(LnKutils.PickPocketformulaWorld(), vRollFormula);
+						}
 					}
 					
 					if (!vRollFormula.length) {

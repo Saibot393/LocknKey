@@ -37,7 +37,8 @@
 			"newPasskey"				: "New password:",
 			"addIdentityMessage"		: "Player {pPlayerName} wants to add these identities to a lock:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
-			"ToggleTile"				: "Toggle tile state (L&K)"
+			"ToggleTile"				: "Toggle tile state (L&K)",
+			"DC"						: "(DC: {pDC})"
 		},
 		
 		"Popup" : {
