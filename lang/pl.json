@@ -37,7 +37,8 @@
 			"newPasskey"				: "Nowe hasło:",
 			"addIdentityMessage"		: "Gracz {pPlayerName} chce dodać te tożsamości do zamka: {pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} z {pType} {pName}",
-			"ToggleTile"				: "Przełączanie stanu kafelka (L&K)"
+			"ToggleTile"				: "Przełączanie stanu kafelka (L&K)",
+			"DC"						: "(ST: {pDC})"
 		},
 		
 		"Popup" : {
@@ -170,6 +171,11 @@
 			"allowallInteractions" : {
 				"name" 					: "Zezwalaj na wszystkie interakcje",
 				"descrp"				: "Jeśli wszystkie interakcje (otwieranie, wyłamywanie, niestandardowe, kradzież) powinny być dozwolone nawet dla niemożliwych ST"					
+			},
+
+			"showinteractionDCs" : {
+				"name" 					: "Pokaż ST interakcji",
+				"descrp"				: "Jeśli ST interakcji powinny być wyświetlane w menu interakcji"					
 			},			
 			
 			"showallLockInteractions" : {
@@ -277,6 +283,16 @@
 				"descrp"				: "Domyślna liczba prób otwarcia zamka, po których zamek staje się niemożliwy do otwarcia (-1 dla nieograniczonej liczby prób)"
 			},
 			
+			"autoResetAttempts" : {
+				"name"					: "Automatyczne resetowanie prób otwarcia zamka",
+				"descrp"				: "Kiedy należy zresetować próby otwarcia zamka",
+				"options" : {
+					"off"				: "nigdy",
+					"lockchange"		: "przy zmianie stanu blokady",
+					"lpsuccess"			: "na sukcesie w otwieraniu zamków"
+				}
+			},
+			
 			"LockPickFormula" : {
 				"name" 					: "Formuła rzutu na otwarcie wytrychem",
 				"descrp"				: "Formuła używana do rzutów kośćmi podczas otwierania zamka (np. \"1k20 + @actor.skills.thievery.mod\", pomoc można znaleźć na stronie Github tego modułu)"				
@@ -347,19 +363,39 @@
 				"descrp"				: "Domyślna formuła używana do obliczania ST kradzieży kieszonkowej (zastępuje inne ustawienia domyślne)"				
 			},
 			
+			"PickPocketDCCritThreshold" : {
+				"name" 					: "Próg krytyczny ST kradzieży",
+				"descrp"				: "Maksymalne SG dla kradzieży kieszonkowej, które można pokonać dzięki krytycznym sukcesom"				
+			},
+			
 			"AutoUpdatePickPocketDC" : {
 				"name" 					: "Automatyczna aktualizacja ST kradzieży kieszonkowej",
 				"descrp"				: "Wartość ST kradzieży kieszonkowej powinna być automatycznie aktualizowana po wykonaniu testu percepcji"				
 			},
 			
-			"MentionPickpocketDetails" : {
-				"name" 					: "Wspomnij o szczegółach kradzieży kieszonkowej",
-				"descrp"				: "Jeśli nazwa celu i ST powinny być wymienione w wiadomości kradzieży kieszonkowej"				
+			"PickPocketItemTypes" : {
+				"name" 					: "Typy przedmiotów z możliwością kradzieży kieszonkowej",
+				"descrp"				: "Typy przedmiotów, które można ukraść (oddzielone \";\", \"#currency\" dla waluty numerycznej)"				
 			},
 			
 			"deadActorsLootable" : {
 				"name"					: "Martwe tokeny jako łupy",
 				"descrp"				: "Jeśli martwy token powinien być łupem/do okradnięcia bez rzutu"	
+			},
+			
+			"lootFilter" : {
+				"name"					: "Filtr łupów",
+				"descrp"				: "Jeśli tylko przedmioty w torbie lub pojemniku o nazwie \"Łup\" powinny być możliwe do zabrania (obsługiwane tylko w niektórych systemach).",
+				"options" : {
+					"off"				: "wyłączony",
+					"ifavailable"		: "jeśli łup jest dostępny",
+					"always"			: "zawsze"
+				}
+			},
+			
+			"MentionPickpocketDetails" : {
+				"name" 					: "Wspomnij o szczegółach kradzieży kieszonkowej",
+				"descrp"				: "Jeśli nazwa celu i ST powinny być wymienione w wiadomości kradzieży kieszonkowej"				
 			},
 			
 			"PerceptionKeyWord" : {
@@ -394,6 +430,11 @@
 					"left"				: "lewo",
 					"right"				: "prawo"
 				}
+			},
+			
+			"dblClicktoLoot" : {
+				"name"					: "Kliknij dwukrotnie, aby wybrać kradzież",
+				"descrp"				: "Jeśli dwukrotne kliknięcie tokena powinno wywołać kradzież kieszonkową"
 			}
 		},
 		
@@ -468,7 +509,7 @@
 			"IDKeysFlag" : {
 				"name" 					: "ID kluczy",
 				"descrp" : {
-					"lock" 				: "Identyfikatory, które mogą zablokować/odblokować tę blokadę (oddzielone \";\")",
+					"lock" 				: "Identyfikatory, które mogą zablokować/odblokować ten zamek (oddzielone \";\", \"&\" dla wielu wymaganych kluczy)",
 					"key" 				: "Identyfikatory, które ten klucz może zablokować/odblokować (oddzielone \";\")"
 				}
 			},
@@ -638,9 +679,18 @@
 				}				
 			},
 			
+			"LootFormulaFlag" : {
+				"name" 					: "Niestandardowa formuła łupów",
+				"descrp"  				: "Zamiennik formuły kradzieży podczas kradzieży tego tokena"
+			},
+			
 			"PickPocketDCFlag" : {
 				"name" 					: "ST kradzieży kieszonkowej",
-				"descrp"  				: "Klasa trudności, której należy użyć do kradzieży kieszonkowej dla tej postaci (-1 dla niemożliwego)"			
+				"descrp"  				: "Klasa trudności, której należy użyć do kradzieży kieszonkowej dla tej postaci (-1 dla niemożliwego)",
+				"item" : {
+					"name"				: "Modyfikator ST kradzieży",
+					"descrp"			: "Modyfikator przy kradzieży kieszonkowej tego przedmiotu"
+				}
 			},
 			
 			"ReplacementItemFlag" : {
