@@ -154,7 +154,7 @@ class LnKMouseHandler {
 		//register onTokenRightClick (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
 			libWrapper.register(cModuleName, "Token.prototype._canHUD", function(vWrapped, ...args) {return true}, "MIXED"); //make sure everybody can rightclick, limit hud later
-			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {LnKMouseHandler.onTokenRightClick(...args, this.document); if (LnKMouseHandler.canHUD(...args, this.document)) {return vWrapped(...args)} else {return}}, "MIXED");
+			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {args[0].stopPropagation(); LnKMouseHandler.onTokenRightClick(...args, this.document); if (LnKMouseHandler.canHUD(...args, this.document)) {return vWrapped(...args)} else {return}}, "MIXED");
 		}
 		else {
 			Token.prototype._canHUD = function (user, event) {return true}; //make sure everybody can rightclick, limit hud later
@@ -162,6 +162,7 @@ class LnKMouseHandler {
 			const vOldTokenCall = Token.prototype._onClickRight;
 			
 			Token.prototype._onClickRight = function (pEvent) {
+				pEvent.stopPropagation();
 				LnKMouseHandler.onTokenRightClick(pEvent, this.document);
 				
 				if (LnKMouseHandler.canHUD(pEvent, this.document)) {
