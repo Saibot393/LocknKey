@@ -1,3 +1,6 @@
+## v3.1.1
+- Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
 ## v3.1.0
 - Added item setting Pick pocket DC mod to adjust the pick pocket DC per item
 - Key IDs for locks can now be seperated by "&" to require mutliple keys at the same time
