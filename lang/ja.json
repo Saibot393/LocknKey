@@ -282,6 +282,16 @@
 				"name"					: "デフォルトの鍵開け回数",
 				"descrp"				: "錠が鍵開け不能になるまでの規定の回数 (-1で無限)"
 			},
+
+			"autoResetAttempts" : {
+				"name"					: "鍵開け回数の自動リセット",
+				"descrp"				: "鍵開けを行った回数がリセットされるタイミング",
+				"options" : {
+					"off"				: "リセットしない",
+					"lockchange"		: "鍵のステート変更時",
+					"lpsuccess"			: "鍵開け成功時"
+				}
+			},
 			
 			"LockPickFormula" : {
 				"name" 					: "鍵開けロールの計算式",
@@ -352,10 +362,35 @@
 				"name" 					: "デフォルトのスリロールDC式",
 				"descrp"				: "スリDCを計算するための規定ダイス式 (ほかのデフォルトを上書きします)"				
 			},
+
+			"PickPocketDCCritThreshold" : {
+				"name" 					: "スリのクリティカルDC閾値",
+				"descrp"				: "スリのクリティカル成功によって達成できる最大DC"				
+			},
 			
 			"AutoUpdatePickPocketDC" : {
 				"name" 					: "スリDCの自動更新",
 				"descrp"				: "知覚判定がロールされたとき、スリDCが自動的に更新されるかどうか"				
+			},
+
+			"PickPocketItemTypes" : {
+				"name" 					: "スリが可能なアイテム種別",
+				"descrp"				: "Item types that can be pick pocketed (seperated with \";\", \"#currency\" for numerical currency)"				
+			},
+			
+			"deadActorsLootable" : {
+				"name"					: "死亡コマの物漁り可能",
+				"descrp"				: "死亡したコマの所持品をロールの必要なしに取得／スリ可能かどうか"	
+			},
+			
+			"lootFilter" : {
+				"name"					: "Loot filter",
+				"descrp"				: "If only items in a bag or container item called \"Loot\" should be pick pocketable (only supported for some systems)",
+				"options" : {
+					"off"				: "off",
+					"ifavailable"		: "if loot item available",
+					"always"			: "always"
+				}
 			},
 
 			"MentionPickpocketDetails" : {
