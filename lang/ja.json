@@ -37,7 +37,8 @@
 			"newPasskey"				: "新しいパスワード:",
 			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」はこれらの要素を錠に追加を要求:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
-			"ToggleTile"				: "タイルの状態をトグル (L&K)"
+			"ToggleTile"				: "タイルの状態を切り替え (L&K)",
+			"DC"						: "(DC: {pDC})"
 		},
 		
 		"Popup" : {
@@ -170,6 +171,11 @@
 			"allowallInteractions" : {
 				"name" 					: "全てのインタラクションを許可",
 				"descrp"				: "すべてのインタラクション (鍵開け, こじ開け, カスタム, スリ) が不可能なDCであっても表示されるかどうか"					
+			},
+
+			"showinteractionDCs" : {
+				"name" 					: "インタラクションDCを表示",
+				"descrp"				: "If the interaction DCs should be shown in the interaction menu"					
 			},
 			
 			"showallLockInteractions" : {
