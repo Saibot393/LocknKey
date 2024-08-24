@@ -413,7 +413,7 @@ Hooks.once("setupTileActions", (pMATT) => {
 					let vUnlockedMap = await Promise.all(entities.map(vObject => isUnlocked(vObject))); //where async filter, js?
 					
 					let vFiltered = entities.filter((vObject, vIndex) => {
-						return ((vObject instanceof TokenDocument) || (vObject instanceof WallDocument))
+						return ((vObject instanceof TokenDocument) || (vObject instanceof WallDocument) || (vObject instanceof TileDocument))
 							&& vUnlockedMap[vIndex] == vfilterUnlocked;
 					});
 
