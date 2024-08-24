@@ -797,10 +797,11 @@ class LnKFlags {
 	
 	static async #setLockedFlag(pObject, pContent) {
 	//sets content of LockedFlag (must be boolean)
-
 		if (pObject) {
 			if (pObject.documentName == "Wall") {
 				await pObject.update({ds : pContent? 2 : 0});
+				
+				return true;
 			}
 			else {
 				await pObject.setFlag(cModuleName, cLockedF, Boolean(pContent));
