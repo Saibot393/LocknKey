@@ -1,3 +1,6 @@
+## v3.1.2
+- Small bug fix
+
 ## v3.1.1
 - Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
