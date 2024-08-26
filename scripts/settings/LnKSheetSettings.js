@@ -1,6 +1,6 @@
 import * as FCore from "../CoreVersionComp.js";
 import { LnKutils, cModuleName, cDelimiter, Translate } from "../utils/LnKutils.js";
-import { LnKCompUtils, cLibWrapper } from "../compatibility/LnKCompUtils.js";
+import { LnKCompUtils, cLibWrapper, cTidy5eNew } from "../compatibility/LnKCompUtils.js";
 import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cPickPocketFormulaOverrideF, cLootFormulaF } from "../helpers/LnKFlags.js";
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
@@ -97,8 +97,10 @@ class LnKSheetSettings {
 							`; //tab button HTML
 				
 			vTabbar.append(vTabButtonHTML);	
-			Array.from(vTabbar.find(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
-			vTabbar.find(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
+			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) {
+				Array.from(vTabbar.find(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
+				vTabbar.find(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
+			}
 			
 			if (!pHTML.find(`div.${cModuleName}`).length) {
 				let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
@@ -160,9 +162,11 @@ class LnKSheetSettings {
 														vflagname : cReplacementItemF
 														}, `div.${cModuleName}`);
 			}
-													
-			if (pApp.LnKTabactive) {
-				pApp.activateTab(cModuleName);
+			
+			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) { 			
+				if (pApp.LnKTabactive) {
+					pApp.activateTab(cModuleName);
+				}
 			}
 		}
 	}
@@ -768,21 +772,22 @@ class LnKSheetSettings {
 	
 	static RegisterItemSheetTabChange() {
 		//register onChangeTab (if possible with lib-wrapper)
-		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { console.log(args), this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
-		}
-		else {
-			const vOldSheetCall = ItemSheet.prototype._onChangeTab;
-			
-			ItemSheet.prototype._onChangeTab = async function (...args) {
-				console.log(args);
-				this.LnKTabactive = (args[2] == cModuleName); //args[2] is tab name
-				
-				let vSheetCallBuffer = vOldSheetCall.bind(this);
-				
-				vSheetCallBuffer(args);
+		if(!LnKCompUtils.isactiveModule(cTidy5eNew)) {
+			if (LnKCompUtils.isactiveModule(cLibWrapper)) {
+				libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { console.log(args), this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
 			}
-		}		
+			else {
+				const vOldSheetCall = ItemSheet.prototype._onChangeTab;
+				
+				ItemSheet.prototype._onChangeTab = async function (...args) {
+					this.LnKTabactive = (args[2] == cModuleName); //args[2] is tab name
+					
+					let vSheetCallBuffer = vOldSheetCall.bind(this);
+					
+					vSheetCallBuffer(args);
+				}
+			}	
+		}
 	}
 	
 	static FixSheetWindow(pHTML) {
