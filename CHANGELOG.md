@@ -1,3 +1,9 @@
+## v3.1.4
+- Compatibility fix for Tidy 5e Sheets
+
+## v3.1.3
+- Small bug fix
+
 ## v3.1.2
 - Small bug fix
 

@@ -128,6 +128,7 @@ class LnKTilesHandler {
 	static onTileUpdate(pTile, pChanges) {
 		if (game.user.isGM) {
 			let vLnKChanges = pChanges?.flags?.LocknKey;
+			
 			if (vLnKChanges?.OpenImageFlag || vLnKChanges?.ClosedImageFlag) {
 				LnKFlags.applyStateImage(pTile);
 			}
