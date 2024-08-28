@@ -385,7 +385,7 @@
 			
 			"lootFilter" : {
 				"name"					: "獲得フィルター",
-				"descrp"				: "If only items in a bag or container item called \"Loot\" should be pick pocketable (only supported for some systems)",
+				"descrp"				: "袋もしくは\"Loot\"という名称の容器の中にあるアイテムのみスリ可能にするかどうか（一部システムのみサポートされています）",
 				"options" : {
 					"off"				: "無効化",
 					"ifavailable"		: "獲得できるアイテムの有無",
