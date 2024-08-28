@@ -1,3 +1,6 @@
+## v3.1.5
+- Updated japanese translation (thanks to [doumoku](https://github.com/doumoku))
+
 ## v3.1.4
 - Compatibility fix for Tidy 5e Sheets
 
@@ -51,7 +54,7 @@
 - Fixed error in module.json (thanks to [adracea](https://github.com/adracea))
 
 ## v2.7.11
-- Updated russian translation (thanks to [doumoku](https://github.com/doumoku))
+- Added japanese translation (thanks to [doumoku](https://github.com/doumoku))
 
 ## v2.7.10
 - Updated russian translation (thanks to [maragondi](https://github.com/maragondi))
