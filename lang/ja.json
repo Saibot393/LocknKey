@@ -37,7 +37,8 @@
 			"newPasskey"				: "新しいパスワード:",
 			"addIdentityMessage"		: "プレイヤー「{pPlayerName}」はこれらの要素を錠に追加を要求:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
-			"ToggleTile"				: "タイルの状態をトグル (L&K)"
+			"ToggleTile"				: "タイルの状態を切り替え (L&K)",
+			"DC"						: "(DC: {pDC})"
 		},
 		
 		"Popup" : {
@@ -171,6 +172,11 @@
 				"name" 					: "全てのインタラクションを許可",
 				"descrp"				: "すべてのインタラクション (鍵開け, こじ開け, カスタム, スリ) が不可能なDCであっても表示されるかどうか"					
 			},
+
+			"showinteractionDCs" : {
+				"name" 					: "インタラクションDCを表示",
+				"descrp"				: "インタラクションDCが、インタラクションメニューに表示されるかどうか"					
+			},
 			
 			"showallLockInteractions" : {
 				"name" 					: "錠のインタラクションを全て表示",
@@ -276,6 +282,16 @@
 				"name"					: "デフォルトの鍵開け回数",
 				"descrp"				: "錠が鍵開け不能になるまでの規定の回数 (-1で無限)"
 			},
+
+			"autoResetAttempts" : {
+				"name"					: "鍵開け回数の自動リセット",
+				"descrp"				: "鍵開けを行った回数がリセットされるタイミング",
+				"options" : {
+					"off"				: "リセットしない",
+					"lockchange"		: "鍵のステート変更時",
+					"lpsuccess"			: "鍵開け成功時"
+				}
+			},
 			
 			"LockPickFormula" : {
 				"name" 					: "鍵開けロールの計算式",
@@ -346,20 +362,40 @@
 				"name" 					: "デフォルトのスリロールDC式",
 				"descrp"				: "スリDCを計算するための規定ダイス式 (ほかのデフォルトを上書きします)"				
 			},
+
+			"PickPocketDCCritThreshold" : {
+				"name" 					: "スリのクリティカルDC閾値",
+				"descrp"				: "スリのクリティカル成功によって達成できる最大DC"				
+			},
 			
 			"AutoUpdatePickPocketDC" : {
 				"name" 					: "スリDCの自動更新",
 				"descrp"				: "知覚判定がロールされたとき、スリDCが自動的に更新されるかどうか"				
 			},
 
-			"MentionPickpocketDetails" : {
-				"name" 					: "スリの詳細を追記",
-				"descrp"				: "対象の名前とDCがスリのメッセージに追記するかどうか"				
+			"PickPocketItemTypes" : {
+				"name" 					: "スリが可能なアイテム種別",
+				"descrp"				: "スリが可能なアイテム種別（\";\"で区切られます。\"#currency\"で数的貨幣）"				
 			},
 			
 			"deadActorsLootable" : {
-				"name"					: "死亡したコマは略奪可能",
-				"descrp"				: "死亡状態のコマは判定不要で略奪／スリが可能かどうか"	
+				"name"					: "死亡コマから獲得可能",
+				"descrp"				: "死亡したコマの所持品をロールの必要なしに獲得／スリ可能かどうか"	
+			},
+			
+			"lootFilter" : {
+				"name"					: "獲得フィルター",
+				"descrp"				: "袋もしくは\"Loot\"という名称の容器の中にあるアイテムのみスリ可能にするかどうか（一部システムのみサポートされています）",
+				"options" : {
+					"off"				: "無効化",
+					"ifavailable"		: "獲得できるアイテムの有無",
+					"always"			: "常に"
+				}
+			},
+
+			"MentionPickpocketDetails" : {
+				"name" 					: "スリの詳細を追記",
+				"descrp"				: "対象の名前とDCがスリのメッセージに追記するかどうか"				
 			},
 			
 			"PerceptionKeyWord" : {
@@ -394,6 +430,11 @@
 					"left"				: "左",
 					"right"				: "右"
 				}
+			},
+			
+			"dblClicktoLoot" : {
+				"name"					: "ダブルクリックでスリ実行",
+				"descrp"				: "コマへのダブルクリックがスリを発動するかどうか"
 			}
 		},
 		
@@ -499,7 +540,7 @@
 			},			
 			
 			"LockDCFlag" : {
-				"name" 					: "錠 DC",
+				"name" 					: "錠のDC",
 				"descrp"				: "鍵開けに使用される、この錠の難易度 (-1で鍵開け不可能)"					
 			},
 			
@@ -530,7 +571,7 @@
 			
 			"canbeCircumventedFreeFlag" : {
 				"name" 					: "回避可能",
-				"descrp"				: "この錠を効果によって回避可能にします (e.g. the spell \"Knock\")"				
+				"descrp"				: "この錠を特定の効果で回避可能にします（例：「ノック」呪文など）"				
 			},
 			
 			"CustomPopupsFlag" : {
@@ -623,7 +664,7 @@
 			},
 			
 			"PickPocketFormulaFlag" : {
-				"name" 					: "スリの判定式",
+				"name" 					: "スリ判定式",
 				"descrp" : {
 					"token" 			: "このコマが行うスリロールに追加される判定式",
 					"item"				: "このアイテムの所有者に追加されるスリロールの判定式 (所持品で最大のものが使用されます)"
@@ -638,9 +679,18 @@
 				}				
 			},
 			
+			"LootFormulaFlag" : {
+				"name" 					: "カスタム獲得判定式",
+				"descrp"  				: "このコマをスリする時の、スリ判定式の代替です"
+			},
+			
 			"PickPocketDCFlag" : {
 				"name" 					: "スリDC",
-				"descrp"  				: "このキャラクターに行うスリを試みる難易度 (-1で不可能)"			
+				"descrp"  				: "このキャラクターに行うスリを試みる難易度 (-1で不可能)",
+				"item" : {
+					"name"				: "スリDC修正",
+					"descrp"			: "このアイテムをスリする時の修正値"
+				}
 			},
 			
 			"ReplacementItemFlag" : {
@@ -659,6 +709,7 @@
 				"LockusePick.name"		: "鍵開けの時",
 				"LockuseBreak.name"		: "こじ開けの時",
 				"LockuseFree.name"		: "錠回避の時",
+				"UsePickPocket.name"	: "スリの時",
 				"options" : {
 					"never"				: "なし",
 					"always"			: "常時",
