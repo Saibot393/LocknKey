@@ -375,7 +375,7 @@
 
 			"PickPocketItemTypes" : {
 				"name" 					: "スリが可能なアイテム種別",
-				"descrp"				: "Item types that can be pick pocketed (seperated with \";\", \"#currency\" for numerical currency)"				
+				"descrp"				: "スリが可能なアイテム種別（\";\"で区切られます。\"#currency\"で数的貨幣）"				
 			},
 			
 			"deadActorsLootable" : {
