@@ -272,7 +272,7 @@ class KeyManager {
 						KeyManager.requestLockuse(vData);
 					};
 					
-					LnKSystemutils.systemRoll(pUseType, pCharacter.actor, vCallback, {difficulty : LnKFlags.LockDCtype(pLockObject, pUseType)});
+					LnKSystemutils.systemRoll(pUseType, pCharacter.actor, vCallback, {baseDC : LnKFlags.LockDCtype(pLockObject, pUseType)});
 				}			
 			}
 			else {
