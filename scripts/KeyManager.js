@@ -229,7 +229,6 @@ class KeyManager {
 			
 			vCircumvent = await KeyManager.cancircumventLock(pCharacter, pLockObject, pUseType); //will save if circumvention possible and the item
 			if (vCircumvent) {
-				
 				if (!game.settings.get(cModuleName, "usePf2eSystem") || (pUseType == cLUCustomCheck)) {
 					//get rollformula and used item (for roll formula)
 					[vRollFormula, vUsedItemID] = await KeyManager.circumventLockroll(pCharacter, pLockObject, pUseType);
@@ -266,6 +265,8 @@ class KeyManager {
 					KeyManager.requestLockuse(vData);
 				}
 				else {
+					vUsedItemID = vCircumvent.id;
+					
 					vCallback = async (psuccessdegree) => {
 						let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, useSystemRoll : true, Systemresult : psuccessdegree};
 					

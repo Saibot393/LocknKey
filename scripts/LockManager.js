@@ -76,11 +76,10 @@ class LockManager {
 	//IMPLEMENTATIONS
 	//basics
 	static async useLockKey(pLock, pCharacter, pKeyItemIDs, puseData = {}) {
-		console.log(pKeyItemIDs);
 		let vKeys = (await LnKutils.TokenInventory(pCharacter)).filter(vItem => pKeyItemIDs.includes(vItem.id));
 		
 		let vOutcome = 0;
-		console.log(pKeyItemIDs.find(vID => !vKeys.find(vKey => vKey.id == vID)));
+
 		if (!pKeyItemIDs.find(vID => !vKeys.find(vKey => vKey.id == vID))) {
 			if (LnKFlags.matchingIDKeysandmode(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")).length) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {

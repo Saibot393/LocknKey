@@ -530,8 +530,15 @@ class LnKutils {
 	}
 	
 	static async removeoneItem(pItem, pCharacter) {
-		if (!(await LnKutils.changeItemquantity(pItem, -1, pCharacter))) {
-			await pCharacter.actor.deleteEmbeddedDocuments("Item", [pItem.id]);
+		if (Array.isArray(pItem)) {
+			for (vItem of pItem) {
+				await LnKutils.removeoneItem(vItem, pCharacter);
+			}
+		}
+		else {
+			if (!(await LnKutils.changeItemquantity(pItem, -1, pCharacter))) {
+				await pCharacter.actor.deleteEmbeddedDocuments("Item", [pItem.id]);
+			}
 		}
 	}
 	
