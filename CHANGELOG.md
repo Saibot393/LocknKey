@@ -1,3 +1,6 @@
+## v3.1.6
+- Small bug fix for system rolls
+
 ## v3.1.5
 - Updated japanese translation (thanks to [doumoku](https://github.com/doumoku))
 
