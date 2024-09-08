@@ -676,7 +676,9 @@ class LnKFlags {
 		
 		if (vFlag) {
 			if (vFlag.hasOwnProperty(cPickPocketDCF)) {
-				return vFlag.PickPocketDCFlag;
+				if (vFlag.PickPocketDCFlag != null) {
+					return vFlag.PickPocketDCFlag;
+				}
 			}
 		}
 		
