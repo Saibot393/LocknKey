@@ -1,3 +1,6 @@
+## v3.1.7
+- Small bug fix for system rolls, the second one
+
 ## v3.1.6
 - Small bug fix for system rolls
 
