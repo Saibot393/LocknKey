@@ -364,7 +364,7 @@ class LnKSheetSettings {
 			Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 		}
 		
-		LnKSheetSettings.FixSheetWindow(pHTML);
+		LnKSheetSettings.FixSheetWindow(pApp.element);
 	} 
 	
 	//dialogs
