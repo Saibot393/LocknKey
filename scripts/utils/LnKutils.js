@@ -339,7 +339,7 @@ class LnKutils {
 			return game.settings.get(cModuleName, "KeyItemtype")
 		}
 		else {
-			return LnKSystemutils.Systemdefaultitemtype();
+			return LnKSystemutils.SystemdefaultKeyitemtype();
 		}
 	}
 	
