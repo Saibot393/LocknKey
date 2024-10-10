@@ -1,3 +1,6 @@
+## v3.1.10
+- Small bug fix
+
 ## v3.1.9
 - Small bug fixes
 
