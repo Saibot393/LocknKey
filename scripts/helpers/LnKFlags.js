@@ -1000,7 +1000,7 @@ class LnKFlags {
 	}
 	
 	static matchingIDKeysandmode(pKeyObjects, pLockObject, pConsiderKeyName = false) {	
-		let vKeyObjects = pKeyObjects.filter(pKeyObject => this.#IDKeysFlag(pKeyObject).length);
+		let vKeyObjects = pConsiderKeyName ? pKeyObjects : pKeyObjects.filter(pKeyObject => this.#IDKeysFlag(pKeyObject).length);
 		
 		let vKeyIDs = {};
 		
