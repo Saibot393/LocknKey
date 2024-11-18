@@ -103,7 +103,6 @@ class LnKTakeInventory {
 		if (pLootFilter != "off") {
 			let vLootContainer = vInventory.filter(vItemInfo => ["loot", "Loot"].includes(vItemInfo.name) && LnKSystemutils.isContainer(vItemInfo));
 			
-			console.log(vLootContainer);
 			if (vLootContainer.length || pLootFilter == "always") {
 				vInventory = vInventory.filter(vItemInfo => vLootContainer.find(vContainer => LnKSystemutils.isInContainer(vContainer, vItemInfo)));
 			}
@@ -263,14 +262,19 @@ class LnKTakeInventory {
 							}
 							else {
 								//vItem.update({system : {quantity : vItem.system.quantity - vTransferQuantity}}); //update source item
-								LnKTakeInventory.SetQuantity(vItem, LnKTakeInventory.GetQuantity(vItem) - vTransferQuantity);
+								let vTargetQuantity = LnKTakeInventory.GetQuantity(vItem) - vTransferQuantity;
+								LnKTakeInventory.SetQuantity(vItem, vTargetQuantity);
 								
-								vItem = duplicate(vItem); //copy item
+								let vItemCopy = duplicate(vItem); //copy item
+								
+								if (LnKSystemutils.isContainer(vItem) && LnKTakeInventory.GetQuantity(vItem) != vTargetQuantity && vTargetQuantity <= 0) {
+									pSource.actor.deleteEmbeddedDocuments("Item", [vItem.id]);
+								}
 								
 								//vItem.system.quantity = vTransferQuantity; //set new quantity
-								LnKTakeInventory.SetQuantity(vItem, vTransferQuantity, false);
+								LnKTakeInventory.SetQuantity(vItemCopy, vTransferQuantity, false);
 								
-								pTarget.actor.createEmbeddedDocuments("Item", [vItem]); //create new item
+								pTarget.actor.createEmbeddedDocuments("Item", [vItemCopy]); //create new item
 							}
 						}
 					}

@@ -32,7 +32,7 @@ class PickPocketManager {
 	static onAtemptedPickPocket(pTarget) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		
-		if (pTarget && vCharacter) {
+		if (pTarget && vCharacter && pTarget != vCharacter) {
 			if(!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {
 				if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
 					let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
