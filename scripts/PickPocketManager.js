@@ -30,31 +30,33 @@ class PickPocketManager {
 	
 	//IMPLEMENTATIONS
 	static onAtemptedPickPocket(pTarget) {
-		let vCharacter = LnKutils.PrimaryCharacter();
-		
-		if (pTarget && vCharacter && pTarget != vCharacter) {
-			if(!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {
-				if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
-					let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
-					
-					if (!vAllowCheck) {
-						vAllowCheck = LnKFlags.Canbepickpocketed(pTarget);
+		if (game.settings.get(cModuleName, "EnablePickpocketing")) {
+			let vCharacter = LnKutils.PrimaryCharacter();
+			
+			if (pTarget && vCharacter && pTarget != vCharacter) {
+				if(!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {
+					if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
+						let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
 						
 						if (!vAllowCheck) {
-							LnKPopups.TextPopUpID(pLockObject, "CantbePickpocketed"); //MESSAGE POPUP
+							vAllowCheck = LnKFlags.Canbepickpocketed(pTarget);
+							
+							if (!vAllowCheck) {
+								LnKPopups.TextPopUpID(pLockObject, "CantbePickpocketed"); //MESSAGE POPUP
+							}
+						}
+						
+						if (vAllowCheck) {
+							PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
 						}
 					}
-					
-					if (vAllowCheck) {
-						PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
-					}
+					else {
+						LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
+					}	
 				}
 				else {
-					LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
-				}	
-			}
-			else {
-				LnKPopups.TextPopUpID(pTarget, "GamePaused"); //MESSAGE POPUP
+					LnKPopups.TextPopUpID(pTarget, "GamePaused"); //MESSAGE POPUP
+				}
 			}
 		}
 	}
@@ -260,12 +262,14 @@ class PickPocketManager {
 	
 	//ui
 	static async addPickPocketButton(pButtons, pObject, pLockType, pCharacter, pShowall) {
-		if (await LnKFlags.Canbepickpocketed(pObject) && !pObject.isOwner) {
-			pButtons["PickPocket"] = {
-				label: Translate("Titles.PickPocket"),
-				callback: () => {PickPocketManager.PickPocketToken(pObject, pCharacter)},
-				icon: `<i class="fas ${cPickPocketIcon}"></i>`
-			}	
+		if (game.settings.get(cModuleName, "EnablePickpocketing")) {
+			if (await LnKFlags.Canbepickpocketed(pObject) && !pObject.isOwner) {
+				pButtons["PickPocket"] = {
+					label: Translate("Titles.PickPocket"),
+					callback: () => {PickPocketManager.PickPocketToken(pObject, pCharacter)},
+					icon: `<i class="fas ${cPickPocketIcon}"></i>`
+				}	
+			}
 		}
 	};
 	

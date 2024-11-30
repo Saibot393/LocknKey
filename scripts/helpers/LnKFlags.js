@@ -687,7 +687,7 @@ class LnKFlags {
 		}
 		
 		if (pObject.documentName == "Item") {
-			return 0; //default for items
+			return game.settings.get(cModuleName, "PickPocketDefaultItemDC"); //default for items
 		}
 	}
 	

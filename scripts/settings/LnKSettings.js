@@ -407,7 +407,16 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Boolean,
 	default: false
-  });     
+  }); 
+
+  game.settings.register(cModuleName, "EnablePickpocketing", {
+	name: Translate("Settings.EnablePickpocketing.name"),
+	hint: Translate("Settings.EnablePickpocketing.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: true
+  });   
   
   game.settings.register(cModuleName, "PickPocketFormula", {
 	name: Translate("Settings.PickPocketFormula.name"),
@@ -425,7 +434,16 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	config: true,
 	type: Number,
 	default: -1
-  });     
+  });    
+
+  game.settings.register(cModuleName, "PickPocketDefaultItemDC", {
+	name: Translate("Settings.PickPocketDefaultItemDC.name"),
+	hint: Translate("Settings.PickPocketDefaultItemDC.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: 0
+  });       
   
   game.settings.register(cModuleName, "PickPocketDefaultDCFormula", {
 	name: Translate("Settings.PickPocketDefaultDCFormula.name"),
