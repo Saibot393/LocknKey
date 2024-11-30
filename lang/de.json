@@ -25,7 +25,7 @@
 			"Close"						: "Schließen",
 			"Keycreation"				: "Schlüssel generieren",
 			"Keyname"					: "Schlüsselname",
-			"KeyID"						: "Schlüssel ID (!NICHT \";\" IN DER ID BENUTZEN!)",
+			"KeyID"						: "Schlüssel ID (IDs mit \";\" trennen)",
 			"Keyfolder"					: "Schlüssel Zielordner",
 			"ConfirmKeycreation"		: "Erschaffen",
 			"Basic"						: "Basis",

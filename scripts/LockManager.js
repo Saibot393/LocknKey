@@ -39,7 +39,7 @@ class LockManager {
 	//LockKeys
 	static async newLockKey(pLock) {} //create a new item key for pLock
 	
-	static createKeycreationDialog(pLock) {} //used to create a popup with the options to create a new key for pLock
+	static async createKeycreationDialog(pLock) {} //used to create a popup with the options to create a new key for pLock
 	
 	//events
 	static async onLock(pLock, pLockusetype) {} //calledif a lock is locked
@@ -468,7 +468,7 @@ class LockManager {
 		}
 	}
 	
-	static createKeycreationDialog(pLock) {
+	static async createKeycreationDialog(pLock) {
 		let vFilter = "";
 		
 		if (game.settings.get(cModuleName, "LimitKeyFolders")) {
@@ -478,17 +478,28 @@ class LockManager {
 		
 		let vFolders = LnKutils.getItemFolders(vFilter);
 		
-		let vHTML = `<label>${Translate("Titles.Keyname")}</label>
-					<input type="text" id="Keyname" name="Keyname" value="${Translate("Words.Key")}">`;
+		let vHTML = "";
+		
+		vHTML = vHTML + `<div style="display:flex;margin-bottom:3px">`;
+		
+		vHTML = vHTML + `<label>${Translate("Titles.Keyname")}</label>
+						<input type="text" id="Keyname" name="Keyname" value="${Translate("Words.Key")}" style="width:calc(70%);right:0px;margin-left:auto">`;
+					
+		vHTML = vHTML + `</div style="display:flex;margin-bottom:3px">`;
 		
 		if (game.settings.get(cModuleName, "KeyitemCreationIDOption")) {
+			vHTML = vHTML + `<div style="display:flex;margin-bottom:3px">`;
+			
 			vHTML = vHTML + `<label>${Translate("Titles.KeyID")}</label>
-							<input type="text" id="KeyID" name="Keyname" value="${randomID()}">`;
+							<input type="text" id="KeyID" name="Keyname" value="${randomID()}" style="width:calc(50%);right:0px;margin-left:auto">`;
+							
+			vHTML = vHTML + `</div>`;
 		}		
-					
-		vHTML = vHTML + `<label>${Translate("Titles.Keyfolder")}</label>
-						<select name="Folder">`;
+				
+		vHTML = vHTML + `<div style="display:flex;margin-bottom:3px">`;
 		
+		vHTML = vHTML + `<label>${Translate("Titles.Keyfolder")}</label>
+						<select name="Folder" style="width:calc(70%);right:0px;margin-left:auto">`;
 		for (let i = 0; i < vFolders.length; i++) {
 			if (vFolders[i][0] == game.settings.get(cModuleName, "DefaultKeyFolder")) {
 				//default select
@@ -498,10 +509,17 @@ class LockManager {
 				vHTML = vHTML + `<option value="${vFolders[i][1]}">${vFolders[i][0]}</option>`;
 			}
 		}
-		
 		vHTML = vHTML + `</select>`;
 		
-		let a = new Dialog({
+		vHTML = vHTML + `</div>`;
+		
+		vHTML = vHTML + `<div style="display:flex;margin-bottom:3px">`;
+		
+		vHTML = vHTML + `<div style="height:50px;width:50px;margin-left:auto;margin-right:auto;background-size:contain;cursor:pointer" id="Image" name="Image"></div>`;
+		
+		vHTML = vHTML + `</div>`;
+		
+		let vDialog = new Dialog({
 			title: Translate("Titles.Keycreation"),
 			content: vHTML,
 			buttons: {
@@ -518,15 +536,34 @@ class LockManager {
 							//tokens are not lockable by default
 							await LnKFlags.makeLockable(pLock);
 						}	
-						
-						let vItem = await LnKutils.createKeyItem(html.find("input#Keyname").val(), html.find("[name=Folder]").find("option:selected").val());
+						let vItem = await LnKutils.createKeyItem(html.find("input#Keyname").val(), html.find("[name=Folder]").find("option:selected").val(), html.find("div#Image").val());
 						LnKFlags.linkKeyLock(vItem, pLock, vID);
 					},
 					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 				}
 			},
 			default: Translate("Titles.ConfirmPasskey")
-		}).render(true);	
+		}).render(true);
+
+		const timeout = async ms => new Promise(res => setTimeout(res, ms));
+		
+		while(!vDialog.rendered) {
+			await timeout(20);
+		}
+
+		let vImageChoice = vDialog.element[0].querySelector("div[name='Image']");
+		let vDefaultImage = game.settings.get(cModuleName, "defaultKeyImage");
+		vImageChoice.value = vDefaultImage;
+		vImageChoice.style.backgroundImage = `url('${vDefaultImage}')`;
+		vImageChoice.onclick = () => {
+			let vUpdateImage = (pFile) => {
+				vImageChoice.value = pFile;
+				vImageChoice.style.backgroundImage = `url('${pFile}')`;
+				game.settings.set(cModuleName, "defaultKeyImage", pFile);
+			}
+			let vPicker = new FilePicker({type : "image", current : vImageChoice.value, callback : vUpdateImage});
+			vPicker.render(true);
+		}
 	}
 	
 	//events

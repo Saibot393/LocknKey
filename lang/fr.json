@@ -25,7 +25,7 @@
 			"Close"						: "Fermer",
 			"Keycreation"				: "Création de clé",
 			"Keyname"					: "Nom de la clé",
-			"KeyID"						: "Key ID (!DO NOT USE \";\" IN ID)",
+			"KeyID"						: "Key ID (separate IDs with \";\")",
 			"Keyfolder"					: "Dossier de création",
 			"ConfirmKeycreation"		: "Créer",
 			"Basic"						: "Basique",

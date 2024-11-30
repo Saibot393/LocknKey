@@ -25,7 +25,7 @@
 			"Close"						: "Закрыть",
 			"Keycreation"				: "Создать ключ",
 			"Keyname"					: "Название ключа",
-			"KeyID"						: "ID ключа (!НЕ ИСПОЛЬЗУЙ \";\" В ID)",
+			"KeyID"						: "ID ключа (separate IDs with \";\")",
 			"Keyfolder"					: "Целевая папка ключей",
 			"ConfirmKeycreation"		: "Создать",
 			"Basic"						: "Базовый",

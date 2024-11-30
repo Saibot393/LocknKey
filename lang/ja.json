@@ -25,7 +25,7 @@
 			"Close"						: "閉じる",
 			"Keycreation"				: "鍵を作成",
 			"Keyname"					: "鍵の名前",
-			"KeyID"						: "鍵のID (!IDに \";\" を使用しないでください)",
+			"KeyID"						: "鍵のID (separate IDs with \";\")",
 			"Keyfolder"					: "Key target folder",
 			"ConfirmKeycreation"		: "作成",
 			"Basic"						: "基本",

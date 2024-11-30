@@ -25,7 +25,7 @@
 			"Close"						: "Close",
 			"Keycreation"				: "Key creation",
 			"Keyname"					: "Key name",
-			"KeyID"						: "Key ID (!DO NOT USE \";\" IN ID)",
+			"KeyID"						: "Key ID (separate IDs with \";\")",
 			"Keyfolder"					: "Key target folder",
 			"ConfirmKeycreation"		: "Create",
 			"Basic"						: "Basic",

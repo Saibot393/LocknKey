@@ -25,7 +25,7 @@
 	  "Close"						: "关闭",
 		"Keycreation"				: "创建钥匙",
 		"Keyname"					: "钥匙名字",
-		"KeyID"						: "Key ID (!DO NOT USE \";\" IN ID)",
+		"KeyID"						: "Key ID (separate IDs with \";\")",
 		"Keyfolder"				: "目标文件夹",
 		"ConfirmKeycreation"			: "创建",
 		"Basic"						: "基本",

@@ -167,6 +167,14 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
   
+  game.settings.register(cModuleName, "defaultKeyImage", {
+	scope: "world",
+	config: false,
+	type: String,
+	//choices:
+	default: "icons/sundries/misc/key-steel.webp"
+  });  
+  
   game.settings.register(cModuleName, "UseKeynameasID", {
 	name: Translate("Settings.UseKeynameasID.name"),
 	hint: Translate("Settings.UseKeynameasID.descrp"),
