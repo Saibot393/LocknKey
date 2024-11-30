@@ -25,7 +25,7 @@
 			"Close"						: "Zamknij",
 			"Keycreation"				: "Tworzenie klucza",
 			"Keyname"					: "Nazwa klucza",
-			"KeyID"						: "ID klucza (separate IDs with \";\")",
+			"KeyID"						: "ID klucza (oddziel identyfikatory znakiem \";\")",
 			"Keyfolder"					: "Folder docelowy klucza",
 			"ConfirmKeycreation"		: "Utwórz",
 			"Basic"						: "Podstawowy",
