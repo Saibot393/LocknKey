@@ -1,3 +1,7 @@
+## v3.1.11
+- Tokens can no longer loot themselves
+- Container items will now be deleted when looted if the quantity can't be set to 0
+
 ## v3.1.10
 - Small bug fix
 
