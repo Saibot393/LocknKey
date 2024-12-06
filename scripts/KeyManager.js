@@ -239,7 +239,7 @@ class KeyManager {
 					}
 					
 					//roll dice according to formula
-					vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, LnKFlags.LockDCtype(pLockObject, pUseType));
+					vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, LnKFlags.LockDCtype(pLockObject, pUseType), pCharacter.actor.items?.get(vUsedItemID));
 					
 					LnKSound.PlayDiceSound(pCharacter);
 					

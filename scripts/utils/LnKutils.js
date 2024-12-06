@@ -164,7 +164,7 @@ class LnKutils {
 	
 	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {} //returns the degree of success of pRollresult and pRolldetails based on the pDC and the world crit settings
 	
-	static createroll(pFormula, pActor, pDC) {} //returns a roll with actor and skills as possible @ values in the formual
+	static createroll(pFormula, pActor, pDC, pItem = null) {} //returns a roll with actor and skills as possible @ values in the formual
 	
 	static StitchFormula(pFormulaA, pFormulaB) {} //stitches two roll formulsa together and returns the stitchedresult
 	
@@ -921,10 +921,10 @@ class LnKutils {
 		return vsuccessDegree;
 	}
 	
-	static createroll(pFormula, pActor, pDC) {
+	static createroll(pFormula, pActor, pDC, pItem = null) {
 		let vSkills = LnKSystemutils.skillitems(pActor);
 		
-		let vRoll = new Roll(LnKutils.validChars(pFormula), {actor : pActor, skills : vSkills, DC : pDC});
+		let vRoll = new Roll(LnKutils.validChars(pFormula), {actor : pActor, skills : vSkills, DC : pDC, item : pItem});
 		
 		return vRoll;
 	}
