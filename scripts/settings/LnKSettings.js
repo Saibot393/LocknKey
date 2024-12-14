@@ -109,6 +109,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "useKeyDialogbydefault", {
+	name: Translate("Settings.useKeyDialogbydefault.name"),
+	hint: Translate("Settings.useKeyDialogbydefault.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: false
+  }); 
+  
   /*
   game.settings.register(cModuleName, "autoKeyuse", {
 	name: Translate("Settings.autoKeyuse.name"),

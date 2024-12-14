@@ -6,6 +6,7 @@ const candDelimiter = "&";
 
 //Flag names
 const cIDKeysF = "IDKeysFlag"; //saves the connection IDs for Locks and Key
+const cUseKeyDialogF = "UseKeyDialogFlag"; //saves if using a key with this object should use a dialog
 const cLockableF = "LockableFlag"; //if this token is LockableFlag
 const cLockedF = "LockedFlag"; //if this Lock is currently Locked
 const cLockDCF = "LockDCFlag"; //the dc of the lock (for lock picking)
@@ -43,7 +44,7 @@ const cPickPocketFormulaF = "PickPocketFormulaFlag"; //Flag to store a custom Pi
 const cPickPocketFormulaOverrideF = "PickPocketFormulaOverrideFlag"; //Flag to set wether this objects custom PP formual overrides globale formula (instead of being added)
 const cLootFormulaF = "LootFormulaFlag"; //Flag for custom formula to loot this token
 
-export { cIDKeysF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cLootFormulaF, cPickPocketFormulaOverrideF }
+export { cIDKeysF, cUseKeyDialogF, cLockableF, cLockedF, cLockDCF, cLPFormulaF, cLPFormulaOverrideF, cLockBreakDCF, cLBFormulaF, cLBFormulaOverrideF, cLockCCDCF, cCCFormulaF, cCCFormulaOverrideF, crequiredLPsuccessF, ccurrentLPsuccessF, cRemoveKeyonUseF, cPasskeysF, cPasskeyChangeableF, cIdentityKeyF, cCustomPopupsF, cSoundVariantF, cLockjammedF, cSpecialLPF, cReplacementItemF, cLPAttemptsF, cLPAttemptsMaxF, ccanbeCircumventedFreeF, cRollOptionsF, cLockonCloseF, cOpenImageF, cClosedImageF, cisOpenF, cPickPocketDCF, cPickPocketFormulaF, cLootFormulaF, cPickPocketFormulaOverrideF }
 
 const cCustomPopup = { //all Custompopups and their IDs
 	LockLocked : 0,
@@ -99,7 +100,13 @@ class LnKFlags {
 	
 	static matchingIDKeys(pObject1, pObject2, pConsiderName1 = false) {} //returns if pObject1 and pObject2 have at least one matching key (excluding "") (pConsiderName1 if name of pObject should be considerd as an ID)
 	
+	static matchingIDKeysandmode(pKeyObjects, pLockObject, pConsiderKeyName = false) {} //returns of pKeyObject array has enough matching keys to open pLockObject
+	
+	static requiredandmodeKeys(pLockObject) {} //returns maximum numbers of keys required to open pLockObject
+	
 	static KeyIDs(pObject) {} //returns string of key IDs of pObject
+	
+	static useKeyDialog(pObject) {} //if a key use dialog should be opened for pObject
 	
 	static RemoveKeyonUse(pKey) {} //returns of this key is removed on use
 	
@@ -285,6 +292,19 @@ class LnKFlags {
 		}
 		
 		return ""; //default if anything fails
+	} 
+	
+	static #UseKeyDialogFlag (pObject) { 
+	//returns content of use key dialog flag of pObject (boolean)
+		let vFlag = this.#LnKFlags(pObject);
+		
+		if (vFlag) {
+			if (vFlag.hasOwnProperty(cUseKeyDialogF)) {
+				return vFlag.UseKeyDialogFlag;
+			}
+		}
+		
+		return game.settings.get(cModuleName, "useKeyDialogbydefault"); //default if anything fails
 	} 
 	
 	static #LockableFlag (pObject) { 
@@ -1043,8 +1063,16 @@ class LnKFlags {
 		return [];
 	}
 	
+	static requiredandmodeKeys(pLockObject) {
+		return Math.max(...this.#IDKeysFlag(pLockObject).split(cDelimiter).map(vSplit => vSplit.split(candDelimiter).length));
+	}
+	
 	static KeyIDs(pObject) {
 		return this.#IDKeysFlag(pObject);
+	}
+	
+	static useKeyDialog(pObject) {
+		return this.#UseKeyDialogFlag(pObject);
 	}
 	
 	static RemoveKeyonUse(pKey) {

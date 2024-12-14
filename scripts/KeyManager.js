@@ -39,7 +39,9 @@ class KeyManager {
 	static KeyItems(pInventory) {} //returns all Key items in pInventory
 	
 	//ui
-	static createPasskeyDialog(pLockObject, pLockType, pCharacter, pPasswordChange = false) {} //used to creat the passkey dialog
+	static async createPasskeyDialog(pLockObject, pLockType, pCharacter, pPasswordChange = false) {} //used to creat the passkey dialog
+	
+	static async createKeyuseDialog(pLockObject, pKeySlots = undefined) {} //creates a dialog to use a key item with pLockObject
 	
 	static async createLockuseDialog(pLockObject) {} //used to create a popup with use options
 
@@ -166,39 +168,46 @@ class KeyManager {
 				}
 				break;
 			case cLUuseKey:
-				if (pLockObject && pCharacter) {
-					//vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
-					vKeyItems = await LnKutils.TokenInventory(pCharacter, true);
-					
-					//only key which contains keyid matching at least one key id of pLockObject fits
-					vFittingKeys = LnKFlags.matchingIDKeysandmode(vKeyItems, pLockObject, game.settings.get(cModuleName, "UseKeynameasID"));				
-					
-					if (vFittingKeys.length) {	
-						let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemIDs : vFittingKeys};
-						KeyManager.requestLockuse(vData);
+				let vRequiredKeys =  LnKFlags.requiredandmodeKeys(pLockObject);
+				
+				if (pLockObject && pCharacter && (vRequiredKeys > 0 || !pFallBack)) {
+					if (LnKFlags.useKeyDialog(pLockObject)) {
+						KeyManager.createKeyuseDialog(pLockObject, pCharacter, vRequiredKeys);
 					}
 					else {
-						let vnoKeyMessage = true;
+						//vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
+						vKeyItems = await LnKutils.TokenInventory(pCharacter, true);
 						
-						if (pFallBack) {
-							if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
-								//use free circumvent if available
-								KeyManager.onatemptedKeyuse(pLockObject, cLUFreeCircumvent, pCharacter);
-								
-								vnoKeyMessage = false;
-							}
-							else {
-								if (LnKFlags.HasPasskey(pLockObject)) {
-									//no key item => use Passkey
-									KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
+						//only key which contains keyid matching at least one key id of pLockObject fits
+						vFittingKeys = LnKFlags.matchingIDKeysandmode(vKeyItems, pLockObject, game.settings.get(cModuleName, "UseKeynameasID"));				
+						
+						if (vFittingKeys.length) {	
+							let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemIDs : vFittingKeys};
+							KeyManager.requestLockuse(vData);
+						}
+						else {
+							let vnoKeyMessage = true;
+							
+							if (pFallBack) {
+								if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
+									//use free circumvent if available
+									KeyManager.onatemptedKeyuse(pLockObject, cLUFreeCircumvent, pCharacter);
 									
 									vnoKeyMessage = false;
 								}
+								else {
+									if (LnKFlags.HasPasskey(pLockObject)) {
+										//no key item => use Passkey
+										KeyManager.onatemptedKeyuse(pLockObject, cLUusePasskey, pCharacter);
+										
+										vnoKeyMessage = false;
+									}
+								}
 							}
-						}
-						
-						if (vnoKeyMessage) {
-							LnKPopups.TextPopUpID(pLockObject, "nomatchingKey"); //MESSAGE POPUP
+							
+							if (vnoKeyMessage) {
+								LnKPopups.TextPopUpID(pLockObject, "nomatchingKey"); //MESSAGE POPUP
+							}
 						}
 					}
 				}
@@ -449,6 +458,88 @@ class KeyManager {
 				},
 				default: "confirm"
 			}).render(true);
+		}
+	}
+	
+	static async createKeyuseDialog(pLockObject, pCharacter, pKeySlots = undefined) {
+		let vHTML = "";
+		
+		let vRequiredKeys = pKeySlots;
+		
+		if (vRequiredKeys == undefined) {
+			vRequiredKeys = LnKFlags.requiredandmodeKeys(pLockObject);
+		}
+		
+		vHTML = vHTML + `<div style="display:flex;margin-bottom:3px;justify-content:center;flex-wrap:wrap">`;
+		
+		for (let i = 1; i <= vRequiredKeys; i++) {
+			vHTML = vHTML + `<div name="KeyItem${i}" style="display:flex;height:50px;width:50px;margin:3px;border-width:2px;border-color:black;border-style:dashed;border-radius:3px;background-size:contain">`;
+			vHTML = vHTML + `</div>`;
+		}
+		
+		vHTML = vHTML + `</div>`;
+		
+		let vDialog = new Dialog({
+			title: Translate("Titles.Keyuse"),
+			content: vHTML,
+			buttons: {
+				confirmbutton: {
+					label: Translate("Titles.Usekey"),
+					callback: async (html) => {
+						let vItems = [];
+						
+						for (let i = 1; i <= vRequiredKeys; i++) {
+							let vKeyChoice = html.find(`div[name=KeyItem${i}]`);
+							
+							let vUuid =  vKeyChoice?.val();
+							
+							if (vUuid) {
+								let vItem = await fromUuid(vUuid);
+								
+								if (vItem) {
+									vItems.push(vItem);
+								}
+							}
+						}
+						
+						let vFittingKeys = LnKFlags.matchingIDKeysandmode(vItems, pLockObject, game.settings.get(cModuleName, "UseKeynameasID"));				
+						
+						if (vFittingKeys.length) {	
+							let vLockType = await LnKutils.Locktype(pLockObject);
+							let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemIDs : vFittingKeys};
+
+							KeyManager.requestLockuse(vData);
+						}
+						else {
+								LnKPopups.TextPopUpID(pLockObject, "nomatchingKey"); //MESSAGE POPUP
+						}
+					},
+					icon: `<i class="fas ${cLnKKeyIcon}"></i>`
+				}
+			},
+			default: Translate("Titles.ConfirmPasskey")
+		}).render(true);
+
+		const timeout = async ms => new Promise(res => setTimeout(res, ms));
+		
+		while(!vDialog.rendered) {
+			await timeout(20);
+		}
+		
+		for (let i = 1; i <= vRequiredKeys; i++) {
+			let vKeyChoice = vDialog.element[0].querySelector(`div[name='KeyItem${i}']`);
+
+			vKeyChoice.ondrop = async (pEvent) => {
+				let vDropData = pEvent.dataTransfer.getData("text/plain") ? JSON.parse(pEvent.dataTransfer.getData("text/plain")) : undefined;
+				
+				if (vDropData?.type == "Item" && vDropData?.uuid) {
+					vKeyChoice.value = vDropData.uuid;
+					
+					let vItem = await fromUuid(vDropData.uuid);
+					vKeyChoice.style.backgroundImage = `url('${vItem.img}')`;
+					vKeyChoice.setAttribute("data-tooltip", vItem.name);
+				}
+			}
 		}
 	}
 	
