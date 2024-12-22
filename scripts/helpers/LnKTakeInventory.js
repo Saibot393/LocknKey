@@ -11,7 +11,7 @@ const cNumCurrency = "#currency";
 
 class LnKTakeInventory {
 	//DECLARATIONS
-	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined}) {} //opens a take inventory for puser to take items from pInventoryOwner
+	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined, lootFilter : false, maxNumber : -1, maxWeight : -1}) {} //opens a take inventory for puser to take items from pInventoryOwner
 	
 	static async RequestTIWindow(pUserID, pInventoryOwner, pOptions = {}) {} //starts a sockets request for user pUserID to open a TI window
 	
@@ -43,7 +43,7 @@ class LnKTakeInventory {
 	static GetCurrencyName(pKey, pActor = undefined) {} //returns the name of the currency belonging to pKey
 	
 	//IMPLEMENTATIONS
-	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined, lootFilter : false}) {
+	static async openTIWindowfor(pUserID, pInventoryOwner, pOptions = {applyDCFilter : false, rollInfos : undefined, lootFilter : false, maxNumber : -1, maxWeight : -1}) {
 		if (pUserID.includes(game.user.id)) {
 			LnKTakeInventory.openTIWindowself(pInventoryOwner, await LnKTakeInventory.InventoryInfo(pInventoryOwner, pOptions.lootFilter), pOptions);
 		}
@@ -190,7 +190,8 @@ class LnKTakeInventory {
 										img : vInventory[i].img,
 										id : vInventory[i].id,
 										quantity : vQuantity,
-										dcmod : await LnKFlags.PickPocketItemDC(vInventory[i])
+										dcmod : await LnKFlags.PickPocketItemDC(vInventory[i]),
+										weight : LnKSystemutils.weightof(vInventory[i])
 									});
 			}
 		}
@@ -432,7 +433,7 @@ class LnKTakeInventory {
 }
 
 class TakeInventoryWindow extends Application {
-	constructor(pTaker, pInventoryOwner, pInventoryInfo, pOptions = {GMConfirm : "off", applyDCFilter : false, rollInfos : undefined}) {
+	constructor(pTaker, pInventoryOwner, pInventoryInfo, pOptions = {GMConfirm : "off", applyDCFilter : false, rollInfos : undefined, lootFilter : false, maxNumber : -1, maxWeight : -1}) {
 		super(pOptions);
 		
 		//pTaker
@@ -490,17 +491,22 @@ class TakeInventoryWindow extends Application {
 		let vInventoryHTML = `<div style="border:1px solid;margin-top:1em">`;
 		
 		for (let i = 0; i < vInventory.length; i++) {
+			let vWeight = vInventory[i].weight;
+			console.log(vInventory[i]);
+			console.log(vWeight);
+			console.log(!isNaN(vWeight) ? `<div><i class="fa-solid fa-weight-hanging"></i> <p>${vWeight}</p></div>` : ``);
 			vInventoryHTML = vInventoryHTML + 	`
 												<div class="form-group item-entry" itemid="${vInventory[i].id}" style="display:flex;flex-direction:column;align-items:center;gap:1em;border: 1px solid">
 													<div style="display:flex;flex-direction:row;align-items:center;gap:1em;width:100%">
 														<img src="${vInventory[i].img}" style = "height: 2.6em;">
 														<p style="width:fit-content">${vInventory[i].name}</p>
+														${ !isNaN(vWeight) ? `<div style="display:flex;flex-direction:row"><i class="fa-solid fa-weight-hanging" style="margin-top:auto;margin-bottom:auto"></i> <p>${vWeight}</p></div>` : ``}
 														<div style="flex-grow:1"></div>
 														<div style="display:flex;flex-direction:row;align-items:center;gap:0.2em;width:fit-content">
 															<input class="take-value" value="0" type="number" name="${cWindowID}.take-value.${vTokenID}.${vInventory[i].id}" style="width:2em">
 															<p class="take-maximum" style="">/${vInventory[i].quantity}</p>
 														</div>
-														<button type="button" style="width:fit-content" name="${cWindowID}.take-all.${vTokenID}.${vInventory[i].id}" onclick= "$(this).parent().find('input.take-value').val(${vInventory[i].quantity})">
+														<button type="button" class="take-all" style="width:fit-content" name="${cWindowID}.take-all.${vTokenID}.${vInventory[i].id}">
 															<i class="${cTakeIcon}"></i> 
 														</button>
 													</div>
@@ -508,6 +514,14 @@ class TakeInventoryWindow extends Application {
 		}
 		
 		vInventoryHTML = vInventoryHTML + `</div>`;
+		
+		if (this.maxNumber() < Infinity) {
+			vInventoryHTML = vInventoryHTML + `<p name="NumberDisplay"></p>`;
+		}
+		
+		if (this.maxWeight() < Infinity) {
+			vInventoryHTML = vInventoryHTML + `<p name="WeightDisplay"></p>`;
+		}
 		
 		//buttons	
 		let vButtonsHTML = 				`<div class="form-group" style="display:flex;flex-direction:row;align-items:center;gap:1em;margin-top:1em">
@@ -532,8 +546,70 @@ class TakeInventoryWindow extends Application {
 		vTakeAllButton.on("click", function() {
 			pHTML.find(`div.item-entry`).each(function() {
 				$(this).find('input.take-value').val(vInventory.find(vItem => vItem.id == $(this).attr("itemid")).quantity);
+				$(this).find('input.take-value')[0].onchange();
 			});
 		});
+		
+		let vUpdateDisplays = () => {
+			if (this.maxNumber() < Infinity) {
+				console.log(pHTML.find('p[name="NumberDisplay"]'));
+				pHTML.find('p[name="NumberDisplay"]')[0].innerHTML = Translate(cWindowID + ".displays.NumberDisplay", {pValue : this.currentNumber(), pMax : this.maxNumber()})
+			}
+		
+			if (this.maxWeight() < Infinity) {
+				pHTML.find('p[name="WeightDisplay"]')[0].innerHTML = Translate(cWindowID + ".displays.WeightDisplay", {pValue : Math.round((this.currentWeight() + Number.EPSILON) * 100) / 100, pMax : this.maxWeight()})
+			}
+		}
+		
+		let vEntries = this.element.find('div.item-entry');
+		
+		let vOwner = this.vInventoryOwner;
+		
+		let vWindow = this;
+		
+		vEntries.each(function() {
+			let vValueElement = $(this).find(`input.take-value`);
+			let vTakeallElement = $(this).find(`button.take-all`);
+			
+			let vID = $(this).attr("itemid");
+
+			let vItem = vInventory.find(vItem => vItem.id == vID);
+			let vWeight = vItem.weight;
+			vValueElement[0].onchange = () => {
+				let vChanged = false;
+				
+				let vValue = vValueElement.val();
+				if (vValue > 0) {
+					if (vWindow.maxNumber() < Infinity) {
+						if (vWindow.currentNumber() > vWindow.maxNumber()) {
+							vChanged = true;
+							vValueElement.val(Math.max(0, vWindow.maxNumber() - (vWindow.currentNumber() - vValue)));
+						}
+					}
+					
+					if (vWindow.maxWeight() < Infinity && !vChanged && !isNaN(vWeight)) {
+						if (vWindow.currentWeight() > vWindow.maxWeight()) {
+							vChanged = true;
+							vValueElement.val(Math.max(0, Math.floor((vWindow.maxWeight() - (vWindow.currentWeight() - vValue * vWeight))/vWeight)));
+						}
+					}
+				}
+				
+				if (vChanged) {
+					vValueElement[0].onchange();
+				}
+				else {
+					vUpdateDisplays();
+				}
+			};
+			
+			vTakeallElement[0].onclick = () => {
+				vValueElement.val(vItem.quantity);
+				vValueElement[0].onchange();
+			}
+		});
+		
+		vUpdateDisplays();
 		
 		let vConfirmButton = pHTML.find(`button[name="${cWindowID}.take-confirm"]`);
 		
@@ -554,6 +630,18 @@ class TakeInventoryWindow extends Application {
 	
 	//support
 	getTransferInfo() {} //returns the transfer info set in this window
+	
+	maxNumber() {} //returns Number max value (infinity if none)
+	
+	currentNumber() {} //returns number of selected items
+	
+	maxWeight() {} //returns Weight max value (infinity if none)
+	
+	currentWeight() {} //returns weight of selected items
+	
+	updateNumberMaxDisplay() {} //updates the number max display
+	
+	updateWeightMaxDisplay() {} //updates the weight max display
 	
 	//IMPLEMENTATIONS
 	
@@ -581,6 +669,64 @@ class TakeInventoryWindow extends Application {
 		}
 		
 		return vInfo;
+	}
+	
+	maxNumber() {
+		let vValue = this.vOptions.maxNumber;
+		
+		if (!isNaN(vValue) && vValue >= 0) {
+			return vValue;
+		}
+		
+		return Infinity;
+	}
+	
+	currentNumber() {
+		let vNumber = 0;
+		let vEntries = this.element.find('div.item-entry');
+		
+		vEntries.each(function() {
+			let vVal = $(this).find(`input.take-value`).val();
+			
+			if (!isNaN(vVal)) {
+				vNumber = vNumber + Number(vVal);
+			}
+		});
+		
+		return vNumber;
+	}
+	
+	maxWeight() {
+		let vValue = this.vOptions.maxWeight;
+		
+		if (!isNaN(vValue) && vValue >= 0) {
+			return vValue;
+		}
+		
+		return Infinity;
+	}
+	
+	currentWeight() {
+		let vNumber = 0;
+		let vEntries = this.element.find('div.item-entry');
+		
+		let vInventory = this.vInventoryInfo;
+	
+		vEntries.each(function() {
+			let vID = $(this).attr("itemid");
+			
+			let vItem = vInventory.find(vItem => vItem.id == vID);
+			
+			let vWeight = vItem.weight;
+			
+			let vVal = $(this).find(`input.take-value`).val();
+			
+			if (!isNaN(vWeight) && !isNaN(vVal)) {
+				vNumber = vNumber + Number(vVal) * vWeight;
+			}
+		});
+		
+		return vNumber;
 	}
 }
 

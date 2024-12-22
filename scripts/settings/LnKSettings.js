@@ -498,6 +498,60 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: LnKSystemutils.SystemPickPocketdefaultTypes()
   });  
   
+  game.settings.register(cModuleName, "MaximumPPNumber", {
+	name: Translate("Settings.MaximumPPNumber.name"),
+	hint: Translate("Settings.MaximumPPNumber.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
+  game.settings.register(cModuleName, "MaximumPPNumberCrit", {
+	name: Translate("Settings.MaximumPPNumberCrit.name"),
+	hint: Translate("Settings.MaximumPPNumberCrit.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
+  game.settings.register(cModuleName, "MaximumPPNumberFail", {
+	name: Translate("Settings.MaximumPPNumberFail.name"),
+	hint: Translate("Settings.MaximumPPNumberFail.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
+  game.settings.register(cModuleName, "MaximumPPWeight", {
+	name: Translate("Settings.MaximumPPWeight.name"),
+	hint: Translate("Settings.MaximumPPWeight.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
+  game.settings.register(cModuleName, "MaximumPPWeightCrit", {
+	name: Translate("Settings.MaximumPPWeightCrit.name"),
+	hint: Translate("Settings.MaximumPPWeightCrit.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
+  game.settings.register(cModuleName, "MaximumPPWeightFail", {
+	name: Translate("Settings.MaximumPPWeightFail.name"),
+	hint: Translate("Settings.MaximumPPWeightFail.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1
+  }); 
+  
   game.settings.register(cModuleName, "deadActorsLootable", {
 	name: Translate("Settings.deadActorsLootable.name"),
 	hint: Translate("Settings.deadActorsLootable.descrp"),

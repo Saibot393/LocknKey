@@ -768,6 +768,10 @@
 			"header" : {
 				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
 			},
+			"displays" : {
+				"NumberDisplay" 		: "<b>{pValue}</b>/{pMax}",
+				"WeightDisplay" 		: "<b>{pValue}</b>/{pMax}"
+			},
 			"buttons" : {
 				"take" : {
 					"name"				: "Take selected"

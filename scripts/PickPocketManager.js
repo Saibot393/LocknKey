@@ -233,7 +233,21 @@ class PickPocketManager {
 				}
 				
 				if (vSuccessDegree >= 0) {
-					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {applyDCFilter : true, rollInfos : pData.rollInfos, lootFilter : game.settings.get(cModuleName, "lootFilter")});
+					let vMaxTakeNumber = -1;
+					let vMaxTakeWeight = -1;
+					switch (vSuccessDegree) {
+						case 0:
+							vMaxTakeNumber = game.settings.get(cModuleName, "MaximumPPNumberFail");
+							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPNumberFail");						
+						case 1:
+							vMaxTakeNumber = game.settings.get(cModuleName, "MaximumPPNumber");
+							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPWeight");
+						case 2:
+							vMaxTakeNumber = game.settings.get(cModuleName, "MaximumPPNumberCrit");
+							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPNumberCrit");			
+					}
+					
+					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {applyDCFilter : true, rollInfos : pData.rollInfos, lootFilter : game.settings.get(cModuleName, "lootFilter"), maxNumber : vMaxTakeNumber, maxWeight : vMaxTakeWeight});
 				}
 				
 				if (vSuccessDegree > 0) {

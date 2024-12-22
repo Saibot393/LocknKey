@@ -110,6 +110,8 @@ class LnKSystemutils {
 	
 	static containerContent(pContainer) {} //retruns content ids of pContainer
 	
+	static weightof(pItem) {} //tries to workout the in game weight of pItem in respective units
+	
 	//IMPLEMENTATIONS
 	//Identification	
 	static isPf2e() {
@@ -558,6 +560,32 @@ class LnKSystemutils {
 		}
 		
 		return false;
+	}
+	
+	static weightof(pItem) {
+		if (pItem?.system?.weight) {
+			let vWeight = pItem.system.weight;
+			
+			if (!isNaN(vWeight.value)) {
+				return Number(vWeight.value);
+			}
+		}
+		
+		if (pItem?.system?.bulk) {
+			let vBulk = pItem.system.bulk;
+			
+			if (!isNaN(vBulk)) {
+				return Number(pItem.system.bulk);
+			}
+			
+			if (vBulk == "L") {
+				return 0.1;
+			}
+			
+			if (!isNaN(vBulk.value)) {
+				return Number(vBulk.value);
+			}
+		}
 	}
 }
 
