@@ -768,6 +768,10 @@
 			"header" : {
 				"title"					: "<h> Pobranie z zasobów <b>{pOwnerName}</b> (ląduje w zasobach <b>{pTakerName}</b> ): </h>"
 			},
+			"displays" : {
+				"NumberDisplay" 		: "<b>{pValue}</b>/{pMax}",
+				"WeightDisplay" 		: "<b>{pValue}</b>/{pMax}"
+			},
 			"buttons" : {
 				"take" : {
 					"name"				: "Wybierz zaznaczone"
