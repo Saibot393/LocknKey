@@ -1,3 +1,6 @@
+## v3.2.1
+- Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
 ## v3.2.0
 - Added world setting Enable Pickpocketing to enable/disable the Pick pocket feature
 - Added world setting setting Default Item Pick pocket DC to set a default DC for pickpocketable items
