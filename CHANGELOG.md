@@ -1,4 +1,4 @@
-## v3.2
+## v3.2.0
 - Added world setting Enable Pickpocketing to enable/disable the Pick pocket feature
 - Added world setting setting Default Item Pick pocket DC to set a default DC for pickpocketable items
 - Improved the Key creation menu for the GM, so that it is now also possible to directly choose the keys image
