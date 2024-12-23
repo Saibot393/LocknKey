@@ -774,6 +774,16 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		 
 		pHTML.find('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);
 		
+		//locks Settings
+		vnewHTML = `<h4 class="border">${Translate("Titles.LockSettings")}</h4>`;
+		 
+		pHTML.find('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);		
+		
+		//pick pocket settings
+		vnewHTML = `<h4 class="border">${Translate("Titles.PickpocketSettings")}</h3>`;
+		 
+		pHTML.find('input[name="' + cModuleName + '.EnablePickpocketing"]').closest(".form-group").before(vnewHTML);		
+		
 		//gm controlls
 		vnewHTML = ``;
 		for (let i = 0; i <= 4; i++) {
