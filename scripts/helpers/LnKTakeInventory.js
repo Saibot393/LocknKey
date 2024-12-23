@@ -492,9 +492,7 @@ class TakeInventoryWindow extends Application {
 		
 		for (let i = 0; i < vInventory.length; i++) {
 			let vWeight = vInventory[i].weight;
-			console.log(vInventory[i]);
-			console.log(vWeight);
-			console.log(!isNaN(vWeight) ? `<div><i class="fa-solid fa-weight-hanging"></i> <p>${vWeight}</p></div>` : ``);
+			
 			vInventoryHTML = vInventoryHTML + 	`
 												<div class="form-group item-entry" itemid="${vInventory[i].id}" style="display:flex;flex-direction:column;align-items:center;gap:1em;border: 1px solid">
 													<div style="display:flex;flex-direction:row;align-items:center;gap:1em;width:100%">
@@ -552,7 +550,6 @@ class TakeInventoryWindow extends Application {
 		
 		let vUpdateDisplays = () => {
 			if (this.maxNumber() < Infinity) {
-				console.log(pHTML.find('p[name="NumberDisplay"]'));
 				pHTML.find('p[name="NumberDisplay"]')[0].innerHTML = Translate(cWindowID + ".displays.NumberDisplay", {pValue : this.currentNumber(), pMax : this.maxNumber()})
 			}
 		

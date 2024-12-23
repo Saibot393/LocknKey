@@ -248,9 +248,6 @@ class LockManager {
 			let vRemoveLP = false;
 			
 			if (pMethodtype == cLUpickLock) {
-				console.log(vusedItem);
-				console.log(game.settings.get(cModuleName, "RemoveLP"));
-				console.log(pResultDegree);
 				if (vusedItem) {
 					switch (game.settings.get(cModuleName, "RemoveLP")) {
 						case "always": 
@@ -264,7 +261,6 @@ class LockManager {
 							break;
 					}
 				}
-				console.log(vRemoveLP);
 				
 				if (vRemoveLP) {
 					let vtoRemove;
@@ -535,7 +531,7 @@ class LockManager {
 		
 		vHTML = vHTML + `<div style="display:flex;margin-bottom:3px">`;
 		
-		vHTML = vHTML + `<div style="height:50px;width:50px;margin-left:auto;margin-right:auto;background-size:contain;cursor:pointer" id="Image" name="Image"></div>`;
+		vHTML = vHTML + `<div data-tooltip="${Translate("Titles.clicktoselectImage")}" style="height:50px;width:50px;margin-left:auto;margin-right:auto;background-size:contain;cursor:pointer" id="Image" name="Image"></div>`;
 		
 		vHTML = vHTML + `</div>`;
 		

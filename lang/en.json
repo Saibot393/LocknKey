@@ -1,6 +1,8 @@
 {
 	"LocknKey" : {
 		"Titles" : {
+			"LockSettings"				: "Lock settings",
+			"PickpocketSettings"		: "Pick pocket settings",
 			"confirm"					: "confirm",
 			"abbort"					: "abbort",
 			"LocknKey"					: "Lock & Key",
@@ -38,7 +40,11 @@
 			"addIdentityMessage"		: "Player {pPlayerName} wants to add these identities to a lock:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} of {pType} {pName}",
 			"ToggleTile"				: "Toggle tile state (L&K)",
-			"DC"						: "(DC: {pDC})"
+			"DC"						: "(DC: {pDC})",
+			"Usekey"					: "Use key(s)",
+			"Keyuse"					: "Key use",
+			"dropKey"					: "Drop key item here",
+			"clicktoselectImage"		: "Click to select image"
 		},
 		
 		"Popup" : {
@@ -188,6 +194,11 @@
 				"name" 					: "Prevent key use while paused",
 				"descrp"				: "Prevent players from using keys while the game is paused"		
 			},
+			
+			"useKeyDialogbydefault" : {
+				"name" 					: "Use Key select dialog by default",
+				"descrp"				: "If all lock key uses should require a key selection by default"		
+			},
 	
 			"autoKeyuse" : {
 				"name" 					: "Automatic key use",
@@ -262,6 +273,17 @@
 			"MentionLockPickItem" : {
 				"name" 					: "Mention lockpick item",
 				"descrp"				: "If the used lockpick item should be mentioned in the chat"		
+			},
+			
+			"RemoveLP" : {
+				"name" 					: "RemoveLP",
+				"descrp"				: "If and under which conditions the used Lock pick item is removed",
+				"options" : {
+					"never"				: "never",
+					"always"			: "always",
+					"fail"				: "on failure",
+					"critfail"			: "on critical failure"
+				}
 			},
 			
 			"RemoveLPoncritFail" : {
@@ -349,6 +371,11 @@
 				"descrp"				: "If identity addtions should be accepted automatically (not recommended)"				
 			},
 			
+			"EnablePickpocketing" : {
+				"name" 					: "Enable Pickpocketing",
+				"descrp"				: "Enables the Pick pocket feature and its settings"				
+			},
+			
 			"PickPocketFormula" : {
 				"name" 					: "Pick pocket formula",
 				"descrp"				: "The formula which is used for dice rolls when pick pocketing (e.g. \"1d20 + @actor.skills.thievery.mod\", help can be found on the Github page of this module)"				
@@ -364,6 +391,11 @@
 				"descrp"				: "The default formula used to calculate the Pick Pocket DC (overrides other defaults)"				
 			},
 			
+			"PickPocketDefaultItemDC" : {
+				"name" 					: "Default Item Pick pocket DC",
+				"descrp"				: "The default Pick pocket DC modifier for items"				
+			},
+			
 			"PickPocketDCCritThreshold" : {
 				"name" 					: "Pick pocket crit DC threshold",
 				"descrp"				: "Maximum SG for pick pocketing that can be overcome by critical successes"				
@@ -377,6 +409,41 @@
 			"PickPocketItemTypes" : {
 				"name" 					: "Pick pocketable item types",
 				"descrp"				: "Item types that can be pick pocketed (seperated with \";\", \"#currency\" for numerical currency)"				
+			},
+			
+			"MaximumPPNumber" : {
+				"name" 					: "Maximum Item for Pick pocket",
+				"descrp"				: "The maximum number of Items a user can take when successfully pick pocketing a token (-1 for unlimited)"				
+			},
+			
+			"MaximumPPNumberCrit" : {
+				"name" 					: "Maximum Item for critical Pick pocket",
+				"descrp"				: "The maximum number of Items a user can take when critically pick pocketing a token (-1 for unlimited)"				
+			},
+			
+			"MaximumPPNumberFail" : {
+				"name" 					: "Maximum Item for failed Pick pocket",
+				"descrp"				: "The maximum number of Items a user can take when failing to pick pocket a token (if the Item DC still allows for it, -1 for unlimited)"				
+			},
+			
+			"MaximumPPWeight" : {
+				"name" 					: "Maximum Item weight for Pick pocket",
+				"descrp"				: "The maximum weight (system units) of Items a user can take when successfully pick pocketing a token (-1 for unlimited)"				
+			},
+			
+			"MaximumPPWeightCrit" : {
+				"name" 					: "Maximum Item weight for critical Pick pocket",
+				"descrp"				: "The maximum weight (system units) of Items a user can take when critically pick pocketing a token (-1 for unlimited)"				
+			},
+			
+			"MaximumPPWeightFail" : {
+				"name" 					: "Maximum Item weight for failed Pick pocket",
+				"descrp"				: "The maximum weight (system units) of Items a user can take when failing to pick pocket a token (if the Item DC still allows for it, -1 for unlimited)"				
+			},
+			
+			"PickPocketCooldown" : {
+				"name" 					: "Pick pocket cooldown",
+				"descrp"				: "Pick pocket cooldown per player in seconds"				
 			},
 			
 			"deadActorsLootable" : {
@@ -513,6 +580,11 @@
 					"lock" 				: "IDs which can lock/unlock this lock (seperated with \";\", \"&\" for multiple required keys)",
 					"key" 				: "IDs which this key can lock/unlock (seperated with \";\")"
 				}
+			},
+			
+			"UseKeyDialogFlag" : {
+				"name" 					: "Key use dialog",
+				"descrp"				: "If the use has to choose which key to use"					
 			},
 			
 			"PasskeysFlag" : {
@@ -770,8 +842,8 @@
 				"title"					: "<h> Take from <b>{pOwnerName}s</b> inventory (lands in <b>{pTakerName}s</b> inventory): </h>"
 			},
 			"displays" : {
-				"NumberDisplay" 		: "<b>{pValue}</b>/{pMax}",
-				"WeightDisplay" 		: "<b>{pValue}</b>/{pMax}"
+				"NumberDisplay" 		: "Selected items: <b>{pValue}</b>/{pMax}",
+				"WeightDisplay" 		: "Selected item weight: <b>{pValue}</b>/{pMax}"
 			},
 			"buttons" : {
 				"take" : {

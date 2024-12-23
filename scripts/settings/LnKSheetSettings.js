@@ -412,7 +412,7 @@ class LnKSheetSettings {
 												
 		//setting to use key use menu									
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cUseKeyDialogF +".name"), 
-												vhint : Translate("SheetSettings."+ cUseKeyDialogF +".descrp.lock"), 
+												vhint : Translate("SheetSettings."+ cUseKeyDialogF +".descrp"), 
 												vtype : "checkbox", 
 												vwide : true,
 												vvalue : LnKFlags.useKeyDialog(pApp.object),
