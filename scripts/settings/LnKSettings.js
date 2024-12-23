@@ -271,10 +271,25 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.RemoveLPoncritFail.name"),
 	hint: Translate("Settings.RemoveLPoncritFail.descrp"),
 	scope: "world",
-	config: true,
+	config: false,
 	type: Boolean,
 	default: false
   }); 
+  
+  game.settings.register(cModuleName, "RemoveLP", {
+	name: Translate("Settings.RemoveLP.name"),
+	hint: Translate("Settings.RemoveLP.descrp"),
+	scope: "world",
+	config: true,
+	type: String,
+	choices: {
+		"never"		: Translate("Settings.RemoveLP.options.never"),
+		"always"	: Translate("Settings.RemoveLP.options.always"),
+		"fail"		: Translate("Settings.RemoveLP.options.fail"),
+		"critfail"	: Translate("Settings.RemoveLP.options.critfail"),
+	},
+	default: "never"
+  });
   
   game.settings.register(cModuleName, "JamLockonLPcritFail", {
 	name: Translate("Settings.JamLockonLPcritFail.name"),

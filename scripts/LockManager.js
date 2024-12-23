@@ -245,6 +245,42 @@ class LockManager {
 			if (pUsedItemID && pUsedItemID.length > 0) {
 				vusedItem = (await LnKutils.TokenInventory(pCharacter)).find(vItem => vItem.id == pUsedItemID);
 			}	
+			let vRemoveLP = false;
+			
+			if (pMethodtype == cLUpickLock) {
+				console.log(vusedItem);
+				console.log(game.settings.get(cModuleName, "RemoveLP"));
+				console.log(pResultDegree);
+				if (vusedItem) {
+					switch (game.settings.get(cModuleName, "RemoveLP")) {
+						case "always": 
+							vRemoveLP = true;
+							break;
+						case "fail": 
+							vRemoveLP = pResultDegree <= 0;
+							break;
+						case "critfail": 
+							vRemoveLP = pResultDegree < 0;
+							break;
+					}
+				}
+				console.log(vRemoveLP);
+				
+				if (vRemoveLP) {
+					let vtoRemove;
+					
+					if (LnKFlags.hasReplacementItem(vusedItem)) {
+						vtoRemove = (await LnKutils.TokenInventory(pCharacter)).find(vItem => LnKutils.isLockPickItem(vItem, LnKFlags.ReplacementItems(vusedItem)));
+					}
+					
+					if (!vtoRemove) {
+						vtoRemove = vusedItem;
+					}
+					
+					LnKutils.removeoneItem(vtoRemove, pCharacter);
+					LnKPopups.TextPopUpID(pLock, "Lockpickbroke", {}, true); //MESSAGE POPUP
+				}
+			}
 			
 			if (pResultDegree > 0) {
 				//success
@@ -290,7 +326,7 @@ class LockManager {
 				//failure
 				switch (pMethodtype) {
 							case cLUpickLock:
-								let vRemoveLP = game.settings.get(cModuleName, "RemoveLPoncritFail") && (pResultDegree < 0) && vusedItem;
+								//let vRemoveLP = game.settings.get(cModuleName, "RemoveLPoncritFail") && (pResultDegree < 0) && vusedItem;
 								
 								if (pChatMessages) {
 									if (game.settings.get(cModuleName, "MentionLockPickItem") && vusedItem && vusedItem.name) {
@@ -309,43 +345,25 @@ class LockManager {
 								await LnKFlags.ReduceLPAttempts(pLock);
 								
 								if (pResultDegree < 0) {
-									if (vRemoveLP) {
-										let vtoRemove;
-										
-										if (LnKFlags.hasReplacementItem(vusedItem)) {
-											vtoRemove = (await LnKutils.TokenInventory(pCharacter)).find(vItem => LnKutils.isLockPickItem(vItem, LnKFlags.ReplacementItems(vusedItem)));
-										}
-										
-										if (!vtoRemove) {
-											vtoRemove = vusedItem;
-										}
-										
-										//if crit fail and LP item was found and set to do so, remove Lockpick from inventory
-										LnKutils.removeoneItem(vtoRemove, pCharacter);
-										LnKPopups.TextPopUpID(pLock, "Lockpickbroke", {}, true); //MESSAGE POPUP
-									}
-									
 									if (game.settings.get(cModuleName, "JamLockonLPcritFail")) {
 										LnKFlags.JamLock(pLock);
 										LnKPopups.TextPopUpID(pLock, "jammedLock", {}, true); //MESSAGE POPUP
 									}
-									
-									LnKPopups.TextPopUpQueue(pLock); //MESSAGE POPUP
 								}
 								else {
-									LnKPopups.TextPopUpID(pLock, "pickLockfailed"); //MESSAGE POPUP
+									LnKPopups.TextPopUpID(pLock, "pickLockfailed", {}, true); //MESSAGE POPUP
 								}
 								
 								break;
 							case cLUbreakLock:
-								LnKPopups.TextPopUpID(pLock, "breakLockfailed"); //MESSAGE POPUP
+								LnKPopups.TextPopUpID(pLock, "breakLockfailed", {}, true); //MESSAGE POPUP
 								
 								if (pChatMessages) {
 									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.LockBreakfail"+vCritMessagesuffix, {pName : pCharacter.name})}); //CHAT MESSAGE
 								}
 								break;
 							case cLUCustomCheck:
-								LnKPopups.TextPopUpID(pLock, "customcheckfailed", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}); //MESSAGE POPUP
+								LnKPopups.TextPopUpID(pLock, "customcheckfailed", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}, true); //MESSAGE POPUP
 								
 								if (pChatMessages) {
 									await ChatMessage.create({user: game.user.id, content : Translate("ChatMessage.CustomCheckFail"+vCritMessagesuffix, {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")})}); //CHAT MESSAGE
@@ -354,6 +372,8 @@ class LockManager {
 								
 				}
 			}
+			
+			LnKPopups.TextPopUpQueue(pLock); //MESSAGE POPUP
 			
 			Hooks.call(cModuleName + ".LockUse", pLock, pCharacter, {UseType : pMethodtype, Outcome : pResultDegree, useData : puseData});
 		}
