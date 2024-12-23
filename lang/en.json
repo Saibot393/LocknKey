@@ -276,7 +276,7 @@
 			},
 			
 			"RemoveLP" : {
-				"name" 					: "RemoveLP",
+				"name" 					: "Remove Lockpick",
 				"descrp"				: "If and under which conditions the used Lock pick item is removed",
 				"options" : {
 					"never"				: "never",
