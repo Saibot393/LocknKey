@@ -8,6 +8,8 @@ import { LnKCompUtils } from "./compatibility/LnKCompUtils.js";
 
 const cPickPocketIcon = "fa-solid fa-hand";
 
+var vLastPickpocketTime = 0; //used to save last time a pickpocket was attempted, for cooldown purposes
+
 class PickPocketManager {
 	//DECLARATIONS
 	static onAtemptedPickPocket(pTarget) {} //called when a user tries to pickpocket a token
@@ -35,29 +37,33 @@ class PickPocketManager {
 			
 			if (pTarget && vCharacter && pTarget != vCharacter) {
 				if(!game.paused || !game.settings.get(cModuleName, "preventUseinPause")) {
-					if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
-						let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
+					if (Date.now() - vLastPickpocketTime > game.settings.get(cModuleName, "PickPocketCooldown") * 1000) {
+						vLastPickpocketTime = Date.now();
 						
-						if (!vAllowCheck) {
-							vAllowCheck = LnKFlags.Canbepickpocketed(pTarget);
+						if (LnKutils.WithinLockingDistance(vCharacter, pTarget)) {
+							let vAllowCheck = game.settings.get(cModuleName, "allowallInteractions");
 							
 							if (!vAllowCheck) {
-								LnKPopups.TextPopUpID(pLockObject, "CantbePickpocketed"); //MESSAGE POPUP
+								vAllowCheck = LnKFlags.Canbepickpocketed(pTarget);
+								
+								if (!vAllowCheck) {
+									LnKPopups.TextPopUpID(pLockObject, "CantbePickpocketed"); //MESSAGE POPUP
+								}
+							}
+							
+							if (vAllowCheck) {
+								PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
 							}
 						}
-						
-						if (vAllowCheck) {
-							PickPocketManager.PickPocketToken(pTarget, vCharacter, true);
-						}
-					}
-					else {
-						if ([30, 50].includes(pTarget.displayName)) {
-							LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
-						}
 						else {
-							LnKPopups.TextPopUpID(pTarget, "TokenoutofreachAnonymous"); //MESSAGE POPUP
-						}
-					}	
+							if ([30, 50].includes(pTarget.displayName)) {
+								LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
+							}
+							else {
+								LnKPopups.TextPopUpID(pTarget, "TokenoutofreachAnonymous"); //MESSAGE POPUP
+							}
+						}	
+					}
 				}
 				else {
 					LnKPopups.TextPopUpID(pTarget, "GamePaused"); //MESSAGE POPUP

@@ -426,6 +426,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: false
   }); 
 
+  //Pickpocketing
   game.settings.register(cModuleName, "EnablePickpocketing", {
 	name: Translate("Settings.EnablePickpocketing.name"),
 	hint: Translate("Settings.EnablePickpocketing.descrp"),
@@ -552,6 +553,20 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	type: Number,
 	default: -1
   }); 
+  
+  game.settings.register(cModuleName, "PickPocketCooldown", {
+	name: Translate("Settings.PickPocketCooldown.name"),
+	hint: Translate("Settings.PickPocketCooldown.descrp"),
+	scope: "client",
+	config: true,
+	type: Number,
+	range: {
+		min: 0,
+		max: 10,
+		step: 0.1
+	},
+	default: 0
+  });  
   
   game.settings.register(cModuleName, "deadActorsLootable", {
 	name: Translate("Settings.deadActorsLootable.name"),
