@@ -7,7 +7,7 @@
 - Added Lock setting Key use Dialog to popup a dialog on key use in which the player has to select the used key(s), usefull for puzzles
 - Added a weight and items taken display to the pick pocket dialog
 - Added world setting Remove Lockpick to replace the Remove Lockpick on critical fail setting, allowing for more detailed conditions
-- Added setting Default Item Pick pocket DC to set the default Item Pick pocket DC modifier
+- Added world setting Default Item Pick pocket DC to set the default Item Pick pocket DC modifier
 - Added world setting(s) Pick pocket item limit (critical/failure) to limit the amount of items that can be taken with the pick pocket dialog (for success/critical success/failure)
 - Added world setting(s) Pick pocket item weight limit (critical/failure) to limit the items that can be taken with the pick pocket dialog by their weight (for success/critical success/failure)
 - Added world setting Pick pocket cooldown to set a per user cooldown to pick pocket attempts
