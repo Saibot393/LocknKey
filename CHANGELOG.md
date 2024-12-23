@@ -1,3 +1,15 @@
+## v3.2 (Unreleased)
+- Added setting Enable Pick Pocket to enable/disable the Pick pocket feature
+- Added setting setting Default Pick Pocket Item DC to set a default DC for pickpocketable items
+- Improved the Key creation menu for GM, so that it is now also possible to directly choose the keys image
+- The tag `@Item` can now be used in roll formulas, for example to refer to use lock pick items
+- Added Lock setting Key use Dialog to popup a dialog on key use in which the player has to select the used key(s), usefull for puzzles
+- Added a weight and items taken display to the pick pocket dialog
+- Added setting(s) Pick pocket item limit (critical/failure) to limit the amount of items that can be taken with the pick pocket dialog (for success/critical success/failure)
+- Added setting(s) Pick pocket item weight limit (critical/failure) to limit the items that can be taken with the pick pocket dialog by their weight (for success/critical success/failure)
+- Added setting Pick pocket cooldown to add a per user cooldown to pick pocket attempts
+- The out of reach message will no longer reveal the name of tokens whos name should be hidden
+
 ## v3.1.11
 - Tokens can no longer loot themselves
 - Container items will now be deleted when looted if the quantity can't be set to 0
