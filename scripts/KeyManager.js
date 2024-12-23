@@ -473,7 +473,7 @@ class KeyManager {
 		vHTML = vHTML + `<div style="display:flex;margin-bottom:3px;justify-content:center;flex-wrap:wrap">`;
 		
 		for (let i = 1; i <= vRequiredKeys; i++) {
-			vHTML = vHTML + `<div name="KeyItem${i}" style="display:flex;height:50px;width:50px;margin:3px;border-width:2px;border-color:black;border-style:dashed;border-radius:3px;background-size:contain">`;
+			vHTML = vHTML + `<div name="KeyItem${i}" data-tooltip="${Translate("Titles.dropKey")}" style="display:flex;height:50px;width:50px;margin:3px;border-width:2px;border-color:black;border-style:dashed;border-radius:3px;background-size:contain">`;
 			vHTML = vHTML + `</div>`;
 		}
 		

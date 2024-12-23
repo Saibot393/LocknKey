@@ -289,7 +289,7 @@ class PickPocketManager {
 	
 	//ons
 	static onPerceptionRoll(pActorID, pRoll, pSenderID) {
-		if (game.settings.get(cModuleName, "AutoUpdatePickPocketDC")) {
+		if (game.settings.get(cModuleName, "EnablePickpocketing") && game.settings.get(cModuleName, "AutoUpdatePickPocketDC")) {
 			let vRelevantTokens = LnKutils.selectedTokens().filter(vToken => vToken.actorId == pActorID);
 			
 			

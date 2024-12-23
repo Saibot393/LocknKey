@@ -578,28 +578,30 @@ class TakeInventoryWindow extends Application {
 			vValueElement[0].onchange = () => {
 				let vChanged = false;
 				
-				let vValue = vValueElement.val();
-				if (vValue > 0) {
-					if (vWindow.maxNumber() < Infinity) {
-						if (vWindow.currentNumber() > vWindow.maxNumber()) {
-							vChanged = true;
-							vValueElement.val(Math.max(0, vWindow.maxNumber() - (vWindow.currentNumber() - vValue)));
+				if (!vItem.iscurrency) {
+					let vValue = vValueElement.val();
+					if (vValue > 0) {
+						if (vWindow.maxNumber() < Infinity) {
+							if (vWindow.currentNumber() > vWindow.maxNumber()) {
+								vChanged = true;
+								vValueElement.val(Math.max(0, vWindow.maxNumber() - (vWindow.currentNumber() - vValue)));
+							}
+						}
+						
+						if (vWindow.maxWeight() < Infinity && !vChanged && !isNaN(vWeight)) {
+							if (vWindow.currentWeight() > vWindow.maxWeight()) {
+								vChanged = true;
+								vValueElement.val(Math.max(0, Math.floor((vWindow.maxWeight() - (vWindow.currentWeight() - vValue * vWeight))/vWeight)));
+							}
 						}
 					}
 					
-					if (vWindow.maxWeight() < Infinity && !vChanged && !isNaN(vWeight)) {
-						if (vWindow.currentWeight() > vWindow.maxWeight()) {
-							vChanged = true;
-							vValueElement.val(Math.max(0, Math.floor((vWindow.maxWeight() - (vWindow.currentWeight() - vValue * vWeight))/vWeight)));
-						}
+					if (vChanged) {
+						vValueElement[0].onchange();
 					}
-				}
-				
-				if (vChanged) {
-					vValueElement[0].onchange();
-				}
-				else {
-					vUpdateDisplays();
+					else {
+						vUpdateDisplays();
+					}
 				}
 			};
 			
@@ -685,11 +687,19 @@ class TakeInventoryWindow extends Application {
 		let vNumber = 0;
 		let vEntries = this.element.find('div.item-entry');
 		
+		let vInventory = this.vInventoryInfo;
+		
 		vEntries.each(function() {
-			let vVal = $(this).find(`input.take-value`).val();
+			let vID = $(this).attr("itemid");
 			
-			if (!isNaN(vVal)) {
-				vNumber = vNumber + Number(vVal);
+			let vItem = vInventory.find(vItem => vItem.id == vID);
+			
+			if (!vItem.iscurrency) {
+				let vVal = $(this).find(`input.take-value`).val();
+				
+				if (!isNaN(vVal)) {
+					vNumber = vNumber + Number(vVal);
+				}
 			}
 		});
 		
@@ -717,12 +727,14 @@ class TakeInventoryWindow extends Application {
 			
 			let vItem = vInventory.find(vItem => vItem.id == vID);
 			
-			let vWeight = vItem.weight;
-			
-			let vVal = $(this).find(`input.take-value`).val();
-			
-			if (!isNaN(vWeight) && !isNaN(vVal)) {
-				vNumber = vNumber + Number(vVal) * vWeight;
+			if (!vItem.iscurrency) {
+				let vWeight = vItem.weight;
+				
+				let vVal = $(this).find(`input.take-value`).val();
+				
+				if (!isNaN(vWeight) && !isNaN(vVal)) {
+					vNumber = vNumber + Number(vVal) * vWeight;
+				}
 			}
 		});
 		

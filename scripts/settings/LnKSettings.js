@@ -432,14 +432,15 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	scope: "world",
 	config: true,
 	type: Boolean,
-	default: true
+	default: true,
+	requiresReload: true
   });   
   
   game.settings.register(cModuleName, "PickPocketFormula", {
 	name: Translate("Settings.PickPocketFormula.name"),
 	hint: Translate("Settings.PickPocketFormula.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: String,
 	default: LnKSystemutils.SystemdefaultPickPocketformula()
   }); 
@@ -448,7 +449,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.PickPocketDefaultDC.name"),
 	hint: Translate("Settings.PickPocketDefaultDC.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   });    
@@ -457,7 +458,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.PickPocketDefaultItemDC.name"),
 	hint: Translate("Settings.PickPocketDefaultItemDC.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: 0
   });       
@@ -466,7 +467,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.PickPocketDefaultDCFormula.name"),
 	hint: Translate("Settings.PickPocketDefaultDCFormula.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: String,
 	default: ""
   });  
@@ -475,7 +476,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.PickPocketDCCritThreshold.name"),
 	hint: Translate("Settings.PickPocketDCCritThreshold.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: 99
   }); 
@@ -484,7 +485,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.AutoUpdatePickPocketDC.name"),
 	hint: Translate("Settings.AutoUpdatePickPocketDC.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Boolean,
 	default: false
   });  
@@ -493,7 +494,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.PickPocketItemTypes.name"),
 	hint: Translate("Settings.PickPocketItemTypes.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: String,
 	default: LnKSystemutils.SystemPickPocketdefaultTypes()
   });  
@@ -502,7 +503,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MaximumPPNumber.name"),
 	hint: Translate("Settings.MaximumPPNumber.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   }); 
@@ -511,7 +512,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MaximumPPNumberCrit.name"),
 	hint: Translate("Settings.MaximumPPNumberCrit.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   }); 
@@ -520,7 +521,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MaximumPPNumberFail.name"),
 	hint: Translate("Settings.MaximumPPNumberFail.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   }); 
@@ -529,7 +530,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MaximumPPWeight.name"),
 	hint: Translate("Settings.MaximumPPWeight.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   }); 
@@ -538,7 +539,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MaximumPPWeightCrit.name"),
 	hint: Translate("Settings.MaximumPPWeightCrit.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   }); 
@@ -547,7 +548,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MaximumPPWeightFail.name"),
 	hint: Translate("Settings.MaximumPPWeightFail.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Number,
 	default: -1
   }); 
@@ -556,7 +557,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.deadActorsLootable.name"),
 	hint: Translate("Settings.deadActorsLootable.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Boolean,
 	default: false
   });  
@@ -565,7 +566,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.lootFilter.name"),
 	hint: Translate("Settings.lootFilter.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: String,
 	choices: {
 		"off"   : Translate("Settings.lootFilter.options.off"),
@@ -579,7 +580,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.PerceptionKeyWord.name"),
 	hint: Translate("Settings.PerceptionKeyWord.descrp"),
 	scope: "world",
-	config: !LnKSystemutils.canAutodetectSystemPerceptionRoll(),
+	config: game.settings.get(cModuleName, "EnablePickpocketing") && !LnKSystemutils.canAutodetectSystemPerceptionRoll(),
 	type: String,
 	default: "Perception"
   }); 
@@ -588,7 +589,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	name: Translate("Settings.MentionPickpocketDetails.name"),
 	hint: Translate("Settings.MentionPickpocketDetails.descrp"),
 	scope: "world",
-	config: true,
+	config: game.settings.get(cModuleName, "EnablePickpocketing"),
 	type: Boolean,
 	default: false
   });  
