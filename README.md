@@ -42,6 +42,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Show DCs in interaction menu: to add the DCs of available checks to the interaction menu
 - Show all lock interactions to show even unavailable options in the interaction popup
 - Prevent key use while paused: to prevent players from using locks while the game is paused
+- Use Key select dialog by default: to use the Key use Dialog by default
 - Type of key items: to change the item type of newly created keys
 - Setting item types: to set forwhich item types the settings tab should be displayed
 - Key creation menu: to create a menu when creating a new key, allowing the GM to choose the name and folder of the new item
@@ -53,7 +54,7 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Crit system: to change the way crits are calculated (supports Nat1/20 and Pf2e system)
 - Lockpick items: name or compendium id of the item used to pick locks
 - Mention lockpick item: to give additional information in the chat regarding the used item when picking a lock
-- Remove Lockpick on critical fail: to remove Lockpick item on critical failures
+- Remove Lockpick: to set if and under which conditions the used Lock pick item is removed
 - Jam lock on critical lockpick fail: to automatically set locks as jammed
 - Keys can't be used on jammed locks: to prevent matching keys from being used on jammed locks
 - Default Lock pick attempts to set with how many lock pick attempts a lock normally starts
@@ -68,12 +69,17 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Make broken locks unlockable: to prevent locks from being locked once they are broken
 - Multi-success during combat only: to disable required multi success outside of combat
 - Lock circumvention keywords to set keywords used to identify effects that allow players to circumvent locks (e.g. the spell "Knock")
+- Enable Pickpocketing to enable/disable the Pick pocket feature
 - Pick pocket formula: to set the formula used for pick pocketing
+- Default Item Pick pocket DC: to set a default DC for pickpocketable items
 - Pick pocket default DC: to set the default DC for pick pocketing
 - Pick pocket default DC formula: to set the formula by which the default Pick Pocket DC is calculated
 - Pick pocket crit DC threshold: to set the maximum DC for pickpocketing that can be overcome by crits
 - Auto update Pick Pocket DC: to set if Perception rolls should be registered and used as the new Pick Pocket DC
-- Pick pocket item types: to filter which item types can be pick pocketed
+- Pick pocketable item types: to filter which item types can be pick pocketed
+- Pick pocket item limit (critical/failure) to limit the amount of items that can be taken with the pick pocket dialog (for success/critical success/failure)
+- Pick pocket item weight limit (critical/failure) to limit the items that can be taken with the pick pocket dialog by their weight (for success/critical success/failure)
+- Pick pocket cooldown to set a per user cooldown to pick pocket attempts
 - Mention Pick Pocket details: to add more informations to the pick pocket chat messages
 - Dead tokens lootable: to make all dead tokens (except item piles) lootable without having to roll
 - Loot filter to limit items that can be looted via pick pocketing to items in bags/containers called "Loot"
@@ -94,7 +100,8 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Lockable: if this token can be locked
 - Lock on close[Wall only]: to lock this door when it is closed
 - [Token only] Locked: if this token is locked
-- ID keys: IDs which this key can lock/unlock seperated with ";" (or ";" if multiple keys are required). You can add any string of characters to this list.
+- ID keys: IDs which this key can lock/unlock seperated with ";" (or ";" if multiple keys are required). You can add any string of characters to this list
+- Key use Dialog: to popup a dialog on key use in which the player has to select the used key(s), usefull for puzzles
 - Password: to set one or more passwords seperated with ";" to unlock (or lock) this door
 - Password changeable: to allow players to change this locks password if they have a valid password (only useable with the popup-menu control sceme)
 - Identities: to use identities (IDs and Names of Tokens/Actors/User) to unlock this lock
