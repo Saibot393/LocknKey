@@ -46,6 +46,7 @@
 			"DoorisLocked"				: "This door is locked",
 			"Lockoutofreach"			: "This lock is out of reach",
 			"Tokenoutofreach"			: "{pTokenName} is out of reach",
+			"TokenoutofreachAnonymous"	: "Out of reach",
 			"lockedDoor"				: "Door is now locked",
 			"lockedToken"				: "{pLockName} is now locked",
 			"unlockedDoor"				: "Door is now unlocked",

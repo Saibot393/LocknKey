@@ -51,7 +51,12 @@ class PickPocketManager {
 						}
 					}
 					else {
-						LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
+						if ([30, 50].includes(pTarget.displayName)) {
+							LnKPopups.TextPopUpID(pTarget, "Tokenoutofreach", {pTokenName : pTarget.name}); //MESSAGE POPUP
+						}
+						else {
+							LnKPopups.TextPopUpID(pTarget, "TokenoutofreachAnonymous"); //MESSAGE POPUP
+						}
 					}	
 				}
 				else {
