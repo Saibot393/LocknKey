@@ -1,6 +1,8 @@
 {
 	"LocknKey" : {
 		"Titles" : {
+			"LockSettings"				: "Ustawienia zamka",
+			"PickpocketSettings"		: "Ustawienia kradzieży kieszonkowej",
 			"confirm"					: "zatwierdź",
 			"abbort"					: "wycofaj",
 			"LocknKey"					: "Lock & Key",
@@ -38,7 +40,11 @@
 			"addIdentityMessage"		: "Gracz {pPlayerName} chce dodać te tożsamości do zamka: {pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} z {pType} {pName}",
 			"ToggleTile"				: "Przełączanie stanu kafelka (L&K)",
-			"DC"						: "(ST: {pDC})"
+			"DC"						: "(ST: {pDC})",
+			"Usekey"					: "Użyj klucza (kluczy)",
+			"Keyuse"					: "Użyto klucza",
+			"dropKey"					: "Upuść klucz tutaj",
+			"clicktoselectImage"		: "Kliknij, aby wybrać obraz"
 		},
 		
 		"Popup" : {
@@ -188,6 +194,11 @@
 				"name" 					: "Zapobiegaj używaniu klucza podczas pauzy",
 				"descrp"				: "Uniemożliwienie graczom używania kluczy, gdy gra jest wstrzymana"		
 			},
+			
+			"useKeyDialogbydefault" : {
+				"name" 					: "Domyślnie używane jest okno dialogowe wyboru klucza",
+				"descrp"				: "Jeśli wszystkie użycia klucza zamka powinny domyślnie wymagać wyboru klucza"		
+			},
 	
 			"autoKeyuse" : {
 				"name" 					: "Automatyczne użycie klucza",
@@ -262,6 +273,17 @@
 			"MentionLockPickItem" : {
 				"name" 					: "Wzmianka o wytrychu",
 				"descrp"				: "Możliwość wspomnienia o użyciu wytrychu na czacie"		
+			},
+			
+			"RemoveLP" : {
+				"name" 					: "UsuńLP",
+				"descrp"				: "Czy i na jakich warunkach używany element Zamka jest usuwany?",
+				"options" : {
+					"never"				: "nigdy",
+					"always"			: "zawsze",
+					"fail"				: "w przypadku porażki",
+					"critfail"			: "w przypadku krytycznej porażki"
+				}
 			},
 			
 			"RemoveLPoncritFail" : {
@@ -349,6 +371,11 @@
 				"descrp"				: "Jeśli dodatki tożsamości powinny być akceptowane automatycznie (niezalecane)"				
 			},
 			
+			"EnablePickpocketing" : {
+				"name" 					: "Włącz kradzież kieszonkową",
+				"descrp"				: "Włącza funkcję Kradzieży i jej ustawienia"				
+			},
+			
 			"PickPocketFormula" : {
 				"name" 					: "Formuła kradzieży kieszonkowej",
 				"descrp"				: "Formuła używana do rzutów kośćmi podczas kradzieży kieszonkowej (np. \"1k20 + @actor.skills.thievery.mod\", pomoc można znaleźć na stronie Github tego modułu)"				
@@ -364,6 +391,11 @@
 				"descrp"				: "Domyślna formuła używana do obliczania ST kradzieży kieszonkowej (zastępuje inne ustawienia domyślne)"				
 			},
 			
+			"PickPocketDefaultItemDC" : {
+				"name" 					: "Domyślne ST dla przedmiotu kradzieży kieszonkowej",
+				"descrp"				: "Domyślny modyfikator ST kradzieży dla przedmiotów"				
+			},
+			
 			"PickPocketDCCritThreshold" : {
 				"name" 					: "Próg krytyczny ST kradzieży",
 				"descrp"				: "Maksymalne SG dla kradzieży kieszonkowej, które można pokonać dzięki krytycznym sukcesom"				
@@ -377,6 +409,41 @@
 			"PickPocketItemTypes" : {
 				"name" 					: "Typy przedmiotów z możliwością kradzieży kieszonkowej",
 				"descrp"				: "Typy przedmiotów, które można ukraść (oddzielone \";\", \"#currency\" dla waluty numerycznej)"				
+			},
+			
+			"MaximumPPNumber" : {
+				"name" 					: "Maksymalna ilość przedmiotów dla kradzieży",
+				"descrp"				: "Maksymalna liczba przedmiotów, które użytkownik może zabrać po udanej kradzieży (-1 dla nieograniczonej liczby)"				
+			},
+			
+			"MaximumPPNumberCrit" : {
+				"name" 					: "Maksymalna ilość przedmiotów dla kradzieży w przypadku krytycznego sukcesu",
+				"descrp"				: "Maksymalna liczba przedmiotów, które użytkownik może zabrać po udanej kradzieży w przypadku sukcesu krytycznego (-1 dla nieograniczonej liczby)"				
+			},
+			
+			"MaximumPPNumberFail" : {
+				"name" 					: "Maksymalna ilość przedmiotów dla kradzieży w przypadku porażki",
+				"descrp"				: "Maksymalna liczba przedmiotów, które użytkownik może zabrać, jeśli odniesie porażkę przy kradzieży (jeśli ST przedmiotu nadal na to pozwala, -1 dla nieograniczonej liczby)"				
+			},
+			
+			"MaximumPPWeight" : {
+				"name" 					: "Maksymalna waga przedmiotów dla kradzieży",
+				"descrp"				: "Maksymalna waga (w jednostkach systemowych) przedmiotów, które użytkownik może zabrać podczas udanej kradzieży (-1 dla nieograniczonej liczby)"				
+			},
+			
+			"MaximumPPWeightCrit" : {
+				"name" 					: "Maksymalna waga przedmiotów dla kradzieży w przypadku sukcesu krytycznego",
+				"descrp"				: "Maksymalna waga (w jednostkach systemowych) przedmiotów, które użytkownik może zabrać podczas udanej kradzieży (-1 dla nieograniczonej liczby) w przypadku sukcesu krytycznego"				
+			},
+			
+			"MaximumPPWeightFail" : {
+				"name" 					: "Maksymalna waga przedmiotów dla kradzieży w przypadku porażki",
+				"descrp"				: "Maksymalna waga (w jednostkach systemowych) przedmiotów, które użytkownik może zabrać, jeśli odniesie porażkę podczas kradzieży (jeśli ST przedmiotu nadal na to pozwala, -1 dla nieograniczonego)"				
+			},
+			
+			"PickPocketCooldown" : {
+				"name" 					: "Czas odnowienia kradzieży",
+				"descrp"				: "Czas odnowienia kradzieży dla graczy w sekundach"				
 			},
 			
 			"deadActorsLootable" : {
@@ -513,6 +580,11 @@
 					"lock" 				: "Identyfikatory, które mogą zablokować/odblokować ten zamek (oddzielone \";\", \"&\" dla wielu wymaganych kluczy)",
 					"key" 				: "Identyfikatory, które ten klucz może zablokować/odblokować (oddzielone \";\")"
 				}
+			},
+			
+			"UseKeyDialogFlag" : {
+				"name" 					: "Dialog użycia klucza",
+				"descrp"				: "Jeśli użytkownik musi wybrać, którego klucza użyć"					
 			},
 			
 			"PasskeysFlag" : {
@@ -770,8 +842,8 @@
 				"title"					: "<h> Pobranie z zasobów <b>{pOwnerName}</b> (ląduje w zasobach <b>{pTakerName}</b> ): </h>"
 			},
 			"displays" : {
-				"NumberDisplay" 		: "<b>{pValue}</b>/{pMax}",
-				"WeightDisplay" 		: "<b>{pValue}</b>/{pMax}"
+				"NumberDisplay" 		: "Wybrane przedmioty: <b>{pValue}</b>/{pMax}",
+				"WeightDisplay" 		: "Waga wybranych przedmiotów: <b>{pValue}</b>/{pMax}"
 			},
 			"buttons" : {
 				"take" : {
