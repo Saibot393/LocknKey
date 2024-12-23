@@ -1,6 +1,8 @@
 {
 	"LocknKey" : {
 		"Titles" : {
+			"LockSettings"				: "Schloss Einstellungen",
+			"PickpocketSettings"		: "Taschendiebstahl Einstellungen",
 			"confirm"					: "bestätigen",
 			"abbort"					: "abbrechen",
 			"LocknKey"					: "Lock & Key",
@@ -38,7 +40,11 @@
 			"addIdentityMessage"		: "Spieler {pPlayerName} will folgende Indetitäten zu einem Schloss hinzufügen:{pIdentities}",
 			"IdentifierofType"			: " {pIdentifier} von {pType} {pName}",
 			"ToggleTile"				: "Fliesen Zustand ändern (L&K)",
-			"DC"						: "(SG: {pDC})"
+			"DC"						: "(SG: {pDC})",
+			"Usekey"					: "Benutze Schlüssel",
+			"Keyuse"					: "Schlüssel Benutzung",
+			"dropKey"					: "Schlüssel hierhin ziehen",
+			"clicktoselectImage"		: "Klicken um Bild auszuwählen"
 		},
 		
 		"Popup" : {
@@ -46,6 +52,7 @@
 			"DoorisLocked"				: "Diese Tür ist verschlossen",
 			"Lockoutofreach"			: "Dieses Schloss ist außer Reichweite",
 			"Tokenoutofreach"			: "{pTokenName} ist außer Reichweite",
+			"TokenoutofreachAnonymous"	: "Außer Reichweite",
 			"lockedDoor"				: "Die Tür ist nun verschlossen",
 			"lockedToken"				: "{pLockName} ist nun verschlossen",
 			"unlockedDoor"				: "Die Tür ist nun unverschlossen",
@@ -187,6 +194,11 @@
 				"name" 					: "Verhindere Schlüssel-Nutzung in Pause",
 				"descrp"				: "Verhindert, dass Spieler Schlüssel benutzen können während das Spiel pausiert ist"		
 			},
+			
+			"useKeyDialogbydefault" : {
+				"name" 					: "Nutze Schlüsselauswahl standardmäßig",
+				"descrp"				: "Ob alle Schlösser standardmäßig die Schlüsselauswahl benutzen sollen"		
+			},
 	
 			"autoKeyuse" : {
 				"name" 					: "Automatische Schlüssel-Nutzung",
@@ -261,6 +273,17 @@
 			"MentionLockPickItem" : {
 				"name" 					: "Dietrich erwähnen",
 				"descrp"				: "Ob der benutzte Dietrich im Chat erwähnt werden soll"		
+			},
+			
+			"RemoveLP" : {
+				"name" 					: "Dietrich zerstören",
+				"descrp"				: "Ob und wann der Dietrich Gegenstand eines Nutzers entfernt werden soll",
+				"options" : {
+					"never"				: "niemals",
+					"always"			: "immer",
+					"fail"				: "bei Fehlschlägen",
+					"critfail"			: "bei kritischen Fehlschlägen"
+				}
 			},
 			
 			"RemoveLPoncritFail" : {
@@ -348,6 +371,11 @@
 				"descrp"				: "Ob Identitäts hinzufügungen für Schlösser automatisch bestätigt werden sollen (nicht empfohlen)"				
 			},
 			
+			"EnablePickpocketing" : {
+				"name" 					: "Taschendiebstahl aktivieren",
+				"descrp"				: "Aktiviert Taschendiebstahl und entsprechende Einstellungen"				
+			},
+			
 			"PickPocketFormula" : {
 				"name" 					: "Taschendiebstahl formel",
 				"descrp"				: "Die Würfelformel welche für Taschendiebstahl Würfe verwendet wird (z.B. \"1d20 + @actor.skills.thievery.mod\", hilfe auf der Github-Seite des Moduls zu finden)"				
@@ -363,6 +391,11 @@
 				"descrp"				: "Die standard formel welche für Taschendiebstahl standard SGs benutzt wird (überschreibt andere Standards)"				
 			},
 			
+			"PickPocketDefaultItemDC" : {
+				"name" 					: "Standard Gegenstand Taschendiebstahl SG",
+				"descrp"				: "Der standard Taschendiebstahl SG für Gegenstände"				
+			},
+			
 			"PickPocketDCCritThreshold" : {
 				"name" 					: "Taschendiebstahl SG Krit-Schwelle",
 				"descrp"				: "Maximaler SG der von kritischen Taschendiebstahlswürfen überkommen werden kann"				
@@ -376,6 +409,41 @@
 			"PickPocketItemTypes" : {
 				"name" 					: "Stehlbare Gegenstandstypen",
 				"descrp"				: "Gegenstandstypen welche gestohlen werden können (mit \";\" getrennt, \"#currency\" for numerische Währungen)"				
+			},
+			
+			"MaximumPPNumber" : {
+				"name" 					: "Maximum Gegenstände bei Taschendiebstahl",
+				"descrp"				: "Die maximale Anzahl an Gegenständen die ein Nutzer beim Taschendiebstahl nehmen kann (-1 für unbegrenzt)"				
+			},
+			
+			"MaximumPPNumberCrit" : {
+				"name" 					: "Maximum Gegenstände bei kritischem Taschendiebstahl",
+				"descrp"				: "Die maximale Anzahl an Gegenständen die ein Nutzer bei kritischem Taschendiebstahl nehmen kann (-1 für unbegrenzt)"				
+			},
+			
+			"MaximumPPNumberFail" : {
+				"name" 					: "Maximum Gegenstände bei fehlgeschlagenem Taschendiebstahl",
+				"descrp"				: "Die maximale Anzahl an Gegenständen die ein Nutzer bei fehlgeschlagenem Taschendiebstahl nehmen kann (sollte der Gegenstands SG es erlauben, -1 für unbegrenzt)"				
+			},
+			
+			"MaximumPPWeight" : {
+				"name" 					: "Maximum Gegenstandsgewicht bei Taschendiebstahl",
+				"descrp"				: "Das maximale Gegenstandsgewicht (System Einheiten) das ein Nutzer beim Taschendiebstahl nehmen kann (-1 für unbegrenzt)"				
+			},
+			
+			"MaximumPPWeightCrit" : {
+				"name" 					: "Maximum Gegenstandsgewicht bei kritischem Taschendiebstahl",
+				"descrp"				: "Das maximale Gegenstandsgewicht (System Einheiten) das ein Nutzer bei fehlgeschlagenem Taschendiebstahl nehmen kann (-1 für unbegrenzt)"				
+			},
+			
+			"MaximumPPWeightFail" : {
+				"name" 					: "Maximum Gegenstandsgewicht bei fehlgeschlagenem Taschendiebstahl",
+				"descrp"				: "Das maximale Gegenstandsgewicht (System Einheiten) das ein Nutzer bei kritischem Taschendiebstahl nehmen kann (sollte der Gegenstands SG es erlauben, -1 für unbegrenzt)"				
+			},
+			
+			"PickPocketCooldown" : {
+				"name" 					: "Taschendiebstahls Abklingzeit",
+				"descrp"				: "Taschendiebstahls Abklingzeit pro Spieler in Sekunden"				
 			},
 			
 			"deadActorsLootable" : {
@@ -512,6 +580,11 @@
 					"lock" 				: "IDs welche dieses Schloss auf-/abschließen können (mit \";\" getrennt, \"&\" für mehrer benötigte Schlüssel)",
 					"key" 				: "IDs welche dieser Schlüssel auf-/abschließen kann (mit \";\" getrennt)"
 				}
+			},
+			
+			"UseKeyDialogFlag" : {
+				"name" 					: "Schlüsselnutzungs Fenster",
+				"descrp"				: "Ob der Benutzer auswählen muss welche Schlüssel verwendet werden"					
 			},
 			
 			"PasskeysFlag" : {
@@ -766,6 +839,10 @@
 			},
 			"header" : {
 				"title"					: "<h> Nehme von <b>{pOwnerName}s</b> Inventar (landet in <b>{pTakerName}s</b> Inventar): </h>"
+			},
+			"displays" : {
+				"NumberDisplay" 		: "Ausgewählte Gegenstände: <b>{pValue}</b>/{pMax}",
+				"WeightDisplay" 		: "Ausgewähltes Gegenstandsgewicht: <b>{pValue}</b>/{pMax}"
 			},
 			"buttons" : {
 				"take" : {

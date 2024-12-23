@@ -584,7 +584,7 @@
 			
 			"UseKeyDialogFlag" : {
 				"name" 					: "Key use dialog",
-				"descrp"				: "If the use has to choose which key to use"					
+				"descrp"				: "If the user has to choose which key to use"					
 			},
 			
 			"PasskeysFlag" : {
