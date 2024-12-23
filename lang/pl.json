@@ -46,6 +46,7 @@
 			"DoorisLocked"				: "Te drzwi są zamknięte",
 			"Lockoutofreach"			: "Ten zamek jest poza zasięgiem",
 			"Tokenoutofreach"			: "{pTokenName} jest poza zasięgiem",
+			"TokenoutofreachAnonymous"	: "Poza zasięgiem",
 			"lockedDoor"				: "Drzwi są teraz zamknięte",
 			"lockedToken"				: "{pLockName} jest teraz zamknięty",
 			"unlockedDoor"				: "Drzwi są teraz odblokowane",
