@@ -1,0 +1,780 @@
+{
+	"LocknKey" : {
+		"Titles" : {
+			"LockSettings" : "Impostazioni della serratura",
+			"PickpocketSettings" : "Impostazioni per il borseggio",
+			"confirm" : "Conferma",
+			"abbort" : "Annulla",
+			"LocknKey" : "Lock & Key",
+			"LocknKeyabbr" : "L&K",
+			"WorldSettings" : "Impostazioni del Mondo (Solo GM)",
+			"ClientSettings" : "Impostazioni del Client",
+			"GMonly" : "Solo DM",
+			"LockTokens" : "Impostazioni della serratura",
+			"CharacterTokens" : "Impostazioni Personaggio",
+			"KeyItems" : "Impostazioni Chiavi",
+			"LPItems" : "Impostazioni per la manipolazione della serratura",
+			"LockusePasskey" : "Password",
+			"Passkey" : "Password",
+			"EnterPasskey" : "Inserisci la password:",
+			"ConfirmPasskey" : "Conferma",
+			"Lockuse" : "Usa la serratura",
+			"LockuseKey" : "Usa una chiave",
+			"LockusePick" : "Scassina la serratura",
+			"LockuseBreak" : "Rompi la serratura",
+			"LockuseFree" : "Uso gratuito della serratura",
+			"LockuseCustom" : "{pCheckName}",
+			"Close" : "Chiudi",
+			"Keycreation" : "Creazione della chiave",
+			"Keyname" : "Nome della chiave",
+			"KeyID" : "ID della chiave (ID multipli separati da \";\")",
+			"Keyfolder" : "Cartella di destinazione della chiave",
+			"ConfirmKeycreation" : "Crea",
+			"Basic" : "Base",
+			"Triggers" : "Inneschi",
+			"FreeCircumventHUD" : "Questo token può eludere il blocco successivo, fare clic per rimuoverlo",
+			"PickPocket" : "Borseggio",
+			"LockchangePasskey" : "Cambia password",
+			"LockuseIdentity" : "Identità",
+			"newPasskey" : "Nuova password:",
+			"addIdentityMessage" : "Il giocatore {pPlayerName} vuole aggiungere queste identità a una serratura: {pIdentities}",
+			"IdentifierofType" : " {pIdentifier} di {pType} {pName}",
+			"ToggleTile" : "Cambia lo stato del tile (L&K)",
+			"CD" : "(CD: {pCD})",
+			"Usekey" : "Usa la chiave",
+			"Keyuse" : "Uso della chiave",
+			"dropKey" : "Lasciare qui l'oggetto chiave",
+			"clicktoselectImage" : "Clicca per scegliere l'immagine"
+		},
+		
+		"Popup": {
+			"TokenisLocked": "{pLockName} è bloccato",
+			"DoorisLocked": "Questa porta è bloccata",
+			"Lockoutofreach": "Questa serratura è fuori portata",
+			"Tokenoutofreach": "{pTokenName} è fuori portata",
+			"TokenoutofreachAnonymous": "Fuori portata",
+			"lockedDoor": "La porta è ora bloccata",
+			"lockedToken": "{pLockName} è ora bloccato",
+			"unlockedDoor": "La porta è ora sbloccata",
+			"unlockedToken": "{pLockName} è ora sbloccato",
+			"GamePaused": "Il gioco è in pausa",
+			"noLockPickItem": "Nessun arnese da scasso nell'inventario",
+			"nomatchingKey": "Nessuna chiave corrispondente",
+			"pickLockfailed": "Fallito il tentativo di scassinare",
+			"cantLock": {
+				"default": "Questa serratura non può essere bloccata",
+				"break": "Questa serratura è già aperta"
+			},
+			"breakLockfailed": "Fallito il tentativo di forzare la serratura",
+			"NotaLock": "Non è una serratura",
+			"WrongPassword": "Password errata",
+			"Lockisjammed": "La serratura è bloccata",
+			"Lockpickbroke": "Il arnese da scasso si è rotto",
+			"jammedLock": "Hai bloccato la serratura",
+			"cantcircumventFree": "La serratura non può essere aggirata",
+			"PickPocketfailed": "Tentativo di borseggio fallito",
+			"customcheckfailed": "{pCheckName} fallito",
+			"WrongIdentity": "Identità errata",
+			"PasswordChanged": "Password cambiata",
+			"NoPasswordLength": "Nuova password troppo corta",
+			"CantChangePassword": "Impossibile cambiare la password",
+			"CantbePicked": "Non può essere scassinata",
+			"CantbeBroken": "Non può essere forzata",
+			"CantbeCustomChecked": "Impossibile usare {pCheckName}",
+			"CantbePickpocketed": "Non può essere borseggiata"
+		},
+
+		"ChatMessage": {
+			"LockPick": "{pName} ha tentato di scassinare una serratura:",
+			"LockPicksuccess": {
+				"crit": "{pName} ha avuto un successo critico nello scassinare la serratura",
+				"default": "{pName} ha scassinato la serratura con successo"
+			},
+			"LockPickfail": {
+				"crit": "{pName} ha fallito criticamente nello scassinare la serratura",
+				"default": "{pName} ha fallito nello scassinare la serratura"
+			},
+			"LockPicksuccessLPName": {
+				"crit": "{pName} ha avuto un successo critico nello scassinare la serratura con {pLPName}",
+				"default": "{pName} ha scassinato la serratura con successo con {pLPName}"
+			},
+			"LockPickfailLPName": {
+				"crit": "{pName} ha fallito criticamente nello scassinare la serratura con {pLPName}",
+				"default": "{pName} ha fallito nello scassinare la serratura con {pLPName}"
+			},
+			"LockPickfailLPNameremove": {
+				"crit": "{pName} ha fallito criticamente nello scassinare la serratura e ha rotto {pLPName}"
+			},
+			"LockBreak": "{pName} ha tentato di forzare una serratura:",
+			"LockBreaksuccess": {
+				"crit": "{pName} ha avuto un successo critico nel forzare la serratura",
+				"default": "{pName} ha forzato la serratura con successo"
+			},
+			"LockBreakfail": {
+				"crit": "{pName} ha fallito criticamente nel forzare la serratura",
+				"default": "{pName} ha fallito nel forzare la serratura"
+			},
+			"CustomCheck": "{pName} ha usato {pCheckName}:",
+			"CustomChecksuccess": {
+				"crit": "{pName} ha avuto un successo critico con {pCheckName}",
+				"default": "{pName} ha avuto successo con {pCheckName}"
+			},
+			"CustomCheckFail": {
+				"crit": "{pName} ha fallito criticamente con {pCheckName}",
+				"default": "{pName} ha fallito con {pCheckName}"
+			},
+			"PickPocket": "{pName} ha tentato di borseggiare:",
+			"PickPocketDetailed": "{pName} ha tentato di borseggiare {pTargetName} con una CD di {pCD}:",
+			"PickPocketSuccess": {
+				"crit": "{pName} ha avuto un successo critico nel borseggio",
+				"default": "{pName} ha avuto successo nel borseggio"
+			},
+			"PickPocketFail": {
+				"crit": "{pName} ha fallito criticamente nel borseggio",
+				"default": "{pName} ha fallito nel borseggio"
+			}
+		},
+
+		"Settings": {
+			"useGMquickKeys": {
+				"name": "Usa controlli rapidi GM",
+				"descrp": "Consente al GM di utilizzare i controlli speciali relativi alle serrature elencati in basso (segnati con *)"
+			},
+			"allowLocking": {
+				"name": "Permetti blocco ai giocatori",
+				"descrp": "Permetti ai giocatori di bloccare le serrature se hanno una chiave corrispondente"
+			},
+			"startasLocked": {
+				"name": "Inizia come bloccato",
+				"descrp": "Se le nuove serrature registrate iniziano bloccate"
+			},
+			"LockDistance": {
+				"name": "Distanza serratura",
+				"descrp": "Distanza entro la quale una serratura può essere utilizzata (in unità di gioco)"
+			},
+			"DefaultLockSound": {
+				"name": "Suono predefinito della serratura",
+				"descrp": "Il suono predefinito applicato a nuove porte e token di serratura"
+			},
+			"UseArmReachDistance": {
+				"name": "Usa distanza \"Portata del braccio\"",
+				"descrp": "Usa la distanza impostata in \"Portata del braccio\" per la distanza della serratura"
+			},
+			"alwaysopenOwned": {
+				"name": "Apre sempre i propri oggetti",
+				"descrp": "I giocatori possono sempre aprire i token posseduti, anche se bloccati"
+			},
+			"allowallInteractions": {
+				"name": "Permetti tutte le interazioni",
+				"descrp": "Se tutte le interazioni (scasso, rottura, personalizzate, borseggio) devono essere consentite anche per CD impossibili"
+			},
+			"showinteractionCDs": {
+				"name": "Mostra CD interazioni",
+				"descrp": "Se i CD delle interazioni devono essere mostrati nel menu delle interazioni"
+			},
+			"showallLockInteractions": {
+				"name": "Mostra tutte le interazioni con serrature",
+				"descrp": "Mostra sempre tutte le opzioni di interazione per le serrature (per il GM malvagio che è in te)"
+			},
+			"preventUseinPause": {
+				"name": "Impedisci uso chiavi in pausa",
+				"descrp": "Impedisci ai giocatori di usare le chiavi mentre il gioco è in pausa"
+			},
+			"useKeyDialogbydefault": {
+				"name": "Usa dialogo selezione chiave di default",
+				"descrp": "Se l'uso di tutte le chiavi deve richiedere una selezione di chiavi di default"
+			},
+			"autoKeyuse": {
+				"name": "Uso automatico delle chiavi",
+				"descrp": "I giocatori tenteranno automaticamente di utilizzare una chiave corrispondente se interagiscono con un oggetto bloccato"
+			},
+			"KeyItemtype": {
+				"name": "Tipo di oggetti chiave",
+				"descrp": "Il tipo di oggetto che il modulo utilizzerà per nuove chiavi, lascia vuoto per usare il tipo predefinito (puoi ottenere un elenco dei tipi validi digitando \"game.items.documentClass.TYPES\" nella console F12)"
+			},
+			"LnKSettingTypes": {
+				"name": "Tipi di oggetti con impostazioni",
+				"descrp": "I tipi di oggetti per cui vengono visualizzate le impostazioni Lock & Key (separati da \";\", \"all\" per tutti i tipi)"
+			},
+			"LnKSettingsubTypes": {
+				"name": "Sottotipi di oggetti con impostazioni",
+				"descrp": "I sottotipi di oggetti per cui vengono visualizzate le impostazioni Lock & Key (separati da \";\", \"all\" per tutti i sottotipi)"
+			},
+			"KeyitemCreationPopup": {
+				"name": "Menu creazione chiave",
+				"descrp": "Se un menu deve essere mostrato per le nuove chiavi generate per cambiare nome e cartella"
+			},
+			"KeyitemCreationIDOption": {
+				"name": "Opzione ID creazione chiave",
+				"descrp": "Se un'opzione per inserire un ID chiave personalizzato deve essere visualizzata nel menu di creazione chiavi"
+			},
+			"DefaultKeyFolder": {
+				"name": "Cartella chiave predefinita",
+				"descrp": "Il nome delle cartelle predefinite usate nel menu di creazione chiavi"
+			},
+			"LimitKeyFolders": {
+				"name": "Filtra cartelle chiave",
+				"descrp": "Se nel menu di creazione chiavi devono essere mostrate solo la cartella chiave predefinita e le sue sottocartelle"
+			},
+			"UseKeynameasID": {
+				"name": "Nome chiave come ID",
+				"descrp": "Se il nome di una chiave deve essere considerato un ID aggiuntivo per lo scopo di aprire serrature"
+			},
+			"usePf2eSystem": {
+				"name": "Usa regole di sistema",
+				"descrp": "Usa le regole di tiro di sistema (disabilita le formule di tiro personalizzate di Lock & Key e le impostazioni critiche in favore delle regole di sistema)"
+			},
+			"CritMethod": {
+				"name": "Sistema critico",
+				"descrp": "Il modo in cui vengono determinati i tiri critici",
+				"options": {
+					"noCrit": "Nessun critico",
+					"natCrit": "1/20 naturale",
+					"natCritpm10": "1/20 naturale & +-10 di CD [es. Pf2e]",
+					"d100WFRP4": "d100 1/100 naturale [es. WFRP4e]",
+					"d100WFRP4Doubles": "d100 1/100 naturale & doppi [es. WFRP4e]",
+					"d100CoC7e": "d100 intervalli di difficoltà [es. CoC7e]",
+					"d10poolCoD2e": "d10 pool >=8 e rilancio su 10 [es. CoD2e]",
+					"3d20DSA": "3d20 DSA"
+				}
+			},
+			"LockPickItem": {
+				"name": "Arnesi da scasso",
+				"descrp": "Nomi o ID compendio di arnesi da scasso (consigliato), \"-\" se non è necessario alcun oggetto (separati da \";\")"
+			},
+			"MentionLockPickItem": {
+				"name": "Menziona oggetto per scassinare",
+				"descrp": "Se l'arnese da scasso deve essere menzionato nella chat"
+			},
+			"RemoveLP": {
+				"name": "Rimuovi arnese da scasso",
+				"descrp": "Se e in quali condizioni l'arnese da scasso deve essere rimosso",
+				"options": {
+					"never": "mai",
+					"always": "sempre",
+					"fail": "in caso di fallimento",
+					"critfail": "in caso di fallimento critico"
+				}
+			},
+			"RemoveLPoncritFail": {
+				"name": "Rimuovi arnese da scasso in caso di fallimento critico",
+				"descrp": "Se il arnese da scasso usato deve essere rimosso in caso di fallimento critico (o se la pila viene ridotta di 1)"
+			},
+			"JamLockonLPcritFail": {
+				"name": "Blocca serratura in caso di fallimento critico",
+				"descrp": "Le porte si bloccano in caso di fallimento critico dello scassinamento e non possono più essere scassinate"
+			},
+			"JamedLockKeyunusable": {
+				"name": "Chiavi inutilizzabili su serrature bloccate",
+				"descrp": "Le serrature bloccate non accetteranno più chiavi corrispondenti"
+			},
+			"defaultLPAttempts": {
+				"name": "Tentativi di scassinamento predefiniti",
+				"descrp": "Il numero predefinito di tentativi di scassinamento prima che la serratura diventi non scassinabile (-1 per tentativi illimitati)"
+			},
+			"autoResetAttempts": {
+				"name": "Reimposta tentativi di scassinamento",
+				"descrp": "Quando i tentativi di scassinamento devono essere reimpostati",
+				"options": {
+					"off": "mai",
+					"lockchange": "al cambio dello stato della serratura",
+					"lpsuccess": "al successo dello scassinamento"
+				}
+			},
+			"LockPickFormula": {
+				"name": "Formula di tiro per scassinamento",
+				"descrp": "La formula utilizzata per i tiri di dadi durante lo scassinamento (es. \"1d20 + @actor.skills.thievery.mod\", consulta la pagina GitHub del modulo per ulteriori informazioni)"
+			},
+			"DefaultPickCD": {
+				"name": "CD predefinito per scassinamento",
+				"descrp": "Il valore predefinito per i CD di scassinamento"
+			},
+			"LockBreakFormula": {
+				"name": "Formula di tiro per rottura serratura",
+				"descrp": "La formula utilizzata per i tiri di dadi durante la rottura di una serratura (es. \"1d20 + @actor.skills.athletics.mod - 2\", consulta la pagina GitHub del modulo per ulteriori informazioni)"
+			},
+			"DefaultBreakCD": {
+				"name": "CD predefinito per rottura serratura",
+				"descrp": "Il valore predefinito per i CD di rottura serratura"
+			},
+			"CustomCircumventName": {
+				"name": "Nome controllo personalizzato",
+				"descrp": "Il nome del terzo controllo personalizzato opzionale per aggirare le serrature (es. \"Hacking\" o \"Runa magica\", lascia vuoto per disattivare)"
+			},
+			"CustomCircumventFormula": {
+				"name": "Formula controllo personalizzato",
+				"descrp": "La formula utilizzata per i tiri di dadi durante l'utilizzo del controllo personalizzato sopra menzionato"
+			},
+			"CustomCircumventDefaultCD": {
+				"name": "CD predefinito controllo personalizzato",
+				"descrp": "Il valore predefinito per i CD dei controlli personalizzati"
+			},
+			"LockBreakunlockable": {
+				"name": "Rendi le serrature rotte sbloccabili",
+				"descrp": "Rende le serrature che sono state rotte sbloccabili"
+			},
+			"onlyCombatMultiSuccess": {
+				"name": "Successo multiplo solo in combattimento",
+				"descrp": "Ignora i successi multipli richiesti per lo scassinamento fuori dal combattimento"
+			},
+			"LockCircumventName": {
+				"name": "Parole chiave aggiramento serratura",
+				"descrp": "Parole chiave per identificare effetti (es. l'incantesimo \"Knock\") che consentono ai giocatori di aggirare le serrature (separate con \";\")"
+			},
+			"AutoAcceptIdentityAddition": {
+				"name": "Accetta automaticamente aggiunte di identità",
+				"descrp": "Se le aggiunte di identità devono essere accettate automaticamente (non consigliato)"
+			},
+			"EnablePickpocketing": {
+				"name": "Abilita borseggio",
+				"descrp": "Abilita la funzione di borseggio e le sue impostazioni"
+			},
+			"PickPocketFormula": {
+				"name": "Formula borseggio",
+				"descrp": "La formula utilizzata per i tiri di dadi durante il borseggio (es. \"1d20 + @actor.skills.thievery.mod\", consulta la pagina GitHub del modulo per ulteriori informazioni)"
+			},
+			"PickPocketDefaultCD": {
+				"name": "CD predefinito per borseggio",
+				"descrp": "Il valore predefinito per i CD di borseggio"
+			},
+			"PickPocketDefaultCDFormula": {
+				"name": "Formula CD predefinito per borseggio",
+				"descrp": "La formula predefinita utilizzata per calcolare il CD del borseggio (sostituisce altri valori predefiniti)"
+			},
+			"PickPocketDefaultItemCD": {
+				"name": "Modificatore CD predefinito per oggetti borseggiati",
+				"descrp": "Il modificatore CD predefinito per gli oggetti borseggiati"
+			},
+			"PickPocketCDCritThreshold": {
+				"name": "Soglia critico CD borseggio",
+				"descrp": "CD massimo per il borseggio superabile con successi critici"
+			},
+			"AutoUpdatePickPocketCD": {
+				"name": "Aggiornamento automatico CD borseggio",
+				"descrp": "Se il CD del borseggio deve essere aggiornato automaticamente quando viene effettuato un tiro di percezione"
+			},
+			"PickPocketItemTypes": {
+				"name": "Tipi di oggetti borseggiabili",
+				"descrp": "Tipi di oggetti che possono essere borseggiati (separati con \";\", \"#currency\" per valuta numerica)"
+			},
+			"MaximumPPNumber": {
+				"name": "Numero massimo di oggetti per borseggio",
+				"descrp": "Il numero massimo di oggetti che un utente può prendere con successo borseggiando un token (-1 per illimitato)"
+			},
+			"MaximumPPNumberCrit": {
+				"name": "Numero massimo di oggetti per borseggio critico",
+				"descrp": "Il numero massimo di oggetti che un utente può prendere con successo con un borseggio critico (-1 per illimitato)"
+			},
+			"MaximumPPNumberFail": {
+				"name": "Numero massimo di oggetti per borseggio fallito",
+				"descrp": "Il numero massimo di oggetti che un utente può prendere nonostante un fallimento nel borseggio (se il CD dell'oggetto lo consente, -1 per illimitato)"
+			},
+			"MaximumPPWeight": {
+				"name": "Peso massimo oggetti per borseggio",
+				"descrp": "Il peso massimo (unità di sistema) degli oggetti che un utente può prendere con successo borseggiando un token (-1 per illimitato)"
+			},
+			"MaximumPPWeightCrit": {
+				"name": "Peso massimo oggetti per borseggio critico",
+				"descrp": "Il peso massimo (unità di sistema) degli oggetti che un utente può prendere con successo con un borseggio critico (-1 per illimitato)"
+			},
+			"MaximumPPWeightFail": {
+				"name": "Peso massimo oggetti per borseggio fallito",
+				"descrp": "Il peso massimo (unità di sistema) degli oggetti che un utente può prendere nonostante un fallimento nel borseggio (se il CD dell'oggetto lo consente, -1 per illimitato)"
+			},
+			"PickPocketCooldown": {
+				"name": "Cooldown borseggio",
+				"descrp": "Tempo di attesa per borseggiare, per giocatore, in secondi"
+			},
+			"deadActorsLootable": {
+				"name": "Token morti depredabili",
+				"descrp": "Se i token morti possono essere depredati/borseggiati senza tiro"
+			},
+			"lootFilter": {
+				"name": "Filtro bottino",
+				"descrp": "Se solo gli oggetti in una borsa o contenitore chiamato \"Bottino\" devono essere borseggiabili (supportato solo per alcuni sistemi)",
+				"options": {
+					"off": "disattivato",
+					"ifavailable": "se l'oggetto bottino è disponibile",
+					"always": "sempre"
+				}
+			},
+			"MentionPickpocketDetails": {
+				"name": "Menziona dettagli borseggio",
+				"descrp": "Se il nome del bersaglio e il CD devono essere menzionati nel messaggio di borseggio"
+			},
+			"PerceptionKeyWord": {
+				"name": "Parola chiave percezione",
+				"descrp": "Parola chiave per riconoscere i tiri di percezione (una stringa presente nel testo descrittivo dei tiri di percezione)"
+			},
+			"ControlSceme": {
+				"name": "Schema di controllo",
+				"descrp": "Schema utilizzato per i controlli di gioco (dettagliato più sotto in \"Controlli giocatore\")",
+				"options": {
+					"rightKeys": "tasto destro + tasti",
+					"rightPopups": "menu popup con tasto destro"
+				}
+			},
+			"MessagePopUps": {
+				"name": "Popup dei messaggi",
+				"descrp": "Abilita popup multipli per azioni come bloccare o sbloccare una serratura"
+			},
+			"PlayLockSounds": {
+				"name": "Riproduci suoni serratura",
+				"descrp": "Riproduci un suono quando una serratura viene bloccata/sbloccata"
+			},
+			"FreeCircumventButtonPosition": {
+				"name": "Posizione indicatore aggiramento serratura",
+				"descrp": "La posizione dell'indicatore che mostra che un token può aggirare la prossima serratura nell'HUD del token",
+				"options": {
+					"none": "nessuna",
+					"left": "sinistra",
+					"right": "destra"
+				}
+			},
+			"dblClicktoLoot": {
+				"name": "Doppio clic per borseggiare",
+				"descrp": "Se il doppio clic su un token deve attivare il borseggio"
+			}
+		},
+
+		"Keys": {
+			"ToggleLock": {
+				"name": "Attiva/disattiva blocco"
+			},
+			"CopyLock": {
+				"name": "Copia ID serratura"
+			},
+			"PasteLock": {
+				"name": "Incolla ID serratura"
+			},
+			"CreatenewKey": {
+				"name": "Crea nuova chiave"
+			},
+			"UseKey": {
+				"name": "Usa chiave"
+			},
+			"PickLock": {
+				"name": "Scassina serratura"
+			},
+			"BreakLock": {
+				"name": "Rompi serratura"
+			},
+			"CustomCheck": {
+				"name": "Controllo personalizzato (chiedi al GM, a meno che tu non sia il GM)"
+			},
+			"PickPocket": {
+				"name": "Borseggia"
+			},
+			"ChangePassword": {
+				"name": "Cambia password"
+			}
+		},
+
+		"SheetSettings": {
+			"OpenImageFlag": {
+				"name": "Immagine aperta",
+				"descrp": "Immagine utilizzata per lo stato aperto"
+			},
+			"ClosedImageFlag": {
+				"name": "Immagine chiusa",
+				"descrp": "Immagine utilizzata per lo stato chiuso"
+			},
+			"LockableFlag": {
+				"name": "Bloccabile",
+				"descrp": "Se questo oggetto è bloccabile"
+			},
+			"LockonCloseFlag": {
+				"name": "Blocca alla chiusura",
+				"descrp": "Se questa porta deve essere bloccata una volta chiusa"
+			},
+			"LockedFlag": {
+				"name": "Bloccato",
+				"descrp": "Se questo oggetto è bloccato"
+			},
+			"IDKeysFlag": {
+				"name": "ID chiavi",
+				"descrp": {
+					"lock": "ID che possono bloccare/sbloccare questa serratura (separati con \";\", \"&\" per chiavi multiple richieste)",
+					"key": "ID che questa chiave può bloccare/sbloccare (separati con \";\")"
+				}
+			},
+			"UseKeyDialogFlag": {
+				"name": "Dialogo uso chiave",
+				"descrp": "Se l'utente deve scegliere quale chiave utilizzare"
+			},
+			"PasskeysFlag": {
+				"name": "Password",
+				"descrp": "Password che possono sbloccare questa serratura (separate con \";\")"
+			},
+			"PasskeyChangeableFlag": {
+				"name": "Password modificabile",
+				"descrp": "Se la password può essere modificata dai giocatori (richiede la password corretta)"
+			},
+			"IdentityKeyFlag": {
+				"name": "Identità",
+				"descrp": "Identità che possono sbloccare questa serratura (separate con \";\", ID/Nomi di Token/Actor/Utente)"
+			},
+			"LockjammedFlag": {
+				"name": "Bloccato",
+				"descrp": "Se questa serratura è bloccata (vedi impostazioni globali)"
+			},
+			"RemoveKeyonUseFlag": {
+				"name": "Rimuovi chiave all'uso",
+				"descrp": "Se questa chiave viene rimossa all'uso (o se la pila viene ridotta di uno)"
+			},
+			"LockCDFlag": {
+				"name": "CD serratura",
+				"descrp": "La classe di difficoltà di questa serratura, utilizzata per lo scassinamento (-1 per impedire lo scassinamento)"
+			},
+			"SpecialLPFlag": {
+				"name": "arnese da scasso speciale",
+				"descrp": "arnese da scasso speciale richiesto per scassinare questa serratura (ID o nome, più voci separate con \";\")"
+			},
+			"LockBreakCDFlag": {
+				"name": "CD rottura serratura",
+				"descrp": "La classe di difficoltà per rompere questa serratura (-1 per impedire la rottura)"
+			},
+			"LockCCCDFlag": {
+				"name": "CD {pCheckName}",
+				"descrp": "La classe di difficoltà per utilizzare {pCheckName} su questa serratura (-1 per impedire)"
+			},
+			"requiredLPsuccessFlag": {
+				"name": "Successi di scassinamento richiesti",
+				"descrp": "Quanti successi di scassinamento sono richiesti per questa serratura (e quanti sono già stati aggiunti) (i critici contano come 2)"
+			},
+			"LPAttemptsFlag": {
+				"name": "Tentativi di scassinamento rimasti",
+				"descrp": "Quanti tentativi di scassinamento sono rimasti (-1 per illimitati)"
+			},
+			"canbeCircumventedFreeFlag": {
+				"name": "Aggirabile",
+				"descrp": "Se questa serratura può essere aggirata da effetti (es. l'incantesimo \"Knock\")"
+			},
+			"CustomPopupsFlag": {
+				"openButtonname": "Popup personalizzati",
+				"Title": "Popup personalizzati",
+				"name": "Imposta popup personalizzati per alcune interazioni dei giocatori:",
+				"LockLocked": {
+					"name": "Serratura bloccata:"
+				},
+				"LocknotPickable": {
+					"name": "Serratura non scassinabile:"
+				},
+				"LocknotBreakable": {
+					"name": "Serratura non rompibile:"
+				},
+				"LockPasskeyTitle": {
+					"name": "Prompt dialogo password:"
+				},
+				"LocknotCustom": {
+					"name": "Serratura non utilizzabile con controllo personalizzato:"
+				},
+				"CharacternotPickpocketable": {
+					"name": "Personaggio non borseggiabile:"
+				},
+				"confirmButtonname": "Conferma popup"
+			},
+			"SoundVariantFlag": {
+				"name": "Suono serratura",
+				"descrp": "Imposta il set di suoni utilizzato per le azioni con questa porta",
+				"options": {
+					"off": "disattivato",
+					"futuristic": "Futuristico",
+					"industrial": "Industriale",
+					"jail": "Prigione",
+					"metal": "Metal 🤘",
+					"shutter": "Serranda",
+					"sliding": "Scorrevole",
+					"stone": "Pietra",
+					"wood": "Legno"
+				}
+			},
+			"LPFormulaFlag": {
+				"name": "Formula scassinamento",
+				"descrp": {
+					"token": "La formula aggiunta ai tiri di scassinamento effettuati da questo token",
+					"item": "La formula aggiunta ai tiri di scassinamento effettuati dal proprietario di questo oggetto (solo il migliore nell'inventario viene utilizzato)"
+				}
+			},
+			"LPFormulaOverrideFlag": {
+				"name": "Sovrascrivi formula scassinamento",
+				"descrp": {
+					"token": "Se la formula di scassinamento di questo token sovrascrive la formula globale",
+					"item": "Se la formula di scassinamento di questo oggetto sovrascrive la formula di token/globale"
+				}
+			},
+			"LBFormulaFlag": {
+				"name": "Formula rottura serratura",
+				"descrp": {
+					"token": "La formula aggiunta ai tiri di rottura serratura effettuati da questo token",
+					"item": "La formula aggiunta ai tiri di rottura serratura effettuati dal proprietario di questo oggetto (solo il migliore nell'inventario viene utilizzato)"
+				}
+			},
+			"LBFormulaOverrideFlag": {
+				"name": "Sovrascrivi formula rottura serratura",
+				"descrp": {
+					"token": "Se la formula di rottura serratura di questo token sovrascrive la formula globale",
+					"item": "Se la formula di rottura serratura di questo oggetto sovrascrive la formula di token/globale"
+				}
+			},
+			"CCFormulaFlag": {
+				"name": "Formula {pCheckName}",
+				"descrp": {
+					"token": "La formula aggiunta ai tiri di {pCheckName} effettuati da questo token",
+					"item": "La formula aggiunta ai tiri di {pCheckName} effettuati dal proprietario di questo oggetto (solo il migliore nell'inventario viene utilizzato)"
+				}
+			},
+			"CCFormulaOverrideFlag": {
+				"name": "Sovrascrivi formula {pCheckName}",
+				"descrp": {
+					"token": "Se la formula di {pCheckName} di questo token sovrascrive la formula globale",
+					"item": "Se la formula di {pCheckName} di questo oggetto sovrascrive la formula di token/globale"
+				}
+			},
+			"PickPocketFormulaFlag": {
+				"name": "Formula borseggio",
+				"descrp": {
+					"token": "La formula aggiunta ai tiri di borseggio effettuati da questo token",
+					"item": "La formula aggiunta ai tiri di borseggio effettuati dal proprietario di questo oggetto (solo il migliore nell'inventario viene utilizzato)"
+				}
+			},
+			"PickPocketFormulaOverrideFlag": {
+				"name": "Sovrascrivi formula borseggio",
+				"descrp": {
+					"token": "Se la formula di borseggio di questo token sovrascrive la formula globale",
+					"item": "Se la formula di borseggio di questo oggetto sovrascrive la formula di token/globale"
+				}
+			},
+			"LootFormulaFlag": {
+				"name": "Formula bottino personalizzata",
+				"descrp": "Sostituisce la formula di borseggio quando si borseggia questo token"
+			},
+			"PickPocketCDFlag": {
+				"name": "CD borseggio",
+				"descrp": "La classe di difficoltà per usare borseggio su questo personaggio (-1 per impossibile)",
+				"item": {
+					"name": "Modificatore CD borseggio",
+					"descrp": "Modificatore quando si borseggia questo oggetto"
+				}
+			},
+			"ReplacementItemFlag": {
+				"name": "Oggetti sostitutivi",
+				"descrp": "Oggetti che vengono consumati al posto di questo oggetto quando un tiro fallisce (ID o nome, più voci separate con \";\")"
+			},
+			"MATTTriggerTileFlag": {
+				"name": "ID tessera attivata",
+				"descrp": "L'ID della tessera attivata dalle azioni Lock & Key qui sotto (puoi utilizzare diverse destinazioni)"
+			},
+			"MATTTriggerConditionsFlag": {
+				"LockuseKey.name": "All'uso della chiave",
+				"LockusePasskey.name": "All'uso della password",
+				"LockusePick.name": "Allo scassinamento",
+				"LockuseBreak.name": "Alla rottura della serratura",
+				"LockuseFree.name": "All'aggiramento della serratura",
+				"UsePickPocket.name": "Al borseggio",
+				"options": {
+					"never": "mai",
+					"always": "sempre",
+					"failure": "fallimento",
+					"critfailure": "fallimento critico",
+					"success": "successo"
+				}
+			},
+			"RollOptionsFlag": {
+				"LockusePick": {
+					"d10CritLimit": {
+						"name": "Limite critico d10 scassinamento",
+						"descrp": "Il valore critico minimo per i tiri d10 di scassinamento"
+					}
+				},
+				"LockuseBreak": {
+					"d10CritLimit": {
+						"name": "Limite critico d10 rottura serratura",
+						"descrp": "Il valore critico minimo per i tiri d10 di rottura serratura"
+					}
+				}
+			}
+		},
+
+		"Context": {
+			"KeyCopy": "Copia ID chiave",
+			"KeyPaste": "Incolla ID nella chiave"
+		},
+
+		"Words": {
+			"Key": "Chiave"
+		},
+
+		"Text": {
+			"GMControls": {
+				"line0": "Controlli GM:",
+				"line1": "•shift+clic destro per creare una nuova chiave per la serratura",
+				"line2": "•alt+clic destro per attivare/disattivare il blocco del token (*)",
+				"line3": "•ctrl+clic destro per copiare gli ID delle chiavi della serratura (*)",
+				"line4": "•ctrl+clic sinistro per incollare gli ID delle chiavi nella serratura (*)"
+			},
+			"PlayerControls": {
+				"line0": "Controlli giocatore:",
+				"line1": "•clic destro per provare a usare una chiave su una serratura",
+				"line2": "•shift+clic destro per provare a scassinare una serratura",
+				"line3": "•alt+clic destro per provare a rompere una serratura"
+			}
+		},
+
+		"take-inventory-window": {
+			"titles": {
+				"inventory": "Inventario"
+			},
+			"header": {
+				"title": "<h> Prendi dall'inventario di <b>{pOwnerName}</b> (finisce nell'inventario di <b>{pTakerName}</b>): </h>"
+			},
+			"displays": {
+				"NumberDisplay": "Oggetti selezionati: <b>{pValue}</b>/{pMax}",
+				"WeightDisplay": "Peso degli oggetti selezionati: <b>{pValue}</b>/{pMax}"
+			},
+			"buttons": {
+				"take": {
+					"name": "Prendi selezionati"
+				}
+			}
+		},
+
+		"monks-active-tiles": {
+			"filters": {
+				"name": "Filtro",
+				"filter-by-lock-state": {
+					"name": "Filtra per stato serratura",
+					"settings": {
+						"filterCondition": {
+							"name": "Condizione stato serratura",
+							"options": {
+								"locked": "è bloccata",
+								"unlocked": "è sbloccata"
+							}
+						}
+					}
+				}
+			},
+			"actions": {
+				"lock": {
+					"name": "Blocca"
+				},
+				"unlock": {
+					"name": "Sblocca"
+				},
+				"toggle-lock": {
+					"name": "Attiva/disattiva blocco"
+				},
+				"loot-inventory": {
+					"name": "Depreda inventario",
+					"descrp": "<span class=\"logic-style\">{pname}</span> di <span class=\"entity-style\">{pEntities}</span>, offri a <span class=\"details-style\">{pOfferto}</span>",
+					"settings": {
+						"offerto": {
+							"name": "Offri a"
+						}
+					}
+				}
+			}
+		}
+	}
+}
