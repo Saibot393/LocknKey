@@ -364,7 +364,12 @@ class LnKSheetSettings {
 			Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 		}
 		
-		LnKSheetSettings.FixSheetWindow(pApp.element);
+		if (pisTile) {
+			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs[aria-role="Form Tab Navigation"]`);
+		}
+		else {
+			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs[data-group="main"]`);
+		}
 	} 
 	
 	//dialogs
@@ -726,6 +731,8 @@ class LnKSheetSettings {
 			`;
 		}
 		
+		//let vCapitalisedType = vtype.charAt(0).toUpperCase() + vtype.slice(1);
+		
 		switch (vtype){
 			case "number":
 			case "text":
@@ -799,10 +806,10 @@ class LnKSheetSettings {
 		}
 	}
 	
-	static FixSheetWindow(pHTML) {
+	static FixSheetWindow(pHTML, pIndentifier) {
 		let vNeededWidth = 0;
 
-		pHTML.find(`nav.sheet-tabs[data-group="main"]`).children().each(function() {
+		pHTML.find(pIndentifier).children().each(function() {
 			vNeededWidth = vNeededWidth + $(this).outerWidth() ;
 		});
 		
