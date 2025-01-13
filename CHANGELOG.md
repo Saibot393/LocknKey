@@ -1,3 +1,6 @@
+## v3.2.3
+- Fixed tile config sizing
+
 ## v3.2.2
 - Added Italien translation (thanks to [Landscape](https://github.com/LandscapeNemo))
 
