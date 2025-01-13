@@ -1,3 +1,6 @@
+## v3.2.2
+- Added Italien translation (thanks to [Landscape](https://github.com/LandscapeNemo))
+
 ## v3.2.1
 - Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
