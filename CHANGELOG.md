@@ -1,3 +1,6 @@
+## v3.2.4
+- Small logic improvement for lock picking
+
 ## v3.2.3
 - Fixed tile config sizing
 
