@@ -1277,7 +1277,7 @@ class LnKFlags {
 	}
 	
 	static hasLPAttemptsLeft(pLock) {
-		return LnKFlags.LPAttemptsLeft(pLock) > 0;
+		return LnKFlags.LPAttemptsMax(pLock) < Infinity && LnKFlags.LPAttemptsLeft(pLock) > 0;
 	}
 	
 	static async ReduceLPAttempts(pLock) {
