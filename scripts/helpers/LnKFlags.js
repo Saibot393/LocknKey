@@ -1277,7 +1277,7 @@ class LnKFlags {
 	}
 	
 	static hasLPAttemptsLeft(pLock) {
-		return LnKFlags.LPAttemptsMax(pLock) < Infinity && LnKFlags.LPAttemptsLeft(pLock) > 0;
+		return LnKFlags.LPAttemptsMax(pLock) == Infinity || LnKFlags.LPAttemptsLeft(pLock) > 0;
 	}
 	
 	static async ReduceLPAttempts(pLock) {
@@ -1301,7 +1301,7 @@ class LnKFlags {
 	}
 	
 	static async resetLPAttempts(pLock) {
-		this.#setLPAttemptsFlag(pLock, LnKFlags.LPAttemptsMax(pLock));
+		this.#setLPAttemptsFlag(pLock, LnKFlags.LPAttemptsMax(pLock, true));
 	}
 	
 	static async giveFreeLockCircumvent(pToken) {
