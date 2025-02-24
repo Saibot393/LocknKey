@@ -1,3 +1,6 @@
+## v3.2.5
+- Small logic improvement for lock picking (again)
+
 ## v3.2.4
 - Small logic improvement for lock picking
 
