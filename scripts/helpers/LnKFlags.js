@@ -1273,6 +1273,10 @@ class LnKFlags {
 			vLPAleft = Infinity;
 		}
 		
+		if (LnKFlags.LPAttemptsMax(pLock) == Infinity) {
+			return Infinity;
+		}
+		
 		return vLPAleft;
 	}
 	
