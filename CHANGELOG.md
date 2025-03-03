@@ -1,3 +1,6 @@
+## v3.2.7
+- Improved quantity path recognition
+
 ## v3.2.6
 - Small logic improvement for lock picking (again (again))
 
