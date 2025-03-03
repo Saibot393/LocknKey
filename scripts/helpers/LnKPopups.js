@@ -63,7 +63,6 @@ class LnKPopups {
 				
 				vCompleteText = vCompleteText + vQueue[i];
 			}
-			console.log(vCompleteText);
 			
 			LnKPopups.clearTextPopUpQueue();
 			

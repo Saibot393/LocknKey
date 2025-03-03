@@ -18,6 +18,7 @@ const cFormulaOperators = "+-*/%";
 const cSimCount = 500; //how many times rolls should be simulated to calculate the average (keep as low as possible)
 
 const cQuantity = "quantity"; //name of the quantity attribut of items in most systems
+const cValue = "value"; //name of the value attribute some quantity attributes have
 
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
@@ -427,7 +428,11 @@ class LnKutils {
 			if (vPrimeKeys.length) {
 				if (vPrimeKeys.includes(cQuantity)) {
 					//if found return quantity path directly
-					vPath.push(cQuantity)
+					vPath.push(cQuantity);
+					
+					if (Object.keys(pItem[cQuantity])?.includes(cValue)) {
+						vPath.push(cValue);
+					};
 				}
 				else {
 					//if not found search sub paths
@@ -509,7 +514,9 @@ class LnKutils {
 	static async changeItemquantity(pItem, pdelta, pCharacter = undefined) {
 		if (pItem) {
 			let vPath = await LnKutils.ItemQuantityPath(pItem.system, [pItem.type]); 
+			
 			let vcurrentValue = await LnKutils.getItemquantity(pItem, vPath);
+			
 			let vUpdate = {};
 			
 			if (vcurrentValue + pdelta <= 0 && pCharacter) {
