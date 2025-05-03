@@ -41,47 +41,47 @@ class LnKSheetSettings {
 	//IMPLEMENTATIONS
 	
 	static async ItemSheetSettings(pApp, pHTML, pData) {
-		let vLockSettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.object.type)
-			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.object)));
+		let vLockSettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.document.type)
+			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.document)));
 			
-		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.object.type);
+		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).querySelector(vEntry => vEntry == pApp.document.type);
 		
 		if (vLockSettings || vLootSettings) {
 			//setup
-			let vTabbar = pHTML.find(`div.tabs[data-tab-container="primary"]`)
+			let vTabbar = pHTML.querySelector(`div.tabs[data-tab-container="primary"]`)
 			if (!vTabbar.length) {
-				vTabbar = pHTML.find(`nav.sheet-tabs`);
+				vTabbar = pHTML.querySelector(`nav.sheet-tabs`);
 				if (!vTabbar.length) {
 					//if tab bar was not found, try other search
-					vTabbar = pHTML.find(`.sheet-tabs`);
+					vTabbar = pHTML.querySelector(`.sheet-tabs`);
 					if (!vTabbar.length) {
-						vTabbar = pHTML.find(`[data-group="primary"].sheet-navigation`);
+						vTabbar = pHTML.querySelector(`[data-group="primary"].sheet-navigation`);
 						if (!vTabbar.length) {
-							vTabbar = pHTML.find(`[data-group="main"].tabs`);
+							vTabbar = pHTML.querySelector(`[data-group="main"].tabs`);
 						}
 					}
 				}
 			}
 			
-			let vprevTab = pHTML.find(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
+			let vprevTab = pHTML.querySelector(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
 			if (!vprevTab.length) {
 				//if tab bar was not found, try other search
-				vprevTab = pHTML.find(`div[tab="details"]`);
+				vprevTab = pHTML.querySelector(`div[tab="details"]`);
 				if (!vprevTab.length) {
 					//if tab bar was not found, try other search
-					vprevTab = pHTML.find(`div[data-tab="description"]`);
+					vprevTab = pHTML.querySelector(`div[data-tab="description"]`);
 					if (!vprevTab.length) {
 						//if tab bar was not found, try other search
-						vprevTab = pHTML.find(`div[tab="description"]`);
+						vprevTab = pHTML.querySelector(`div[tab="description"]`);
 						if (!vprevTab.length) {
 							//if tab bar was not found, try other search
-							vprevTab = pHTML.find(`section[data-tab="description"]`);
+							vprevTab = pHTML.querySelector(`section[data-tab="description"]`);
 							if (!vprevTab.length) {
 								//if tab bar was not found, try other search
-								vprevTab = pHTML.find(`section[tab="description"]`);
+								vprevTab = pHTML.querySelector(`section[tab="description"]`);
 								if (!vprevTab.length) {
 									//for tidy 5e sheets
-									vprevTab = pHTML.find(`div.tidy-tab[data-tab-contents-for="description"]`);
+									vprevTab = pHTML.querySelector(`div.tidy-tab[data-tab-contents-for="description"]`);
 								}
 							}
 						}
@@ -90,20 +90,20 @@ class LnKSheetSettings {
 			}
 
 		
-			let vTabButtonHTML = 	`
+			let vTabButtonHTML = 	fromHTML(`
 							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-tab="${cModuleName}">
 								${Translate("Titles."+cModuleName)}
 							</a>
-							`; //tab button HTML
+							`); //tab button HTML
 				
 			vTabbar.append(vTabButtonHTML);	
 			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) {
-				Array.from(vTabbar.find(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
-				vTabbar.find(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
+				Array.from(vTabbar.querySelector(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
+				vTabbar.querySelector(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
 			}
 			
-			if (!pHTML.find(`div.${cModuleName}`).length) {
-				let vTabContentHTML = `<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+			if (!pHTML.querySelector(`div.${cModuleName}`).length) {
+				let vTabContentHTML = fromHTML(`<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 				vprevTab.after(vTabContentHTML);
 			}
 			
@@ -113,7 +113,7 @@ class LnKSheetSettings {
 														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp"), 
 														vtype : "text", 
 														vwide : true,
-														vvalue : await LnKFlags.PickPocketItemDC(pApp.object),
+														vvalue : await LnKFlags.PickPocketItemDC(pApp.document),
 														vflagname : cPickPocketDCF
 														}, `div.${cModuleName}`);	
 			}
@@ -124,14 +124,14 @@ class LnKSheetSettings {
 				//create title for key items
 				let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
 				
-				pHTML.find(`div.${cModuleName}`).append(vTitle);
+				pHTML.querySelector(`div.${cModuleName}`).append(vTitle);
 				
 				//setting item ids	
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
 														vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
 														vtype : "text", 
 														vwide : true,
-														vvalue : LnKFlags.KeyIDs(pApp.object),
+														vvalue : LnKFlags.KeyIDs(pApp.document),
 														vflagname : cIDKeysF
 														}, `div.${cModuleName}`);	
 										
@@ -139,14 +139,14 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
 														vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
 														vtype : "checkbox", 
-														vvalue : LnKFlags.RemoveKeyonUse(pApp.object),
+														vvalue : LnKFlags.RemoveKeyonUse(pApp.document),
 														vflagname : cRemoveKeyonUseF
 														}, `div.${cModuleName}`);
 					
 				//create title for Lockpick/Break items
-				vTitle = `<h3 class="border">${Translate("Titles.LPItems")}</h3>`;
+				vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LPItems")}</h3>`);
 				
-				pHTML.find(`div.${cModuleName}`).append(vTitle);
+				pHTML.querySelector(`div.${cModuleName}`).append(vTitle);
 					
 				if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
 					//formulas
@@ -158,7 +158,7 @@ class LnKSheetSettings {
 														vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
 														vtype : "text",
 														vwide : true,												
-														vvalue : LnKFlags.ReplacementItems(pApp.object, true),
+														vvalue : LnKFlags.ReplacementItems(pApp.document, true),
 														vflagname : cReplacementItemF
 														}, `div.${cModuleName}`);
 			}
@@ -191,16 +191,16 @@ class LnKSheetSettings {
 		vprevElement.after(vNewSection);
 		*/
 		
-		let vTabbar = pHTML.find(`nav.sheet-tabs`);
-		let vprevTab = pHTML.find(`div[data-tab="basic"]`); //places rideable tab after last core tab "basic"
+		let vTabbar = pHTML.querySelector(`nav.sheet-tabs`);
+		let vprevTab = pHTML.querySelector(`div[data-tab="basic"]`); //places rideable tab after last core tab "basic"
 		
-		let vTabButtonHTML = 	`
+		let vTabButtonHTML = 	fromHTML(`
 						<a class="item" data-tab="${cModuleName}">
 							<i class="fas ${cLnKLockIcon}"></i>
 							${Translate("Titles."+cModuleName+"abbr")}
 						</a>
-						`; //tab button HTML
-		let vTabContentHTML = `<div class="tab" data-tab="${cModuleName}"></div>`; //tab content sheet HTML
+						`); //tab button HTML
+		let vTabContentHTML = fromHTML(`<div class="tab" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 		
 		vTabbar.append(vTabButtonHTML);
 		vprevTab.after(vTabContentHTML);	
@@ -209,7 +209,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
 												vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
 												vtype : "checkbox", 
-												vvalue : LnKFlags.isLockable(pApp.object),
+												vvalue : LnKFlags.isLockable(pApp.document),
 												vflagname : cLockableF
 												}, `div[data-tab="${cModuleName}"]`);
 												
@@ -217,7 +217,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockonCloseF +".name"), 
 												vhint : Translate("SheetSettings."+ cLockonCloseF +".descrp"), 
 												vtype : "checkbox", 
-												vvalue : LnKFlags.isLockonClose(pApp.object),
+												vvalue : LnKFlags.isLockonClose(pApp.document),
 												vflagname : cLockonCloseF
 												}, `div[data-tab="${cModuleName}"]`);
 												
@@ -228,7 +228,7 @@ class LnKSheetSettings {
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
-		let vLockSettings = await LnKutils.isLockCompatible(pApp.object);
+		let vLockSettings = await LnKutils.isLockCompatible(pApp.document);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
 		let vUseTab = (vLockSettings || vLockFormulaSettings);
@@ -236,26 +236,29 @@ class LnKSheetSettings {
 		let vTitle;
 		
 		if (vUseTab) {
-			let vTabbar = pisTile ? pHTML.find(`nav.sheet-tabs:first`) : pHTML.find(`[data-group="main"].sheet-tabs`);
-			let vprevTab = pisTile ? pHTML.find(`div[data-tab="animation"]`) : pHTML.find(`div[data-tab="resources"]`); //places LnK tab after last core tab "details"
+			//let vTabbar = pisTile ? pHTML.querySelector(`nav.sheet-tabs`) : pHTML.querySelector(`[data-group="main"].sheet-tabs`);
+			let vTabbar = pHTML.querySelector(`nav.sheet-tabs`);
+			let vprevTab = pisTile ? pHTML.querySelector(`div[data-tab="animation"]`) : pHTML.querySelector(`div[data-tab="resources"]`); //places LnK tab after last core tab "details"
 			
 			let vTabIcon;
 			
-			if (await LnKutils.isLockCompatible(pApp.object)) {
+			if (await LnKutils.isLockCompatible(pApp.document)) {
 				vTabIcon = cLnKLockIcon;
 			}
 			else {
 				vTabIcon = cLnKKeyIcon;
 			}
-			
-			let vTabButtonHTML = 	`
-							<a class="item" data-tab="${cModuleName}">
+			console.log(pApp.tabGroups?.sheet);
+			console.log(`${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}"`);
+			console.log(pApp);
+			let vTabButtonHTML = fromHTML(`
+							<a class="item ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-action="tab" data-group="sheet" data-tab="${cModuleName}">
 								<i class="fas ${vTabIcon}"></i>
 								${Translate("Titles."+cModuleName+"abbr")}
 							</a>
-							`; //tab button HTML
-			let vTabContentHTML = `<div class="tab" ${pisTile ? '' : 'data-group="main"'} data-tab="${cModuleName}"></div>`; //tab content sheet HTML
-			
+							`); //tab button HTML
+			let vTabContentHTML = fromHTML(`<div class="tab ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-group="sheet" ${game.release.generation <= 12 ? 'data-group="main"' : 'data-group="sheet"'} data-application-part="${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+
 			vTabbar.append(vTabButtonHTML);
 			vprevTab.after(vTabContentHTML);	
 		}
@@ -266,9 +269,9 @@ class LnKSheetSettings {
 			
 			if (vLockSettings && vLockFormulaSettings) {
 				//create title for lock compatible tokens
-				vTitle = `<h3 class="border">${Translate("Titles.LockTokens")}</h3>`;
+				vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LockTokens")}</h3>`);
 				
-				pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+				pHTML.querySelector(`div[data-tab="${cModuleName}"]`).append(vTitle);
 			}
 			
 			if (pisTile) {
@@ -276,7 +279,7 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cOpenImageF +".name"), 
 										vhint : Translate("SheetSettings."+ cOpenImageF +".descrp"), 
 										vtype : "filePicker", 
-										vvalue : LnKFlags.OpenImage(pApp.object),
+										vvalue : LnKFlags.OpenImage(pApp.document),
 										vflagname : cOpenImageF,
 										vwide : true
 										}, `div[data-tab="${cModuleName}"]`);
@@ -285,7 +288,7 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cClosedImageF +".name"), 
 										vhint : Translate("SheetSettings."+ cClosedImageF +".descrp"), 
 										vtype : "filePicker", 
-										vvalue : LnKFlags.ClosedImage(pApp.object),
+										vvalue : LnKFlags.ClosedImage(pApp.document),
 										vflagname : cClosedImageF,
 										vwide : true
 										}, `div[data-tab="${cModuleName}"]`);
@@ -298,7 +301,7 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
 														vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
 														vtype : "checkbox", 
-														vvalue : LnKFlags.isLockable(pApp.object),
+														vvalue : LnKFlags.isLockable(pApp.document),
 														vflagname : cLockableF
 														}, `div[data-tab="${cModuleName}"]`);
 														
@@ -306,7 +309,7 @@ class LnKSheetSettings {
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
 														vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
 														vtype : "checkbox", 
-														vvalue : LnKFlags.isLocked(pApp.object),
+														vvalue : LnKFlags.isLocked(pApp.document),
 														vflagname : cLockedF
 														}, `div[data-tab="${cModuleName}"]`);	
 
@@ -319,7 +322,7 @@ class LnKSheetSettings {
 															vhint : Translate("SheetSettings."+ cSoundVariantF +".descrp"), 
 															vtype : "select", 
 															voptions : cSoundVariants,
-															vvalue : LnKFlags.SoundVariant(pApp.object), 
+															vvalue : LnKFlags.SoundVariant(pApp.document), 
 															vflagname : cSoundVariantF
 															}, `div[data-tab="${cModuleName}"]`);
 				}
@@ -328,9 +331,9 @@ class LnKSheetSettings {
 			if (!pisTile) {
 				if (vLockSettings && vLockFormulaSettings) {
 					//createtitle for Character tokens
-					vTitle = `<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`;
+					vTitle = fromHTML(`<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`);
 					
-					pHTML.find(`div[data-tab="${cModuleName}"]`).append(vTitle);
+					pHTML.querySelector(`div[data-tab="${cModuleName}"]`).append(vTitle);
 				}
 				
 				//formulas
@@ -346,9 +349,9 @@ class LnKSheetSettings {
 			let vTargetHTML = `div[data-tab="${cModuleName}"]`;
 			
 			if (!vUseTab) {
-				let vTitleHTML = `<fieldset data-group="${cModuleName}" name="PickPocket"><legend><p><i class="fas ${cLnKLockIcon}"></i>  ${Translate("Titles.LocknKey")}</p> </legend></fieldset>`;
+				let vTitleHTML = fromHTML(`<fieldset data-group="${cModuleName}" name="PickPocket"><legend><p><i class="fas ${cLnKLockIcon}"></i>  ${Translate("Titles.LocknKey")}</p> </legend></fieldset>`);
 				
-				pHTML.find('div.tab[data-group="main"][data-tab="character"]').append(vTitleHTML);
+				pHTML.querySelector('div.tab[data-group="main"][data-tab="character"]').append(vTitleHTML);
 				
 				vTargetHTML = `fieldset[data-group="${cModuleName}"]`;
 			}
@@ -357,7 +360,7 @@ class LnKSheetSettings {
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF +".name"), 
 													vhint : Translate("SheetSettings."+ cPickPocketDCF +".descrp"), 
 													vtype : "number", 
-													vvalue : await LnKFlags.PickPocketDC(pApp.object, true),
+													vvalue : await LnKFlags.PickPocketDC(pApp.document, true),
 													vflagname : cPickPocketDCF
 													}, vTargetHTML);
 													
@@ -365,10 +368,10 @@ class LnKSheetSettings {
 		}
 		
 		if (pisTile) {
-			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs[aria-role="Form Tab Navigation"]`);
+			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs`);
 		}
 		else {
-			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs[data-group="main"]`);
+			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs`);
 		}
 	} 
 	
@@ -383,7 +386,7 @@ class LnKSheetSettings {
 			vContent = vContent + LnKSheetSettings.createHTMLOption({	vlabel : Translate("SheetSettings."+ vsubFlagname +".name"), 
 																		//vhint : Translate("SheetSettings."+ vsubFlagname +".descrp"), 
 																		vtype : "text", 
-																		vvalue : LnKFlags.getCustomPopups(pApp.object, vKey),
+																		vvalue : LnKFlags.getCustomPopups(pApp.document, vKey),
 																		vflagname : vsubFlagname,
 																		vID : vKey
 																		}, true);
@@ -395,7 +398,7 @@ class LnKSheetSettings {
 			buttons: {
 				button1: {
 					label: Translate("SheetSettings."+ cCustomPopupsF + ".confirmButtonname"),
-					callback: (html) => {let vInputs = {}; for(let vKey of LnKFlags.CustomPopupsKeys()){vInputs[vKey] = html.find(`input#${vKey}`).val()}; LnKFlags.setCustomPopups(pApp.object, vInputs)},
+					callback: (html) => {let vInputs = {}; for(let vKey of LnKFlags.CustomPopupsKeys()){vInputs[vKey] = html.querySelector(`input#${vKey}`).val()}; LnKFlags.setCustomPopups(pApp.document, vInputs)},
 					icon: `<i class="fas ${cLnKLockIcon}"></i>`
 				}
 			},
@@ -411,7 +414,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.lock"), 
 												vtype : "text", 
 												vwide : true,
-												vvalue : LnKFlags.KeyIDs(pApp.object),
+												vvalue : LnKFlags.KeyIDs(pApp.document),
 												vflagname : cIDKeysF
 												}, pto);
 												
@@ -420,7 +423,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cUseKeyDialogF +".descrp"), 
 												vtype : "checkbox", 
 												vwide : true,
-												vvalue : LnKFlags.useKeyDialog(pApp.object),
+												vvalue : LnKFlags.useKeyDialog(pApp.document),
 												vflagname : cUseKeyDialogF
 												}, pto);
 												
@@ -429,7 +432,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cPasskeysF +".descrp"), 
 												vtype : "text", 
 												vwide : true,
-												vvalue : LnKFlags.PassKeys(pApp.object),
+												vvalue : LnKFlags.PassKeys(pApp.document),
 												vflagname : cPasskeysF
 												}, pto);
 												
@@ -438,7 +441,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cPasskeyChangeableF +".descrp"), 
 												vtype : "checkbox", 
 												vwide : true,
-												vvalue : LnKFlags.PasskeyChangeable(pApp.object),
+												vvalue : LnKFlags.PasskeyChangeable(pApp.document),
 												vflagname : cPasskeyChangeableF
 												}, pto);
 												
@@ -447,7 +450,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cIdentityKeyF +".descrp"), 
 												vtype : "text", 
 												vwide : true,
-												vvalue : LnKFlags.IdentityKeys(pApp.object),
+												vvalue : LnKFlags.IdentityKeys(pApp.document),
 												vflagname : cIdentityKeyF
 												}, pto);
 												
@@ -457,7 +460,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockjammedF +".name"), 
 												vhint : Translate("SheetSettings."+ cLockjammedF +".descrp"), 
 												vtype : "checkbox", 
-												vvalue : LnKFlags.Lockisjammed(pApp.object),
+												vvalue : LnKFlags.Lockisjammed(pApp.document),
 												vflagname : cLockjammedF
 												}, pto);
 												
@@ -465,7 +468,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockDCF +".name"), 
 												vhint : Translate("SheetSettings."+ cLockDCF +".descrp"), 
 												vtype : "number", 
-												vvalue : LnKFlags.LockDC(pApp.object, true),
+												vvalue : LnKFlags.LockDC(pApp.document, true),
 												vflagname : cLockDCF
 												}, pto);
 												
@@ -474,7 +477,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cSpecialLPF +".descrp"), 
 												vtype : "text", 
 												vwide : true,
-												vvalue : LnKFlags.GetSpecialLockpicks(pApp.object, true),
+												vvalue : LnKFlags.GetSpecialLockpicks(pApp.document, true),
 												vflagname : cSpecialLPF
 												}, pto);
 												
@@ -482,7 +485,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockBreakDCF +".name"), 
 												vhint : Translate("SheetSettings."+ cLockBreakDCF +".descrp"), 
 												vtype : "number", 
-												vvalue : LnKFlags.LockBreakDC(pApp.object, true),
+												vvalue : LnKFlags.LockBreakDC(pApp.document, true),
 												vflagname : cLockBreakDCF
 												}, pto);
 												
@@ -491,7 +494,7 @@ class LnKSheetSettings {
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockCCDCF +".name", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vhint : Translate("SheetSettings."+ cLockCCDCF +".descrp", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vtype : "number", 
-													vvalue : LnKFlags.LockCCDC(pApp.object, true),
+													vvalue : LnKFlags.LockCCDC(pApp.document, true),
 													vflagname : cLockCCDCF
 													}, pto);			
 		}										
@@ -500,7 +503,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ crequiredLPsuccessF +".name"), 
 												vhint : Translate("SheetSettings."+ crequiredLPsuccessF +".descrp"), 
 												vtype : "numberpart", 
-												vvalue : [LnKFlags.currentLPsuccess(pApp.object), LnKFlags.requiredLPsuccess(pApp.object)],
+												vvalue : [LnKFlags.currentLPsuccess(pApp.document), LnKFlags.requiredLPsuccess(pApp.document)],
 												vflagname : [ccurrentLPsuccessF, crequiredLPsuccessF]
 												}, pto);
 		
@@ -509,7 +512,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPAttemptsF +".name"), 
 												vhint : Translate("SheetSettings."+ cLPAttemptsF +".descrp"), 
 												vtype : "number", 
-												vvalue : LnKFlags.LPAttemptsLeft(pApp.object, true),
+												vvalue : LnKFlags.LPAttemptsLeft(pApp.document, true),
 												vflagname : cLPAttemptsF,
 												}, pto);
 		*/
@@ -518,7 +521,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPAttemptsF +".name"), 
 												vhint : Translate("SheetSettings."+ cLPAttemptsF +".descrp"), 
 												vtype : "numberpart", 
-												vvalue : [LnKFlags.LPAttemptsLeft(pApp.object, true), LnKFlags.LPAttemptsMax(pApp.object, true)],
+												vvalue : [LnKFlags.LPAttemptsLeft(pApp.document, true), LnKFlags.LPAttemptsMax(pApp.document, true)],
 												vflagname : [cLPAttemptsF, cLPAttemptsMaxF]
 												}, pto);
 												
@@ -526,14 +529,14 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ ccanbeCircumventedFreeF +".name"), 
 												vhint : Translate("SheetSettings."+ ccanbeCircumventedFreeF +".descrp"), 
 												vtype : "checkbox", 
-												vvalue : LnKFlags.canbeCircumventedFree(pApp.object),
+												vvalue : LnKFlags.canbeCircumventedFree(pApp.document),
 												vflagname : ccanbeCircumventedFreeF
 												}, pto);		
 
 		//custom popups menu button
-		let vButton = `<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings." + cCustomPopupsF + ".openButtonname")} </button>`;
-		pHTML.find(pto).append(vButton);
-		pHTML.find(`button[id="${cModuleName}.CustomPopupsButton"]`).click(function() {LnKSheetSettings.OpenCustomPopups(pApp)});
+		let vButton = fromHTML(`<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings." + cCustomPopupsF + ".openButtonname")} </button>`);
+		pHTML.querySelector(pto).append(vButton);
+		pHTML.querySelector(`button[id="${cModuleName}.CustomPopupsButton"]`).click(function() {LnKSheetSettings.OpenCustomPopups(pApp)});
 	} 
 	
 	static AddCharacterstandardsettings(pApp, pHTML, pData, pType, pto) {
@@ -542,7 +545,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cLPFormulaF +".descrp."+pType), 
 												vtype : "text", 
 												vwide : true,
-												vvalue : LnKFlags.LPFormula(pApp.object),
+												vvalue : LnKFlags.LPFormula(pApp.document),
 												vflagname : cLPFormulaF
 												}, pto);	
 												
@@ -550,7 +553,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLPFormulaOverrideF +".name"), 
 												vhint : Translate("SheetSettings."+ cLPFormulaOverrideF +".descrp."+pType), 
 												vtype : "checkbox", 
-												vvalue : LnKFlags.LPFormulaOverride(pApp.object),
+												vvalue : LnKFlags.LPFormulaOverride(pApp.document),
 												vflagname : cLPFormulaOverrideF
 												}, pto);	
 												
@@ -559,7 +562,7 @@ class LnKSheetSettings {
 												vhint : Translate("SheetSettings."+ cLBFormulaF +".descrp."+pType), 
 												vtype : "text", 
 												vwide : true,
-												vvalue : LnKFlags.LBFormula(pApp.object),
+												vvalue : LnKFlags.LBFormula(pApp.document),
 												vflagname : cLBFormulaF
 												}, pto);	
 												
@@ -567,7 +570,7 @@ class LnKSheetSettings {
 		LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLBFormulaOverrideF +".name"), 
 												vhint : Translate("SheetSettings."+ cLBFormulaOverrideF +".descrp."+pType), 
 												vtype : "checkbox", 
-												vvalue : LnKFlags.LBFormulaOverride(pApp.object),
+												vvalue : LnKFlags.LBFormulaOverride(pApp.document),
 												vflagname : cLBFormulaOverrideF
 												}, pto);
 												
@@ -577,7 +580,7 @@ class LnKSheetSettings {
 													vhint : Translate("SheetSettings."+ cCCFormulaF +".descrp."+pType, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vtype : "text", 
 													vwide : true,
-													vvalue : LnKFlags.CCFormula(pApp.object),
+													vvalue : LnKFlags.CCFormula(pApp.document),
 													vflagname : cCCFormulaF
 													}, pto);	
 													
@@ -585,7 +588,7 @@ class LnKSheetSettings {
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cCCFormulaOverrideF +".name", {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vhint : Translate("SheetSettings."+ cCCFormulaOverrideF +".descrp."+pType, {pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}), 
 													vtype : "checkbox", 
-													vvalue : LnKFlags.CCFormulaOverride(pApp.object),
+													vvalue : LnKFlags.CCFormulaOverride(pApp.document),
 													vflagname : cCCFormulaOverrideF
 													}, pto);			
 		}
@@ -596,7 +599,7 @@ class LnKSheetSettings {
 													vhint : Translate("SheetSettings."+ cPickPocketFormulaF +".descrp.token"), 
 													vtype : "text", 
 													vwide : true,
-													vvalue : LnKFlags.PickPocketFormula(pApp.object),
+													vvalue : LnKFlags.PickPocketFormula(pApp.document),
 													vflagname : cPickPocketFormulaF
 													}, pto);	
 												
@@ -604,7 +607,7 @@ class LnKSheetSettings {
 			LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".name"), 
 													vhint : Translate("SheetSettings."+ cPickPocketFormulaOverrideF +".descrp.token"), 
 													vtype : "checkbox", 
-													vvalue : LnKFlags.PickPocketFormulaOverrides(pApp.object),
+													vvalue : LnKFlags.PickPocketFormulaOverrides(pApp.document),
 													vflagname : cPickPocketFormulaOverrideF
 													}, pto);
 													
@@ -613,7 +616,7 @@ class LnKSheetSettings {
 													vhint : Translate("SheetSettings."+ cLootFormulaF +".descrp"), 
 													vtype : "text", 
 													vwide : true,
-													vvalue : LnKFlags.LootFormula(pApp.object),
+													vvalue : LnKFlags.LootFormula(pApp.document),
 													vflagname : cLootFormulaF
 													}, pto);
 												
@@ -633,7 +636,7 @@ class LnKSheetSettings {
 					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ vFlagName +".name"), 
 															vhint : Translate("SheetSettings."+ vFlagName +".descrp."), 
 															vtype : "number", 
-															vvalue : LnKFlags.RollOptions(pApp.object, vRType, vROption),
+															vvalue : LnKFlags.RollOptions(pApp.document, vRType, vROption),
 															vflagname : vFlagName
 															}, pto);				
 				}
@@ -644,7 +647,7 @@ class LnKSheetSettings {
 	//support
 	
 	static AddHTMLOption(pHTML, pInfos, pto) {
-		let vParent = pHTML.find(pto);
+		let vParent = pHTML.querySelector(pto);
 		
 		vParent.append(LnKSheetSettings.createHTMLOption(pInfos));
 		
@@ -783,14 +786,14 @@ class LnKSheetSettings {
 		
 		//pHTML.find('[name="RideableTitle"]').after(vnewHTML);
 		//pHTML.find(pto/*`div[data-tab="${cModuleName}"]`*/).append(vnewHTML);
-		return vnewHTML;
+		return fromHTML(vnewHTML);
 	}
 	
 	static RegisterItemSheetTabChange() {
 		//register onChangeTab (if possible with lib-wrapper)
 		if(!LnKCompUtils.isactiveModule(cTidy5eNew)) {
 			if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-				libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) { console.log(args), this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
+				libWrapper.register(cModuleName, "ItemSheet.prototype._onChangeTab", function(vWrapped, ...args) {this.LnKTabactive = (args[2] == cModuleName); return vWrapped(...args)}, "WRAPPER");
 			}
 			else {
 				const vOldSheetCall = ItemSheet.prototype._onChangeTab;
@@ -809,14 +812,20 @@ class LnKSheetSettings {
 	static FixSheetWindow(pHTML, pIndentifier) {
 		let vNeededWidth = 0;
 
-		pHTML.find(pIndentifier).children().each(function() {
-			vNeededWidth = vNeededWidth + $(this).outerWidth() ;
-		});
+		Array.from(pHTML.querySelector(pIndentifier).children).forEach(vElement => vNeededWidth = vNeededWidth + vElement.offsetWidth);
 		
-		if (vNeededWidth > pHTML.width()) {
-			pHTML.width(vNeededWidth);
+		if (vNeededWidth > pHTML.offsetWidth) {
+			pHTML.style.width = vNeededWidth + "px";
 		}		
 	}
+}
+
+function fromHTML(pHTML) {
+	let vDIV = document.createElement('div');
+	
+	vDIV.innerHTML = pHTML;
+	
+	return vDIV.querySelector("*");
 }
 
 export {LnKSheetSettings};
@@ -825,14 +834,24 @@ export {LnKSheetSettings};
 Hooks.once("ready", () => {
 	if (game.user.isGM) {
 		//register settings only for GM
-		
-		Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML, vData)); //for items
+		if (game.release.generation <= 12) {
+			Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML[0], vData)); //for items
 
-		Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
+			Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML[0], vData)); //for walls
 
-		Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
-		
-		Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData, true)); //for tokens
+			Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML[0], vData)); //for tokens
+			
+			Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML[0], vData, true)); //for tokens
+		}
+		else {
+			Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML, vData)); //for items
+
+			Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
+
+			Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
+			
+			Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData, true)); //for tokens
+		}
 	}
 });
 

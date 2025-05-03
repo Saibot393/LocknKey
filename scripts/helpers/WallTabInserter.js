@@ -8,13 +8,13 @@ class WallTabInserter {
 	
 	//IMPLEMENTATIONS
 	static InsertWallTabs(pApp, pHTML, pData) {
-		if (!pHTML.find(`nav.sheet-tabs`).length) {
+		if (!pHTML.querySelector(`nav.sheet-tabs`)) {
 			//no tabs yet, insert basic tab
 			
 			//save basic settings content
-			let vOriginalContent = pHTML.find(`form`);
+			let vOriginalContent = pHTML.querySelector(`form`);
 			
-			if (!vOriginalContent.length) {
+			if (!vOriginalContent) {
 				vOriginalContent = pHTML;
 			}
 			
@@ -29,17 +29,19 @@ class WallTabInserter {
 			//wrap basic settings in tab and place it instead of the settings
 			let vBasicTab = `<div class="tab active" data-tab="basic"></div>`;
 			vOriginalContent.append(vBasicTab);
-			vBasicTab = vOriginalContent.find(`div[data-tab="basic"]`);
+			vBasicTab = vOriginalContent.querySelector(`div[data-tab="basic"]`);
 			
-			vOriginalContent.find(`> *:not(button):not(footer)`).each(function () {
-                vBasicTab.append(this);
+			Array.from(vOriginalContent.children).forEach(function () {
+				if (!["button", "footer"].includes(this.nodeName)) {
+					vBasicTab.append(this);
+				}
             });
 			
 			//place tab header at top
 			vOriginalContent.prepend(vTabs);
 
 			//place confirm button at bottom
-			vOriginalContent.append(vOriginalContent.find(`footer`));
+			vOriginalContent.append(vOriginalContent.querySelector(`footer`));
 			
 			pApp.options.tabs = [{ navSelector: ".tabs", contentSelector: "form", initial: "basic" }];
 			pApp._tabs = pApp._createTabHandlers();
