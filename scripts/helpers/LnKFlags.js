@@ -1007,7 +1007,7 @@ class LnKFlags {
 			vnewID = pID;
 		}
 		else {
-			vnewID = randomID();
+			vnewID = foundry.utils?.randomID ? foundry.utils.randomID() : randomID();
 		}
 		
 		this.#addIDKeysFlag(pKey, vnewID);

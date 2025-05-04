@@ -550,7 +550,7 @@ class LnKutils {
 	}
 	
 	static getItemFolders(pFilterDirectory = "") {
-		let vFolders = game.items.directory.folders;
+		let vFolders = game.items.directory.folders || game.items.folders;
 		 
 		if (pFilterDirectory.length > 0) {
 			vFolders = vFolders.filter(vFolder => (vFolder.name == pFilterDirectory) || vFolder.ancestors.find(vAncestor => vAncestor.name == pFilterDirectory));

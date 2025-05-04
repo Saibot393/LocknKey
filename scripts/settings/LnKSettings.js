@@ -783,21 +783,23 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 	
 	let vnewHTML;
 	
+	if (game.release.generation <= 12) pHTML = pHTML[0];
+	
 	if (game.user.isGM) {
 		//first world setting
 		vnewHTML = `<h3 class="border">${Translate("Titles.WorldSettings")}</h3>`;
 		 
-		pHTML.find('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);
+		pHTML.querySelector('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);
 		
 		//locks Settings
 		vnewHTML = `<h4 class="border">${Translate("Titles.LockSettings")}</h4>`;
 		 
-		pHTML.find('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);		
+		pHTML.querySelector('input[name="' + cModuleName + '.useGMquickKeys"]').closest(".form-group").before(vnewHTML);		
 		
 		//pick pocket settings
 		vnewHTML = `<h4 class="border">${Translate("Titles.PickpocketSettings")}</h3>`;
 		 
-		pHTML.find('input[name="' + cModuleName + '.EnablePickpocketing"]').closest(".form-group").before(vnewHTML);		
+		pHTML.querySelector('input[name="' + cModuleName + '.EnablePickpocketing"]').closest(".form-group").before(vnewHTML);		
 		
 		//gm controlls
 		vnewHTML = ``;
@@ -805,7 +807,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
 		}
 		
-		pHTML.find('input[name="' + cModuleName + '.PerceptionKeyWord"]').closest(".form-group").after(vnewHTML);
+		if (pHTML.querySelector('input[name="' + cModuleName + '.PerceptionKeyWord"]')) pHTML.querySelector('input[name="' + cModuleName + '.PerceptionKeyWord"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
 		vnewHTML = `
@@ -813,7 +815,7 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 					<h3 class="border">${Translate("Titles.ClientSettings")}</h3>
 					`;
 		 
-		pHTML.find('select[name="' + cModuleName + '.ControlSceme"]').closest(".form-group").before(vnewHTML);
+		pHTML.querySelector('select[name="' + cModuleName + '.ControlSceme"]').closest(".form-group").before(vnewHTML);
 	}
 	
 	//player controlls
@@ -822,5 +824,5 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
 	}
 	
-	pHTML.find('select[name="' + cModuleName + '.dblClicktoLoot"]').closest(".form-group").after(vnewHTML);
+	pHTML.querySelector('input[name="' + cModuleName + '.dblClicktoLoot"]').closest(".form-group").after(vnewHTML);
 });

@@ -44,19 +44,19 @@ class LnKSheetSettings {
 		let vLockSettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.document.type)
 			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.document)));
 			
-		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).querySelector(vEntry => vEntry == pApp.document.type);
+		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.document.type);
 		
 		if (vLockSettings || vLootSettings) {
 			//setup
 			let vTabbar = pHTML.querySelector(`div.tabs[data-tab-container="primary"]`)
-			if (!vTabbar.length) {
+			if (!vTabbar) {
 				vTabbar = pHTML.querySelector(`nav.sheet-tabs`);
-				if (!vTabbar.length) {
+				if (!vTabbar) {
 					//if tab bar was not found, try other search
 					vTabbar = pHTML.querySelector(`.sheet-tabs`);
-					if (!vTabbar.length) {
+					if (!vTabbar) {
 						vTabbar = pHTML.querySelector(`[data-group="primary"].sheet-navigation`);
-						if (!vTabbar.length) {
+						if (!vTabbar) {
 							vTabbar = pHTML.querySelector(`[data-group="main"].tabs`);
 						}
 					}
@@ -64,22 +64,22 @@ class LnKSheetSettings {
 			}
 			
 			let vprevTab = pHTML.querySelector(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
-			if (!vprevTab.length) {
+			if (!vprevTab) {
 				//if tab bar was not found, try other search
 				vprevTab = pHTML.querySelector(`div[tab="details"]`);
-				if (!vprevTab.length) {
+				if (!vprevTab) {
 					//if tab bar was not found, try other search
 					vprevTab = pHTML.querySelector(`div[data-tab="description"]`);
-					if (!vprevTab.length) {
+					if (!vprevTab) {
 						//if tab bar was not found, try other search
 						vprevTab = pHTML.querySelector(`div[tab="description"]`);
-						if (!vprevTab.length) {
+						if (!vprevTab) {
 							//if tab bar was not found, try other search
 							vprevTab = pHTML.querySelector(`section[data-tab="description"]`);
-							if (!vprevTab.length) {
+							if (!vprevTab) {
 								//if tab bar was not found, try other search
 								vprevTab = pHTML.querySelector(`section[tab="description"]`);
-								if (!vprevTab.length) {
+								if (!vprevTab) {
 									//for tidy 5e sheets
 									vprevTab = pHTML.querySelector(`div.tidy-tab[data-tab-contents-for="description"]`);
 								}
@@ -99,10 +99,10 @@ class LnKSheetSettings {
 			vTabbar.append(vTabButtonHTML);	
 			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) {
 				Array.from(vTabbar.querySelector(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
-				vTabbar.querySelector(`[data-tab="${cModuleName}"]`)[0].onclick = () => {pApp.LnKTabactive = true};
+				vTabbar.querySelector(`[data-tab="${cModuleName}"]`).onclick = () => {pApp.LnKTabactive = true};
 			}
 			
-			if (!pHTML.querySelector(`div.${cModuleName}`).length) {
+			if (!pHTML.querySelector(`div.${cModuleName}`)) {
 				let vTabContentHTML = fromHTML(`<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 				vprevTab.after(vTabContentHTML);
 			}
@@ -122,7 +122,7 @@ class LnKSheetSettings {
 				//lock settings	
 				
 				//create title for key items
-				let vTitle = `<h3 class="border">${Translate("Titles.KeyItems")}</h3>`;
+				let vTitle = fromHTML(`<h3 class="border">${Translate("Titles.KeyItems")}</h3>`);
 				
 				pHTML.querySelector(`div.${cModuleName}`).append(vTitle);
 				
@@ -195,12 +195,12 @@ class LnKSheetSettings {
 		let vprevTab = pHTML.querySelector(`div[data-tab="basic"]`); //places rideable tab after last core tab "basic"
 		
 		let vTabButtonHTML = 	fromHTML(`
-						<a class="item" data-tab="${cModuleName}">
+						<a class="item" data-tab="${cModuleName}" data-group="sheet">
 							<i class="fas ${cLnKLockIcon}"></i>
 							${Translate("Titles."+cModuleName+"abbr")}
 						</a>
 						`); //tab button HTML
-		let vTabContentHTML = fromHTML(`<div class="tab" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+		let vTabContentHTML = fromHTML(`<div class="tab scrollable" data-group="sheet" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 		
 		vTabbar.append(vTabButtonHTML);
 		vprevTab.after(vTabContentHTML);	
@@ -238,7 +238,7 @@ class LnKSheetSettings {
 		if (vUseTab) {
 			//let vTabbar = pisTile ? pHTML.querySelector(`nav.sheet-tabs`) : pHTML.querySelector(`[data-group="main"].sheet-tabs`);
 			let vTabbar = pHTML.querySelector(`nav.sheet-tabs`);
-			let vprevTab = pisTile ? pHTML.querySelector(`div[data-tab="animation"]`) : pHTML.querySelector(`div[data-tab="resources"]`); //places LnK tab after last core tab "details"
+			let vprevTab = pisTile ? pHTML.querySelector(`div[data-tab="overhead"]`) : pHTML.querySelector(`div[data-tab="resources"]`); //places LnK tab after last core tab "details"
 			
 			let vTabIcon;
 			
@@ -248,16 +248,14 @@ class LnKSheetSettings {
 			else {
 				vTabIcon = cLnKKeyIcon;
 			}
-			console.log(pApp.tabGroups?.sheet);
-			console.log(`${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}"`);
-			console.log(pApp);
+
 			let vTabButtonHTML = fromHTML(`
 							<a class="item ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-action="tab" data-group="sheet" data-tab="${cModuleName}">
 								<i class="fas ${vTabIcon}"></i>
 								${Translate("Titles."+cModuleName+"abbr")}
 							</a>
 							`); //tab button HTML
-			let vTabContentHTML = fromHTML(`<div class="tab ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-group="sheet" ${game.release.generation <= 12 ? 'data-group="main"' : 'data-group="sheet"'} data-application-part="${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+			let vTabContentHTML = fromHTML(`<div class="tab ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''} scrollable" data-group="sheet" ${game.release.generation <= 12 ? 'data-group="main"' : 'data-group="sheet"'} data-application-part="${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 
 			vTabbar.append(vTabButtonHTML);
 			vprevTab.after(vTabContentHTML);	
@@ -269,7 +267,7 @@ class LnKSheetSettings {
 			
 			if (vLockSettings && vLockFormulaSettings) {
 				//create title for lock compatible tokens
-				vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LockTokens")}</h3>`);
+				vTitle = fromHTML(`<h4 class="border">${Translate("Titles.LockTokens")}</h4>`);
 				
 				pHTML.querySelector(`div[data-tab="${cModuleName}"]`).append(vTitle);
 			}
@@ -331,7 +329,7 @@ class LnKSheetSettings {
 			if (!pisTile) {
 				if (vLockSettings && vLockFormulaSettings) {
 					//createtitle for Character tokens
-					vTitle = fromHTML(`<h3 class="border">${Translate("Titles.CharacterTokens")}</h3>`);
+					vTitle = fromHTML(`<h4 class="border">${Translate("Titles.CharacterTokens")}</h4>`);
 					
 					pHTML.querySelector(`div[data-tab="${cModuleName}"]`).append(vTitle);
 				}
@@ -389,7 +387,7 @@ class LnKSheetSettings {
 																		vvalue : LnKFlags.getCustomPopups(pApp.document, vKey),
 																		vflagname : vsubFlagname,
 																		vID : vKey
-																		}, true);
+																		}, true, false);
 		}
 														
 		new Dialog({
@@ -398,7 +396,7 @@ class LnKSheetSettings {
 			buttons: {
 				button1: {
 					label: Translate("SheetSettings."+ cCustomPopupsF + ".confirmButtonname"),
-					callback: (html) => {let vInputs = {}; for(let vKey of LnKFlags.CustomPopupsKeys()){vInputs[vKey] = html.querySelector(`input#${vKey}`).val()}; LnKFlags.setCustomPopups(pApp.document, vInputs)},
+					callback: (html) => {let vInputs = {}; for(let vKey of LnKFlags.CustomPopupsKeys()){vInputs[vKey] = html.find(`input#${vKey}`).val()}; LnKFlags.setCustomPopups(pApp.document, vInputs)},
 					icon: `<i class="fas ${cLnKLockIcon}"></i>`
 				}
 			},
@@ -536,7 +534,7 @@ class LnKSheetSettings {
 		//custom popups menu button
 		let vButton = fromHTML(`<button id = "${cModuleName}.CustomPopupsButton"> ${Translate("SheetSettings." + cCustomPopupsF + ".openButtonname")} </button>`);
 		pHTML.querySelector(pto).append(vButton);
-		pHTML.querySelector(`button[id="${cModuleName}.CustomPopupsButton"]`).click(function() {LnKSheetSettings.OpenCustomPopups(pApp)});
+		pHTML.querySelector(`button[id="${cModuleName}.CustomPopupsButton"]`).onclick = () => {LnKSheetSettings.OpenCustomPopups(pApp)};
 	} 
 	
 	static AddCharacterstandardsettings(pApp, pHTML, pData, pType, pto) {
@@ -652,8 +650,8 @@ class LnKSheetSettings {
 		vParent.append(LnKSheetSettings.createHTMLOption(pInfos));
 		
 		if (pInfos.vtype == "filePicker") {
-			let vPickerButton = vParent[0].querySelector(`button[data-target="flags.${cModuleName}.${pInfos.vflagname}"]`);
-			let vDataField = vParent[0].querySelector(`input[name="flags.${cModuleName}.${pInfos.vflagname}"]`);
+			let vPickerButton = vParent.querySelector(`button[data-target="flags.${cModuleName}.${pInfos.vflagname}"]`);
+			let vDataField = vParent.querySelector(`input[name="flags.${cModuleName}.${pInfos.vflagname}"]`);
 			
 			let filePicker = new FilePicker({
 				field: vDataField,
@@ -667,7 +665,7 @@ class LnKSheetSettings {
 		}
 	}
 	
-	static createHTMLOption(pInfos, pwithformgroup = false) {
+	static createHTMLOption(pInfos, pwithformgroup = false, pAsDOM = true) {
 		let vlabel = "Name";	
 		if (pInfos.hasOwnProperty("vlabel")) {
 			vlabel = pInfos.vlabel;
@@ -786,7 +784,7 @@ class LnKSheetSettings {
 		
 		//pHTML.find('[name="RideableTitle"]').after(vnewHTML);
 		//pHTML.find(pto/*`div[data-tab="${cModuleName}"]`*/).append(vnewHTML);
-		return fromHTML(vnewHTML);
+		return pAsDOM ? fromHTML(vnewHTML) : vnewHTML;
 	}
 	
 	static RegisterItemSheetTabChange() {
@@ -844,7 +842,7 @@ Hooks.once("ready", () => {
 			Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML[0], vData, true)); //for tokens
 		}
 		else {
-			Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML, vData)); //for items
+			Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML[0], vData)); //for items
 
 			Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
 
