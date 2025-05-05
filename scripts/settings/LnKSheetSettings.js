@@ -195,12 +195,12 @@ class LnKSheetSettings {
 		let vprevTab = pHTML.querySelector(`div[data-tab="basic"]`); //places rideable tab after last core tab "basic"
 		
 		let vTabButtonHTML = 	fromHTML(`
-						<a class="item" data-tab="${cModuleName}" data-group="sheet">
+						<a class="item" data-tab="${cModuleName}" ${game.release.generation <= 12 ? '' : 'data-group="sheet"'}>
 							<i class="fas ${cLnKLockIcon}"></i>
 							${Translate("Titles."+cModuleName+"abbr")}
 						</a>
 						`); //tab button HTML
-		let vTabContentHTML = fromHTML(`<div class="tab scrollable" data-group="sheet" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+		let vTabContentHTML = fromHTML(`<div class="tab scrollable" ${game.release.generation <= 12 ? '' : 'data-group="sheet"'} data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 		
 		vTabbar.append(vTabButtonHTML);
 		vprevTab.after(vTabContentHTML);	
@@ -228,6 +228,7 @@ class LnKSheetSettings {
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
+		console.log(pHTML);
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.document);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
@@ -250,12 +251,12 @@ class LnKSheetSettings {
 			}
 
 			let vTabButtonHTML = fromHTML(`
-							<a class="item ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-action="tab" data-group="sheet" data-tab="${cModuleName}">
+							<a class="item ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-action="tab" ${game.release.generation <= 12 ? 'data-group="main"' : 'data-group="sheet"'} data-tab="${cModuleName}">
 								<i class="fas ${vTabIcon}"></i>
 								${Translate("Titles."+cModuleName+"abbr")}
 							</a>
 							`); //tab button HTML
-			let vTabContentHTML = fromHTML(`<div class="tab ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''} scrollable" data-group="sheet" ${game.release.generation <= 12 ? 'data-group="main"' : 'data-group="sheet"'} data-application-part="${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+			let vTabContentHTML = fromHTML(`<div class="tab ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''} scrollable" ${game.release.generation <= 12 ? (pisTile ? '' : 'data-group="main"') : 'data-group="sheet"'} data-application-part="${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 
 			vTabbar.append(vTabButtonHTML);
 			vprevTab.after(vTabContentHTML);	
@@ -808,6 +809,8 @@ class LnKSheetSettings {
 	}
 	
 	static FixSheetWindow(pHTML, pIndentifier) {
+		if (pHTML.length) pHTML = pHTML[0];
+		
 		let vNeededWidth = 0;
 
 		Array.from(pHTML.querySelector(pIndentifier).children).forEach(vElement => vNeededWidth = vNeededWidth + vElement.offsetWidth);
