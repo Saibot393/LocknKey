@@ -1,3 +1,6 @@
+## v4.0.1
+- Fix for v12
+
 ## v4.0.0
 - v13 compatibility
 
