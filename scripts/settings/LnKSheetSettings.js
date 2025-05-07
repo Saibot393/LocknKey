@@ -228,7 +228,6 @@ class LnKSheetSettings {
 	}
 	
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
-		console.log(pHTML);
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.document);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 		
@@ -366,12 +365,7 @@ class LnKSheetSettings {
 			Hooks.call(cModuleName + ".TokenLockSettings", pApp, pHTML, pData);
 		}
 		
-		if (pisTile) {
-			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs`);
-		}
-		else {
-			LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs`);
-		}
+		LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs`);
 	} 
 	
 	//dialogs
@@ -809,7 +803,7 @@ class LnKSheetSettings {
 	}
 	
 	static FixSheetWindow(pHTML, pIndentifier) {
-		if (pHTML.length) pHTML = pHTML[0];
+		if (!pHTML.nodeType) pHTML = pHTML[0];
 		
 		let vNeededWidth = 0;
 

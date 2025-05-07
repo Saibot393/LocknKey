@@ -156,22 +156,30 @@ class LnKTilesHandler {
 	
 	//ui
 	static addLnKButtons(pHUD, pHTML, pTile) {
+		if (game.release.generation <= 12) pHTML = pHTML[0];
+		
 		let vTile = canvas.tiles.get(pTile._id)?.document;
 		
 		if (LnKFlags.canbeInteracted(vTile)) {
 			const cButtonPosition = "right";
 				
-			let vButtonHTML = `	<div class="control-icon" data-action="toggleopen">
+			let vButton = fromHTML(`	<div class="control-icon" data-action="toggleopen">
 									<i class="${LnKFlags.OpenState(vTile) ? cOpenIcon : cClosedIcon}" title="${Translate("Titles.ToggleTile")}"></i>
-								</div>`;
+								</div>`);
 			
-			pHTML.find("div.col."+cButtonPosition).append(vButtonHTML);
+			pHTML.querySelector("div.col."+cButtonPosition).append(vButton);
 			
-			let vButton = pHTML.find(`div[data-action="toggleopen"]`);
-			
-			vButton.click((pEvent) => {LnKTilesHandler.requestToggleTile(vTile, true)});
+			vButton.onclick = () => {LnKTilesHandler.requestToggleTile(vTile, true)};
 		}
 	}
+}
+
+function fromHTML(pHTML) {
+	let vDIV = document.createElement('div');
+	
+	vDIV.innerHTML = pHTML;
+	
+	return vDIV.querySelector("*");
 }
 
 Hooks.on(cModuleName + "." + "CanvasLClick", (pCanvas, pPosition, pEvent) => {LnKTilesHandler.onCanvasLeftClick(pCanvas, pPosition, pEvent)});
