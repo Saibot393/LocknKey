@@ -63,7 +63,7 @@ class LnKSheetSettings {
 				}
 			}
 			
-			let vprevTab = pHTML.querySelector(`div[data-tab="details"]`); //places rideable tab after last core tab "details"
+			let vprevTab = pHTML.querySelector(`div[data-tab="details"]`); //places LnK tab after last core tab "details"
 			if (!vprevTab) {
 				//if tab bar was not found, try other search
 				vprevTab = pHTML.querySelector(`div[tab="details"]`);
@@ -82,6 +82,10 @@ class LnKSheetSettings {
 								if (!vprevTab) {
 									//for tidy 5e sheets
 									vprevTab = pHTML.querySelector(`div.tidy-tab[data-tab-contents-for="description"]`);
+									if (!vprevTab) {
+										//and another one
+										vprevTab = pHTML.querySelector(`div[data-tab="modifiers"]`);
+									}
 								}
 							}
 						}
@@ -732,7 +736,7 @@ class LnKSheetSettings {
 		switch (vtype){
 			case "number":
 			case "text":
-				vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} value="${vvalue}"></input>`;
+				vnewHTML = vnewHTML + `<input type=${vtype} name="flags.${cModuleName}.${vflagname}" id=${vID} value="${vvalue}" style="color:inherit"></input>`;
 				break;
 				
 			case "checkbox":
