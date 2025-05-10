@@ -19,7 +19,7 @@ class LnKCompatibility {
 	
 	static onunLock(pLockType, pLock) {} //called if a object is locked
 	
-	static async synchIPLock(pLock, vUpdate) {} //called if an item pile is updated manually
+	static async synchLock(pLock, vUpdate) {} //called if an item pile is updated manually
 	
 	static onIPinteraction(pLock, pInfos) {} //called when someone interacts with a itempile token
 	
@@ -55,16 +55,19 @@ class LnKCompatibility {
 		}	
 	}
 	
-	static async synchIPLock(pLock) {
-		let vType = await LnKutils.Locktype(pLock);
-		
-		switch (vType) {
-			case cLockTypeLootIP:
-				await LnKCompUtils.setIPLock(pLock, await LnKFlags.isLocked(pLock));
-				break;
-			case cLockType3D:
-				LnKCompUtils.set3DCanvasLock(pLock, await LnKFlags.isLocked(pLock));
-				break;
+	static async synchLock(pLock) {
+		if (game.user.isGM) {
+			let vType = await LnKutils.Locktype(pLock);
+
+			switch (vType) {
+				case cLockTypeLootIP:
+					await LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
+					break;
+				case cLockType3D:
+					console.log();
+					await LnKCompUtils.set3DCanvasLock(pLock, LnKFlags.isLocked(pLock));
+					break;
+			}
 		}
 	}
 	
@@ -172,7 +175,7 @@ Hooks.once("init", () => {
 		
 		//Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)}); //DEPRICATED, here to solve potential bugs with old data
 		
-		Hooks.on("updateToken", (pToken, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchIPLock(pToken)}});
+		Hooks.on("updateToken", (pToken, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchLock(pToken)}});
 		
 		Hooks.on("item-piles-rattleItemPile", () => Hooks.call(cModuleName + "." + "TokendblClick", LnKutils.hoveredToken(), {}));
 
@@ -217,6 +220,8 @@ Hooks.once("init", () => {
 	}
 	
 	if (LnKCompUtils.isactiveModule(cCanvas3D)) {
+		Hooks.on("updateTile", (pTile, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchLock(pTile)}});
+		
 		Hooks.once("3DCanvasInit", () => {
 			//Hack a monkey patch for the right click of tiles
 			let vOldTileCall = game.Levels3DPreview.CONFIG.entityClass.Tile3D.prototype._onClickRight;

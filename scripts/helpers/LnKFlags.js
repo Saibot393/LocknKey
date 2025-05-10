@@ -993,11 +993,11 @@ class LnKFlags {
 	}
 	
 	static isLockable(pObject) {	
-		return this.#LockableFlag(pObject) && LnKutils.isLockCompatible(pObject);
+		return this.#LockableFlag(pObject) /*&& LnKutils.isLockCompatible(pObject)*/;
 	}
 	
 	static isLocked(pObject) {		
-		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject)) && LnKutils.isLockCompatible(pObject);
+		return (this.#LockableFlag(pObject) && this.#LockedFlag(pObject)) /*&& LnKutils.isLockCompatible(pObject)*/;
 	}
 	
 	static linkKeyLock(pKey, pLock, pID = "") {

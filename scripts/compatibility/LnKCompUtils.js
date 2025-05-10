@@ -235,7 +235,7 @@ class LnKCompUtils {
 	
 	static async set3DCanvasLock(pTile, pLocked) {
 		console.log(pLocked);
-		pTile.update({flags : {[cCanvas3D] : {doorState : pLocked ? "2" : "0"}}})
+		await pTile.update({flags : {[cCanvas3D] : {doorState : pLocked ? "2" : "0"}}})
 	}
 	
 	static async get3DCanvasLock(pTile, pLocked) {
