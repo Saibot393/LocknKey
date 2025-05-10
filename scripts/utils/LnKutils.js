@@ -116,6 +116,8 @@ class LnKutils {
 	
 	static async isLockCompatible(pDocument) {} //returns if Token can have a lock
 	
+	static async isOptionalLockable(pDocument) {} //returns if this document is only optionaly lockable
+	
 	static isTokenLock(pLock) {} //returns if pLock is a Token
 	
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
@@ -266,7 +268,13 @@ class LnKutils {
 				break;
 			case cLockTypeLootPf2e:
 			default:
-				return LnKutils.TokenfromID(pID, pScene);
+				let vDocument = LnKutils.TokenfromID(pID, pScene);
+				
+				if (!vDocument) vDocument = LnKutils.TilefromID(pID, pScene);
+				
+				if (!vDocument) vDocument = LnKutils.WallfromID(pID, pScene);
+				
+				return vDocument;
 		}
 	}
 	
@@ -563,7 +571,7 @@ class LnKutils {
 	static async Locktype(pDocument) {
 		var vLocktype = await LnKCompUtils.Locktype(pDocument);
 		
-		if (vLocktype.length) {
+		if (vLocktype) {
 			return vLocktype;
 		}
 		 
@@ -590,6 +598,22 @@ class LnKutils {
 	
 	static async isLockCompatible(pDocument) {	
 		return ((await LnKutils.Locktype(pDocument)).length);
+	}
+	
+	static async isOptionalLockable(pDocument) {
+		let vType = await LnKutils.Locktype(pDocument);
+		
+		if (vType.length) {
+			let vResult = LnKCompUtils.isOptionalLockable(vType);
+			
+			if (vResult != undefined) {
+				return vResult;
+			}
+			
+			return true;
+		}
+		
+		return;
 	}
 	
 	static isTokenLock(pLock) {

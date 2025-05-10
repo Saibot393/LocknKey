@@ -1,5 +1,5 @@
-import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions, cPuzzleLock, cReadysetRoll } from "./LnKCompUtils.js";
-import { cLockTypeLootIP } from "./LnKCompUtils.js";
+import { LnKCompUtils, cItemPiles, cMonksEJ, cMATT, cTidy5eNew, cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTConditions, cPuzzleLock, cReadysetRoll, cCanvas3D} from "./LnKCompUtils.js";
+import { cLockTypeLootIP, cLockType3D } from "./LnKCompUtils.js";
 import { LnKutils, cModuleName, cDelimiter, Translate, TranslateClean, cLUisGM, cLUuseKey, cLUusePasskey, cLUpickLock, cLUbreakLock, cLUFreeCircumvent, cUPickPocket } from "../utils/LnKutils.js";
 import { isUnlocked, UserCanopenToken, LockManager } from "../LockManager.js";
 import { LnKFlags, cLockableF, cLockedF } from "../helpers/LnKFlags.js";
@@ -32,9 +32,14 @@ class LnKCompatibility {
 	
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
+		LnKCompUtils.LockPuzzle(pLock);
+		
 		switch (pLockType) {
 			case cLockTypeLootIP:
 				LnKCompUtils.setIPLock(pLock, true);
+				break;
+			case cLockType3D:
+				LnKCompUtils.set3DCanvasLock(pLock, true);
 				break;
 		}
 	}
@@ -44,12 +49,22 @@ class LnKCompatibility {
 			case cLockTypeLootIP:
 				LnKCompUtils.setIPLock(pLock, false);
 				break;
+			case cLockType3D:
+				LnKCompUtils.set3DCanvasLock(pLock, false);
+				break;
 		}	
 	}
 	
 	static async synchIPLock(pLock) {
-		if (await LnKutils.Locktype(pLock) == cLockTypeLootIP) {
-			LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
+		let vType = await LnKutils.Locktype(pLock);
+		
+		switch (vType) {
+			case cLockTypeLootIP:
+				await LnKCompUtils.setIPLock(pLock, await LnKFlags.isLocked(pLock));
+				break;
+			case cLockType3D:
+				LnKCompUtils.set3DCanvasLock(pLock, await LnKFlags.isLocked(pLock));
+				break;
 		}
 	}
 	
@@ -199,6 +214,35 @@ Hooks.once("init", () => {
 	
 	if (LnKCompUtils.isactiveModule(cReadysetRoll)) {
 		libWrapper.ignore_conflicts(cModuleName, cReadysetRoll, "ItemSheet.prototype._onChangeTab' ");
+	}
+	
+	if (LnKCompUtils.isactiveModule(cCanvas3D)) {
+		Hooks.once("3DCanvasInit", () => {
+			//Hack a monkey patch for the right click of tiles
+			let vOldTileCall = game.Levels3DPreview.CONFIG.entityClass.Tile3D.prototype._onClickRight;
+			
+			function vNewTileCall(pEvent) {
+				Hooks.call(cModuleName + ".TileRClick", this.tile?.document, pEvent);
+				
+				vOldTileCall.bind(this)(pEvent);
+			}
+			
+			game.Levels3DPreview.CONFIG.entityClass.Tile3D.prototype._onClickRight = vNewTileCall;
+			
+			//enable right click for tiles even for non GMs
+			let vOldIMCall = game.Levels3DPreview.interactionManager._onClickRight;
+			
+			function vNewIMCall(pEvent) {
+				vOldIMCall.bind(this)(pEvent);
+				
+				let vEntity = pEvent.entity;
+				if (vEntity?.document?.documentName == "Tile" && !(vEntity.isOwner || game.user.isGM)) {
+					vEntity._onClickRight(pEvent);
+				}
+			}
+			
+			game.Levels3DPreview.interactionManager._onClickRight = vNewIMCall;
+		});
 	}
 });
 

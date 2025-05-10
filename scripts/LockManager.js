@@ -4,7 +4,6 @@ import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
 import { LnKSound } from "./helpers/LnKSound.js";
 import { cCustomPopup } from "./helpers/LnKFlags.js";
-import { LnKCompUtils } from "./compatibility/LnKCompUtils.js";
 
 const cLnKKeyIcon = "fa-key";
 const cLnKcheck = "fa-solid fa-check";
@@ -595,8 +594,6 @@ class LockManager {
 				LnKPopups.TextPopUpID(pLock, "lockedToken", {pLockName : pLock.name}); //MESSAGE POPUP
 		}
 		
-		LnKCompUtils.LockPuzzle(pLock);
-		
 		LnKSound.PlayunLockSound(pLock);
 		
 		Hooks.callAll(cModuleName+".onLock", vLocktype, pLock);
@@ -642,7 +639,7 @@ class LockManager {
 					vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
 					break;
 			}
-			
+			console.log(vValidToggle);
 			if (vValidToggle) {
 				//if setting is set to false, only GM can lock locks
 				let vLocktype = await LnKutils.Locktype(pLock);
@@ -675,6 +672,7 @@ class LockManager {
 				}
 				
 				if (vLocktype != cLockTypeDoor) {
+					console.log(LnKFlags.isLocked(pLock));
 					if (LnKFlags.isLocked(pLock)) {
 						LockManager.onLock(pLock, pLockusetype);
 					}
@@ -747,12 +745,7 @@ class LockManager {
 			vUnlocked = (pObject.ds != 2);
 		}
 		else {
-			if (LnKutils.isTokenLock(vLocktype)) {
-				vUnlocked = LockManager.TokenisUnlocked(pObject);
-			}
-			else {
-				vUnlocked = !LnKFlags.isLocked(pObject);
-			}
+			vUnlocked = !LnKFlags.isLocked(pObject);
 		}
 		
 		if (pPopup && !vUnlocked) {

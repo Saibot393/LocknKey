@@ -234,6 +234,7 @@ class LnKSheetSettings {
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
 		let vLockSettings = await LnKutils.isLockCompatible(pApp.document);
 		let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
+		let vOptionalLockable = await LnKutils.isOptionalLockable(pApp.document);
 		
 		let vUseTab = (vLockSettings || vLockFormulaSettings);
 		
@@ -276,7 +277,7 @@ class LnKSheetSettings {
 				pHTML.querySelector(`div[data-tab="${cModuleName}"]`).append(vTitle);
 			}
 			
-			if (pisTile) {
+			if (pisTile && vOptionalLockable) { //only for normal tiles
 				//choose image for open state
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cOpenImageF +".name"), 
 										vhint : Translate("SheetSettings."+ cOpenImageF +".descrp"), 
@@ -299,13 +300,15 @@ class LnKSheetSettings {
 			if (vLockSettings) {
 				//settings
 				
-				//setting token is lockable
-				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
-														vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
-														vtype : "checkbox", 
-														vvalue : LnKFlags.isLockable(pApp.document),
-														vflagname : cLockableF
-														}, `div[data-tab="${cModuleName}"]`);
+				if (vOptionalLockable) {
+					//setting token is lockable
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
+															vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
+															vtype : "checkbox", 
+															vvalue : LnKFlags.isLockable(pApp.document),
+															vflagname : cLockableF
+															}, `div[data-tab="${cModuleName}"]`);
+				}
 														
 				//setting token is locked								
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 

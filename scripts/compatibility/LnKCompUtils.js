@@ -14,9 +14,11 @@ const cMATT = "monks-active-tiles";
 const cTidy5eNew = "tidy5e-sheet";
 const cPuzzleLock = "puzzle-locks";
 const cReadysetRoll = "ready-set-roll-5e";
+const cCanvas3D = "levels-3d-preview";
 
 //specific: Item Piles, Rideable
 const cLockTypeLootIP = "LTIPLoot"; //type for ItemPile
+const cLockType3D = "LT3D"; //type for 3D cnavas door tiles
 //const cLockTypeRideable = "LTRideable"; //type for Rideable
 
 const cIPPiletype = "pile"; //type of loot tokens in Item Piles
@@ -43,8 +45,8 @@ export {cMATTTriggerConditionsF, cMATTTriggerTileF, cTConditions, cSimpleTCondit
 //general
 const ccompTokenLockTypes = [cLockTypeLootIP];
 
-export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT, cTidy5eNew, cPuzzleLock, cReadysetRoll}
-export { cLockTypeLootIP };
+export { cStairways, cArmReach, cArmReachold, cItemPiles, cLibWrapper, cMonksEJ, cMATT, cTidy5eNew, cPuzzleLock, cReadysetRoll, cCanvas3D}
+export { cLockTypeLootIP, cLockType3D };
 
 class LnKCompUtils {
 	//DECLARATIONS
@@ -52,6 +54,8 @@ class LnKCompUtils {
 	static isactiveModule(pModule) {} //determines if module with id pModule is active
 	
 	static async Locktype(pDocument) {} //returns Locktype of pDocument (if any)
+	
+	static isOptionalLockable(pLockType) {} //returns if this lock type is only optionally lockable
 	
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
@@ -67,6 +71,11 @@ class LnKCompUtils {
 	
 	//specific: Puzzle lock
 	static async LockPuzzle(pDocument) {} //locks puzzle
+	
+	//specific: 3D canvas
+	static async set3DCanvasLock(pTile, pLocked) {} //sets the door state of a 3D canvas door
+	
+	static async get3DCanvasLock(pTile, pLocked) {} //sets the door state of a 3D canvas door
 	
 	//specific: MATT
 	static async MATTTriggerTile(pLock) {} //returns Tile triggered by pLock actions
@@ -108,6 +117,13 @@ class LnKCompUtils {
 			*/
 		}
 		
+		if (LnKCompUtils.isactiveModule(cCanvas3D) && pDocument?.documentName == "Tile") {
+			if (pDocument?.flags[cCanvas3D] && pDocument?.flags[cCanvas3D].doorType != "0") {
+				//is 3D canvas door Tile
+				return cLockType3D;
+			}
+		}
+		
 		let vLocktype = {type : ""};
 
 		await Hooks.call(cModuleName + ".Locktype", pDocument, vLocktype);
@@ -118,6 +134,12 @@ class LnKCompUtils {
 		
 		return "";		
 	} 
+	
+	static isOptionalLockable(pLockType) {
+		if (pLockType == cLockType3D) {
+			return false;
+		}
+	}
 	
 	static async isTokenLocktype(pLocktype) {
 		let vLockInfo = {isTokenLocktype : false}
@@ -207,6 +229,28 @@ class LnKCompUtils {
 				await pDocument.setFlag(cPuzzleLock, "general.unlocked", false);
 			}
 		}
+	}
+	
+	//specific: §D canvas
+	
+	static async set3DCanvasLock(pTile, pLocked) {
+		console.log(pLocked);
+		pTile.update({flags : {[cCanvas3D] : {doorState : pLocked ? "2" : "0"}}})
+	}
+	
+	static async get3DCanvasLock(pTile, pLocked) {
+		let vLocked = undefined;
+		
+		switch (pTile.flags[cCanvas3D]?.doorState) {
+			case "0", "1":
+				return vLocked = false;
+				break;
+			case "2":
+				return vLocked = true;
+				break;
+		}
+		
+		return vLocked;
 	}
 	
 	//specific: MATT
