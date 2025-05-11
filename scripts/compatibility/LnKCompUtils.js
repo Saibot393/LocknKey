@@ -120,7 +120,7 @@ class LnKCompUtils {
 		if (LnKCompUtils.isactiveModule(cCanvas3D) && pDocument?.documentName == "Tile") {
 			if (pDocument?.flags[cCanvas3D] && pDocument?.flags[cCanvas3D].doorType != "0") {
 				//is 3D canvas door Tile
-				return cLockType3D;
+				//return cLockType3D;
 			}
 		}
 		

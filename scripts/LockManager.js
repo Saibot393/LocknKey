@@ -639,7 +639,6 @@ class LockManager {
 					vValidToggle = game.settings.get(cModuleName, "allowLocking") || !(await LockManager.isUnlocked(pLock)); //locks can only be locked if allowd in settings
 					break;
 			}
-			console.log(vValidToggle);
 			if (vValidToggle) {
 				//if setting is set to false, only GM can lock locks
 				let vLocktype = await LnKutils.Locktype(pLock);
