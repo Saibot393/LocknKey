@@ -1,3 +1,6 @@
+## v4.0.5
+- Small UI fix, again
+
 ## v4.0.4
 - Small UI fix
 
