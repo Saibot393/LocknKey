@@ -79,7 +79,7 @@ class LnKCompatibility {
 	
 	//specific: MATT
 	static addTriggerSettings(pApp, pHTML, pData, pAddBasics = false) {
-		let vAddBasics = pAddBasics && !pHTML.querySelector(`a[data-tab="triggers"]`).length;
+		let vAddBasics = pAddBasics && !pHTML.querySelector(`a[data-tab="triggers"]`);
 		
 		if (vAddBasics) {
 			let vTabbar = pHTML.querySelector(`nav.sheet-tabs[data-group="main"]`);
@@ -94,7 +94,7 @@ class LnKCompatibility {
 			vTabbar.append(vTabButtonHTML);		
 		}
 		
-		if (!pHTML.querySelector(`div[data-tab="triggers"]`).length) {
+		if (!pHTML.querySelector(`div[data-tab="triggers"]`)) {
 			//create new tab field
 			let vprevTab = pHTML.querySelector(`div[data-tab=${cModuleName}]`); //places rideable tab after last core tab "basic"
 			let vTabContentHTML = fromHTML(`<div class="tab" data-tab="triggers"></div>`); //tab content sheet HTML
