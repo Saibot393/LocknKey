@@ -1,3 +1,6 @@
+## v4.0.4
+- Small UI fix
+
 ## v4.0.3
 - Alien RPG compatibility
 
