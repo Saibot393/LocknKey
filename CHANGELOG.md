@@ -1,3 +1,6 @@
+## v4.0.6
+- Small UI fix for Tidy 5e Sheets
+
 ## v4.0.5
 - Small UI fix, again
 
