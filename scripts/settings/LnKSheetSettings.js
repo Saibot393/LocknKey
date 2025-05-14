@@ -100,10 +100,12 @@ class LnKSheetSettings {
 							</a>
 							`); //tab button HTML
 				
-			vTabbar.append(vTabButtonHTML);	
-			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) {
-				Array.from(vTabbar.querySelector(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
-				vTabbar.querySelector(`[data-tab="${cModuleName}"]`).onclick = () => {pApp.LnKTabactive = true};
+			if (vTabbar) {
+				vTabbar.append(vTabButtonHTML);	
+				if (!LnKCompUtils.isactiveModule(cTidy5eNew)) {
+					Array.from(vTabbar.querySelector(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
+					vTabbar.querySelector(`[data-tab="${cModuleName}"]`).onclick = () => {pApp.LnKTabactive = true};
+				}
 			}
 			
 			if (!pHTML.querySelector(`div.${cModuleName}`)) {

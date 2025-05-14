@@ -209,7 +209,7 @@ Hooks.once("init", () => {
 					&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(vitem))))
 				},
 				onRender(params) {
-					LnKSheetSettings.ItemSheetSettings(params.app, $(params.element), params.data);
+					LnKSheetSettings.ItemSheetSettings(params.app, params.element, params.data);
 				},
 			}));
 		});
