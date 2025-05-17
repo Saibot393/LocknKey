@@ -21,6 +21,8 @@ class LnKCompatibility {
 	
 	static async synchLock(pLock, vUpdate) {} //called if an item pile is updated manually
 	
+	static synchonPreupdate(pDocument, pUpdate) {} //synchs lock state
+	
 	static onIPinteraction(pLock, pInfos) {} //called when someone interacts with a itempile token
 	
 	//specific: MATT
@@ -33,24 +35,19 @@ class LnKCompatibility {
 	//IMPLEMENTATIONS
 	static onLock(pLockType, pLock) {
 		LnKCompUtils.LockPuzzle(pLock);
-		
+
 		switch (pLockType) {
 			case cLockTypeLootIP:
 				LnKCompUtils.setIPLock(pLock, true);
-				break;
-			case cLockType3D:
-				LnKCompUtils.set3DCanvasLock(pLock, true);
 				break;
 		}
 	}
 	
 	static onunLock(pLockType, pLock) {
+		console.log(pLockType, pLock);
 		switch (pLockType) {
 			case cLockTypeLootIP:
 				LnKCompUtils.setIPLock(pLock, false);
-				break;
-			case cLockType3D:
-				LnKCompUtils.set3DCanvasLock(pLock, false);
 				break;
 		}	
 	}
@@ -58,17 +55,30 @@ class LnKCompatibility {
 	static async synchLock(pLock) {
 		if (game.user.isGM) {
 			let vType = await LnKutils.Locktype(pLock);
-
 			switch (vType) {
 				case cLockTypeLootIP:
 					await LnKCompUtils.setIPLock(pLock, LnKFlags.isLocked(pLock));
 					break;
-				case cLockType3D:
-					console.log();
-					await LnKCompUtils.set3DCanvasLock(pLock, LnKFlags.isLocked(pLock));
-					break;
 			}
 		}
+	}
+	
+	static synchonPreupdate(pDocument, pUpdate) {
+		if (pUpdate.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {
+			if (pDocument.flags[cItemPiles]) {
+				
+			}
+			
+			if (pDocument.flags[cCanvas3D]) {
+				pUpdate.flags[cCanvas3D] = {
+					doorState : pUpdate.flags.LocknKey.LockedFlag ? "2" : "0"
+				}
+			}
+		}
+	}
+	
+	static async synchUpdate(pLock, pUpdate) {
+		
 	}
 	
 	static onIPinteraction(pLock, pInfos) {
@@ -169,11 +179,11 @@ class LnKCompatibility {
 //Hook into other modules
 Hooks.once("init", () => {
 	if (LnKCompUtils.isactiveModule(cItemPiles)) {
-		Hooks.on(cModuleName+".onLock", (...args) => {LnKCompatibility.onLock(...args)}); //DEPRICATED, here to solve potential bugs with old data
+		//Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)}); //DEPRECATED, here to solve potential bugs with old data
 		
-		Hooks.on(cModuleName+".onunLock", (...args) => {LnKCompatibility.onunLock(...args)}); //DEPRICATED, here to solve potential bugs with old data
+		//Hooks.on(cModuleName+".onLock", (...args) => {LnKCompatibility.onLock(...args)}); //DEPRECATED, here to solve potential bugs with old data
 		
-		//Hooks.on("closeTokenConfig", (vTokenConfig) => {LnKCompatibility.synchIPLock(vTokenConfig.document)}); //DEPRICATED, here to solve potential bugs with old data
+		//Hooks.on(cModuleName+".onunLock", (...args) => {LnKCompatibility.onunLock(...args)}); //DEPRECATED, here to solve potential bugs with old data
 		
 		Hooks.on("updateToken", (pToken, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchLock(pToken)}});
 		
@@ -219,9 +229,10 @@ Hooks.once("init", () => {
 		libWrapper.ignore_conflicts(cModuleName, cReadysetRoll, "ItemSheet.prototype._onChangeTab' ");
 	}
 	
-	/*
+	
 	if (LnKCompUtils.isactiveModule(cCanvas3D)) {
-		Hooks.on("updateTile", (pTile, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchLock(pTile)}});
+		//Hooks.on("updateTile", (pTile, pChanges) => { if (pChanges.flags?.LocknKey?.hasOwnProperty("LockedFlag")) {LnKCompatibility.synchLock(pTile)}});
+		Hooks.on("preUpdateTile", (pTile, pUpdate) => {LnKCompatibility.synchonPreupdate(pTile, pUpdate)});
 		
 		Hooks.once("3DCanvasInit", () => {
 			//Hack a monkey patch for the right click of tiles
@@ -250,7 +261,6 @@ Hooks.once("init", () => {
 			game.Levels3DPreview.interactionManager._onClickRight = vNewIMCall;
 		});
 	}
-	*/
 });
 
 Hooks.once("setupTileActions", (pMATT) => {

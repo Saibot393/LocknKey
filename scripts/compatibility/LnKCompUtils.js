@@ -120,7 +120,7 @@ class LnKCompUtils {
 		if (LnKCompUtils.isactiveModule(cCanvas3D) && pDocument?.documentName == "Tile") {
 			if (pDocument?.flags[cCanvas3D] && pDocument?.flags[cCanvas3D].doorType != "0") {
 				//is 3D canvas door Tile
-				//return cLockType3D;
+				return cLockType3D;
 			}
 		}
 		
@@ -231,7 +231,7 @@ class LnKCompUtils {
 		}
 	}
 	
-	//specific: §D canvas
+	//specific: 3D canvas
 	
 	static async set3DCanvasLock(pTile, pLocked) {
 		console.log(pLocked);
