@@ -1,3 +1,6 @@
+## v4.1.0
+- Added compatibility with [3D Canvas](https://foundryvtt.com/packages/levels-3d-preview) (thanks to [theripper93](https://theripper93.com/) for poviding a free copy of 3D Canvas)
+
 ## v4.0.6
 - Small UI fix for Tidy 5e Sheets
 

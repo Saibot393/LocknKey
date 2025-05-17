@@ -157,6 +157,8 @@ The module should be compatible with most game systems on Foundry v10 and v11, t
     - Filter Filter by lock state to filter by the lock state (locked/unlocked)
  - [Tidy 5e rewrite](https://github.com/kgar/foundry-vtt-tidy-5e-sheets)
    - The item settings will appear correctly
+- [3D Canvas](https://foundryvtt.com/packages/levels-3d-preview)
+   - 3D Tile doors a compatible
 
 ### Languages:
 
