@@ -1,3 +1,6 @@
+## v4.1.1
+- Small bug fix
+
 ## v4.1.0
 - Added compatibility with [3D Canvas](https://foundryvtt.com/packages/levels-3d-preview) (thanks to [theripper93](https://theripper93.com/) for poviding a free copy of 3D Canvas)
 
