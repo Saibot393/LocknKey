@@ -70,15 +70,13 @@ class LnKCompatibility {
 			}
 			
 			if (pDocument.flags[cCanvas3D]) {
-				pUpdate.flags[cCanvas3D] = {
-					doorState : pUpdate.flags.LocknKey.LockedFlag ? "2" : "0"
+				if (!pUpdate.flags[cCanvas3D]) {
+					pUpdate.flags[cCanvas3D] = {};
 				}
+				
+				pUpdate.flags[cCanvas3D].doorState = pUpdate.flags.LocknKey.LockedFlag ? "2" : "0";
 			}
 		}
-	}
-	
-	static async synchUpdate(pLock, pUpdate) {
-		
 	}
 	
 	static onIPinteraction(pLock, pInfos) {
