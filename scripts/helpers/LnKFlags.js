@@ -309,6 +309,8 @@ class LnKFlags {
 	
 	static #LockableFlag (pObject) { 
 	//returns content of LockableFlag of pObject (if any) (Boolean)
+		if (LnKutils.isDoor(pObject)) return true; //Doors are Lockable by default (default walls doors or 3D tile doors)
+
 		let vFlag = this.#LnKFlags(pObject);
 		
 		if (vFlag) {
@@ -317,7 +319,7 @@ class LnKFlags {
 			}
 		}
 		
-		return (false || LnKutils.isWall(pObject)); //default if anything fails (walls are Lockable by default)
+		return false; //default if anything fails
 	} 
 	
 	static #LockedFlag (pObject) { 

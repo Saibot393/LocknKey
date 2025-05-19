@@ -77,6 +77,8 @@ class LnKCompUtils {
 	
 	static async get3DCanvasLock(pTile, pLocked) {} //sets the door state of a 3D canvas door
 	
+	static async isDoor(pObject) {} //returns if pObject is a door
+	
 	//specific: MATT
 	static async MATTTriggerTile(pLock) {} //returns Tile triggered by pLock actions
 	
@@ -251,6 +253,10 @@ class LnKCompUtils {
 		}
 		
 		return vLocked;
+	}
+	
+	static async isDoor(pObject) {
+		return pObject.flags["levels-3d-preview"]?.doorType > 0;
 	}
 	
 	//specific: MATT

@@ -126,6 +126,8 @@ class LnKutils {
 	
 	static isWall(pObject) {} //returns if pObject is a Wall
 	
+	static isDoor(pObject) {} //returns if pObject is a Door
+	
 	static DoorisLocked(pDoor) {} //returns of pDoor is locked
 	
 	static isToken(pObject) {} //returns if pObject is a Token
@@ -630,6 +632,10 @@ class LnKutils {
 	
 	static isWall(pObject) {
 		return pObject.documentName == "Wall";
+	}
+	
+	static isDoor(pObject) {
+		return (pObject.documentName == "Wall" && pObject.door > 0) || (LnKCompUtils.isDoor(pObject));
 	}
 	
 	static DoorisLocked(pDoor) {
