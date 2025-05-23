@@ -27,7 +27,7 @@ class WallTabInserter {
 							</nav>`);
 				
 				//wrap basic settings in tab and place it instead of the settings
-				let vBasicTab = fromHTML(`<div class="tab active" data-tab="basic"></div>`);
+				let vBasicTab = fromHTML(`<div class="tab active scrollable" data-tab="basic"></div>`);
 				
 				Array.from(vOriginalContent.childNodes).forEach(vElement => {
 					if (!["FOOTER", "BUTTON"].includes(vElement.tagName)) vBasicTab.append(vElement);
@@ -63,7 +63,7 @@ class WallTabInserter {
 							</nav>`);
 				
 				//wrap basic settings in tab and place it instead of the settings
-				let vBasicTab = fromHTML(`<div class="tab active" data-tab="basic" data-group="sheet" data-application-part="identity"></div>`);
+				let vBasicTab = fromHTML(`<div class="tab active scrollable" data-tab="basic" data-group="sheet" data-application-part="identity"></div>`);
 				vBasicTab.append(vOriginalContent.querySelector("div"));
 				
 				vOriginalContent.querySelector("section").prepend(vBasicTab);
