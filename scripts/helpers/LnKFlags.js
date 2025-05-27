@@ -994,7 +994,7 @@ class LnKFlags {
 		}
 	}
 	
-	static isLockable(pObject) {	
+	static isLockable(pObject) {
 		return this.#LockableFlag(pObject) /*&& LnKutils.isLockCompatible(pObject)*/;
 	}
 	

@@ -82,8 +82,6 @@ class WallTabInserter {
 					if (vGroup && vactiveTab) {
 						let vContents = vSection.querySelectorAll(`div[data-group="${vGroup}"]`);
 						
-						console.log(vContents);
-						
 						Array.from(vContents).forEach(vContent => {
 							if (vContent.getAttribute("data-tab") == vactiveTab) {
 								vContent.classList.add("active");

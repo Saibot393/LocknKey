@@ -255,7 +255,7 @@ class LnKSheetSettings {
 			else {
 				vTabIcon = cLnKKeyIcon;
 			}
-
+			
 			let vTabButtonHTML = fromHTML(`
 							<a class="item ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''}" data-action="tab" ${game.release.generation <= 12 ? 'data-group="main"' : 'data-group="sheet"'} data-tab="${cModuleName}">
 								<i class="fas ${vTabIcon}"></i>
