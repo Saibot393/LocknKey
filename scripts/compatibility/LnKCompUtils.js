@@ -59,6 +59,8 @@ class LnKCompUtils {
 	
 	static async isTokenLocktype(pLocktype) {} //returns if pLocktype belongs to a Token
 	
+	static hoveredObject() {} //returns hovered object of available
+	
 	//specific: Foundry ArmsReach, ArmsReach
 	static ARReachDistance() {} //[ArmReach]gives the current arms reach distance
 	
@@ -159,6 +161,13 @@ class LnKCompUtils {
 		
 		return ccompTokenLockTypes.includes(pLocktype);
 	}
+	
+	static hoveredObject() {
+		//specific 3D Canvas
+		let vObject = Object.values(game.canvas3D.tiles).find(vTile => vTile.isDoorHover)?.document;
+		
+		return vObject || undefined;
+	} 
 	
 	//specific: Foundry ArmsReach
 	static ARReachDistance() {

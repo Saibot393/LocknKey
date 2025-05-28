@@ -313,12 +313,17 @@ class LnKutils {
 	}
 	
 	static hoveredObject() {
-		if (LnKutils.hoveredWall()) {
-			return LnKutils.hoveredWall();
-		}
-		else {
-			return LnKutils.hoveredToken();
-		}
+		let vObject = LnKutils.hoveredWall();
+		
+		if (vObject) return vObject;
+		
+		vObject = LnKutils.hoveredToken();
+		
+		if (vObject) return vObject;
+
+		vObject = LnKCompUtils.hoveredObject();
+		
+		return vObject || undefined;
 	}
 	
 	static PrimaryCharacter() {
