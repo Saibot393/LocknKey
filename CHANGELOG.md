@@ -1,3 +1,6 @@
+## v4.1.6
+- Locked and unlocked doors/tokens/tiles should now behave the same when out of reach
+
 ## v4.1.5
 - Small improvement
 
