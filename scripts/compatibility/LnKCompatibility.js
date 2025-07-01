@@ -104,7 +104,7 @@ class LnKCompatibility {
 		
 		if (!pHTML.querySelector(`div[data-tab="triggers"]`)) {
 			//create new tab field
-			let vprevTab = pHTML.querySelector(`div[data-tab=${cModuleName}]`); //places rideable tab after last core tab "basic"
+			let vprevTab = pHTML.querySelector(`div[data-tab=${cModuleName}]`); //places Lock & Key tab after last core tab "basic"
 			let vTabContentHTML = fromHTML(`<div class="tab" data-tab="triggers"></div>`); //tab content sheet HTML
 			vprevTab.after(vTabContentHTML);
 		}

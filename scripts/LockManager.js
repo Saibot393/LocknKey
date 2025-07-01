@@ -748,8 +748,17 @@ class LockManager {
 			vUnlocked = !LnKFlags.isLocked(pObject);
 		}
 		
-		if (pPopup && !vUnlocked) {
-			LockManager.LockedMessage(pObject);
+		let vCharacter = LnKutils.PrimaryCharacter();
+		
+		if (pPopup) {
+			if (LnKutils.WithinLockingDistance(vCharacter, pObject)) {
+				if (!vUnlocked) {
+					LockManager.LockedMessage(pObject);
+				}
+			}
+			else {
+				LnKPopups.TextPopUpID(pObject, "Lockoutofreach"); //MESSAGE POPUP
+			}
 		}
 		
 		return vUnlocked;
@@ -762,8 +771,17 @@ class LockManager {
 	static UserCanopenToken(pToken, pPopup = false) {	
 		let vUnlocked = game.user.isGM || LockManager.TokenisUnlocked(pToken) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
 		
-		if (pPopup && !vUnlocked) {
-			LockManager.LockedMessage(pToken);
+		let vCharacter = LnKutils.PrimaryCharacter();
+		
+		if (pPopup) {
+			if (LnKutils.WithinLockingDistance(vCharacter, pObject)) {
+				if (!vUnlocked) {
+					LockManager.LockedMessage(pToken);
+				}
+			}
+			else {
+				LnKPopups.TextPopUpID(pObject, "Lockoutofreach"); //MESSAGE POPUP
+			}
 		}
 		
 		return vUnlocked;
@@ -787,7 +805,7 @@ class LockManager {
 			if (LnKutils.isTokenLock(vLocktype) && pObject.name) {
 				LnKPopups.TextPopUpID(pObject, "TokenisLocked", {pLockName : pObject.name}); //MESSAGE POPUP
 			}
-		}		
+		}	
 	} 
 	
 	//copy paste
