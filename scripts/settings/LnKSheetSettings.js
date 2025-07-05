@@ -242,6 +242,12 @@ class LnKSheetSettings {
 		
 		let vTitle;
 		
+		if (!pApp.document) {
+			if (pApp.actor) {
+				pApp.document = pApp.actor.prototypeToken;
+			}
+		}
+		
 		if (vUseTab) {
 			//let vTabbar = pisTile ? pHTML.querySelector(`nav.sheet-tabs`) : pHTML.querySelector(`[data-group="main"].sheet-tabs`);
 			let vTabbar = pHTML.querySelector(`nav.sheet-tabs`);
@@ -853,6 +859,8 @@ Hooks.once("ready", () => {
 			Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
 
 			Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
+			
+			Hooks.on("renderPrototypeTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
 			
 			Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData, true)); //for tokens
 		}
