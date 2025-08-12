@@ -93,7 +93,7 @@ class LnKCompatibility {
 			let vTabbar = pHTML.querySelector(`nav.sheet-tabs[data-group="main"]`);
 			
 			let vTabButtonHTML = 	fromHTML(`
-							<a class="item" data-tab="triggers">
+							<a class="item" data-tab="triggers" data-group="sheet" data-action="tab">
 								<i class="fas ${cTriggersIcon}"></i>
 								${Translate("Titles.Triggers")}
 							</a>
@@ -102,10 +102,12 @@ class LnKCompatibility {
 			vTabbar.append(vTabButtonHTML);		
 		}
 		
+		let vObject = pApp.object || pData.document;
+		
 		if (!pHTML.querySelector(`div[data-tab="triggers"]`)) {
 			//create new tab field
 			let vprevTab = pHTML.querySelector(`div[data-tab=${cModuleName}]`); //places Lock & Key tab after last core tab "basic"
-			let vTabContentHTML = fromHTML(`<div class="tab" data-tab="triggers"></div>`); //tab content sheet HTML
+			let vTabContentHTML = fromHTML(`<div class="tab" data-tab="triggers" data-group="sheet" data-action="tab"></div>`); //tab content sheet HTML
 			vprevTab.after(vTabContentHTML);
 		}
 		
@@ -114,7 +116,7 @@ class LnKCompatibility {
 													vhint : Translate("SheetSettings."+ cMATTTriggerTileF +".descrp"), 
 													vtype : "text",
 													vwide : true,
-													vvalue : LnKCompUtils.MATTTriggerTileID(pApp.object),
+													vvalue : LnKCompUtils.MATTTriggerTileID(vObject),
 													vflagname : cMATTTriggerTileF
 													}, `div[data-tab="triggers"]`);		
 		}
@@ -140,7 +142,7 @@ class LnKCompatibility {
 													vtype : "select",
 													voptions : 	vTypeOptions,		
 													voptionsName : cMATTTriggerConditionsF,
-													vvalue : LnKCompUtils.MattTriggerCondition(pApp.object, vUseType),
+													vvalue : LnKCompUtils.MattTriggerCondition(vObject, vUseType),
 													vflagname : cMATTTriggerConditionsF + "." + vUseType
 													}, `div[data-tab="triggers"]`);	
 		}

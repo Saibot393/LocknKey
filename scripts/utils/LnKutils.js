@@ -965,7 +965,7 @@ class LnKutils {
 	
 	static createroll(pFormula, pActor, pDC, pItem = null) {
 		let vSkills = LnKSystemutils.skillitems(pActor);
-		
+
 		let vRoll = new Roll(LnKutils.validChars(pFormula), {actor : pActor, skills : vSkills, DC : pDC, item : pItem});
 		
 		return vRoll;
