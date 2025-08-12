@@ -1,3 +1,6 @@
+## v4.1.7
+- Bug fix for prototype tokens
+
 ## v4.1.6
 - Locked and unlocked doors/tokens/tiles should now behave the same when out of reach
 
