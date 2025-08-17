@@ -1,3 +1,6 @@
+## v4.1.9
+- Module manifest fix
+
 ## v4.1.8
 - v13 MATT ui compatibility
 
