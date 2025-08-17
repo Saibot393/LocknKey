@@ -90,7 +90,7 @@ class LnKCompatibility {
 		let vAddBasics = pAddBasics && !pHTML.querySelector(`a[data-tab="triggers"]`);
 		
 		if (vAddBasics) {
-			let vTabbar = pHTML.querySelector(`nav.sheet-tabs[data-group="main"]`);
+			let vTabbar = pHTML.querySelector(`nav.sheet-tabs[data-group="main"]`) || pHTML.querySelector(`nav.sheet-tabs`);
 			
 			let vTabButtonHTML = 	fromHTML(`
 							<a class="item" data-tab="triggers" data-group="sheet" data-action="tab">
