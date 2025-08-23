@@ -1,3 +1,6 @@
+## v4.1.12
+- Bug fix for token interaction range
+
 ## v4.1.11
 - Small ui fix
 
