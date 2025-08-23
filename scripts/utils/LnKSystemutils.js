@@ -381,9 +381,9 @@ class LnKSystemutils {
 						return vSystemInfo.context?.type == "perception-check";
 						break;
 					case cDnD5e:
-						pInfos["skill"] = vSystemInfo.roll.skillId;
+						pInfos["skill"] = vSystemInfo.roll?.skillId;
 					
-						return vSystemInfo.roll.skillId == "prc";
+						return vSystemInfo.roll?.skillId == "prc";
 						break;
 					case cPf1eName:
 						pInfos["skill"] = vSystemInfo.subject?.skill;

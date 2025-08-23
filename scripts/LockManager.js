@@ -774,13 +774,13 @@ class LockManager {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		
 		if (pPopup) {
-			if (LnKutils.WithinLockingDistance(vCharacter, pObject)) {
+			if (LnKutils.WithinLockingDistance(vCharacter, pToken)) {
 				if (!vUnlocked) {
 					LockManager.LockedMessage(pToken);
 				}
 			}
 			else {
-				LnKPopups.TextPopUpID(pObject, "Lockoutofreach"); //MESSAGE POPUP
+				LnKPopups.TextPopUpID(pToken, "Lockoutofreach"); //MESSAGE POPUP
 			}
 		}
 		
