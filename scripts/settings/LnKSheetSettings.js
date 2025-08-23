@@ -237,6 +237,12 @@ class LnKSheetSettings {
 	
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
 		if (!pHTML.querySelector(`a[data-tab="${cModuleName}"]`)) {
+			if (!pApp.document) {
+				if (pApp.actor) {
+					pApp.document = pApp.actor.prototypeToken;
+				}
+			}
+			
 			let vLockSettings = await LnKutils.isLockCompatible(pApp.document);
 			let vLockFormulaSettings = !game.settings.get(cModuleName, "usePf2eSystem"); //replaced by Pf2e
 			let vOptionalLockable = await LnKutils.isOptionalLockable(pApp.document);
@@ -244,12 +250,6 @@ class LnKSheetSettings {
 			let vUseTab = (vLockSettings || vLockFormulaSettings);
 			
 			let vTitle;
-			
-			if (!pApp.document) {
-				if (pApp.actor) {
-					pApp.document = pApp.actor.prototypeToken;
-				}
-			}
 			
 			if (vUseTab) {
 				//let vTabbar = pisTile ? pHTML.querySelector(`nav.sheet-tabs`) : pHTML.querySelector(`[data-group="main"].sheet-tabs`);

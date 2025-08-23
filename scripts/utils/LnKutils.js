@@ -334,7 +334,7 @@ class LnKutils {
 			vCharacter = canvas.scene.tokens.find(vToken => vToken.actor.id == game.user.character?.id);
 		}
 		
-		return vCharacter;
+		return vCharacter?.document || undefined;
 	}
 	
 	//items
