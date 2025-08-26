@@ -102,7 +102,7 @@ class LnKCompatibility {
 			vTabbar.append(vTabButtonHTML);		
 		}
 		
-		let vObject = pApp.object || pData.document;
+		let vObject = pApp.object || pData.document || pApp.document;
 		
 		if (!pHTML.querySelector(`div[data-tab="triggers"]`)) {
 			//create new tab field
@@ -146,6 +146,8 @@ class LnKCompatibility {
 													vflagname : cMATTTriggerConditionsF + "." + vUseType
 													}, `div[data-tab="triggers"]`);	
 		}
+		
+		//LnKSheetSettings.FixSheetWindow(pApp.element, `nav.sheet-tabs`);
 	}
 	
 	static async onLnKLockUse(pLock, pCharacter, pInfos) {
