@@ -1,3 +1,6 @@
+## v4.1.13
+- Bug fix for prototype tokens
+
 ## v4.1.12
 - Bug fix for token interaction range
 
