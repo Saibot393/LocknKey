@@ -58,7 +58,7 @@ class KeyManager {
 	static async onatemptedLockuse(pLockObject, pUseType, pFallBack = true) {
 		let vCharacter = LnKutils.PrimaryCharacter();
 		let vProblemPopup = "";
-		
+
 		if (vCharacter && pLockObject) {
 			if (LnKFlags.LockDCtype(pLockObject, pUseType) == Infinity) {
 				//Lock cant be picked/broken => possible popup message

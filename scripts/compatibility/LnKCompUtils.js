@@ -164,7 +164,9 @@ class LnKCompUtils {
 	
 	static hoveredObject() {
 		//specific 3D Canvas
-		let vObject = Object.values(game.canvas3D.tiles).find(vTile => vTile.isDoorHover)?.document;
+		let vObject;
+
+		if (game.canvas3D) vObject = Object.values(game.canvas3D.tiles).find(vTile => vTile.isDoorHover)?.document;
 		
 		return vObject || undefined;
 	} 
