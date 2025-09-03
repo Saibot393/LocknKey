@@ -648,7 +648,7 @@ class LnKutils {
 	}
 	
 	static isToken(pObject) {
-		return pObject.documentName == "Token";
+		return pObject.documentName == "Token" || pObject.actor;
 	}
 	
 	static isTile(pObject) {
