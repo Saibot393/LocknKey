@@ -1,3 +1,6 @@
+## v4.1.17
+- Lock settings should now be displayed correctly for Pf2e loot actor prototype tokens
+
 ## v4.1.16
 - v12 ui fix
 
