@@ -5,7 +5,7 @@ import { LnKFlags, cRollTypes, cCritRollOptions, cIDKeysF, cUseKeyDialogF, cLock
 import { cCustomPopup } from "../helpers/LnKFlags.js";
 import { cSoundVariants } from "../helpers/LnKSound.js";
 import {WallTabInserter} from "../helpers/WallTabInserter.js";
-import {LnKSystemutils} from "../utils/LnKSystemutils.js";
+import {LnKSystemutils, cDnD5e} from "../utils/LnKSystemutils.js";
 
 const cLnKLockIcon = "fa-lock";
 const cLnKKeyIcon = "fa-key";
@@ -46,6 +46,10 @@ class LnKSheetSettings {
 			
 		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.document.type);
 		
+		console.log(vLootSettings);
+		console.log(vLockSettings);
+		console.log(pApp);
+		
 		if (vLockSettings || vLootSettings) {
 			//setup
 			let vTabbar = pHTML.querySelector(`div.tabs[data-tab-container="primary"]`)
@@ -62,7 +66,7 @@ class LnKSheetSettings {
 					}
 				}
 			}
-			
+
 			let vprevTab = pHTML.querySelector(`div[data-tab="details"]`); //places LnK tab after last core tab "details"
 			if (!vprevTab) {
 				//if tab bar was not found, try other search
@@ -95,7 +99,7 @@ class LnKSheetSettings {
 
 		
 			let vTabButtonHTML = 	fromHTML(`
-							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-tab="${cModuleName}">
+							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-action="tab" data-tab="${cModuleName}" data-group="primary">
 								${Translate("Titles."+cModuleName)}
 							</a>
 							`); //tab button HTML
@@ -108,8 +112,19 @@ class LnKSheetSettings {
 				}
 			}
 			
-			if (!pHTML.querySelector(`div.${cModuleName}`)) {
-				let vTabContentHTML = fromHTML(`<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+			let vTabIdent;
+			
+			if (!(pHTML.querySelector(`div.${cModuleName}`) || pHTML.querySelector(`section.${cModuleName}`))) {
+				let vTabContentHTML;
+				
+				if (game.release.generation <= 12) {
+					vTabIdent = `div.${cModuleName}`
+					vTabContentHTML = fromHTML(`<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
+				}
+				else {
+					vTabIdent = `section.${cModuleName}`
+					vTabContentHTML = fromHTML(`<section class="tab ${cModuleName}" data-tab="${cModuleName}" ${game.system.id == cDnD5e ? 'data-group="primary"' : ''}> </section>`); //tab content sheet HTML
+				}
 				vprevTab.after(vTabContentHTML);
 			}
 			
@@ -121,7 +136,7 @@ class LnKSheetSettings {
 														vwide : true,
 														vvalue : await LnKFlags.PickPocketItemDC(pApp.document),
 														vflagname : cPickPocketDCF
-														}, `div.${cModuleName}`);	
+														}, vTabIdent);	
 			}
 
 			if (vLockSettings) {
@@ -130,7 +145,7 @@ class LnKSheetSettings {
 				//create title for key items
 				let vTitle = fromHTML(`<h3 class="border">${Translate("Titles.KeyItems")}</h3>`);
 				
-				pHTML.querySelector(`div.${cModuleName}`).append(vTitle);
+				pHTML.querySelector(vTabIdent).append(vTitle);
 				
 				//setting item ids	
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
@@ -139,7 +154,7 @@ class LnKSheetSettings {
 														vwide : true,
 														vvalue : LnKFlags.KeyIDs(pApp.document),
 														vflagname : cIDKeysF
-														}, `div.${cModuleName}`);	
+														}, vTabIdent);	
 										
 				//setting remove key on use
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
@@ -147,16 +162,16 @@ class LnKSheetSettings {
 														vtype : "checkbox", 
 														vvalue : LnKFlags.RemoveKeyonUse(pApp.document),
 														vflagname : cRemoveKeyonUseF
-														}, `div.${cModuleName}`);
+														}, vTabIdent);
 					
 				//create title for Lockpick/Break items
 				vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LPItems")}</h3>`);
 				
-				pHTML.querySelector(`div.${cModuleName}`).append(vTitle);
+				pHTML.querySelector(vTabIdent).append(vTitle);
 					
 				if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
 					//formulas
-					LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", `div.${cModuleName}`);	
+					LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", vTabIdent);	
 				}
 				
 				//setting replacement item
@@ -166,11 +181,11 @@ class LnKSheetSettings {
 														vwide : true,												
 														vvalue : LnKFlags.ReplacementItems(pApp.document, true),
 														vflagname : cReplacementItemF
-														}, `div.${cModuleName}`);
+														}, vTabIdent);
 			}
 			
 			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) { 			
-				if (pApp.LnKTabactive) {
+				if (pApp.LnKTabactive && pApp.activateTab) {
 					pApp.activateTab(cModuleName);
 				}
 			}
@@ -864,6 +879,12 @@ Hooks.once("ready", () => {
 		}
 		else {
 			Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML[0], vData)); //for items
+			
+			Hooks.on("renderDocumentSheetV2", (vApp, vHTML, vData) => {
+				if (vApp.item) {
+					LnKSheetSettings.ItemSheetSettings(vApp, vHTML, vData);
+				}
+			})
 
 			Hooks.on("renderWallConfig", (vApp, vHTML, vData) => LnKSheetSettings.WallSheetSettings(vApp, vHTML, vData)); //for walls
 

@@ -19,6 +19,8 @@ const cCoC7e = "CoC7"; //name of the Call of Cthulhu system 7th edition
 const cDSA5 = "dsa5"; //name of the Das schwarze Auge system (5e)
 const cSWADE = "swade"; //name of the SWADE system
 
+
+export {cDnD5e}
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 
