@@ -1,3 +1,6 @@
+## v4.1.19
+- Added setting to disable Tile locking
+
 ## v4.1.18
 - Fix for item sheets
 
