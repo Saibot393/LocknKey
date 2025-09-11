@@ -145,6 +145,11 @@
 				"descrp"				: "Allows the GM to use the special lock related controls listed at the bottom (affected marked with *)"
 			},
 			
+			"allowTileLocking" : {
+				"name" 					: "Allow Tile locking",
+				"descrp"				: "Allows for tiles to be lockable objects"
+			},
+			
 			"allowLocking" : {
 				"name" 					: "Allow player locking",
 				"descrp"				: "Allow players to lock locks if they have a matching key"

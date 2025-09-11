@@ -875,7 +875,7 @@ Hooks.once("ready", () => {
 
 			Hooks.on("renderTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML[0], vData)); //for tokens
 			
-			Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML[0], vData, true)); //for tokens
+			if (game.settings.get(cModuleName, "allowTileLocking")) Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML[0], vData, true)); //for tokens
 		}
 		else {
 			Hooks.on("renderItemSheet", (vApp, vHTML, vData) => LnKSheetSettings.ItemSheetSettings(vApp, vHTML[0], vData)); //for items
@@ -892,7 +892,7 @@ Hooks.once("ready", () => {
 			
 			Hooks.on("renderPrototypeTokenConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData)); //for tokens
 			
-			Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData, true)); //for tokens
+			if (game.settings.get(cModuleName, "allowTileLocking")) Hooks.on("renderTileConfig", (vApp, vHTML, vData) => LnKSheetSettings.TokenSheetSettings(vApp, vHTML, vData, true)); //for tokens
 		}
 	}
 });

@@ -18,6 +18,16 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	default: true
   }); 
   
+  game.settings.register(cModuleName, "allowTileLocking", {
+	name: Translate("Settings.allowTileLocking.name"),
+	hint: Translate("Settings.allowTileLocking.descrp"),
+	scope: "world",
+	config: true,
+	type: Boolean,
+	default: true,
+	requiresReload: true
+  }); 
+  
   game.settings.register(cModuleName, "allowLocking", {
 	name: Translate("Settings.allowLocking.name"),
 	hint: Translate("Settings.allowLocking.descrp"),

@@ -182,13 +182,17 @@ function fromHTML(pHTML) {
 	return vDIV.querySelector("*");
 }
 
-Hooks.on(cModuleName + "." + "CanvasLClick", (pCanvas, pPosition, pEvent) => {LnKTilesHandler.onCanvasLeftClick(pCanvas, pPosition, pEvent)});
+Hooks.once("ready", () => {
+	if (game.settings.get(cModuleName, "allowTileLocking")) {
+		Hooks.on(cModuleName + "." + "CanvasLClick", (pCanvas, pPosition, pEvent) => {LnKTilesHandler.onCanvasLeftClick(pCanvas, pPosition, pEvent)});
 
-Hooks.on(cModuleName + "." + "CanvasRClick", (pCanvas, pPosition, pEvent) => {LnKTilesHandler.onCanvasRightClick(pCanvas, pPosition, pEvent)});
+		Hooks.on(cModuleName + "." + "CanvasRClick", (pCanvas, pPosition, pEvent) => {LnKTilesHandler.onCanvasRightClick(pCanvas, pPosition, pEvent)});
 
-Hooks.on("updateTile", (pTile, pChanges, pInfo, pUserID) => {LnKTilesHandler.onTileUpdate(pTile, pChanges)});
+		Hooks.on("updateTile", (pTile, pChanges, pInfo, pUserID) => {LnKTilesHandler.onTileUpdate(pTile, pChanges)});
 
-Hooks.on("renderTileHUD", (...args) => LnKTilesHandler.addLnKButtons(...args));
+		Hooks.on("renderTileHUD", (...args) => LnKTilesHandler.addLnKButtons(...args));
+	}
+});
 
 function toggleTileRequest(pData) {return LnKTilesHandler.toggleTileRequest(pData)};
 

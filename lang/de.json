@@ -145,6 +145,11 @@
 				"descrp"				: "Erlaubt es SLs spezielle Schloss Befehle zu nutzen welche unten aufgeführt sind (Beeinträchtigte mit * markiert)"
 			},
 			
+			"allowTileLocking" : {
+				"name" 					: "Erlaube Fliesen Schlösser",
+				"descrp"				: "Erlaubt es Fliesen als abzuschließbare Objekte zu benutzen"
+			},
+			
 			"allowLocking" : {
 				"name" 					: "Erlaube Spielern zu schließen",
 				"descrp"				: "Erlaubt es Spielern Schlösser zu verschließen für welche sie einen passenden Schlüssel haben"
