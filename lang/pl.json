@@ -145,6 +145,11 @@
 				"descrp"				: "Umożliwia MG korzystanie ze specjalnych elementów sterujących związanych z zamkiem wymienionych na dole (oznaczone *)"
 			},
 			
+			"allowTileLocking" : {
+				"name" 					: "Zezwól na blokowanie kafelków",
+				"descrp"				: "Umożliwia blokowanie kafelków"
+			},
+			
 			"allowLocking" : {
 				"name" 					: "Zezwalaj na blokowanie graczy",
 				"descrp"				: "Pozwól graczom blokować zamki, jeśli mają odpowiedni klucz"
@@ -276,7 +281,7 @@
 			},
 			
 			"RemoveLP" : {
-				"name" 					: "UsuńLP",
+				"name" 					: "Usunięcie wytrychu",
 				"descrp"				: "Czy i na jakich warunkach używany element Zamka jest usuwany?",
 				"options" : {
 					"never"				: "nigdy",
