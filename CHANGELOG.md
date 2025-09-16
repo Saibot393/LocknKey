@@ -1,3 +1,6 @@
+## v4.1.21
+- UI fix for D&D5e sheets when using Cauldron of Plentiful Resources
+
 ## v4.1.20
 - Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
