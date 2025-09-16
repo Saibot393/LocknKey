@@ -46,10 +46,6 @@ class LnKSheetSettings {
 			
 		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.document.type);
 		
-		console.log(vLootSettings);
-		console.log(vLockSettings);
-		console.log(pApp);
-		
 		if (vLockSettings || vLootSettings) {
 			//setup
 			let vTabbar = pHTML.querySelector(`div.tabs[data-tab-container="primary"]`)
@@ -139,11 +135,12 @@ class LnKSheetSettings {
 														}, vTabIdent);	
 			}
 
-			if (vLockSettings) {
+			if (vLockSettings && vTabIdent) {
 				//lock settings	
 				
 				//create title for key items
 				let vTitle = fromHTML(`<h3 class="border">${Translate("Titles.KeyItems")}</h3>`);
+
 				
 				pHTML.querySelector(vTabIdent).append(vTitle);
 				
