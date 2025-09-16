@@ -1,3 +1,6 @@
+## v4.1.20
+- Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
 ## v4.1.19
 - Added setting to disable Tile locking
 
