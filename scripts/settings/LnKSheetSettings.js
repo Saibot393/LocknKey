@@ -92,7 +92,6 @@ class LnKSheetSettings {
 					}
 				}
 			}
-
 		
 			let vTabButtonHTML = 	fromHTML(`
 							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-action="tab" data-tab="${cModuleName}" data-group="primary">
@@ -102,7 +101,7 @@ class LnKSheetSettings {
 				
 			if (vTabbar) {
 				vTabbar.append(vTabButtonHTML);	
-				if (!LnKCompUtils.isactiveModule(cTidy5eNew)) {
+				if (game.release.generation <= 12 && !LnKCompUtils.isactiveModule(cTidy5eNew)) {
 					Array.from(vTabbar.querySelector(`a`)).forEach(vElement => vElement.onclick = () => {pApp.LnKTabactive = false});
 					vTabbar.querySelector(`[data-tab="${cModuleName}"]`).onclick = () => {pApp.LnKTabactive = true};
 				}
@@ -110,7 +109,7 @@ class LnKSheetSettings {
 			
 			let vTabIdent;
 			
-			if (!(pHTML.querySelector(`div.${cModuleName}`) || pHTML.querySelector(`section.${cModuleName}`))) {
+			if (!(pHTML.querySelector(`div.${cModuleName}`) || pHTML.querySelector(`section.${cModuleName}`) || pHTML.querySelector(`div[data-tab-contents-for="${cModuleName}"]`) || pApp?.id?.includes("Tidy5e"))) {
 				let vTabContentHTML;
 				
 				if (game.release.generation <= 12) {
@@ -118,13 +117,18 @@ class LnKSheetSettings {
 					vTabContentHTML = fromHTML(`<div class="tab ${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 				}
 				else {
-					vTabIdent = `section.${cModuleName}`
+					vTabIdent = `section.${cModuleName}`;
 					vTabContentHTML = fromHTML(`<section class="tab ${cModuleName}" data-tab="${cModuleName}" ${game.system.id == cDnD5e ? 'data-group="primary"' : ''}> </section>`); //tab content sheet HTML
 				}
 				vprevTab.after(vTabContentHTML);
 			}
 			
-			if (vLootSettings) {
+			if (pHTML.querySelector(`div[data-tab-contents-for="${cModuleName}"]`)) {
+				vTabIdent = `div[data-tab-contents-for="${cModuleName}"]`;
+				vTabButtonHTML.style.display = "none";
+			}
+			
+			if (vLootSettings && vTabIdent) {
 				//loot settings
 				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".name"), 
 														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp"), 
@@ -136,6 +140,7 @@ class LnKSheetSettings {
 			}
 
 			if (vLockSettings && vTabIdent) {
+				console.log(`added settings to ${vTabIdent}`);
 				//lock settings	
 				
 				//create title for key items
@@ -673,21 +678,23 @@ class LnKSheetSettings {
 	static AddHTMLOption(pHTML, pInfos, pto) {
 		let vParent = pHTML.querySelector(pto);
 		
-		vParent.append(LnKSheetSettings.createHTMLOption(pInfos));
-		
-		if (pInfos.vtype == "filePicker") {
-			let vPickerButton = vParent.querySelector(`button[data-target="flags.${cModuleName}.${pInfos.vflagname}"]`);
-			let vDataField = vParent.querySelector(`input[name="flags.${cModuleName}.${pInfos.vflagname}"]`);
+		if (!vParent.querySelector(`[name="flags.${cModuleName}.${pInfos.vflagname}"]`)) {
+			vParent.append(LnKSheetSettings.createHTMLOption(pInfos));
 			
-			let filePicker = new FilePicker({
-				field: vDataField,
-				type: vPickerButton.dataset.type,
-				current: vDataField?.value ?? "",
-				button: vPickerButton,
-				callback: (pFile, pFilePicker) => {pFilePicker.field.value = pFile}
-			});
-			
-			vPickerButton.onclick = () => {filePicker.render()};
+			if (pInfos.vtype == "filePicker") {
+				let vPickerButton = vParent.querySelector(`button[data-target="flags.${cModuleName}.${pInfos.vflagname}"]`);
+				let vDataField = vParent.querySelector(`input[name="flags.${cModuleName}.${pInfos.vflagname}"]`);
+				
+				let filePicker = new FilePicker({
+					field: vDataField,
+					type: vPickerButton.dataset.type,
+					current: vDataField?.value ?? "",
+					button: vPickerButton,
+					callback: (pFile, pFilePicker) => {pFilePicker.field.value = pFile}
+				});
+				
+				vPickerButton.onclick = () => {filePicker.render()};
+			}
 		}
 	}
 	
