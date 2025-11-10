@@ -330,9 +330,9 @@ class LnKMouseHandler {
 	
 	//additional
 	static canHUD(pEvent, pToken) { //adapted from core
-		if ( pToken.layer._draggedToken ) return false;
-		if ( !pToken.layer.active || pToken.isPreview ) return false;
-		if ( canvas.controls.ruler.active || (CONFIG.Canvas.rulerClass.canMeasure && (event?.type === "pointerdown")) ) return false;
+		if ( pToken.layer?._draggedToken ) return false;
+		if ( (pToken.layer && !pToken.layer?.active) || pToken.isPreview ) return false;
+		if ( canvas.controls?.ruler?.active || (CONFIG.Canvas?.rulerClass?.canMeasure && (event?.type === "pointerdown")) ) return false;
 		return user.isGM || (pToken.actor?.testUserPermission(user, "OWNER") ?? false);
 	}
 	
