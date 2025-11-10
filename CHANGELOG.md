@@ -1,3 +1,6 @@
+## v4.1.23
+- possible fix for mouse click related edge case that can occur when a specific combination of modules is active
+
 ## v4.1.22
 - UI fix for Tidy5e in v13
 
