@@ -1,3 +1,6 @@
+## v4.1.24
+- same as v4.1.23, but this time it workds, hopefully
+
 ## v4.1.23
 - possible fix for mouse click related edge case that can occur when a specific combination of modules is active
 
