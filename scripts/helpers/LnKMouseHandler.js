@@ -153,11 +153,21 @@ class LnKMouseHandler {
 	static RegisterTokenRightClick() {
 		//register onTokenRightClick (if possible with lib-wrapper)
 		if (LnKCompUtils.isactiveModule(cLibWrapper)) {
-			libWrapper.register(cModuleName, "Token.prototype._canHUD", function(vWrapped, ...args) {return true}, "MIXED"); //make sure everybody can rightclick, limit hud later
-			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {args[0].stopPropagation(); LnKMouseHandler.onTokenRightClick(...args, this.document); if (LnKMouseHandler.canHUD(...args, this.document)) {return vWrapped(...args)} else {return}}, "MIXED");
+			libWrapper.register(cModuleName, "Token.prototype._canHUD", function(vWrapped, ...args) {
+																				if ( this.layer?._draggedToken ) return false;
+																				if ( (this.layer && !this.layer?.active) || this.isPreview ) return false;
+																				if ( canvas.controls?.ruler?.active || (CONFIG.Canvas?.rulerClass?.canMeasure && (event?.type === "pointerdown")) ) return false; 
+																				return true;
+																		}, "MIXED"); //make sure everybody can rightclick, limit hud later
+			libWrapper.register(cModuleName, "Token.prototype._onClickRight", function(vWrapped, ...args) {args[0].stopPropagation(); LnKMouseHandler.onTokenRightClick(...args, this.document); if (LnKMouseHandler.canHUD(...args, this)) {return vWrapped(...args)} else {return}}, "MIXED");
 		}
 		else {
-			Token.prototype._canHUD = function (user, event) {return true}; //make sure everybody can rightclick, limit hud later
+			Token.prototype._canHUD = function (user, event) 	{																			
+																	if ( this.layer?._draggedToken ) return false;
+																	if ( (this.layer && !this.layer?.active) || this.isPreview ) return false;
+																	if ( canvas.controls?.ruler?.active || (CONFIG.Canvas?.rulerClass?.canMeasure && (event?.type === "pointerdown")) ) return false; 
+																	return true;
+																}; //make sure everybody can rightclick, limit hud later
 			
 			const vOldTokenCall = Token.prototype._onClickRight;
 			
@@ -165,7 +175,7 @@ class LnKMouseHandler {
 				pEvent.stopPropagation();
 				LnKMouseHandler.onTokenRightClick(pEvent, this.document);
 				
-				if (LnKMouseHandler.canHUD(pEvent, this.document)) {
+				if (LnKMouseHandler.canHUD(pEvent, this)) {
 					let vTokenCallBuffer = vOldTokenCall.bind(pEvent.currentTarget);
 					vTokenCallBuffer(pEvent);
 				}
