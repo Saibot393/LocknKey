@@ -1,3 +1,6 @@
+## v4.1.26
+- Fix for L&K tab in 2D Wall when 3D Canvas is active
+
 ## v4.1.25
 - Fix for fix for fix, oh well
 
