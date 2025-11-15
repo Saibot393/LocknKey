@@ -1,4 +1,5 @@
 import {cModuleName, Translate} from "../utils/LnKutils.js";
+import {LnKCompUtils, cCanvas3D} from "../compatibility/LnKCompUtils.js";
 
 const cBasicIcon = "fa-building-columns";
 
@@ -91,6 +92,51 @@ class WallTabInserter {
 							}
 						})
 					}
+				}
+			}
+		}
+		
+		if (LnKCompUtils.isactiveModule(cCanvas3D)) {//3D Canvas Bug(?) fix
+			let vTabBar = pHTML.querySelector(`nav.sheet-tabs`);
+			
+			if (vTabBar) {
+				vTabBar.onclick = (pEvent) => {
+					let vTabs = pHTML.querySelectorAll(`div.tab`);
+					let vTabButtons = pHTML.querySelectorAll(`a.item`);
+					
+					let vTarget = pEvent.srcElement;
+					
+					let vTabName = vTarget?.getAttribute("data-tab");
+					
+					if (vTabName) {
+						for (let vTab of vTabs) {
+							if (vTab.getAttribute("data-tab") == vTabName) {
+								vTab.classList.add("active");
+							}
+							else {
+								vTab.classList.remove("active");
+							}
+						}
+					}
+					
+					if (vTabButtons.length) {
+						for (let vTabButton of vTabButtons) {
+							if (vTabButton.getAttribute("data-tab") == vTabName) {
+								vTabButton.classList.add("active");
+							}
+							else {
+								vTabButton.classList.remove("active");
+							}
+						}
+					}
+				}
+			}
+			
+			let vTabButtons = pHTML.querySelectorAll(`a.item`);
+			
+			if (vTabButtons.length) {
+				for (let vTabButton of vTabButtons) {
+					vTabButton.onclick = vTabBar.onclick;
 				}
 			}
 		}
