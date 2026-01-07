@@ -1,3 +1,6 @@
+## v4.1.28
+- added `@target` as roll parameter to access target tokens attributes
+
 ## v4.1.27
 - v13 compatibility fix for some macros
 
