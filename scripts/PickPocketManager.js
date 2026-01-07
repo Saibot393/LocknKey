@@ -99,8 +99,8 @@ class PickPocketManager {
 						vRollFormula = "0";
 					}
 					let vDC = await LnKFlags.PickPocketDC(pTarget);
-				
-					let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, vDC);
+					console.log(pTarget.actor);
+					let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, vDC, null, pTarget.actor);
 						
 					LnKSound.PlayDiceSound(pCharacter);
 						

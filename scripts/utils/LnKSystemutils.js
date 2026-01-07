@@ -20,7 +20,7 @@ const cDSA5 = "dsa5"; //name of the Das schwarze Auge system (5e)
 const cSWADE = "swade"; //name of the SWADE system
 
 
-export {cDnD5e}
+export {cDnD5e, cPf2eName}
 //Tokentype
 const cPf2eLoottype = "loot"; //type of loot tokens in Pf2e
 
