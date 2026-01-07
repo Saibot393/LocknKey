@@ -1,3 +1,6 @@
+## v4.1.27
+- v13 compatibility fix for some macros
+
 ## v4.1.26
 - Fix for L&K tab in 2D Wall when 3D Canvas is active
 
