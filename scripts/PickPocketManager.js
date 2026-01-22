@@ -315,7 +315,7 @@ Hooks.on(cModuleName +  ".ObjectInteractionMenu", (pButtons, pObject, pLockType,
 
 Hooks.on(cModuleName + ".PerceptionRoll", (pActorID, pRoll, pUserID, pReplaceSkill = "") => {PickPocketManager.onPerceptionRoll(pActorID, pRoll, pUserID, pReplaceSkill)});
 
-Hooks.on(cModuleName + ".TokendblClick", (pToken) => {console.log(pToken);
+Hooks.on(cModuleName + ".TokendblClick", (pToken) => {
 														if (!pToken.isOwner && game.settings.get(cModuleName, "dblClicktoLoot") && !LnKCompUtils.isItemPile(pToken) && pToken.actor.type != cPf2eLoottype) {
 															PickPocketManager.onAtemptedPickPocket(pToken);
 														}
