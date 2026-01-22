@@ -67,7 +67,7 @@
       "name": "Italiano",
       "path": "lang/it.json",
       "flags": {}
-    }
+    }aa
   ],
   "esmodules": [
 	"scripts/utils/LnKutils.js",
