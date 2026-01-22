@@ -1,3 +1,6 @@
+## v4.1.29
+- Small bug fix for pf2e
+
 ## v4.1.28
 - added `@target` as roll parameter to access target tokens attributes
 
