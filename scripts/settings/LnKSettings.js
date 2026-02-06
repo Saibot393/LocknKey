@@ -243,6 +243,8 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 		"CritMethod-natCritpm10": Translate("Settings.CritMethod.options.natCritpm10"),
 		"CritMethod-d100WFRP4": Translate("Settings.CritMethod.options.d100WFRP4"),
 		"CritMethod-d100WFRP4Doubles": Translate("Settings.CritMethod.options.d100WFRP4Doubles"),
+		"CritMethod-d100WFRP4normDC": Translate("Settings.CritMethod.options.d100WFRP4normDC"),
+		"CritMethod-d100WFRP4DoublesnormDC": Translate("Settings.CritMethod.options.d100WFRP4DoublesnormDC"),
 		"CritMethod-d100CoC7e" : Translate("Settings.CritMethod.options.d100CoC7e"),
 		"CritMethod-d10poolCoD2e" : Translate("Settings.CritMethod.options.d10poolCoD2e"),
 		"CritMethod-3d20DSA" : Translate("Settings.CritMethod.options.3d20DSA")
@@ -256,8 +258,26 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 				game.settings.set(cModuleName, cdefaultDCsettings[i], LnKutils.infinitythreshold());
 			}
 		}
-	},
+	}
   });
+  
+  game.settings.register(cModuleName, "InfinityThreshold", {
+	name: Translate("Settings.InfinityThreshold.name"),
+	hint: Translate("Settings.InfinityThreshold.descrp"),
+	scope: "world",
+	config: true,
+	type: Number,
+	default: -1,
+	onChange: pvalue => {
+		const cdefaultDCsettings = ["PickPocketDefaultDC", "CustomCircumventDefaultDC", "DefaultBreakDC", "DefaultPickDC"];
+		
+		for (let i = 0; i < cdefaultDCsettings.length; i++) {
+			if (game.settings.get(cModuleName, cdefaultDCsettings[i]) < 0) {
+				game.settings.set(cModuleName, cdefaultDCsettings[i], pvalue);
+			}
+		}
+	}
+  }); 
   
   game.settings.register(cModuleName, "LockPickItem", {
 	name: Translate("Settings.LockPickItem.name"),

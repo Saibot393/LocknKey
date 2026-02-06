@@ -790,11 +790,14 @@ class LnKutils {
 	}
 	
 	static infinitythreshold() {
+		/*
 		switch (game.settings.get(cModuleName, "CritMethod")) {
 			default:
 				return -1;
 				break;
 		}
+		*/
+		return game.settings.get(cModuleName, "InfinityThreshold");
 	} 
 	
 	static async successDegree(pRollresult, pDiceDetails, pDC, pCharacter, pInfos = {}) {
@@ -863,6 +866,7 @@ class LnKutils {
 					}
 					break;
 				case "CritMethod-d100WFRP4":
+				case "CritMethod-d100WFRP4normDC":
 					if (pDiceDetails[0] == 1) {
 						vsuccessDegree = 2; //crit S
 					}
@@ -872,6 +876,7 @@ class LnKutils {
 					}
 					break;
 				case "CritMethod-d100WFRP4Doubles":
+				case "CritMethod-d100WFRP4DoublesnormDC":
 					if (pDiceDetails[0] == 1 || (vsuccessDegree > 0 && pDiceDetails[0]%11 == 0)) {
 						vsuccessDegree = 2; //crit S
 					}
