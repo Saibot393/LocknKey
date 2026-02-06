@@ -1,3 +1,7 @@
+## v4.1.30
+- Added setting for infinity threshold
+- Added WFRP4 crit types without DC inverting
+
 ## v4.1.29
 - Small bug fix for pf2e
 
