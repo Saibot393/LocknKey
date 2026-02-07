@@ -769,12 +769,15 @@ class LockManager {
 	}
 	
 	static UserCanopenToken(pToken, pPopup = false) {	
-		let vUnlocked = game.user.isGM || LockManager.TokenisUnlocked(pToken) || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
+		let vSpecialOpen = game.user.isGM || (pObject.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
+		let vUnlocked = LockManager.TokenisUnlocked(pToken) || vSpecialOpen;
 		
 		let vCharacter = LnKutils.PrimaryCharacter();
 		
+		let vWithinDistance = LnKutils.WithinLockingDistance(vCharacter, pToken);
+		
 		if (pPopup) {
-			if (LnKutils.WithinLockingDistance(vCharacter, pToken)) {
+			if (vWithinDistance) {
 				if (!vUnlocked) {
 					LockManager.LockedMessage(pToken);
 				}
@@ -784,7 +787,8 @@ class LockManager {
 			}
 		}
 		
-		return vUnlocked;
+		if (vWithinDistance || vSpecialOpen) return vUnlocked
+		else return false;
 	}
 	
 	static async LockedMessage(pObject) {
