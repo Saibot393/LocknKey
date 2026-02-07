@@ -886,7 +886,7 @@ Hooks.on(cModuleName + "." + "TokenLClick", (pTokenDocument, pInfos) => {
 });
 
 Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //for sheet opening
-	if (!game.user.isGM) {//CLIENT: check if token unlocked
+	if (!game.user.isGM && LnKFlags.isLockable(pTokenDocument)) {//CLIENT: check if token unlocked
 		return LockManager.UserCanopenToken(pTokenDocument, true);
 	}
 	
