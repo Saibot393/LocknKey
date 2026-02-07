@@ -262,12 +262,19 @@
 					"noCrit"			: "Brak krytyków",
 					"natCrit"			: "Nat 1/20",
 					"natCritpm10"		: "Nat 1/20 & +-10 z ST [np. Pf2e]",
-					"d100WFRP4"			: "k100 Nat1/100 [np. WFRP4e]",
-					"d100WFRP4Doubles"	: "k100 Nat1/100 & duble [np. WFRP4e]",
+					"d100WFRP4"			: "k100 Nat1/100 (odwrócone ST) [np. WFRP4e]",
+					"d100WFRP4Doubles"	: "k100 Nat1/100 i podwójne (odwrócone ST) [np. WFRP4e]",
+					"d100WFRP4normDC"	: "k100 Nat1/100 [np. WFRP4e]",
+					"d100WFRP4DoublesnormDC"	: "k100 Nat1/100 i podwójne [np. WFRP4e]",
 					"d100CoC7e"			: "k100 zakresy trudności [np. CoC7e]",
 					"d10poolCoD2e"		: "k10 zbiór >=8 i przerzut na 10 [np. CoD2e]",
 					"3d20DSA": "3k20 DSA"
 				}
+			},
+			
+			"InfinityThreshold" : {
+				"name" : "Nieograniczony próg",
+				"descrp" : "Liczby równe tej wartości są traktowane jako nieskończone podczas obliczania ST." 
 			},
 			
 			"LockPickItem" : {
