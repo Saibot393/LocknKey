@@ -1,3 +1,6 @@
+## v4.1.32
+- Lock & Key will no longer apply its max range to tokens that are not lockable
+
 ## v4.1.31
 - Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 
