@@ -1,3 +1,6 @@
+## v4.1.31
+- Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
 ## v4.1.30
 - Added setting for infinity threshold
 - Added WFRP4 crit types without DC inverting
