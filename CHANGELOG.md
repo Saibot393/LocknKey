@@ -1,3 +1,6 @@
+## v4.1.33
+- Improved application of locking distance
+
 ## v4.1.32
 - Lock & Key will no longer apply its max range to tokens that are not lockable
 
