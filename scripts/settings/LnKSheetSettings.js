@@ -254,6 +254,8 @@ class LnKSheetSettings {
 	
 	static async TokenSheetSettings(pApp, pHTML, pData, pisTile = false) {
 		if (!pHTML.querySelector(`a[data-tab="${cModuleName}"]`)) {
+			const vCreateTab = !pHTML.querySelector(`div[data-tab="${cModuleName}"]`);
+			
 			if (!pApp.document) {
 				if (pApp.actor) {
 					pApp.document = pApp.actor.prototypeToken;
@@ -291,11 +293,11 @@ class LnKSheetSettings {
 				let vTabContentHTML = fromHTML(`<div class="tab ${pApp.tabGroups?.sheet == cModuleName ? 'active' : ''} scrollable" ${game.release.generation <= 12 ? (pisTile ? '' : 'data-group="main"') : 'data-group="sheet"'} data-application-part="${cModuleName}" data-tab="${cModuleName}"></div>`); //tab content sheet HTML
 
 				vTabbar.append(vTabButtonHTML);
-				vprevTab.after(vTabContentHTML);	
+				if (vCreateTab) vprevTab.after(vTabContentHTML);	
 			}
 			
 			//setup
-			if (vLockSettings || vLockFormulaSettings) {
+			if ((vLockSettings || vLockFormulaSettings) && vCreateTab) {
 				//only if any settings at all
 				
 				if (vLockSettings && vLockFormulaSettings) {
