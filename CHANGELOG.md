@@ -1,3 +1,6 @@
+## v4.1.34
+- UI bug fix for incompatibility with filepicker plus on tiles
+
 ## v4.1.33
 - Improved application of locking distance
 
