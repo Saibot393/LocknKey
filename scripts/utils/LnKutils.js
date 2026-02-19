@@ -1053,7 +1053,7 @@ class LnKutils {
 	}
 	
 	static validChars(pstring) {
-		return pstring.replace(/[^\x00-\x7F]/g, "");
+		return pstring.replace(/[^\x00-\x7F]|[()\[\]{}]/g, "");
 	}
 	
 	static diceResults(pRoll) {

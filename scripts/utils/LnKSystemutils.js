@@ -406,12 +406,17 @@ class LnKSystemutils {
 	}
 	
 	static skillitems(pActor) {
-		let vItems = pActor.items.filter(item => ["skill"].includes(item.type));
+		let vItems = pActor.items.filter(item => ["skill", "ability"].includes(item.type));
 		
 		let vItemset = {};
 		
 		for (let i = 0; i < vItems.length; i++) {
-			let vSkillName = LnKutils.validChars(vItems[i]?.name.replace(" ", "_").replace("/", "_"));
+			let vSkillName = LnKutils.validChars(vItems[i]?.name.replaceAll(" ", "_").replaceAll("/", "_"));
+			
+			while(vSkillName && vSkillName[vSkillName.length-1] == "_") {
+				vSkillName = vSkillName.slice(0, -1);
+			}
+			console.log(vSkillName);
 			
 			if (!vSkillName) {
 				vItems[i]?.id;
