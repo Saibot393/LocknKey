@@ -769,7 +769,7 @@ class LockManager {
 	}
 	
 	static UserCanopenToken(pToken, pPopup = false) {	
-		let vSpecialOpen = game.user.isGM || (pObject.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
+		let vSpecialOpen = game.user.isGM || (pToken.isOwner && game.settings.get(cModuleName, "alwaysopenOwned"));
 		let vUnlocked = LockManager.TokenisUnlocked(pToken) || vSpecialOpen;
 		
 		let vCharacter = LnKutils.PrimaryCharacter();
