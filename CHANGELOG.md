@@ -1,3 +1,6 @@
+## v4.1.38
+- Improved system compatibility for pick pocketing
+
 ## v4.1.37
 - Small bug fix
 
