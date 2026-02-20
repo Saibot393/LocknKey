@@ -298,7 +298,7 @@ class LnKTakeInventory {
 		let vPlaced = canvas.tokens.placeables.map(vToken => vToken.document);
 		
 		if (vPlaced.find(vToken => vToken.actor == game.user.character)) { //return a present token that matches default actor
-			return vPlaced.find(vToken => vToken.actor = game.user.character);
+			return vPlaced.find(vToken => vToken.actor == game.user.character);
 		}
 		
 		return vPlaced.find(vToken => vToken.isOwner); //return any owned token (desperation)
