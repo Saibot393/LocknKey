@@ -182,6 +182,8 @@ class LnKTakeInventory {
 		
 		for (let i = 0; i < vInventory.length; i++) {
 			vQuantity = LnKTakeInventory.GetQuantity(vInventory[i]);//vInventory[i].system?.quantity
+			console.log(vInventory[i]);
+			console.log(vQuantity);
 
 			if (vQuantity != undefined && vQuantity > 0) {
 				vInventoryInfos.push({
@@ -305,29 +307,47 @@ class LnKTakeInventory {
 	}
 	
 	static GetQuantity(pItem) {
+		let vQuantity;
+		
 		if (pItem.system) {
 			if (pItem?.system.hasOwnProperty("quantity")) {
-				return pItem.system.quantity;
+				vQuantity = pItem.system.quantity;
 			}
 			
 			if (pItem.system.props?.hasOwnProperty("Quantity")) {
-				return pItem.system.props.Quantity;
+				vQuantity = pItem.system.props.Quantity;
 			}
 			
 			if (pItem.system.props?.hasOwnProperty("quantity")) {
-				return pItem.system.props.quantity;
+				vQuantity = pItem.system.props.quantity;
 			}
 		}
+		
+		if (vQuantity?.hasOwnProperty("value")) {
+			vQuantity = vQuantity.value;
+		}
+		
+		return vQuantity;
 	}
 	
 	static SetQuantity(pItem, pQuantity, pUpdate = true) {
 		if (pItem.system) {
 			if (pItem?.system.hasOwnProperty("quantity")) {
-				if (pUpdate) {
-					pItem.update({system : {quantity : pQuantity}});
+				if (pItem.system.quantity.hasOwnProperty("value")) {
+					if (pUpdate) {
+						pItem.update({system : {quantity : {value : pQuantity}}});
+					}
+					else {
+						pItem.system.quantity.value = pQuantity;
+					}
 				}
 				else {
-					pItem.system.quantity = pQuantity;
+					if (pUpdate) {
+						pItem.update({system : {quantity : pQuantity}});
+					}
+					else {
+						pItem.system.quantity = pQuantity;
+					}
 				}
 			}
 			
