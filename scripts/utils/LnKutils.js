@@ -772,7 +772,7 @@ class LnKutils {
 			vActor = vActor.actor;
 		}
 		
-		return vActor?.system?.attributes?.hp?.value <= 0;
+		return (vActor?.system?.attributes?.hp?.value <= 0) || (vActor?.system?.hp?.value <= 0);
 	}
 	
 	//arrays
