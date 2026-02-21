@@ -1,3 +1,6 @@
+## v4.1.39
+- Bug fix for pick pocketing max item number
+
 ## v4.1.38
 - Improved system compatibility for pick pocketing
 
