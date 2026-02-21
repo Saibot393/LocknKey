@@ -249,13 +249,16 @@ class PickPocketManager {
 					switch (vSuccessDegree) {
 						case 0:
 							vMaxTakeNumber = game.settings.get(cModuleName, "MaximumPPNumberFail");
-							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPNumberFail");						
+							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPNumberFail");		
+							break;
 						case 1:
 							vMaxTakeNumber = game.settings.get(cModuleName, "MaximumPPNumber");
 							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPWeight");
+							break;
 						case 2:
 							vMaxTakeNumber = game.settings.get(cModuleName, "MaximumPPNumberCrit");
-							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPNumberCrit");			
+							vMaxTakeWeight = game.settings.get(cModuleName, "MaximumPPNumberCrit");	
+							break;
 					}
 					
 					LnKTakeInventory.openTIWindowfor(pData.userID, pTarget, {applyDCFilter : true, rollInfos : pData.rollInfos, lootFilter : game.settings.get(cModuleName, "lootFilter"), maxNumber : vMaxTakeNumber, maxWeight : vMaxTakeWeight});
