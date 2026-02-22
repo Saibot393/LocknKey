@@ -1,3 +1,6 @@
+## v4.1.40
+- Improved death recognition for pick pocketing
+
 ## v4.1.39
 - Bug fix for pick pocketing max item number
 
