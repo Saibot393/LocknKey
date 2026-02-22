@@ -1,3 +1,6 @@
+## v4.1.41
+- Improved system compatibility
+
 ## v4.1.40
 - Improved death recognition for pick pocketing
 
