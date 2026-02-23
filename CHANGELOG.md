@@ -1,3 +1,6 @@
+## v4.1.42
+- Interactions (Pick lock, use Key, Pick pocket...) will now fallback to the targeted token if no object is hovered
+
 ## v4.1.41
 - Improved system compatibility
 
