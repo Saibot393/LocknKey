@@ -810,18 +810,18 @@ Hooks.on("renderTokenHUD", (...args) => KeyManager.addKeyHUD(...args));
 Hooks.on('getItemDirectoryEntryContext', KeyManager.onKeyContext); //register Key context
 
 //wrap export macro functions
-function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUuseKey, true); };
+function UseKeyonHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject() || LnKutils.targetedToken(), cLUuseKey, true); };
 
-function ChangePasswordHoveredLock() { return KeyManager.ChangePasswordofLock(LnKutils.hoveredObject()); };
+function ChangePasswordHoveredLock() { return KeyManager.ChangePasswordofLock(LnKutils.hoveredObject() || LnKutils.targetedToken()); };
 
-function AddIdentitytoHoveredLock(pTypes, pOptions = {}) { return KeyManager.AddIdentitytoLock(LnKutils.hoveredObject(), pTypes, pOptions);};
+function AddIdentitytoHoveredLock(pTypes, pOptions = {}) { return KeyManager.AddIdentitytoLock(LnKutils.hoveredObject() || LnKutils.targetedToken(), pTypes, pOptions);};
 
 function AddIdentitytoLock(pLock, pTypes, pOptions = {}) { return KeyManager.AddIdentitytoLock(pLock, pTypes, pOptions = {});}
 
-function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUpickLock); };
+function PickHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject() || LnKutils.targetedToken(), cLUpickLock); };
 
-function BreakHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUbreakLock); };
+function BreakHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject() || LnKutils.targetedToken(), cLUbreakLock); };
 
-function CustomCheckHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject(), cLUCustomCheck); }
+function CustomCheckHoveredLock() { return KeyManager.onatemptedLockuse(LnKutils.hoveredObject() || LnKutils.targetedToken(), cLUCustomCheck); }
 
 export { UseKeyonHoveredLock, ChangePasswordHoveredLock, AddIdentitytoHoveredLock, AddIdentitytoLock, PickHoveredLock, BreakHoveredLock, CustomCheckHoveredLock }

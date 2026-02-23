@@ -99,7 +99,7 @@ class PickPocketManager {
 						vRollFormula = "0";
 					}
 					let vDC = await LnKFlags.PickPocketDC(pTarget);
-					console.log(pTarget.actor);
+
 					let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, vDC, null, pTarget.actor);
 						
 					LnKSound.PlayDiceSound(pCharacter);
@@ -328,5 +328,5 @@ Hooks.on(cModuleName + ".TokendblClick", (pToken) => {
 export function PickPocketRequest(pData) {PickPocketManager.PickPocketRequest(pData)};
 
 //macros
-export function PickPocketHovered() {PickPocketManager.onAtemptedPickPocket(LnKutils.hoveredToken())}
+export function PickPocketHovered() {PickPocketManager.onAtemptedPickPocket(LnKutils.hoveredToken() || LnKutils.targetedToken())}
 
