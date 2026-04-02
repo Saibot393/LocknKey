@@ -388,7 +388,6 @@ class LockManager {
 	}
 	
 	static async LockuseRequest(puseData) {
-		console.log(puseData);
 		if (game.user.isGM) {
 			//only relevant for GMs
 			

@@ -101,7 +101,7 @@ class LnKTilesHandler {
 	
 	static onCanvasRightClick(pCanvas, pMousePosition, pEvent) {
 		let vTile = LnKTilesHandler.interactiveTileatPosition(pMousePosition);
-		
+
 		if (vTile) {
 			LnKTilesHandler.onTileRightClick(vTile, pEvent);
 		}
@@ -138,6 +138,7 @@ class LnKTilesHandler {
 	//support
 	static interactiveTileatPosition(pPosition) {
 		let vvalidTiles = canvas.tiles.placeables.filter(vTile => LnKFlags.canbeInteracted(vTile.document) && !vTile.document.hidden).map(vTile => vTile.document);
+		if (canvas.level) vvalidTiles = vvalidTiles.filter(vTile => vTile.levels.has(canvas.level.id));
 
 		vvalidTiles = vvalidTiles.filter(vTile => Geometricutils.withinBoundaries(vTile, "TokenFormRectangle", [pPosition.x, pPosition.y]));
 

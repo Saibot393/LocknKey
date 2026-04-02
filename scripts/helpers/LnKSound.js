@@ -51,8 +51,13 @@ class LnKSound {
 		if (game.settings.get(cModuleName, "PlayLockSounds")) {
 			if (canvas.scene.id == pSceneID) {
 				//only play sound if in same scene
-				if (FCore.Fversion() > 10) {
-					AudioHelper.play({src: pSound, volume: 1});
+				if (game.release.generation > 10) {
+					if (foundry.audio?.AudioHelper?.play) {
+						foundry.audio.AudioHelper.play({src: pSound, volume: 1});
+					}
+					else {
+						AudioHelper.play({src: pSound, volume: 1});
+					}
 				} else {
 					AudioHelper.play({src: cFallbackSound, volume: 1}); //play fallback sound
 				}

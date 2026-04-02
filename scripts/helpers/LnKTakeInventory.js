@@ -268,7 +268,7 @@ class LnKTakeInventory {
 								let vTargetQuantity = LnKTakeInventory.GetQuantity(vItem) - vTransferQuantity;
 								LnKTakeInventory.SetQuantity(vItem, vTargetQuantity);
 								
-								let vItemCopy = duplicate(vItem); //copy item
+								let vItemCopy = foundry.utils?.duplicate ? foundry.utils.duplicate(vItem) : duplicate(vItem); //copy item
 								
 								if (LnKSystemutils.isContainer(vItem) && LnKTakeInventory.GetQuantity(vItem) != vTargetQuantity && vTargetQuantity <= 0) {
 									pSource.actor.deleteEmbeddedDocuments("Item", [vItem.id]);
@@ -478,7 +478,7 @@ class TakeInventoryWindow extends Application {
 	
 	//app stuff
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return ({...super.defaultOptions, 
 			classes: [cWindowID],
 			popOut: true,
 			width: 400,

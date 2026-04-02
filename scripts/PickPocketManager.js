@@ -102,17 +102,17 @@ class PickPocketManager {
 
 					let vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, vDC, null, pTarget.actor);
 						
-					LnKSound.PlayDiceSound(pCharacter);
+					if (game.release.generation < 14) LnKSound.PlayDiceSound(pCharacter);
 						
 					await vRoll.evaluate();
 					
 					Hooks.callAll(cModuleName+".DiceRoll", cUPickPocket, pCharacter, vRoll);
 						
 					if (game.settings.get(cModuleName, "MentionPickpocketDetails")) {
-						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocketDetailed", {pName : pCharacter.name, pTargetName : pTarget.name, pDC : vDC}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocketDetailed", {pName : pCharacter.name, pTargetName : pTarget.name, pDC : vDC}),rolls : [vRoll]}); //CHAT MESSAGE
 					}
 					else {
-						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocket", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+						await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.PickPocket", {pName : pCharacter.name}),rolls : [vRoll]}); //CHAT MESSAGE
 					}
 						
 					let vData = {SceneID : pTarget.object.scene.id, TargetID : pTarget.id, CharacterID : pCharacter.id, Rollresult : vRoll.total, Diceresult : LnKutils.diceResults(vRoll)};

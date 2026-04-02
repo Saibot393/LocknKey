@@ -250,7 +250,7 @@ class KeyManager {
 					//roll dice according to formula
 					vRoll =  LnKutils.createroll(vRollFormula, pCharacter.actor, LnKFlags.LockDCtype(pLockObject, pUseType), pCharacter.actor.items?.get(vUsedItemID), pLockObject.actor || pLockObject);
 					
-					LnKSound.PlayDiceSound(pCharacter);
+					if (game.release.generation < 14) LnKSound.PlayDiceSound(pCharacter);
 					
 					await vRoll.evaluate();
 					
@@ -259,13 +259,13 @@ class KeyManager {
 					//ouput dice result in chat
 					switch (pUseType) {
 						case cLUpickLock:
-							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockPick", {pName : pCharacter.name}),rolls : [vRoll]}); //CHAT MESSAGE
 							break;
 						case cLUbreakLock:
-							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.LockBreak", {pName : pCharacter.name}),rolls : [vRoll]}); //CHAT MESSAGE
 							break;
 						case cLUCustomCheck:
-							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.CustomCheck", {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}),rolls : [vRoll], type : 5}); //CHAT MESSAGE
+							await ChatMessage.create({user: game.user.id, flavor : Translate("ChatMessage.CustomCheck", {pName : pCharacter.name, pCheckName : game.settings.get(cModuleName, "CustomCircumventName")}),rolls : [vRoll]}); //CHAT MESSAGE
 							break;
 					}
 					
