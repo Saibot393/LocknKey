@@ -181,6 +181,8 @@ class LnKutils {
 	
 	static validChars(pstring) {} //returns the part of pstring containing valid (ASCII) chars
 	
+	static validCharsStrict(pstring) {} //returns the part of pstring containing valid (ASCII) chars
+	
 	static diceResults(pRoll) {} //returns array of Dice results of pRoll
 	
 	//keyboard
@@ -1053,6 +1055,10 @@ class LnKutils {
 	}
 	
 	static validChars(pstring) {
+		return pstring.replace(/[^\x00-\x7F]/g, "");
+	}
+	
+	static validCharsStrict(pstring) {
 		return pstring.replace(/[^\x00-\x7F]|[()\[\]{},\/]/g, "");
 	}
 	
