@@ -1,3 +1,6 @@
+## v5.0.1
+- Bug fix for roll formula parsing
+
 ## v5.0.0
 - v14 compatibility
 
