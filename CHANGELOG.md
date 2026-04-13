@@ -1,3 +1,6 @@
+## v5.0.2
+- Prevent errors in systems without item tabs
+
 ## v5.0.1
 - Bug fix for roll formula parsing
 
