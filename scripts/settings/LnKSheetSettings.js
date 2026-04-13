@@ -92,6 +92,8 @@ class LnKSheetSettings {
 					}
 				}
 			}
+			
+			if (!vprevTab) return;
 		
 			let vTabButtonHTML = 	fromHTML(`
 							<a class="${LnKSystemutils.isPf2e() ? "" : "item"} list-row" data-action="tab" data-tab="${cModuleName}" data-group="primary">
