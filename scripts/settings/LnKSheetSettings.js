@@ -197,6 +197,8 @@ class LnKSheetSettings {
 	}
 	
 	static WallSheetSettings(pApp, pHTML, pData) {
+		if (pHTML.classList.contains("placeable-palette")) return;
+		
 		if (!pHTML.querySelector(`a[data-tab="${cModuleName}"]`)) {
 			//setup
 			//create Tabs if necessary
