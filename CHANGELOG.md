@@ -1,3 +1,6 @@
+## v5.0.3
+- Removed Lock & Key tab from the walls palette as the tab sometimes prevents the palette from correctly updating walls
+
 ## v5.0.2
 - Prevent errors in systems without item tabs
 
