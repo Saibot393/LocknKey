@@ -1264,6 +1264,10 @@ class LnKFlags {
 		}
 	}
 	
+	static hasSpecialLockpicks(pLock) {
+		return LnKFlags.GetSpecialLockpicks(pLock).length > 0;
+	}
+	
 	static LPAttemptsLeft(pLock, praw = false) {
 		let vLPAleft = this.#LPAttemptsFlag(pLock);
 		

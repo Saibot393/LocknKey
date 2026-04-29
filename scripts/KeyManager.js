@@ -353,6 +353,8 @@ class KeyManager {
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {
 		switch (puseMethod) {
 			case cLUpickLock:
+				console.log(LnKFlags.hasSpecialLockpicks(pLock));
+				console.log(pLock)
 				if (LnKFlags.hasSpecialLockpicks(pLock)) {
 					return await LnKutils.hasLockPickItem(await LnKutils.TokenInventory(pCharacter, true), LnKFlags.GetSpecialLockpicks(pLock));
 				}
