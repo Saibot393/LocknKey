@@ -1,3 +1,6 @@
+## v5.0.5
+- added inverted nat crit d20 method (1 = critical success, 20 = critical failure)
+
 ## v5.0.4
 - Small bug fix for special lock pick items
 
