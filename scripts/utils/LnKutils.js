@@ -846,6 +846,16 @@ class LnKutils {
 						vsuccessDegree = -1;//crit F
 					}
 					break;
+				case "CritMethod-natCrit-inverse":
+					//normal crit
+					if (pDiceDetails[0] == 1) {
+						vsuccessDegree = 2; //crit S
+					}
+					
+					if (pDiceDetails[0] == 20) {
+						vsuccessDegree = -1;//crit F
+					}
+					break;
 				case "CritMethod-natCritpm10":
 					//+-10 crit
 					if (vsuccessDegree == 1) {

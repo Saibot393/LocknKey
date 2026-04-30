@@ -240,6 +240,7 @@ Hooks.once("init", () => {  // game.settings.get(cModuleName, "")
 	choices: {
 		"CritMethod-noCrit": Translate("Settings.CritMethod.options.noCrit"),
 		"CritMethod-natCrit": Translate("Settings.CritMethod.options.natCrit"),
+		"CritMethod-natCrit-inverse": Translate("Settings.CritMethod.options.natCrit-inverse"),
 		"CritMethod-natCritpm10": Translate("Settings.CritMethod.options.natCritpm10"),
 		"CritMethod-d100WFRP4": Translate("Settings.CritMethod.options.d100WFRP4"),
 		"CritMethod-d100WFRP4Doubles": Translate("Settings.CritMethod.options.d100WFRP4Doubles"),
