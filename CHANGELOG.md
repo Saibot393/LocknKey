@@ -1,3 +1,6 @@
+## v5.0.4
+- Small bug fix for special lock pick items
+
 ## v5.0.3
 - Removed Lock & Key tab from the walls palette as the tab sometimes prevents the palette from correctly updating walls
 
