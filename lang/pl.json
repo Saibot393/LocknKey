@@ -261,6 +261,7 @@
 				"options" : {
 					"noCrit"			: "Brak krytyków",
 					"natCrit"			: "Nat 1/20",
+					"natCrit-inverse"	: "Nat 20/1 (odwrócone Nat 1/20)",
 					"natCritpm10"		: "Nat 1/20 & +-10 z ST [np. Pf2e]",
 					"d100WFRP4"			: "k100 Nat1/100 (odwrócone ST) [np. WFRP4e]",
 					"d100WFRP4Doubles"	: "k100 Nat1/100 i podwójne (odwrócone ST) [np. WFRP4e]",
