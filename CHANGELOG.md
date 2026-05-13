@@ -1,3 +1,6 @@
+## v5.0.6
+- Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
+
 ## v5.0.5
 - added inverted nat crit d20 method (1 = critical success, 20 = critical failure)
 
