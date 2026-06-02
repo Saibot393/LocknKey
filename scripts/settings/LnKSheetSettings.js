@@ -58,6 +58,9 @@ class LnKSheetSettings {
 						vTabbar = pHTML.querySelector(`[data-group="primary"].sheet-navigation`);
 						if (!vTabbar) {
 							vTabbar = pHTML.querySelector(`[data-group="main"].tabs`);
+							if (!vTabbar) {
+								vTabbar = pHTML.querySelector(`nav[data-group="primary"]`);
+							}
 						}
 					}
 				}
@@ -85,6 +88,10 @@ class LnKSheetSettings {
 									if (!vprevTab) {
 										//and another one
 										vprevTab = pHTML.querySelector(`div[data-tab="modifiers"]`);
+										if (!vprevTab) {
+											//and another one
+											vprevTab = pHTML.querySelector(`section.tab-details`);
+										}
 									}
 								}
 							}

@@ -1,3 +1,7 @@
+## v5.0.7
+- Fixed small bug in key creation
+- Improved item sheet tab addition
+
 ## v5.0.6
 - Updated polish translation (thanks to [Lioheart](https://github.com/Lioheart))
 

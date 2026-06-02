@@ -506,7 +506,7 @@ class LockManager {
 			vHTML = vHTML + `<div style="display:flex;margin-bottom:3px">`;
 			
 			vHTML = vHTML + `<label>${Translate("Titles.KeyID")}</label>
-							<input type="text" id="KeyID" name="Keyname" value="${randomID()}" style="width:calc(50%);right:0px;margin-left:auto">`;
+							<input type="text" id="KeyID" name="Keyname" value="${foundry.utils?.randomID ? foundry.utils.randomID() : randomID()}" style="width:calc(50%);right:0px;margin-left:auto">`;
 							
 			vHTML = vHTML + `</div>`;
 		}		
