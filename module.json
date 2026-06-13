@@ -84,7 +84,8 @@
 	"scripts/compatibility/LnKCompatibility.js",
 	"scripts/helpers/MacroHooks.js",
 	"scripts/compatibility/APIHandler.js",
-	"scripts/helpers/LnKTilesHandler.js"
+	"scripts/helpers/LnKTilesHandler.js",
+	"scripts/helpers/LnKContainerHandler.js"
   ],
   "packs": [
 	{

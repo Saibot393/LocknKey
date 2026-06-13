@@ -41,12 +41,14 @@ class LnKSheetSettings {
 	//IMPLEMENTATIONS
 	
 	static async ItemSheetSettings(pApp, pHTML, pData) {
-		let vLockSettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.document.type)
+		let cKeySettings = game.settings.get(cModuleName, "LnKSettingTypes") == "all" || game.settings.get(cModuleName, "LnKSettingTypes").split(cDelimiter).includes(pApp.document.type)
 			&& (!LnKSystemutils.candetectSystemSubtype() || game.settings.get(cModuleName, "LnKSettingsubTypes") == "all" || game.settings.get(cModuleName, "LnKSettingsubTypes").split(cDelimiter).includes(LnKSystemutils.SystemSubtype(pApp.document)));
 			
-		let vLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.document.type);
+		let cLootSettings = game.settings.get(cModuleName, "PickPocketItemTypes").split(cDelimiter).map(vEntry => vEntry.toLowerCase()).find(vEntry => vEntry == pApp.document.type);
 		
-		if (vLockSettings || vLootSettings) {
+		let cLockSetting = LnKSystemutils.isContainer(pApp.document);
+		
+		if (cKeySettings || cLootSettings) {
 			//setup
 			let vTabbar = pHTML.querySelector(`div.tabs[data-tab-container="primary"]`)
 			if (!vTabbar) {
@@ -137,62 +139,87 @@ class LnKSheetSettings {
 				vTabButtonHTML.style.display = "none";
 			}
 			
-			if (vLootSettings && vTabIdent) {
-				//loot settings
-				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".name"), 
-														vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp"), 
-														vtype : "text", 
-														vwide : true,
-														vvalue : await LnKFlags.PickPocketItemDC(pApp.document),
-														vflagname : cPickPocketDCF
-														}, vTabIdent);	
-			}
+			if (vTabIdent) {
+				if (cLootSettings) {
+					//loot settings
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".name"), 
+															vhint : Translate("SheetSettings."+ cPickPocketDCF + ".item" +".descrp"), 
+															vtype : "text", 
+															vwide : true,
+															vvalue : await LnKFlags.PickPocketItemDC(pApp.document),
+															vflagname : cPickPocketDCF
+															}, vTabIdent);	
+				}
 
-			if (vLockSettings && vTabIdent) {
-				console.log(`added settings to ${vTabIdent}`);
-				//lock settings	
-				
-				//create title for key items
-				let vTitle = fromHTML(`<h3 class="border">${Translate("Titles.KeyItems")}</h3>`);
+				if (cKeySettings) {
+					console.log(`added settings to ${vTabIdent}`);
+					//lock settings	
+					
+					//create title for key items
+					let vTitle = fromHTML(`<h3 class="border">${Translate("Titles.KeyItems")}</h3>`);
 
-				
-				pHTML.querySelector(vTabIdent).append(vTitle);
-				
-				//setting item ids	
-				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
-														vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
-														vtype : "text", 
-														vwide : true,
-														vvalue : LnKFlags.KeyIDs(pApp.document),
-														vflagname : cIDKeysF
-														}, vTabIdent);	
-										
-				//setting remove key on use
-				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
-														vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
-														vtype : "checkbox", 
-														vvalue : LnKFlags.RemoveKeyonUse(pApp.document),
-														vflagname : cRemoveKeyonUseF
-														}, vTabIdent);
 					
-				//create title for Lockpick/Break items
-				vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LPItems")}</h3>`);
-				
-				pHTML.querySelector(vTabIdent).append(vTitle);
+					pHTML.querySelector(vTabIdent).append(vTitle);
 					
-				if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
-					//formulas
-					LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", vTabIdent);	
+					//setting item ids	
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cIDKeysF +".name"), 
+															vhint : Translate("SheetSettings."+ cIDKeysF +".descrp.key"), 
+															vtype : "text", 
+															vwide : true,
+															vvalue : LnKFlags.KeyIDs(pApp.document),
+															vflagname : cIDKeysF
+															}, vTabIdent);	
+											
+					//setting remove key on use
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cRemoveKeyonUseF +".name"), 
+															vhint : Translate("SheetSettings."+ cRemoveKeyonUseF +".descrp"), 
+															vtype : "checkbox", 
+															vvalue : LnKFlags.RemoveKeyonUse(pApp.document),
+															vflagname : cRemoveKeyonUseF
+															}, vTabIdent);
+						
+					//create title for Lockpick/Break items
+					vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LPItems")}</h3>`);
+					
+					pHTML.querySelector(vTabIdent).append(vTitle);
+						
+					if (!game.settings.get(cModuleName, "usePf2eSystem")) { //replaced by Pf2e
+						//formulas
+						LnKSheetSettings.AddCharacterstandardsettings(pApp, pHTML, pData, "item", vTabIdent);	
+					}
+					
+					//setting replacement item
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
+															vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
+															vtype : "text",
+															vwide : true,												
+															vvalue : LnKFlags.ReplacementItems(pApp.document, true),
+															vflagname : cReplacementItemF
+															}, vTabIdent);
 				}
 				
-				//setting replacement item
-				LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cReplacementItemF +".name"), 
-														vhint : Translate("SheetSettings."+ cReplacementItemF +".descrp"), 
-														vtype : "text",
-														vwide : true,												
-														vvalue : LnKFlags.ReplacementItems(pApp.document, true),
-														vflagname : cReplacementItemF
-														}, vTabIdent);
+				if (cLockSetting) {
+					let vTitle = fromHTML(`<h3 class="border">${Translate("Titles.LockSettings")}</h3>`);
+					
+					pHTML.querySelector(vTabIdent).append(vTitle);
+					
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockableF +".name"), 
+																vhint : Translate("SheetSettings."+ cLockableF +".descrp"), 
+																vtype : "checkbox", 
+																vvalue : LnKFlags.isLockable(pApp.document),
+																vflagname : cLockableF
+																}, vTabIdent);
+															
+					//setting token is locked								
+					LnKSheetSettings.AddHTMLOption(pHTML, {vlabel : Translate("SheetSettings."+ cLockedF +".name"), 
+															vhint : Translate("SheetSettings."+ cLockedF +".descrp"), 
+															vtype : "checkbox", 
+															vvalue : LnKFlags.isLocked(pApp.document),
+															vflagname : cLockedF
+															}, vTabIdent);
+					
+					LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, vTabIdent);
+				}
 			}
 			
 			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) { 			

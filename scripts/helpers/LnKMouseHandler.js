@@ -286,25 +286,25 @@ class LnKMouseHandler {
 	
 	//ons
 	static onDoorLeftClick(pDoorEvent, pWall) {
-		let vOldCall = Hooks.callAll(cModuleName + "." + "DoorLClick", pWall.document, FCore.keysofevent(pDoorEvent));
+		let vOldCall = Hooks.callAll(cModuleName + "." + "LockLClick", pWall.document, FCore.keysofevent(pDoorEvent));
 		
 		return vOldCall;
 	} 
 	
 	static onDoorRightClick(pDoorEvent, pWall) {
-		let vOldCall = Hooks.callAll(cModuleName + "." + "DoorRClick", pWall.document, FCore.keysofevent(pDoorEvent));
+		let vOldCall = Hooks.callAll(cModuleName + "." + "LockRClick", pWall.document, FCore.keysofevent(pDoorEvent));
 		
 		return vOldCall;
 	}
 	
 	static onTokenLeftClick(pTokenEvent, pToken) {
-		let vOldCall = Hooks.callAll(cModuleName + "." + "TokenLClick", pToken, FCore.keysofevent(pTokenEvent));
+		let vOldCall = Hooks.callAll(cModuleName + "." + "LockLClick", pToken, FCore.keysofevent(pTokenEvent));
 		
 		return vOldCall;
 	} 
 	
 	static onTokenRightClick(pTokenEvent, pToken) {
-		let vOldCall = Hooks.callAll(cModuleName + "." + "TokenRClick", pToken, FCore.keysofevent(pTokenEvent));
+		let vOldCall = Hooks.callAll(cModuleName + "." + "LockRClick", pToken, FCore.keysofevent(pTokenEvent));
 		
 		return vOldCall;
 	}

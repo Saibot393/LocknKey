@@ -68,9 +68,9 @@ class LockManager {
 	//ons
 	static onpreupdateWall(pWall, pChanges, pInfos, pUser) {} //called when a wall preupdates
 	
-	static onLockLClick(pDocument, pInfos, pType) {} //called when a lock is left clicked
+	static onLockLClick(pDocument, pInfos) {} //called when a lock is left clicked
 	
-	static onLockRClick(pDocument, pInfos, pType) {} //called when a lock is right clicked
+	static async onLockRClick(pDocument, pInfos) {} //called when a lock is right clicked
 	
 	//IMPLEMENTATIONS
 	//basics
@@ -840,53 +840,77 @@ class LockManager {
 		}
 	}
 	
-	static onLockLClick(pDocument, pInfos, pType) {
+	static onLockLClick(pDocument, pInfos) {
+		let vType = pDocument.documentName;
+		
 		if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: paste lock IDs
 			LockManager.pasteLock(pDocument);
 		}
 		
-		if (pType == "Wall") {
+		if (vType == "Wall") {
 			if (!game.user.isGM) {
 				LockManager.isUnlocked(pDocument, true);
 			}
 		}
 	}
 	
-	static onLockRClick(pDocument, pInfos, pType) {
-		if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
-			LockManager.newLockKey(pDocument);
-		}
-		
-		if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
-			LockManager.copyLock(pDocument);
-		}
-		
-		if (pType == "Token" || pType == "Tile") {
-			if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
-				LockManager.ToggleLock(pDocument, cLUisGM);
-			}	
+	static async onLockRClick(pDocument, pInfos) {
+		console.log(await LnKutils.isLockCompatible(pDocument));
+		if (await LnKutils.isLockCompatible(pDocument)) {
+			let vType = pDocument.documentName;
+			
+			if (game.user.isGM && pInfos.shiftKey) {//GM SHIFT: create new key
+				LockManager.newLockKey(pDocument);
+			}
+			
+			if (game.user.isGM && pInfos.ctrlKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM CTRL: copy lock IDs
+				LockManager.copyLock(pDocument);
+			}
+			
+			if (vType != "Wall") {
+				if (game.user.isGM && pInfos.altKey && game.settings.get(cModuleName, "useGMquickKeys")) {//GM ALT: toggle lock state
+					LockManager.ToggleLock(pDocument, cLUisGM);
+				}	
+			}
 		}
 	}
 }
 
 //Hooks
+
+/*
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {
 	LockManager.onLockRClick(pDoorDocument, pInfos, "Wall");
 });
+*/
 
+/*
 Hooks.on(cModuleName + "." + "DoorLClick", (pDoorDocument, pInfos) => {	
-	LockManager.onLockLClick(pDoorDocument, pInfos, "Wall");
+	LockManager.onLockLClick(pDoorDocument, pInfos);
 });
+*/
 
+/*
 Hooks.on(cModuleName + "." + "TokenRClick", async (pTokenDocument, pInfos) => {
 	if (await LnKutils.isLockCompatible(pTokenDocument)) {
 		LockManager.onLockRClick(pTokenDocument, pInfos, "Token");
 	}
 });
+*/
 
+Hooks.on(cModuleName + "." + "LockRClick", async (pDocument, pInfos) => {
+	LockManager.onLockRClick(pDocument, pInfos);
+}); 
+
+Hooks.on(cModuleName + "." + "LockLClick", async (pDocument, pInfos) => {
+	LockManager.onLockLClick(pDocument, pInfos);
+}); 
+
+/*
 Hooks.on(cModuleName + "." + "TokenLClick", (pTokenDocument, pInfos) => {
-	LockManager.onLockLClick(pTokenDocument, pInfos, "Token");
+	LockManager.onLockLClick(pTokenDocument, pInfos);
 });
+*/
 
 Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //for sheet opening
 	if (!game.user.isGM && LnKFlags.isLockable(pTokenDocument)) {//CLIENT: check if token unlocked
@@ -896,13 +920,17 @@ Hooks.on(cModuleName + "." + "TokendblClick", (pTokenDocument, pInfos) => { //fo
 	return true; //if anything fails
 });
 
+/*
 Hooks.on(cModuleName + "." + "TileRClick", async (pTileDocument, pInfos) => {
 	LockManager.onLockRClick(pTileDocument, pInfos, "Tile");
 });
+*/
 
+/*
 Hooks.on(cModuleName + "." + "TileLClick", (pTileDocument, pInfos) => {
-	LockManager.onLockLClick(pTileDocument, pInfos, "Tile");
+	LockManager.onLockLClick(pTileDocument, pInfos);
 });
+*/
 
 Hooks.on(cModuleName + "." + "LockuseRequest", (pData) => {
 	LockManager.LockuseRequest(pData);

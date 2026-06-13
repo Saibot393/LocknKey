@@ -113,7 +113,7 @@ class LnKTilesHandler {
 			
 			LnKTilesHandler.requestToggleTile(pTile);
 			
-			Hooks.call(cModuleName + ".TileLClick", pTile, pEvent);
+			Hooks.call(cModuleName + ".LockLClick", pTile, pEvent);
 		}
 	}
 	
@@ -121,7 +121,7 @@ class LnKTilesHandler {
 		if (LnKFlags.isLockable(pTile)) {
 			if (canvas.activeLayer.name == "TilesLayer") return;
 			
-			Hooks.call(cModuleName + ".TileRClick", pTile, pEvent);
+			Hooks.call(cModuleName + ".LockRClick", pTile, pEvent);
 		}
 	}
 	

@@ -23,6 +23,7 @@ const cValue = "value"; //name of the value attribute some quantity attributes h
 //Lock Types
 const cLockTypeDoor = "LTDoor"; //type for door locks
 const cLockTypeTile = "LTTile"; //type for tile locks
+const cLockTypeContainer = "LTContainer"; //type for item container locks
 
 const cTokenLockTypes = [cLockTypeLootPf2e];//All Lock types belonging to Tokens
 
@@ -39,7 +40,7 @@ const cLUCustomCheck = "LockuseCustom"; //when a custom check is applied
 const cLUFreeCircumvent = "LockuseFree"; //when a lock gets circumvented via e.g. a knock spell
 const cUPickPocket = "UsePickPocket"; //when a character is pickpocketed
 
-export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeTile, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
+export {cModuleName, cDelimiter, cPopUpID, cLockTypeDoor, cLockTypeContainer, cLockTypeTile, cLockTypeLootPf2e, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent, cUPickPocket}
 
 function Translate(pName, pWords = {}){
 	let vText = game.i18n.localize(cModuleName+"."+pName);
@@ -601,6 +602,10 @@ class LnKutils {
 			
 			if (LnKutils.isTile(pDocument)) {
 				return cLockTypeTile;
+			}
+			
+			if (LnKSystemutils.isContainer(pDocument)) {
+				return cLockTypeContainer;
 			}
 		}
 		

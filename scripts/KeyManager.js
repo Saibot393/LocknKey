@@ -17,7 +17,7 @@ const cLnKFreeCircumventIcon = "fa-solid fa-wand-magic-sparkles";
 const cLnKCustomCheckIcon = "fa-solid fa-dice-d20";
 
 //does everything Key related (including lock picks, they are basically keys, right?)
-class KeyManager {
+export class KeyManager {
 	//DECLARATIONS
 	static async onatemptedLockuse(pLockObject, pUseType, pFallBack = true) {} //called if a player tries to use a lock
 	
@@ -791,6 +791,7 @@ class KeyManager {
 }
 
 //Hooks
+/*
 Hooks.on(cModuleName + "." + "DoorRClick", (pDoorDocument, pInfos) => {//Door Lock use
 	KeyManager.onLockRightClick(pDoorDocument, pInfos);
 });
@@ -801,6 +802,14 @@ Hooks.on(cModuleName + "." + "TokenRClick", (pTokenDocument, pInfos) => {//Token
 
 Hooks.on(cModuleName + "." + "TileRClick", (pTokenDocument, pInfos) => {//Tile Lock use
 	KeyManager.onLockRightClick(pTokenDocument, pInfos);
+}); 
+
+Hooks.on(cModuleName + "." + "ContainerRClick", (pItemDocument, pInfos) => {//Tile Lock use
+	KeyManager.onLockRightClick(pItemDocument, pInfos);
+}); 
+*/
+Hooks.on(cModuleName + "." + "LockRClick", (pDocument, pInfos) => {
+	KeyManager.onLockRightClick(pDocument, pInfos);
 }); 
 
 Hooks.on("createChatMessage", (pMessage, pInfos, pSender) => {

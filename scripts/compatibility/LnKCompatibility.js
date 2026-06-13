@@ -241,7 +241,7 @@ Hooks.once("init", () => {
 			let vOldTileCall = game.Levels3DPreview.CONFIG.entityClass.Tile3D.prototype._onClickRight;
 			
 			function vNewTileCall(pEvent) {
-				Hooks.call(cModuleName + ".TileRClick", this.tile?.document, pEvent);
+				Hooks.call(cModuleName + ".LockRClick", this.tile?.document, pEvent);
 				
 				vOldTileCall.bind(this)(pEvent);
 			}
