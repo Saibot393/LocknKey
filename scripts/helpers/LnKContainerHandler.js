@@ -23,6 +23,8 @@ class ContainerHandler {
 	
 	static registerLnKClicks(pActorSheet, pActor) {} //registers click events for pActorSheet
 	
+	static onRenderItemSheet(pItemSheet, pItem) {} //register changes for pItemSheet
+	
 	//IMPLEMENTATIONS
 	static onItemPreUpdate(pItem, pChanges) {
 		if (game.system.id == cPf2eName) {
@@ -39,25 +41,19 @@ class ContainerHandler {
 	}
 	
 	static registerHooks() {
-		if ([cDnD5e, cPf2eName].includes(game.system.id)) {
-			Hooks.on("renderActorSheet",  (pSheet, pHTML, pInfo) => ContainerHandler.registerLnKClicks(pHTML[0], pInfo.actor));
-			//Hooks.on("ActorSheet",  (pSheet, pHTML, pInfo) => ContainerHandler.registerLnKClicks());
-		}
 		
 		if (game.system.id == cPf2eName) {
+			Hooks.on("renderActorSheet",  (pSheet, pHTML, pInfo) => ContainerHandler.registerLnKClicks(pHTML[0], pInfo.actor));
 			Hooks.on("preUpdateItem", (pItem, pChanges) => ContainerHandler.onItemPreUpdate(pItem, pChanges));
+		}
+		
+		if (game.system.id == cDnD5e) {
+			Hooks.on("renderItemSheet", (pSheet, pHTML, pInfo) => ContainerHandler.onRenderItemSheet(pHTML[0], pInfo.actor));
 		}
 	}
 	
 	static registerLnKClicks(pActorSheet, pActor) {
-		let vNewClick = (pEvent, pOldClick, pActor, pItem) => {
-			
-		}
-		
 		switch (game.system.id) {
-			case cDnD5e:
-					
-				break;
 			case cPf2eName:
 				console.log(pActorSheet);
 				let vContainers = pActorSheet.querySelector('ul.items[data-item-types="backpack"]').querySelectorAll("li");
@@ -91,6 +87,37 @@ class ContainerHandler {
 							vNameDiv.children[1].children[0].classList.add(cLockIcon);
 						}
 					}
+				}
+				break;
+		}
+	}
+	
+	static onRenderItemSheet(pItemSheet, pItem) {
+		switch (game.system.id) {
+			case cDnD5e:
+				if (LnKSystemutils.isContainer(pItem)) {
+					const cContentsButton = pItemSheet.querySelector('a[data-tab="contents"]');
+					const cContentsTab = pItemSheet.querySelector('section[data-tab="contents"]');
+					
+					if (LnKFlags.isLocked(pItem)) {
+						let vIcon = document.createElement("i");
+						vIcon.classList.add("fa-solid", cLockIcon);
+						
+						cContentsButton.appendChild(vIcon);
+						
+						if (cContentsButton.classList.contains("active")) {
+							cContentsButton.classList.remove("active");
+							cContentsTab.classList.remove("active");
+							
+							const cAfterButton = cContentsButton.nextElementSibling;
+							const cAfterTab = pItemSheet.querySelector(`section[data-tab="{cAfterButton.getAttribute("data-tab")}"]`);
+							
+							cAfterButton.classList.add("active");
+							cAfterTab.classList.add("active");
+						}
+					}
+					
+					
 				}
 				break;
 		}
