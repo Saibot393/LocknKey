@@ -319,7 +319,7 @@ class Geometricutils {
 			return pToken.object.w;
 		}
 		else {
-			return pToken.width * FCore.sceneof(pToken).dimensions.size;
+			return pToken.width * FCore.sceneof(pToken)?.dimensions.size;
 		}
 	}
 	
@@ -332,7 +332,7 @@ class Geometricutils {
 			return pToken.object.h;
 		}
 		else {
-			return pToken.height * FCore.sceneof(pToken).dimensions.size;
+			return pToken.height * FCore.sceneof(pToken)?.dimensions.size;
 		}
 	}
 	

@@ -335,6 +335,10 @@ class LnKutils {
 		if ((!vCharacter || !vCharacter.isOwner) && game.user.character) {
 			//select a token representing the standard character of the player
 			vCharacter = canvas.scene.tokens.find(vToken => vToken.actor.id == game.user.character?.id);
+			
+			if (!vCharacter) {
+				vCharacter = game.user.character?.prototypeToken;
+			}
 		}
 		
 		return vCharacter;
@@ -403,8 +407,6 @@ class LnKutils {
 		if (pSpecialLockpicks.length) {
 			vLockpickItems = pSpecialLockpicks;
 		}
-		
-		console.log(vLockpickItems);
 		
 		return (LnKutils.includesone(pItem.name, vLockpickItems) 
 			|| (pItem.flags.core?.sourceId && LnKutils.includesone(pItem.flags.core.sourceId, vLockpickItems)) 
@@ -678,10 +680,16 @@ class LnKutils {
 	}
 	
 	static WithinLockingDistance(pCharacter, pLock) {
+		if (pLock.parent == pCharacter?.actor) {
+			return true;
+		}
+		
 		if ((LnKCompUtils.isactiveModule(cArmReach) || LnKCompUtils.isactiveModule(cArmReachold)) && game.settings.get(cModuleName, "UseArmReachDistance")) {
 			return LnKCompUtils.ARWithinLockingDistance(pCharacter, pLock);
 		}
-			
+		
+		let vDistance = Geometricutils.ObjectDistance(pCharacter, pLock);
+
 		return Geometricutils.ObjectDistance(pCharacter, pLock) <= LnKutils.LockuseDistance();
 	}
 	

@@ -38,6 +38,8 @@ class LnKSheetSettings {
 	
 	static FixSheetWindow(pHTML) {} //fixes the formating of pHTML sheet window
 	
+	static activateLnKTab(pHTML, pTabButton, pTab) {} //try to activate the LnK tab in the given HTML form
+	
 	//IMPLEMENTATIONS
 	
 	static async ItemSheetSettings(pApp, pHTML, pData) {
@@ -48,7 +50,7 @@ class LnKSheetSettings {
 		
 		let cLockSetting = LnKSystemutils.isContainer(pApp.document);
 		
-		if (cKeySettings || cLootSettings) {
+		if (cKeySettings || cLootSettings || cLockSetting) {
 			//setup
 			let vTabbar = pHTML.querySelector(`div.tabs[data-tab-container="primary"]`)
 			if (!vTabbar) {
@@ -119,7 +121,7 @@ class LnKSheetSettings {
 			}
 			
 			let vTabIdent;
-			
+					
 			if (!(pHTML.querySelector(`div.${cModuleName}`) || pHTML.querySelector(`section.${cModuleName}`) || pHTML.querySelector(`div[data-tab-contents-for="${cModuleName}"]`) || pApp?.id?.includes("Tidy5e"))) {
 				let vTabContentHTML;
 				
@@ -223,8 +225,13 @@ class LnKSheetSettings {
 			}
 			
 			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) { 			
-				if (pApp.LnKTabactive && pApp.activateTab) {
-					pApp.activateTab(cModuleName);
+				if (pApp.LnKTabactive || pApp.tabGroups?.primary == cModuleName) {
+					if (pApp.activateTab) {
+						pApp.activateTab(cModuleName);
+					}
+					else {
+						LnKSheetSettings.activateLnKTab(pHTML, vTabButtonHTML, pHTML.querySelector(vTabIdent));
+					}
 				}
 			}
 		}
@@ -895,6 +902,25 @@ class LnKSheetSettings {
 		if (vNeededWidth > pHTML.offsetWidth) {
 			pHTML.style.width = vNeededWidth + "px";
 		}		
+	}
+	
+	static activateLnKTab(pHTML, pTabButton, pTab) {
+		const cTab = pTab || pHTML.querySelector(`section[data-group="primary"][data-tab="${pTabButton.getAttribute("data-tab")}"]`)
+		
+		if (pTabButton && cTab) {
+			for (const cButton of pTabButton.parentNode.children){
+				cButton.classList.remove("active");
+				const cMatchTab = pHTML.querySelector(`section[data-group="primary"][data-tab="${cButton.getAttribute("data-tab")}"]`);
+				
+				if (cMatchTab) {
+					cMatchTab.classList.remove("active");
+				}
+			}
+			
+			cTab.classList.add("active");
+			pTabButton.classList.add("active");
+			cTab.querySelectorAll("input").forEach(pInput => pInput.disabled = false)
+		}
 	}
 }
 

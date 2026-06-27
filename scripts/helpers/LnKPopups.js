@@ -15,7 +15,7 @@ class LnKPopups {
 	
 	static async ExecutePopUp(pObject, pText) {} //executes the popup
 	
-	static PopUpRequest(pObjectID, pLockType, pText) {} //handels socket calls for pop up texts
+	static PopUpRequest(pObjectID, pText) {} //handels socket calls for pop up texts
 	
 	//IMPLEMENTATIONS
 	static async TextPopUp(pObject, pText, pWords = {}, pQueue = false) {
@@ -71,30 +71,38 @@ class LnKPopups {
 	}
 	
 	static async ExecutePopUp(pObject, pText) {
-		let vLockType = await LnKutils.Locktype(pObject);
+		//let vLockType = await LnKutils.Locktype(pObject);
 	
 		//other clients pop up
-		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.id, pLockType : vLockType, pText : pText}});
+		game.socket.emit("module."+cModuleName, {pFunction : "PopUpRequest", pData : {pObjectID: pObject.uuid, pText : pText, pRequester : game.user.id}});
 		
 		//own pop up
-		LnKPopups.PopUpRequest(pObject.id, vLockType, pText);		
+		LnKPopups.PopUpRequest(pObject.uuid, pText);		
 	}
 	
-	static PopUpRequest(pObjectID, pLockType, pText) {
+	static PopUpRequest(pObjectID, pText, pRequester = game.user.id) {
 		if (game.settings.get(cModuleName, "MessagePopUps")) {
 			//only relevant if token is on current canves, no scene necessary
-			let vObject = LnKutils.LockfromID(pObjectID, pLockType); 
+			let vObject = fromUuidSync(pObjectID);//LnKutils.LockfromID(pObjectID, pLockType); 
 			let vPosition;
 			
 			if (vObject) {
 				vPosition = Geometricutils.ObjectPosition(vObject);
-				canvas.interface.createScrollingText({x: vPosition[0], y: vPosition[1]}, pText, {anchor: CONST.TEXT_ANCHOR_POINTS.TOP, fill: "#FFFFFF", stroke: "#000000"});
+
+				if (vPosition.filter(vValue => isNaN(vValue)).length) {
+					if (pRequester == game.user.id) {
+						ui.notifications.info(pText, {console : false});
+					}
+				}
+				else {
+					canvas.interface.createScrollingText({x: vPosition[0], y: vPosition[1]}, pText, {anchor: CONST.TEXT_ANCHOR_POINTS.TOP, fill: "#FFFFFF", stroke: "#000000"});
+				}
 			}
 		}
 	}
 }
 
 //export Popups
-function PopUpRequest({ pObjectID, pLockType, pText } = {}) { return LnKPopups.PopUpRequest(pObjectID, pLockType, pText); }
+function PopUpRequest({ pObjectID, pLockType, pText, pRequester } = {}) { return LnKPopups.PopUpRequest(pObjectID, pText, pRequester); }
 
 export { LnKPopups, PopUpRequest }

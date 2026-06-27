@@ -154,7 +154,7 @@ export class KeyManager {
 					let vMatchingIdentity = LnKFlags.MatchingIdentity(pLockObject, pCharacter, vUser);
 					
 					if (vMatchingIdentity) {
-						let vData = {useType : cLUIdentity, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, IdentityMatch : vMatchingIdentity};
+						let vData = {useType : cLUIdentity, Locktype : vLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, IdentityMatch : vMatchingIdentity};
 						KeyManager.requestLockuse(vData);
 					}
 					else {
@@ -177,12 +177,13 @@ export class KeyManager {
 					else {
 						//vKeyItems = await KeyManager.KeyItems(await LnKutils.TokenInventory(pCharacter, true));
 						vKeyItems = await LnKutils.TokenInventory(pCharacter, true);
+						vKeyItems = vKeyItems.filter(vItem => !LnKSystemutils.isContainer(vItem)); //otherwise container items could open themselfe
 						
 						//only key which contains keyid matching at least one key id of pLockObject fits
 						vFittingKeys = LnKFlags.matchingIDKeysandmode(vKeyItems, pLockObject, game.settings.get(cModuleName, "UseKeynameasID"));				
 						
 						if (vFittingKeys.length) {	
-							let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemIDs : vFittingKeys};
+							let vData = {useType : cLUuseKey, Locktype : vLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, KeyItemIDs : vFittingKeys};
 							KeyManager.requestLockuse(vData);
 						}
 						else {
@@ -214,7 +215,7 @@ export class KeyManager {
 				break;
 			case cLUFreeCircumvent:
 				if (LnKFlags.hasFreeLockCircumvent(pCharacter)) {
-					let vData = {useType : cLUFreeCircumvent, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id};
+					let vData = {useType : cLUFreeCircumvent, Locktype : vLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid};
 					KeyManager.requestLockuse(vData);					
 				}
 				break;
@@ -269,7 +270,7 @@ export class KeyManager {
 							break;
 					}
 					
-					let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : LnKutils.diceResults(vRoll)};
+					let vData = {useType : pUseType, Locktype : vLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, UsedItemID : vUsedItemID, Rollresult : vRoll.total, Diceresult : LnKutils.diceResults(vRoll)};
 					
 					KeyManager.requestLockuse(vData);
 				}
@@ -277,7 +278,7 @@ export class KeyManager {
 					vUsedItemID = vCircumvent.id;
 					
 					vCallback = async (psuccessdegree) => {
-						let vData = {useType : pUseType, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, UsedItemID : vUsedItemID, useSystemRoll : true, Systemresult : psuccessdegree};
+						let vData = {useType : pUseType, Locktype : vLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, UsedItemID : vUsedItemID, useSystemRoll : true, Systemresult : psuccessdegree};
 					
 						KeyManager.requestLockuse(vData);
 					};
@@ -338,7 +339,7 @@ export class KeyManager {
 			
 			if (vLockType) {
 				if (LnKutils.WithinLockingDistance(vCharacter, pLock)) {
-					let vData = {useType : cLUaddIdentity, SceneID : pLock.object.scene.id, Locktype : vLockType, LockID : pLock.id, CharacterID : vCharacter.id, IdentityTypes : vIdentities, options : pOptions}; 
+					let vData = {useType : cLUaddIdentity, Locktype : vLockType, LockID : pLock.uuid, CharacterID : vCharacter.uuid, IdentityTypes : vIdentities, options : pOptions}; 
 					
 					KeyManager.requestLockuse(vData);
 				}
@@ -353,8 +354,6 @@ export class KeyManager {
 	static async cancircumventLock(pCharacter, pLock, puseMethod) {
 		switch (puseMethod) {
 			case cLUpickLock:
-				console.log(LnKFlags.hasSpecialLockpicks(pLock));
-				console.log(pLock)
 				if (LnKFlags.hasSpecialLockpicks(pLock)) {
 					return await LnKutils.hasLockPickItem(await LnKutils.TokenInventory(pCharacter, true), LnKFlags.GetSpecialLockpicks(pLock));
 				}
@@ -433,7 +432,7 @@ export class KeyManager {
 				buttons: {
 					confirm: {
 						label: Translate("Titles.ConfirmPasskey"),
-						callback: (html) => {let vData = {useType : cLUusePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, EnteredPasskey : html.find("input#Passkey").val()}; 
+						callback: (html) => {let vData = {useType : cLUusePasskey, Locktype : pLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, EnteredPasskey : html.find("input#Passkey").val()}; 
 											KeyManager.requestLockuse(vData)},
 						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 					}
@@ -453,7 +452,7 @@ export class KeyManager {
 				buttons: {
 					confirm: {
 						label: Translate("Titles.ConfirmPasskey"),
-						callback: (html) => {let vData = {useType : cLUchangePasskey, SceneID : pLockObject.object.scene.id, Locktype : pLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, OldPasskey : html.find("input#Passkey").val(), NewPasskey : html.find("input#newPasskey").val()}; 
+						callback: (html) => {let vData = {useType : cLUchangePasskey, Locktype : pLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, OldPasskey : html.find("input#Passkey").val(), NewPasskey : html.find("input#newPasskey").val()}; 
 											KeyManager.requestLockuse(vData)},
 						icon: `<i class="fas ${cLnKKeyIcon}"></i>`
 					}
@@ -508,7 +507,7 @@ export class KeyManager {
 						
 						if (vFittingKeys.length) {	
 							let vLockType = await LnKutils.Locktype(pLockObject);
-							let vData = {useType : cLUuseKey, SceneID : pLockObject.object.scene.id, Locktype : vLockType, LockID : pLockObject.id, CharacterID : pCharacter.id, KeyItemIDs : vFittingKeys};
+							let vData = {useType : cLUuseKey, Locktype : vLockType, LockID : pLockObject.uuid, CharacterID : pCharacter.uuid, KeyItemIDs : vFittingKeys};
 
 							KeyManager.requestLockuse(vData);
 						}
@@ -559,7 +558,6 @@ export class KeyManager {
 		let vshowCustomCheck;
 		
 		let vButtons = {};
-		
 		if (LnKutils.WithinLockingDistance(vCharacter, pLockObject)) {
 			if (LnKFlags.isLockable(pLockObject)) {
 				vshowKey =  LnKFlags.HasKey(pLockObject) || game.settings.get(cModuleName, "showallLockInteractions");

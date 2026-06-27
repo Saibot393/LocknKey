@@ -1,4 +1,5 @@
 import { cModuleName, Translate, LnKutils, cLUisGM, cLUuseKey, cLUusePasskey, cLUchangePasskey, cLUIdentity, cLUaddIdentity, cLUpickLock, cLUbreakLock, cLUCustomCheck, cLUFreeCircumvent } from "./utils/LnKutils.js";
+import { LnKSystemutils } from "./utils/LnKSystemutils.js";
 import { cLockTypeDoor, cLockTypeTile, cLockTypeLootPf2e } from "./utils/LnKutils.js";
 import { LnKFlags } from "./helpers/LnKFlags.js";
 import { LnKPopups } from "./helpers/LnKPopups.js";
@@ -75,11 +76,15 @@ class LockManager {
 	//IMPLEMENTATIONS
 	//basics
 	static async useLockKey(pLock, pCharacter, pKeyItemIDs, puseData = {}) {
-		let vKeys = (await LnKutils.TokenInventory(pCharacter)).filter(vItem => pKeyItemIDs.includes(vItem.id));
+		let vKeyItems = await LnKutils.TokenInventory(pCharacter, true);
+		vKeyItems = vKeyItems.filter(vItem => !LnKSystemutils.isContainer(vItem)); //otherwise container items could open themselfe
+		
+		let vKeys = vKeyItems.filter(vItem => pKeyItemIDs.includes(vItem.id));
 		
 		let vOutcome = 0;
 
 		if (!pKeyItemIDs.find(vID => !vKeys.find(vKey => vKey.id == vID))) {
+			console.log(LnKFlags.matchingIDKeysandmode(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")));
 			if (LnKFlags.matchingIDKeysandmode(vKeys, pLock, game.settings.get(cModuleName, "UseKeynameasID")).length) {
 				if (game.settings.get(cModuleName, "JamedLockKeyunusable") && LnKFlags.Lockisjammed(pLock)) {
 					//lock is jammed and cant be opened by key
@@ -391,16 +396,16 @@ class LockManager {
 		if (game.user.isGM) {
 			//only relevant for GMs
 			
-			let vScene = game.scenes.get(puseData.SceneID);
+			//let vScene = game.scenes.get(puseData.SceneID);
 			let vLock;
 			let vCharacter;
 			
-			if (vScene) {
-				vLock = LnKutils.LockfromID(puseData.LockID, puseData.Locktype, vScene);
-				
+			//if (vScene) {
+				vLock = await fromUuid(puseData.LockID);//LnKutils.LockfromID(puseData.LockID, puseData.Locktype, vScene);
+
 				if ((await LnKutils.isLockCompatible(vLock) || puseData.useType == cLUisGM)) {
-					vCharacter = LnKutils.TokenfromID(puseData.CharacterID, vScene);
-					
+					vCharacter = await fromUuid(puseData.CharacterID);//LnKutils.TokenfromID(puseData.CharacterID, vScene);
+
 					switch (puseData.useType) {
 						case cLUuseKey:
 							//a key was used on the lock
@@ -434,7 +439,7 @@ class LockManager {
 							break;
 					}
 				}
-			}
+			//}
 		}
 	}
 	
@@ -601,6 +606,7 @@ class LockManager {
 	
 	static async onunLock(pLock, pLockusetype) {
 		let vLocktype = await LnKutils.Locktype(pLock);
+
 		switch(vLocktype) {
 			case cLockTypeDoor:
 			case cLockTypeTile:
@@ -671,7 +677,6 @@ class LockManager {
 				}
 				
 				if (vLocktype != cLockTypeDoor) {
-					console.log(LnKFlags.isLocked(pLock));
 					if (LnKFlags.isLocked(pLock)) {
 						LockManager.onLock(pLock, pLockusetype);
 					}
@@ -855,7 +860,6 @@ class LockManager {
 	}
 	
 	static async onLockRClick(pDocument, pInfos) {
-		console.log(await LnKutils.isLockCompatible(pDocument));
 		if (await LnKutils.isLockCompatible(pDocument)) {
 			let vType = pDocument.documentName;
 			

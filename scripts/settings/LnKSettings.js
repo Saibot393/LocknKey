@@ -841,30 +841,29 @@ Hooks.on("renderSettingsConfig", (pApp, pHTML, pData) => {
 		pHTML.querySelector('input[name="' + cModuleName + '.EnablePickpocketing"]').closest(".form-group").before(vnewHTML);		
 		
 		//gm controlls
-		vnewHTML = ``;
+		vnewHTML = `<p style="white-space: pre-wrap">`;
 		for (let i = 0; i <= 4; i++) {
-			vnewHTML = vnewHTML + `<p>${Translate("Text.GMControls.line"+i)}</p>`
+			vnewHTML = vnewHTML + `${Translate("Text.GMControls.line"+i)} \n`
 		}
 		
+		vnewHTML = vnewHTML + `</p>`;
 		vnewHTML = fromHTML(vnewHTML);
 		
-		if (pHTML.querySelector('input[name="' + cModuleName + '.PerceptionKeyWord"]')) pHTML.querySelector('input[name="' + cModuleName + '.PerceptionKeyWord"]').closest(".form-group").after(vnewHTML);
+		if (pHTML.querySelector('input[name="' + cModuleName + '.MentionPickpocketDetails"]')) pHTML.querySelector('input[name="' + cModuleName + '.MentionPickpocketDetails"]').closest(".form-group").after(vnewHTML);
 		
 		//first client setting
-		vnewHTML = fromHTML(`
-					<hr>
-					<h3 class="border">${Translate("Titles.ClientSettings")}</h3>
-					`);
+		vnewHTML = fromHTML(`<h3 class="border">${Translate("Titles.ClientSettings")}</h3>`);
 		 
 		pHTML.querySelector('select[name="' + cModuleName + '.ControlSceme"]').closest(".form-group").before(vnewHTML);
 	}
 	
 	//player controlls
-	vnewHTML = ``;
+	vnewHTML = `<p style="white-space: pre-wrap">`;
 	for (let i = 0; i <= 3; i++) {
-		vnewHTML = vnewHTML + `<p>${Translate("Text.PlayerControls.line"+i)}</p>`
+		vnewHTML = vnewHTML + `${Translate("Text.PlayerControls.line"+i)} \n`
 	}
 	
+	vnewHTML = vnewHTML + `</p>`;
 	vnewHTML = fromHTML(vnewHTML);
 	
 	pHTML.querySelector('input[name="' + cModuleName + '.dblClicktoLoot"]').closest(".form-group").after(vnewHTML);

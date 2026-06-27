@@ -4,7 +4,7 @@
 //temp2.querySelector('ul.items[data-item-types="backpack"]').querySelectorAll("li")[0].querySelector("div.item-name").children[1].children[0].classList.remove("fa-box")
 
 import { cModuleName } from "../utils/LnKutils.js"
-import { cDnD5e, cPf2eName } from "../utils/LnKSystemutils.js";
+import { LnKSystemutils, cDnD5e, cPf2eName } from "../utils/LnKSystemutils.js";
 
 import { LnKFlags } from "../helpers/LnKFlags.js";
 
@@ -14,6 +14,17 @@ import { LockManager } from "../LockManager.js";
 
 const cBoxIcon = "fa-box";
 const cLockIcon = "fa-lock";
+const cLockOpenIcon = "fa-lock-open";
+
+const cNewLClick = (pEvent, pItem, pOldClick) => {
+	Hooks.call(cModuleName + ".LockLClick", pItem, pEvent);
+	pOldClick?.();
+}
+
+const cNewRClick = (pEvent, pItem, pOldClick) => {
+	Hooks.call(cModuleName + ".LockRClick", pItem, pEvent);
+	pOldClick?.();
+}
 
 class ContainerHandler {
 	//DECLARATIONS
@@ -48,38 +59,26 @@ class ContainerHandler {
 		}
 		
 		if (game.system.id == cDnD5e) {
-			Hooks.on("renderItemSheet", (pSheet, pHTML, pInfo) => ContainerHandler.onRenderItemSheet(pHTML[0], pInfo.actor));
+			Hooks.on("renderItemSheet5e", (pSheet, pHTML, pInfo) => ContainerHandler.onRenderItemSheet(pHTML, pInfo.item));
 		}
 	}
 	
 	static registerLnKClicks(pActorSheet, pActor) {
 		switch (game.system.id) {
 			case cPf2eName:
-				console.log(pActorSheet);
 				let vContainers = pActorSheet.querySelector('ul.items[data-item-types="backpack"]').querySelectorAll("li");
 				
 				for (let vContainer of Array.from(vContainers)) {
 					if (vContainer) {
 						let vItem = fromUuidSync(vContainer.getAttribute("data-uuid"));
 						
-						let vNewLClick = (pEvent, pOldClick) => {
-							Hooks.call(cModuleName + ".LockLClick", vItem, pEvent);
-							pOldClick?.();
-						}
-						
-						let vNewRClick = (pEvent, pOldClick) => {
-							Hooks.call(cModuleName + ".LockRClick", vItem, pEvent);
-							pOldClick?.();
-						}
-						
 						let vNameDiv = vContainer.querySelector("div.item-name");
-						console.log(vNameDiv);
 						
 						for (let i = 1; i <= 1; i++) {
 							let vOldLClick = vNameDiv.children[i].onclick;
 							let vOldRClick = vNameDiv.children[i].oncontextmenu;
-							vNameDiv.children[i].onclick = (pEvent) => {vNewLClick(pEvent, vOldLClick)};
-							vNameDiv.children[i].oncontextmenu = (pEvent) => {vNewRClick(pEvent, vOldRClick)};
+							vNameDiv.children[i].onclick = (pEvent) => {cNewLClick(pEvent, vItem, vOldLClick)};
+							vNameDiv.children[i].oncontextmenu = (pEvent) => {cNewRClick(pEvent, vItem, vOldRClick)};
 						}
 						
 						if (LnKFlags.isLocked(vItem)) {
@@ -99,25 +98,40 @@ class ContainerHandler {
 					const cContentsButton = pItemSheet.querySelector('a[data-tab="contents"]');
 					const cContentsTab = pItemSheet.querySelector('section[data-tab="contents"]');
 					
+					let vIcon = document.createElement("i");
 					if (LnKFlags.isLocked(pItem)) {
-						let vIcon = document.createElement("i");
 						vIcon.classList.add("fa-solid", cLockIcon);
-						
-						cContentsButton.appendChild(vIcon);
 						
 						if (cContentsButton.classList.contains("active")) {
 							cContentsButton.classList.remove("active");
 							cContentsTab.classList.remove("active");
 							
 							const cAfterButton = cContentsButton.nextElementSibling;
-							const cAfterTab = pItemSheet.querySelector(`section[data-tab="{cAfterButton.getAttribute("data-tab")}"]`);
+
+							const cAfterTab = pItemSheet.querySelector(`section[data-tab="${cAfterButton.getAttribute("data-tab")}"]`);
 							
 							cAfterButton.classList.add("active");
 							cAfterTab.classList.add("active");
 						}
 					}
+					else {
+						vIcon.classList.add("fa-solid", cLockOpenIcon);
+					}
 					
+					let vOldLClick = cContentsButton.onclick;
+					let vOldRClick = cContentsButton.oncontextmenu;
+					cContentsButton.onclick = (pEvent) => {
+						cNewLClick(pEvent, pItem, vOldLClick);
+						
+						if (LnKFlags.isLocked(pItem) && !game.user.isGM) {
+							pEvent.stopPropagation();
+						}
+					};
+					cContentsButton.oncontextmenu = (pEvent) => {cNewRClick(pEvent, pItem, vOldRClick)};
 					
+					if (LnKFlags.isLockable(pItem)) {
+						cContentsButton.appendChild(vIcon);
+					}
 				}
 				break;
 		}
