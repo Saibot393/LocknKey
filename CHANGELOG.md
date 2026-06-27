@@ -1,3 +1,7 @@
+## 5.1.0
+- For certain systems (D&D5e and Pf2e) containers can now be locked, note that only right-click controls are available for container
+- Fixed settings layout
+
 ## v5.0.7
 - Fixed small bug in key creation
 - Improved item sheet tab addition
