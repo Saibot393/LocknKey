@@ -128,6 +128,11 @@ The module come with some api method you can check out here [API](./wiki/api.md)
 - Custom loot formula[Tokens only]: to set a custom formula to pick pocket this token
 - Pick pocket DC: to set the DC of pick pocket checks against this token (or modifier of such for this item)
 
+#### Container Locks
+For certain systems (currently D&D5e and Pf2e) item containers can be locked. Note that for containers only right-click controls are available (no macros or hotkeys).
+- **For D&D** In the container item sheet the contents tab now includes a lock symbol which can be used to interact with the lock state (if the item is lockable). For locked containers the contents tab can not be opened by players.
+- **For Pf2e** The icon normally used to collapse the container inventory can be used to interact with the lock state of the item. For locked containers the contents can not be unfolded.
+
 ### Compatibility:
 
 The module should be compatible with most game systems on Foundry v10 and v11, though a few features are only available for the Pf2e system or in combination with other modules. If you encounter any bugs please [let me know](https://github.com/Saibot393/LocknKey/issues). I am also happy to add further game systems. ([Issues](https://github.com/Saibot393/LocknKey/blob/main/ISSUES.md) can give you additional informations)
