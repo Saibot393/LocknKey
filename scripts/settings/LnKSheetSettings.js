@@ -222,6 +222,8 @@ class LnKSheetSettings {
 					
 					LnKSheetSettings.AddLockstandardsettings(pApp, pHTML, pData, vTabIdent);
 				}
+				
+				LnKSheetSettings.registerActivations(pHTML, vTabButtonHTML, pHTML.querySelector(vTabIdent));
 			}
 			
 			if (!LnKCompUtils.isactiveModule(cTidy5eNew)) { 			
@@ -905,12 +907,14 @@ class LnKSheetSettings {
 	}
 	
 	static activateLnKTab(pHTML, pTabButton, pTab) {
-		const cTab = pTab || pHTML.querySelector(`section[data-group="primary"][data-tab="${pTabButton.getAttribute("data-tab")}"]`)
+		const cTab = pTab || pHTML.querySelector(`section[data-tab="${pTabButton.getAttribute("data-tab")}"]`);
 		
-		if (pTabButton && cTab) {
+		if (pTabButton && cTab && !cTab.classList.contains("active")) {
+			const cOverSection = cTab.parentElement;
+			
 			for (const cButton of pTabButton.parentNode.children){
 				cButton.classList.remove("active");
-				const cMatchTab = pHTML.querySelector(`section[data-group="primary"][data-tab="${cButton.getAttribute("data-tab")}"]`);
+				const cMatchTab = cOverSection.querySelector(`section[data-tab="${cButton.getAttribute("data-tab")}"]`);
 				
 				if (cMatchTab) {
 					cMatchTab.classList.remove("active");
@@ -920,6 +924,27 @@ class LnKSheetSettings {
 			cTab.classList.add("active");
 			pTabButton.classList.add("active");
 			cTab.querySelectorAll("input").forEach(pInput => pInput.disabled = false)
+		}
+	}
+	
+	static registerActivations(pHTML, pTabButton, pTab) {
+		const cTab = pTab || pHTML.querySelector(`section[data-tab="${pTabButton.getAttribute("data-tab")}"]`);
+		
+		if (pTabButton && cTab) {
+			if (!pTabButton.onclick) {
+				pTabButton.onclick = () => {LnKSheetSettings.activateLnKTab(pHTML, pTabButton, pTab)};
+			}
+			
+			for (const cButton of pTabButton.parentNode.children){
+				if (!cButton.onclick) {
+					cButton.onclick = () => {
+						if (cTab.classList.contains("active")) {
+							cTab.classList.remove("active");
+							pTabButton.classList.remove("active");
+						}
+					}
+				}
+			}
 		}
 	}
 }
