@@ -1,3 +1,6 @@
+## 5.1.1
+- Fixed system compatibility issue in item sheets
+
 ## 5.1.0
 - For certain systems (D&D5e and Pf2e) containers can now be locked, note that only right-click controls are available for container
 - Fixed settings layout
