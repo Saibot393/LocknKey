@@ -80,6 +80,8 @@ class PickPocketManager {
 		}
 		else {
 			if (await LnKFlags.Canbepickpocketed(pTarget)) {
+				if (LnKSystemutils.isPf2e() && LnKutils.isDead(pTarget) && game.settings.get("pf2e.automation.lootableNPCs")) return; //in pf2e rules, dead tokens can already be looted
+				
 				if (!game.settings.get(cModuleName, "usePf2eSystem")) {
 					let vRollFormula;
 					
