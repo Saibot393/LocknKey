@@ -1,3 +1,6 @@
+## v5.1.2
+- Bug fix for pf2e pick pocketing for dead tokens
+
 ## v5.1.1
 - Fixed system compatibility issue in item sheets
 
