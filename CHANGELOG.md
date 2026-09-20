@@ -1,3 +1,6 @@
+## v5.1.3
+- Fixed ui bug that prevented MATT compatibility
+
 ## v5.1.2
 - Bug fix for pf2e pick pocketing for dead tokens
 
