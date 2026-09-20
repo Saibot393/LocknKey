@@ -88,7 +88,7 @@ class LnKCompatibility {
 	//specific: MATT
 	static addTriggerSettings(pApp, pHTML, pData, pAddBasics = false) {
 		let vAddBasics = pAddBasics && !pHTML.querySelector(`a[data-tab="triggers"]`);
-		
+
 		if (vAddBasics) {
 			let vTabbar = pHTML.querySelector(`nav.sheet-tabs[data-group="main"]`) || pHTML.querySelector(`nav.sheet-tabs`);
 			
@@ -199,7 +199,7 @@ Hooks.once("init", () => {
 	}
 
 	if (LnKCompUtils.isactiveModule(cMATT)) {
-		Hooks.on(cModuleName + ".WallLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData));
+		Hooks.on(cModuleName + ".WallLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData, true));
 		
 		Hooks.on(cModuleName + ".TokenLockSettings", (pApp, pHTML, pData) => LnKCompatibility.addTriggerSettings(pApp, pHTML, pData, true));
 		
